@@ -13,10 +13,12 @@ SceneMain::SceneMain()
 	{
 		handle = -1;
 	}
+	m_player = new Player;
 }
 SceneMain::~SceneMain()
 {
-	
+	m_player = nullptr;
+	delete m_player;
 }
 
 void SceneMain::init()
@@ -27,9 +29,9 @@ void SceneMain::init()
 
 	for (int i = 0; i < Player::kCharaChipNum; i++)
 	{
-		m_player.setHandle(i, m_hPlayerGraphic[i]);
+		m_player->setHandle(i, m_hPlayerGraphic[i]);
 	}
-	m_player.Init();
+	m_player->Init();
 }
 
 void SceneMain::end()
@@ -42,11 +44,11 @@ void SceneMain::end()
 
 SceneBase* SceneMain::update()
 {
-	m_player.update();
+	m_player->update();
 	return this;
 }
 
 void SceneMain::draw()
 {
-	m_player.draw();
+	m_player->draw();
 }

@@ -21,5 +21,5 @@ private:
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];
 	// プレイヤー
-	Player m_player;
+	Player*m_player;
 };
