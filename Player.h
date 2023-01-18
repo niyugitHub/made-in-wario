@@ -24,6 +24,9 @@ public:
 	// キャラのジャンプ処理
 	void CharaJump();
 
+	// 動きの制限
+	void LimitMove();
+
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
 

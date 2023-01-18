@@ -11,10 +11,11 @@ namespace
 	// フレームタイム
 	constexpr int kFrameTime = 20;
 
-	constexpr float kGravity = 0.4f;
+	constexpr float kBigGravity = 1.2f;
+	constexpr float kSmallGravity = 0.5f;
 }
 
-Player::Player() : 
+Player::Player() :
 m_pos(0, 500),
 m_vec(3, 0),
 m_Jump(15.0f),
@@ -51,6 +52,8 @@ void Player::end()
 void Player::update()
 {
 	CharaMove();
+
+	LimitMove();
 }
 
 void Player::draw()
@@ -142,15 +145,40 @@ void Player::CharaMove()
 
 void Player::CharaJump()
 {
+	m_FrameChangeChara++;
 	m_CharaGraphY = 5;
 	m_CharaMotion = 8;
 	m_pos.y -= m_Jump;
-	m_Jump -= kGravity;
+
+	if (CheckHitKey(KEY_INPUT_SPACE))
+	{
+		m_Jump -= kSmallGravity;
+	}
+	else
+	{
+		m_Jump -= kBigGravity;
+	}
 
 	if (m_pos.y >= 500)
 	{
 		m_NowJump = false;
 		m_pos.y = 500;
 		m_Jump = 15;
+	}
+}
+
+void Player::LimitMove()
+{
+	if (m_pos.x < 0 - 35)
+	{
+		m_pos.x = -35;
+	}
+	if (m_pos.x > Game::kScreenWidth - kSideSize + 35)
+	{
+		m_pos.x = Game::kScreenWidth - kSideSize + 35;
+	}
+	if (m_pos.y > Game::kScreenHeight - kColumnSize)
+	{
+		m_pos.y = Game::kScreenHeight - kColumnSize;
 	}
 }
