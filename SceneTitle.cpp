@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "SceneTitle.h"
+#include "SceneMain.h"
 #include"game.h"
 
 void SceneTitle::init()
@@ -11,7 +12,10 @@ void SceneTitle::init()
 
 SceneBase* SceneTitle::update()
 {
-	
+	if (CheckHitKey(KEY_INPUT_SPACE))
+	{
+		return (new SceneMain);
+	}
 	return this;
 }
 

@@ -2,6 +2,7 @@
 
 #include"Vec2.h"
 #include"SceneManager.h"
+#include"Player.h"
 
 namespace
 {
@@ -37,8 +38,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// ダブルバッファモード
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	SceneManager scene;
-	scene.init();
+	/*SceneManager scene;
+	scene.init();*/
+	Player player;
+	player.Init();
 
 	while (ProcessMessage() == 0)
 	{
@@ -48,8 +51,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		SetMouseDispFlag(1);
 
-		scene.update();
-		scene.draw();
+		/*scene.update();
+		scene.draw();*/
+
+		player.update();
+		player.draw();
 
 		// 裏画面と表画面を入れ替える
 		ScreenFlip();
@@ -62,7 +68,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		}
 	}
-	scene.end();
+	/*scene.end();*/
+	player.end();
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
 

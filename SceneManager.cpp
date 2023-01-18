@@ -2,6 +2,7 @@
 #include <cassert>
 
 #include"SceneTitle.h"
+#include"SceneMain.h"
 
 
 SceneManager::SceneManager()
@@ -21,6 +22,10 @@ void SceneManager::init(SceneKind kind)
 	{
 	case SceneManager::kSceneKindTitle:
 		m_pScene = new SceneTitle;
+		m_pScene->init();
+		break;
+	case SceneManager::kSceneKindMain:
+		m_pScene = new SceneMain;
 		m_pScene->init();
 		break;
 
