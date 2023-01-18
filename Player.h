@@ -2,15 +2,20 @@
 #include "Vec2.h"
 class Player
 {
-private:
+public:
 	static constexpr int kSideSize = 128;
 	static constexpr int kColumnSize = 128;
 
 	static constexpr int kSideCharaChipNum = 8;
 	static constexpr int kColumnCharaChipNum = 9;
+
+	static constexpr int kCharaChipNum = kSideCharaChipNum * kColumnCharaChipNum;
 public:
 	Player();
 	virtual ~Player();
+
+	// グラフィックデータ設定
+	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
 	void Init();
 	void end();

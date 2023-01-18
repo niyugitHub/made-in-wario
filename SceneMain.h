@@ -1,5 +1,6 @@
 #pragma once
 #include"SceneBase.h"
+#include"Player.h"
 
 class SceneMain : public SceneBase
 {
@@ -14,4 +15,11 @@ public:
 
 	virtual SceneBase* update();
 	virtual void draw();
+
+private:
+
+	// プレイヤーのグラフィックハンドル
+	int m_hPlayerGraphic[Player::kCharaChipNum];
+	// プレイヤー
+	Player m_player;
 };

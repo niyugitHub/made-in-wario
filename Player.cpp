@@ -40,9 +40,9 @@ Player::~Player()
 
 void Player::Init()
 {
-	LoadDivGraph(kPlayerGraphicFilename, kSideCharaChipNum * kColumnCharaChipNum,
+	/*LoadDivGraph(kPlayerGraphicFilename, kCharaChipNum,
 		kSideCharaChipNum, kColumnCharaChipNum,
-		kSideSize, kColumnSize, m_handle);	
+		kSideSize, kColumnSize, m_handle);	*/
 }
 
 void Player::end()
