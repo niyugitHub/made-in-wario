@@ -25,8 +25,19 @@ public:
 	virtual bool isEnd() { return m_isEnd; }
 
 private:
+	void FadeinUpdate();
+	void TitleSceneUpdate();
+	void FadeoutUpdate();
+
+private:
 	// テキストのサイズ
 	int m_textSize;
 
+	// 色の濃さ
+	int m_Color;
+
 	bool m_isEnd;
+
+	// update処理メンバ関数ポインタ
+	void(SceneTitle::* m_func)();
 };
