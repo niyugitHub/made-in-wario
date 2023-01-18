@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "SceneTitle.h"
 #include <DxLib.h>
 #include <cassert>
 #include"game.h"
@@ -25,7 +26,8 @@ m_FrameChangeChara(0),
 m_CharaMotion(0),
 m_NowDash(false),
 m_LookLeft(false),
-m_NowJump(false)
+m_NowJump(false),
+m_SceneTitle(nullptr)
 {
 	for (auto& handle : m_handle)
 	{
@@ -58,7 +60,7 @@ void Player::update()
 
 void Player::draw()
 {
-	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
+	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 
 	if (!m_LookLeft)
 	{
@@ -118,9 +120,23 @@ void Player::CharaMove()
 		m_NowJump = true;
 	}
 
-	if (m_NowJump)
+	if (m_SceneTitle != nullptr && !m_SceneTitle->isTitleEnd())
 	{
-		CharaJump();
+		if (m_NowJump)
+		{
+			CharaJump();
+		}
+	}
+
+
+  	if (m_SceneTitle != nullptr)
+	{
+		if (m_SceneTitle->isTitleEnd())
+		{
+			m_CharaMotion = 8;
+			m_FrameChangeChara++;
+			m_CharaGraphY = 6;
+		}
 	}
 
 	m_FrameChangeChara++;

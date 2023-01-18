@@ -1,6 +1,9 @@
 #pragma once
 #include "Vec2.h"
-class Player
+
+class SceneTitle;
+
+class Player 
 {
 public:
 	static constexpr int kSideSize = 128;
@@ -16,6 +19,8 @@ public:
 
 	// グラフィックデータ設定
 	void setHandle(int index, int handle) { m_handle[index] = handle; }
+
+	void SetTitle(SceneTitle* pTitle) { m_SceneTitle = pTitle; }
 
 	void Init();
 	void end();
@@ -42,7 +47,7 @@ private:
 	float m_Jump;
 
 	// グラフの挿入
-	int m_handle[kColumnCharaChipNum * kSideCharaChipNum];
+	int m_handle[kCharaChipNum];
 
 	// キャラクターのグラフの種類を決める
 	int m_CharaGraphX;
@@ -62,5 +67,7 @@ private:
 
 	// キャラクターがジャンプをしているとき
 	bool m_NowJump;
+
+	SceneTitle*m_SceneTitle;
 };
 

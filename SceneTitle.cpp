@@ -3,6 +3,12 @@
 #include "SceneMain.h"
 #include"game.h"
 
+namespace
+{
+	// グラフィックファイル名
+	const char* const kPlayerGraphicFilename = "data/Player.png";
+}
+
 void SceneTitle::init()
 {
 //	m_RandColor = 0;
@@ -11,6 +17,16 @@ void SceneTitle::init()
 	m_Color = 0;
 
 	m_func = &SceneTitle::FadeinUpdate;
+
+	LoadDivGraph(kPlayerGraphicFilename, Player::kCharaChipNum,
+		Player::kSideCharaChipNum, Player::kColumnCharaChipNum,
+		Player::kSideSize, Player::kColumnSize, m_hPlayerGraphic);
+
+	for (int i = 0; i < Player::kCharaChipNum; i++)
+	{
+		m_player->setHandle(i, m_hPlayerGraphic[i]);
+	}
+	m_player->Init();
 }
 
 SceneBase* SceneTitle::update()
@@ -21,6 +37,7 @@ SceneBase* SceneTitle::update()
 	}*/
 
 	(this->*m_func)();
+	m_player->update();
 
 	if (m_Color <= 0)
 	{
@@ -35,6 +52,7 @@ void SceneTitle::draw()
 	SetFontSize(50);
 	DrawString(150, 200, "個人製作", GetColor(0, m_Color, 0));
 	DrawString(150, 450, "SPACEを押してスタート", GetColor(0, m_Color, 0));
+	m_player->draw();
 }
 
 void SceneTitle::FadeinUpdate()
@@ -51,6 +69,8 @@ void SceneTitle::TitleSceneUpdate()
 {
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
+		m_IsTitleEnd = true;
+		m_player->SetTitle(this);
 		m_func = &SceneTitle::FadeoutUpdate;
 	}
 }

@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 #include <cassert>
-
+#include"SceneBase.h"
 #include"SceneTitle.h"
 #include"SceneMain.h"
 
