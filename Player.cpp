@@ -11,7 +11,7 @@ namespace
 	// フレームタイム
 	constexpr int kFrameTime = 20;
 
-	constexpr int kGravity = 0.4;
+	constexpr float kGravity = 0.4f;
 }
 
 Player::Player() : 
@@ -23,7 +23,8 @@ m_CharaGraphY(0),
 m_FrameChangeChara(0),
 m_CharaMotion(0),
 m_NowDash(false),
-m_LookLeft(false)
+m_LookLeft(false),
+m_NowJump(false)
 {
 	for (auto& handle : m_handle)
 	{
@@ -109,11 +110,15 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (CheckHitKey(KEY_INPUT_LEFT))
+	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
-
+		m_NowJump = true;
 	}
-	CharaJump();
+
+	if (m_NowJump)
+	{
+		CharaJump();
+	}
 
 	m_FrameChangeChara++;
 
@@ -144,6 +149,7 @@ void Player::CharaJump()
 
 	if (m_pos.y >= 500)
 	{
+		m_NowJump = false;
 		m_pos.y = 500;
 		m_Jump = 15;
 	}

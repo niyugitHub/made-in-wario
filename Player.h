@@ -53,5 +53,6 @@ private:
 	bool m_LookLeft;
 
 	// キャラクターがジャンプをしているとき
-	bool m_;
+	bool m_NowJump;
+};
 
