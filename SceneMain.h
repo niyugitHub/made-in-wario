@@ -3,6 +3,10 @@
 #include"Player.h"
 #include"Minigame1.h"
 
+//class Player;
+//class Minigame1;
+//class Vec2;
+
 class SceneMain : public SceneBase
 {
 public:
@@ -17,10 +21,13 @@ public:
 	virtual SceneBase* update();
 	virtual void draw();
 
+	bool Collision();
+
 private:
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];
 
+	Vec2 m_PlayerPos;
 	
 	// プレイヤー
 	Player*m_player;

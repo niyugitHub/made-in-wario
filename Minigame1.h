@@ -19,6 +19,8 @@ class Minigame1
 		void load();
 		void unload();
 
+		int GetMapData(int Y, int X) { return m_MapData[Y][X]; }
+
 		void update();
 
 		// 描画
@@ -35,6 +37,9 @@ class Minigame1
 
 		// グラフィックデータのハンドル
 		int m_handle;
+
+		// グラフィックデータの配列
+		int m_MapData[kBgNumY][kBgNumX];
 
 		// グラフィックのデータ
 		int m_graphWidth;

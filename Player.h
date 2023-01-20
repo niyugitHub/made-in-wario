@@ -24,6 +24,8 @@ public:
 
 	void SetPos(Vec2 pos) { m_pos = pos; }
 
+	Vec2 GetPos() const { return m_pos; }
+
 	void Init();
 	void end();
 
