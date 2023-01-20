@@ -12,14 +12,27 @@ public:
 public:
 	SceneTitle()
 	{
+		m_Pos.x = 0;
+		m_Pos.y = 0;
+		m_BackgroundPosX = 0;
 		m_isEnd = false;
 		m_IsTitleEnd = false;
 		m_func = &SceneTitle::FadeinUpdate;
+		m_textSize = 0;
+		m_Color = 0;
 
 		for (auto& handle : m_hPlayerGraphic)
 		{
 			handle = -1;
 		}
+
+		for (int i = 0; i < Player::kCharaChipNum; i++)
+		{
+			m_hPlayerGraphic[i] = -1;
+		}
+
+		m_BackgroundHandle1 = -1;
+		m_BackgroundHandle2 = -1;
 
 		m_player = new Player;
 
@@ -43,6 +56,11 @@ private:
 	void FadeoutUpdate();
 
 private:
+	// プレイヤーの位置
+	Vec2 m_Pos;
+
+	// 背景のX位置
+	int m_BackgroundPosX;
 	// テキストのサイズ
 	int m_textSize;
 
@@ -58,6 +76,11 @@ private:
 
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];
+
+	// 背景のハンドル
+	int m_BackgroundHandle1;
+	int m_BackgroundHandle2;
+
 
 	Player* m_player;
 };

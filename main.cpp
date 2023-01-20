@@ -3,6 +3,7 @@
 #include"Vec2.h"
 #include"SceneManager.h"
 #include"Player.h"
+#include"game.h"
 
 namespace
 {
@@ -11,8 +12,8 @@ namespace
 	// ウインドウ名
 	const char* const kTitleText = "ゲーム名";
 	// ウインドウサイズ
-	constexpr int kScreenWidth = 1280;
-	constexpr int kScreenHeight = 720;
+	constexpr int kScreenWidth = Game::kScreenWidth;
+	constexpr int kScreenHeight = Game::kScreenHeight;
 	// カラーモード
 	constexpr int kColorDepth = 32;
 }
@@ -25,11 +26,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;			// エラーが起きたら直ちに終了
 	}
 	// windowモード設定
-	ChangeWindowMode(kWindouwMode);
+//	ChangeWindowMode(kWindouwMode);
 	// ウインドウ名設定
 	SetMainWindowText("ゲーム名");
 	// 画面サイズの設定
-	SetGraphMode(1280, 720, 32);
+	SetGraphMode(kScreenWidth, kScreenHeight, 32);
 	if (DxLib_Init() == -1)	// DXライブラリ初期化処理
 	{
 		return -1;		// エラーが起きたら直ちに終了

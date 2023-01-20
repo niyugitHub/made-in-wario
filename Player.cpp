@@ -3,6 +3,7 @@
 #include <DxLib.h>
 #include <cassert>
 #include"game.h"
+#include"Pad.h"
 
 namespace
 {
@@ -75,6 +76,8 @@ void Player::draw()
 
 void Player::CharaMove()
 {
+	Pad::update();
+
 	if (CheckHitKey(KEY_INPUT_RIGHT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
 	{
 		m_NowDash = true;
@@ -115,19 +118,15 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (CheckHitKey(KEY_INPUT_SPACE))
+	if (Pad::isTrigger(PAD_INPUT_10))
 	{
 		m_NowJump = true;
 	}
 
-	if (m_SceneTitle != nullptr && !m_SceneTitle->isTitleEnd())
+	if (m_NowJump)
 	{
-		if (m_NowJump)
-		{
-			CharaJump();
-		}
+		CharaJump();
 	}
-
 
   	if (m_SceneTitle != nullptr)
 	{
@@ -175,10 +174,10 @@ void Player::CharaJump()
 		m_Jump -= kBigGravity;
 	}
 
-	if (m_pos.y >= 500)
+	if (m_pos.y >= Game::kScreenHeight - kColumnSize)
 	{
 		m_NowJump = false;
-		m_pos.y = 500;
+	//	m_pos.y = Game::kScreenHeight - kColumnSize;
 		m_Jump = 15;
 	}
 }

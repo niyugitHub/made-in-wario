@@ -22,6 +22,8 @@ public:
 
 	void SetTitle(SceneTitle* pTitle) { m_SceneTitle = pTitle; }
 
+	void SetPos(Vec2 pos) { m_pos = pos; }
+
 	void Init();
 	void end();
 

@@ -153,6 +153,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Minigame1.cpp" />
+    <ClCompile Include="MinigameBase.cpp" />
+    <ClCompile Include="Pad.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SceneMain.cpp" />
@@ -162,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="Minigame1.h" />
+    <ClInclude Include="MinigameBase.h" />
+    <ClInclude Include="Pad.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneMain.h" />

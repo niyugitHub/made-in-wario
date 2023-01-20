@@ -14,6 +14,7 @@ SceneMain::SceneMain()
 		handle = -1;
 	}
 	m_player = new Player;
+	m_Map = new Minigame1;
 }
 SceneMain::~SceneMain()
 {
@@ -32,6 +33,7 @@ void SceneMain::init()
 		m_player->setHandle(i, m_hPlayerGraphic[i]);
 	}
 	m_player->Init();
+	m_Map->load();
 }
 
 void SceneMain::end()
@@ -40,6 +42,7 @@ void SceneMain::end()
 	{
 		DeleteGraph(handle);
 	}
+	m_Map->unload();
 }
 
 SceneBase* SceneMain::update()
@@ -50,5 +53,6 @@ SceneBase* SceneMain::update()
 
 void SceneMain::draw()
 {
+	m_Map->draw();
 	m_player->draw();
 }
