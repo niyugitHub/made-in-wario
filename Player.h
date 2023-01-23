@@ -3,6 +3,8 @@
 
 class SceneTitle;
 
+class Collision;
+
 class Player 
 {
 public:
@@ -23,6 +25,12 @@ public:
 	void SetTitle(SceneTitle* pTitle) { m_SceneTitle = pTitle; }
 
 	void SetPos(Vec2 pos) { m_pos = pos; }
+
+	void SetCollTop(bool Top) { m_CollTop = Top; }
+	void SetCollBottom(bool Bottom) { m_CollBottom = Bottom; }
+	void SetCollRight(bool Right) { m_CollRight = Right; }
+	void SetCollLeft(bool Left) { m_CollLeft = Left; }
+
 
 	Vec2 GetPos() const { return m_pos; }
 
@@ -63,6 +71,9 @@ private:
 	// 各モーションのキャラの動きの数
 	int m_CharaMotion;
 
+	// キャラクターの重力
+	float m_Gravity;
+
 	// キャラクターが走っているかどうか
 	bool m_NowDash;
 
@@ -72,6 +83,16 @@ private:
 	// キャラクターがジャンプをしているとき
 	bool m_NowJump;
 
-	SceneTitle*m_SceneTitle;
+
+	// キャラクターが地面についているかどうか
+	bool m_Coll_Ground;
+
+	// キャラクターとブロックの衝突判定
+	bool m_CollTop;
+	bool m_CollBottom;
+	bool m_CollLeft;
+	bool m_CollRight;
+
+	SceneTitle* m_SceneTitle;
 };
 

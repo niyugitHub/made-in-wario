@@ -21,13 +21,23 @@ public:
 	virtual SceneBase* update();
 	virtual void draw();
 
-	bool Collision();
+	// 当たり判定
+	void IsCollision();
+
+	// 当たり判定初期化
+	void isInitColl();
 
 private:
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];
 
 	Vec2 m_PlayerPos;
+
+	// キャラクターとブロックの衝突判定
+	bool m_CollTop;
+	bool m_CollBottom;
+	bool m_CollLeft;
+	bool m_CollRight;
 	
 	// プレイヤー
 	Player*m_player;

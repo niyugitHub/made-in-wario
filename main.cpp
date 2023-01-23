@@ -26,7 +26,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return -1;			// エラーが起きたら直ちに終了
 	}
 	// windowモード設定
-//	ChangeWindowMode(kWindouwMode);
+	ChangeWindowMode(kWindouwMode);
 	// ウインドウ名設定
 	SetMainWindowText("ゲーム名");
 	// 画面サイズの設定

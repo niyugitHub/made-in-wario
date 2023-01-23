@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Minigame1.cpp" />
     <ClCompile Include="MinigameBase.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Minigame1.h" />
     <ClInclude Include="MinigameBase.h" />

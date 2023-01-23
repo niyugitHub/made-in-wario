@@ -57,6 +57,9 @@
     <ClCompile Include="MinigameBase.cpp">
       <Filter>ソース ファイル\Minigame</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="MinigameBase.h">
       <Filter>ヘッダー ファイル\Minigame</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

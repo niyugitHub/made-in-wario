@@ -13,21 +13,29 @@ namespace
 	// フレームタイム
 	constexpr int kFrameTime = 20;
 
+	// 重力の強さ
 	constexpr float kBigGravity = 1.2f;
+	constexpr float kGravity = 0.8f;
 	constexpr float kSmallGravity = 0.5f;
 }
 
 Player::Player() :
-m_pos(0, 500),
+m_pos(500, 500),
 m_vec(3, 0),
-m_Jump(15.0f),
+m_Jump(16.0f),
 m_CharaGraphX(0),
 m_CharaGraphY(0),
 m_FrameChangeChara(0),
 m_CharaMotion(0),
+m_Gravity(0),
 m_NowDash(false),
 m_LookLeft(false),
 m_NowJump(false),
+m_Coll_Ground(false),
+m_CollTop(false),
+m_CollBottom(false),
+m_CollLeft(false),
+m_CollRight(false),
 m_SceneTitle(nullptr)
 {
 	for (auto& handle : m_handle)
@@ -83,8 +91,11 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_LookLeft = false;
 		m_CharaGraphY = 3;
-		m_pos.x += m_vec.x * 2;
 		m_CharaMotion = 8;
+		m_pos.x += m_vec.x * 2;
+
+		if (m_CollRight) m_pos.x -= m_vec.x * 2;
+		
 	}
 
 	else if (CheckHitKey(KEY_INPUT_LEFT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
@@ -92,24 +103,30 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_LookLeft = true;
 		m_CharaGraphY = 3;
-		m_pos.x -= m_vec.x * 2;
 		m_CharaMotion = 8;
+		m_pos.x -= m_vec.x * 2;
+		
+		if(m_CollLeft) m_pos.x += m_vec.x * 2;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_RIGHT))
 	{
 		m_LookLeft = false;
 		m_CharaGraphY = 2;
-		m_pos.x += m_vec.x;
 		m_CharaMotion = 4;
+		m_pos.x += m_vec.x;
+
+		if (m_CollRight) m_pos.x -= m_vec.x;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_LEFT))
 	{
 		m_LookLeft = true;
 		m_CharaGraphY = 2;
-		m_pos.x -= m_vec.x;
 		m_CharaMotion = 4;
+		m_pos.x -= m_vec.x;
+
+		if (m_CollLeft) m_pos.x += m_vec.x;
 	}
 
 	else
@@ -121,6 +138,7 @@ void Player::CharaMove()
 	if (Pad::isTrigger(PAD_INPUT_10))
 	{
 		m_NowJump = true;
+		m_CollBottom = false;
 	}
 
 	if (m_NowJump)
@@ -136,6 +154,17 @@ void Player::CharaMove()
 			m_FrameChangeChara++;
 			m_CharaGraphY = 6;
 		}
+	}
+
+	if (!m_CollBottom && !m_NowJump)
+	{
+		m_pos.y += m_Gravity;
+		m_Gravity += kGravity;
+	}
+
+	else
+	{
+		m_Gravity = 0;
 	}
 
 	m_FrameChangeChara++;
@@ -160,6 +189,10 @@ void Player::CharaMove()
 
 void Player::CharaJump()
 {
+	if (m_CollTop)
+	{
+		if(m_Jump > 0) m_Jump = 0;
+	}
 	m_FrameChangeChara++;
 	m_CharaGraphY = 5;
 	m_CharaMotion = 8;
@@ -174,12 +207,13 @@ void Player::CharaJump()
 		m_Jump -= kBigGravity;
 	}
 
-	if (m_pos.y >= Game::kScreenHeight - kColumnSize)
+	if (m_pos.y >= Game::kScreenHeight - kColumnSize || m_CollBottom)
 	{
 		m_NowJump = false;
 	//	m_pos.y = Game::kScreenHeight - kColumnSize;
-		m_Jump = 15;
+		m_Jump = 16;
 	}
+
 }
 
 void Player::LimitMove()
