@@ -22,7 +22,7 @@ namespace
 Player::Player() :
 m_pos(500, 500),
 m_vec(3, 0),
-m_Jump(16.0f),
+m_Jump(12.0f),
 m_CharaGraphX(0),
 m_CharaGraphY(0),
 m_FrameChangeChara(0),
@@ -31,6 +31,8 @@ m_Gravity(0),
 m_NowDash(false),
 m_LookLeft(false),
 m_NowJump(false),
+m_TwoJump(false),
+m_UseTwoJump(false),
 m_Coll_Ground(false),
 m_CollTop(false),
 m_CollBottom(false),
@@ -95,7 +97,6 @@ void Player::CharaMove()
 		m_pos.x += m_vec.x * 2;
 
 		if (m_CollRight) m_pos.x -= m_vec.x * 2;
-		
 	}
 
 	else if (CheckHitKey(KEY_INPUT_LEFT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
@@ -135,7 +136,13 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_10))
+	if (Pad::isTrigger(PAD_INPUT_10) && !m_CollBottom)
+	{
+		m_NowJump = true;
+		m_TwoJump = true;
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_10) && m_CollBottom)
 	{
 		m_NowJump = true;
 		m_CollBottom = false;
@@ -189,6 +196,12 @@ void Player::CharaMove()
 
 void Player::CharaJump()
 {
+	if (m_TwoJump && !m_UseTwoJump)
+	{
+		m_UseTwoJump = true;
+		m_TwoJump = false;
+		m_Jump = 12;
+	}
 	if (m_CollTop)
 	{
 		if(m_Jump > 0) m_Jump = 0;
@@ -209,9 +222,11 @@ void Player::CharaJump()
 
 	if (m_pos.y >= Game::kScreenHeight - kColumnSize || m_CollBottom)
 	{
+		m_UseTwoJump = false;
+		m_TwoJump = false;
 		m_NowJump = false;
 	//	m_pos.y = Game::kScreenHeight - kColumnSize;
-		m_Jump = 16;
+		m_Jump = 12;
 	}
 
 }

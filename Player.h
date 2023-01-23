@@ -83,6 +83,11 @@ private:
 	// キャラクターがジャンプをしているとき
 	bool m_NowJump;
 
+	// キャラクターが二段ジャンプしているとき
+	bool m_TwoJump;
+
+	// キャラクターが二段ジャンプを使ったとき
+	bool m_UseTwoJump;
 
 	// キャラクターが地面についているかどうか
 	bool m_Coll_Ground;

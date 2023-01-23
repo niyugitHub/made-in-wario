@@ -145,7 +145,7 @@ void SceneMain::IsCollision()
 					m_PlayerPos.x + Player::kSideSize - 50 > j * Minigame1::kChipSize &&
 					m_PlayerPos.x + 50 < j * Minigame1::kChipSize + Minigame1::kChipSize)
 				{
-					m_PlayerPos.y = i * Minigame1::kChipSize - (Player::kColumnSize);
+					m_PlayerPos.y = i * Minigame1::kChipSize - (Player::kColumnSize) + 1;
 					m_player->SetPos(m_PlayerPos);
 					m_CollBottom = true;
 				}
