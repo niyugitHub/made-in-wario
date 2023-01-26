@@ -33,6 +33,8 @@ private:
 
 	Vec2 m_PlayerPos;
 
+	Vec2 m_MapPos;
+
 	Player* m_player;
 	Map* m_Map;
 };

@@ -83,8 +83,9 @@ SceneBase* SceneMain::update()
 
 	m_player->SetCollTop(m_CollTop);
 	m_player->SetCollBottom(m_CollBottom);
-	m_player->SetCollRight(m_CollRight);
-	m_player->SetCollLeft(m_CollLeft);
+
+	m_Map->SetCollRight(m_CollRight);
+	m_Map->SetCollLeft(m_CollLeft);
 
 //	m_PlayerPos = m_player->GetPos();
 

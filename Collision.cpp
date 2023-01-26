@@ -1,11 +1,13 @@
 #include "Collision.h"
 #include "Player.h"
 #include "Map.h"
+#include <cassert>
 
 
 
 Collision::Collision() :
 	m_PlayerPos(0, 0),
+	m_MapPos(0,0),
 	m_player(nullptr),
 	m_Map(nullptr)
 {
@@ -19,6 +21,10 @@ Collision::~Collision()
 void Collision::Update()
 {
 	m_PlayerPos = m_player->GetPos();
+	m_MapPos = m_Map->GetPos();
+
+//	assert(m_MapPos.x == 0);
+
 	IsCollision();
 }
 
@@ -71,40 +77,77 @@ void Collision::IsCollision()
 		{
 			if (m_Map->GetMapData(i, j) != 0)
 			{
+				float MapPosX = m_MapPos.x + j * Map::kChipSize;
+				float MapPosY = m_MapPos.y / 64 + i * Map::kChipSize;
+
 				//è„
-				if (m_PlayerPos.y + 10 < i * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y > i * Map::kChipSize + 10 &&
-					m_PlayerPos.x + Player::kSideSize - 50 > j * Map::kChipSize &&
-					m_PlayerPos.x + 50 < j * Map::kChipSize + Map::kChipSize)
+				if (m_PlayerPos.y + 10 < MapPosY + Map::kChipSize &&
+					m_PlayerPos.y > MapPosY + 10 &&
+					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
+					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize)
 				{
 					m_CollTop = true;
 				}
 				//â∫
-				if (m_PlayerPos.y + (Player::kColumnSize) > i * Map::kChipSize &&
-					m_PlayerPos.y + 25 < i * Map::kChipSize/* + Minigame1::kChipSize*/ &&
-					m_PlayerPos.x + Player::kSideSize - 45 > j * Map::kChipSize &&
-					m_PlayerPos.x + 45 < j * Map::kChipSize + Map::kChipSize)
+				if (m_PlayerPos.y + (Player::kColumnSize) > MapPosY &&
+					m_PlayerPos.y + 25 < MapPosY/* + Minigame1::kChipSize*/ &&
+					m_PlayerPos.x + Player::kSideSize - 45 > MapPosX &&
+					m_PlayerPos.x + 45 < MapPosX + Map::kChipSize)
 				{
-					m_PlayerPos.y = i * Map::kChipSize - (Player::kColumnSize)+1;
+					m_PlayerPos.y = MapPosY - (Player::kColumnSize) + 1;
 					m_player->SetPos(m_PlayerPos);
 					m_CollBottom = true;
 				}
 				//âE
-				if (m_PlayerPos.x + Player::kSideSize - 35 > j * Map::kChipSize &&
-					m_PlayerPos.x + 60 < j * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
+				if (m_PlayerPos.x + Player::kSideSize - 35 > MapPosX &&
+					m_PlayerPos.x + 60 < MapPosX + Map::kChipSize &&
+					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
+					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20)
 				{
 					m_CollRight = true;
 				}
 				//ç∂
-				if (m_PlayerPos.x + 35 < j * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.x + Player::kSideSize - 60 > j * Map::kChipSize &&
-					m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
+				if (m_PlayerPos.x + 35 < MapPosX + Map::kChipSize &&
+					m_PlayerPos.x + Player::kSideSize - 60 > MapPosX &&
+					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
+					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20)
 				{
 					m_CollLeft = true;
 				}
+				////è„
+				//if (m_PlayerPos.y + 10 < i * Map::kChipSize + Map::kChipSize &&
+				//	m_PlayerPos.y > i * Map::kChipSize + 10 &&
+				//	m_PlayerPos.x + Player::kSideSize - 50 > j * Map::kChipSize &&
+				//	m_PlayerPos.x + 50 < j * Map::kChipSize + Map::kChipSize)
+				//{
+				//	m_CollTop = true;
+				//}
+				////â∫
+				//if (m_PlayerPos.y + (Player::kColumnSize) > i * Map::kChipSize &&
+				//	m_PlayerPos.y + 25 < i * Map::kChipSize/* + Minigame1::kChipSize*/ &&
+				//	m_PlayerPos.x + Player::kSideSize - 45 > j * Map::kChipSize &&
+				//	m_PlayerPos.x + 45 < j * Map::kChipSize + Map::kChipSize)
+				//{
+				//	m_PlayerPos.y = i * Map::kChipSize - (Player::kColumnSize)+1;
+				//	m_player->SetPos(m_PlayerPos);
+				//	m_CollBottom = true;
+				//}
+				////âE
+				//if (m_PlayerPos.x + Player::kSideSize - 35 > j * Map::kChipSize &&
+				//	m_PlayerPos.x + 60 < j * Map::kChipSize + Map::kChipSize &&
+				//	m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
+				//	m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
+				//{
+				//	m_CollRight = true;
+				//}
+				////ç∂
+				//if (m_PlayerPos.x + 35 < j * Map::kChipSize + Map::kChipSize &&
+				//	m_PlayerPos.x + Player::kSideSize - 60 > j * Map::kChipSize &&
+				//	m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
+				//	m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
+				//{
+				//	m_CollLeft = true;
+				//}
 			}
 		}
 	}

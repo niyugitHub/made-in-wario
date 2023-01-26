@@ -20,6 +20,12 @@ class Map
 		Map();
 		~Map();
 
+		Vec2 GetPos() { return m_LeftPos; }
+
+		// 当たり判定をセット
+		void SetCollRight(bool Right) { m_CollRight = Right; }
+		void SetCollLeft(bool Left) { m_CollLeft = Left; }
+
 		// グラフィックのロード、アンロード
 		void load();
 		void unload();
@@ -39,6 +45,10 @@ class Map
 	private:
 		// マップの描画
 		void drawMap();
+
+		// 当たり判定
+		bool m_CollLeft;
+		bool m_CollRight;
 
 		// グラフィックデータのハンドル
 		int m_handle;
