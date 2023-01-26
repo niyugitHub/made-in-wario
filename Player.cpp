@@ -94,9 +94,9 @@ void Player::CharaMove()
 		m_LookLeft = false;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		m_pos.x += m_vec.x * 2;
+	//	m_pos.x += m_vec.x * 2;
 
-		if (m_CollRight) m_pos.x -= m_vec.x * 2;
+	//	if (m_CollRight) m_pos.x -= m_vec.x * 2;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_LEFT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
@@ -105,9 +105,9 @@ void Player::CharaMove()
 		m_LookLeft = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		m_pos.x -= m_vec.x * 2;
+	//	m_pos.x -= m_vec.x * 2;
 		
-		if(m_CollLeft) m_pos.x += m_vec.x * 2;
+	//	if(m_CollLeft) m_pos.x += m_vec.x * 2;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_RIGHT))
@@ -117,7 +117,7 @@ void Player::CharaMove()
 		m_CharaMotion = 4;
 	//	m_pos.x += m_vec.x;
 
-		if (m_CollRight) m_pos.x -= m_vec.x;
+	//	if (m_CollRight) m_pos.x -= m_vec.x;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_LEFT))
@@ -125,9 +125,9 @@ void Player::CharaMove()
 		m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		m_pos.x -= m_vec.x;
+	//	m_pos.x -= m_vec.x;
 
-		if (m_CollLeft) m_pos.x += m_vec.x;
+	//	if (m_CollLeft) m_pos.x += m_vec.x;
 	}
 
 	else

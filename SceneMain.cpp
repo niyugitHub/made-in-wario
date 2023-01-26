@@ -4,6 +4,8 @@
 #include"Map.h"
 #include"game.h"
 #include"Vec2.h"
+#include"Collision.h"
+
 
 namespace
 {
@@ -16,7 +18,8 @@ SceneMain::SceneMain() :
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
-	m_CollRight(false)
+	m_CollRight(false),
+	m_Coll(nullptr)
 {
 	for (auto& handle : m_hPlayerGraphic)
 	{
@@ -24,11 +27,22 @@ SceneMain::SceneMain() :
 	}
 	m_player = new Player;
 	m_Map = new Map;
+
+	m_Coll = new Collision;
+
+	m_Coll->setPlayer(m_player);
+	m_Coll->setMap(m_Map);
 }
 SceneMain::~SceneMain()
 {
-	m_player = nullptr;
 	delete m_player;
+	m_player = nullptr;
+
+	delete m_Map;
+	m_Map = nullptr;
+
+	delete m_Coll;
+	m_Coll = nullptr;
 }
 
 void SceneMain::init()
@@ -58,7 +72,14 @@ SceneBase* SceneMain::update()
 {
 	m_PlayerPos = m_player->GetPos();
 
-	IsCollision();
+//	IsCollision();
+
+	m_Coll->Update();
+
+	m_CollTop = m_Coll->IsCollTop();
+	m_CollBottom = m_Coll->IsCollBottom();
+	m_CollRight = m_Coll->IsCollRight();
+	m_CollLeft = m_Coll->IsCollLeft();
 
 	m_player->SetCollTop(m_CollTop);
 	m_player->SetCollBottom(m_CollBottom);
@@ -71,7 +92,7 @@ SceneBase* SceneMain::update()
 
 	m_Map->update();
 
-	isInitColl();
+	m_Coll->InitColl();
 
 	return this;
 }
@@ -87,8 +108,8 @@ void SceneMain::draw()
 void SceneMain::IsCollision()
 {
 	// プレイヤーの位置
-	int PlayerPosX = m_PlayerPos.x / Map::kChipSize;
-	int PlayerPosY = m_PlayerPos.y / Map::kChipSize;
+	float PlayerPosX = m_PlayerPos.x / Map::kChipSize;
+	float PlayerPosY = m_PlayerPos.y / Map::kChipSize;
 
 	int MapNum[Map::kBgNumY][Map::kBgNumX];
 	for (int i = 0; i < Map::kBgNumY; i++)

@@ -91,14 +91,6 @@ void Map::update()
 			m_LeftPos.x += 5;
 		}
 	}
-
-	if (m_RightPos.x < 0)
-	{
-		m_RightPos.x = 0;
-	}
-
-	m_LeftNum = m_LeftPos.x / kChipSize - 1;
-	m_RightNum = m_LeftPos.x + kChipNumX + 1;
 }
 
 void Map::draw()

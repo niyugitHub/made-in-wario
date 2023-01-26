@@ -6,6 +6,7 @@
 //class Player;
 //class Minigame1;
 //class Vec2;
+class Collision;
 
 class SceneMain : public SceneBase
 {
@@ -44,4 +45,7 @@ private:
 
 	// ƒ}ƒbƒv
 	Map* m_Map;
+
+	// “–‚½‚è”»’è
+	Collision* m_Coll;
 };
