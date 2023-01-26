@@ -48,7 +48,7 @@
     <ClCompile Include="SceneTitle.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Minigame1.cpp">
+    <ClCompile Include="Map.cpp">
       <Filter>ソース ファイル\Minigame</Filter>
     </ClCompile>
     <ClCompile Include="Pad.cpp">
@@ -83,7 +83,7 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Minigame1.h">
+    <ClInclude Include="Map.h">
       <Filter>ヘッダー ファイル\Minigame</Filter>
     </ClInclude>
     <ClInclude Include="Pad.h">

@@ -2,7 +2,7 @@
 #include"Vec2.h"
 
 class Player;
-class Minigame1;
+class Map;
 
 class Collision
 {
@@ -22,6 +22,6 @@ private:
 	Vec2 m_PlayerPos;
 
 	Player* m_player;
-	Minigame1* m_Map;
+	Map* m_Map;
 };
 

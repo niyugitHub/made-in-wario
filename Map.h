@@ -1,7 +1,8 @@
 #pragma once
 #include "game.h"
+#include "Vec2.h"
 
-class Minigame1
+class Map
 {
 	public:
 		// マップチップの１つのサイズ
@@ -9,11 +10,15 @@ class Minigame1
 
 		// チップの数
 		static constexpr int kBgNumY = 17;
-		static constexpr int kBgNumX = 30;
+		static constexpr int kBgNumX = 66;
+
+		// 一画面に表示できるマップチップの数
+		static constexpr int kChipNumY = 17;
+		static constexpr int kChipNumX = 30;
 
 	public:
-		Minigame1();
-		~Minigame1();
+		Map();
+		~Map();
 
 		// グラフィックのロード、アンロード
 		void load();
@@ -44,5 +49,17 @@ class Minigame1
 		// グラフィックのデータ
 		int m_graphWidth;
 		int m_graphHeight;
+
+		//左端のマップの番号
+		int m_LeftNum;
+
+		//右端のマップの番号
+		int m_RightNum;
+
+		// マップの左端の座標
+		Vec2 m_LeftPos;
+
+		// マップの右端の座標
+		Vec2 m_RightPos;
 };
 

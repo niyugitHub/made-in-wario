@@ -1,12 +1,12 @@
 #include "Collision.h"
 #include "Player.h"
-#include "Minigame1.h"
+#include "Map.h"
 
 Collision::~Collision()
 {
 	m_PlayerPos.y = 0;
 	m_PlayerPos.x = 0;
-	m_Map = new Minigame1;
+	m_Map = new Map;
 	m_player = new Player;
 }
 
@@ -18,29 +18,29 @@ void Collision::Update()
 bool Collision::IsCollTop()
 {
 	// プレイヤーの位置
-	int PlayerPosX = m_PlayerPos.x / Minigame1::kChipSize;
-	int PlayerPosY = m_PlayerPos.y / Minigame1::kChipSize;
+	int PlayerPosX = m_PlayerPos.x / Map::kChipSize;
+	int PlayerPosY = m_PlayerPos.y / Map::kChipSize;
 
-	int MapNum[Minigame1::kBgNumY][Minigame1::kBgNumX];
-	for (int i = 0; i < Minigame1::kBgNumY; i++)
+	int MapNum[Map::kBgNumY][Map::kBgNumX];
+	for (int i = 0; i < Map::kBgNumY; i++)
 	{
-		for (int j = 0; j < Minigame1::kBgNumX; j++)
+		for (int j = 0; j < Map::kBgNumX; j++)
 		{
 			MapNum[i][j] = 0;
 		}
 	}
 
-	for (int i = 0; i < Minigame1::kBgNumY; i++)
+	for (int i = 0; i < Map::kBgNumY; i++)
 	{
-		for (int j = 0; j < Minigame1::kBgNumX; j++)
+		for (int j = 0; j < Map::kBgNumX; j++)
 		{
 			if (m_Map->GetMapData(i, j) != 0)
 			{
 				//上
-				if (m_PlayerPos.y + 10 < i * Minigame1::kChipSize + Minigame1::kChipSize &&
-					m_PlayerPos.y > i * Minigame1::kChipSize &&
-					m_PlayerPos.x + Player::kSideSize - 40 > j * Minigame1::kChipSize &&
-					m_PlayerPos.x - Player::kSideSize + 40 < j * Minigame1::kChipSize + Minigame1::kChipSize)
+				if (m_PlayerPos.y + 10 < i * Map::kChipSize + Map::kChipSize &&
+					m_PlayerPos.y > i * Map::kChipSize &&
+					m_PlayerPos.x + Player::kSideSize - 40 > j * Map::kChipSize &&
+					m_PlayerPos.x - Player::kSideSize + 40 < j * Map::kChipSize + Map::kChipSize)
 				{
 					 return true;
 				}

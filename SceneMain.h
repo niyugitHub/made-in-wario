@@ -1,7 +1,7 @@
 #pragma once
 #include"SceneBase.h"
 #include"Player.h"
-#include"Minigame1.h"
+#include"Map.h"
 
 //class Player;
 //class Minigame1;
@@ -43,5 +43,5 @@ private:
 	Player*m_player;
 
 	// ƒ}ƒbƒv
-	Minigame1* m_Map;
+	Map* m_Map;
 };

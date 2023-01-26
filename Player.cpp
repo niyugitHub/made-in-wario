@@ -115,7 +115,7 @@ void Player::CharaMove()
 		m_LookLeft = false;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		m_pos.x += m_vec.x;
+	//	m_pos.x += m_vec.x;
 
 		if (m_CollRight) m_pos.x -= m_vec.x;
 	}

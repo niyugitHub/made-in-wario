@@ -1,7 +1,7 @@
 #include <DxLib.h>
 #include "SceneMain.h"
 #include"Player.h"
-#include"Minigame1.h"
+#include"Map.h"
 #include"game.h"
 #include"Vec2.h"
 
@@ -23,7 +23,7 @@ SceneMain::SceneMain() :
 		handle = -1;
 	}
 	m_player = new Player;
-	m_Map = new Minigame1;
+	m_Map = new Map;
 }
 SceneMain::~SceneMain()
 {
@@ -69,6 +69,8 @@ SceneBase* SceneMain::update()
 
 	m_player->update();
 
+	m_Map->update();
+
 	isInitColl();
 
 	return this;
@@ -85,13 +87,13 @@ void SceneMain::draw()
 void SceneMain::IsCollision()
 {
 	// プレイヤーの位置
-	int PlayerPosX = m_PlayerPos.x / Minigame1::kChipSize;
-	int PlayerPosY = m_PlayerPos.y / Minigame1::kChipSize;
+	int PlayerPosX = m_PlayerPos.x / Map::kChipSize;
+	int PlayerPosY = m_PlayerPos.y / Map::kChipSize;
 
-	int MapNum[Minigame1::kBgNumY][Minigame1::kBgNumX];
-	for (int i = 0; i < Minigame1::kBgNumY; i++)
+	int MapNum[Map::kBgNumY][Map::kBgNumX];
+	for (int i = 0; i < Map::kBgNumY; i++)
 	{
-		for (int j = 0; j < Minigame1::kBgNumX; j++)
+		for (int j = 0; j < Map::kBgNumX; j++)
 		{
 			MapNum[i][j] = 0;
 		}
@@ -125,43 +127,43 @@ void SceneMain::IsCollision()
 			}
 		}
 
-	for(int i = 0; i < Minigame1::kBgNumY; i++)
+	for(int i = 0; i < Map::kBgNumY; i++)
 	{
-		for (int j = 0; j < Minigame1::kBgNumX; j++)
+		for (int j = 0; j < Map::kBgNumX; j++)
 		{
 			if (m_Map->GetMapData(i, j) != 0)
 			{
 				//上
-				if (m_PlayerPos.y + 10 < i * Minigame1::kChipSize + Minigame1::kChipSize &&
-					m_PlayerPos.y > i * Minigame1::kChipSize + 10&&
-					m_PlayerPos.x + Player::kSideSize - 50 > j * Minigame1::kChipSize &&
-					m_PlayerPos.x + 50 < j * Minigame1::kChipSize + Minigame1::kChipSize)
+				if (m_PlayerPos.y + 10 < i * Map::kChipSize + Map::kChipSize &&
+					m_PlayerPos.y > i * Map::kChipSize + 10 &&
+					m_PlayerPos.x + Player::kSideSize - 50 > j * Map::kChipSize &&
+					m_PlayerPos.x + 50 < j * Map::kChipSize + Map::kChipSize)
 				{
    					m_CollTop = true;
 				}
 				//下
-				if (m_PlayerPos.y + (Player::kColumnSize) > i * Minigame1::kChipSize &&
-					m_PlayerPos.y + 25 < i * Minigame1::kChipSize/* + Minigame1::kChipSize*/ &&
-					m_PlayerPos.x + Player::kSideSize - 50 > j * Minigame1::kChipSize &&
-					m_PlayerPos.x + 50 < j * Minigame1::kChipSize + Minigame1::kChipSize)
+				if (m_PlayerPos.y + (Player::kColumnSize) > i * Map::kChipSize &&
+					m_PlayerPos.y + 25 < i * Map::kChipSize/* + Minigame1::kChipSize*/ &&
+					m_PlayerPos.x + Player::kSideSize - 45 > j * Map::kChipSize &&
+					m_PlayerPos.x + 45 < j * Map::kChipSize + Map::kChipSize)
 				{
-					m_PlayerPos.y = i * Minigame1::kChipSize - (Player::kColumnSize) + 1;
+					m_PlayerPos.y = i * Map::kChipSize - (Player::kColumnSize) + 1;
 					m_player->SetPos(m_PlayerPos);
 					m_CollBottom = true;
 				}
 				//右
-				if (m_PlayerPos.x + Player::kSideSize - 40 > j * Minigame1::kChipSize &&
-					m_PlayerPos.x + 60 < j * Minigame1::kChipSize + Minigame1::kChipSize &&
-					m_PlayerPos.y + 25 < i * Minigame1::kChipSize + Minigame1::kChipSize &&
-					m_PlayerPos.y + (Minigame1::kChipSize * 2) > i * Minigame1::kChipSize + 20)
+				if (m_PlayerPos.x + Player::kSideSize - 35 > j * Map::kChipSize &&
+					m_PlayerPos.x + 60 < j * Map::kChipSize + Map::kChipSize &&
+					m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
+					m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
 				{
 					m_CollRight = true;
 				}
 				//左
-				if (m_PlayerPos.x + 40 < j * Minigame1::kChipSize + Minigame1::kChipSize &&
-					m_PlayerPos.x + Player::kSideSize - 60 > j * Minigame1::kChipSize &&
-					m_PlayerPos.y + 25 < i * Minigame1::kChipSize + Minigame1::kChipSize &&
-					m_PlayerPos.y + (Minigame1::kChipSize * 2) > i * Minigame1::kChipSize + 20)
+				if (m_PlayerPos.x + 35 < j * Map::kChipSize + Map::kChipSize &&
+					m_PlayerPos.x + Player::kSideSize - 60 > j * Map::kChipSize &&
+					m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
+					m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
 				{
 					m_CollLeft = true;
 				}

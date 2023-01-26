@@ -154,7 +154,7 @@
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Minigame1.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MinigameBase.cpp" />
     <ClCompile Include="Pad.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -167,7 +167,7 @@
   <ItemGroup>
     <ClInclude Include="Collision.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="Minigame1.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MinigameBase.h" />
     <ClInclude Include="Pad.h" />
     <ClInclude Include="Player.h" />
