@@ -45,8 +45,10 @@ Map::Map() :
 	m_graphHeight(0),
 	m_LeftNum(0),
 	m_RightNum(0),
-	m_LeftPos(0,0),
-	m_RightPos(0,0)
+	m_LeftPos(0, 0),
+	m_RightPos(0, 0),
+	m_ScrollSpeed(0, 0),
+	m_Vec(0,0)
 {
 	for (int i = 0; i < kBgNumY; i++)
 	{
@@ -74,14 +76,17 @@ void Map::unload()
 
 void Map::update()
 {
+	m_Vec.x = 0;
+	m_Vec.y = 0;
+
 	if (CheckHitKey(KEY_INPUT_RIGHT))
 	{
 		if (!m_CollRight)
 		{
-			m_LeftPos.x -= 5;
+			m_Vec.x -= 5;
 			if (CheckHitKey(KEY_INPUT_RSHIFT) || CheckHitKey(KEY_INPUT_LSHIFT))
 			{
-				m_LeftPos.x -= 5;
+				m_Vec.x -= 5;
 			}
 		}
 	}
@@ -90,13 +95,16 @@ void Map::update()
 	{
 		if (!m_CollLeft)
 		{
-			m_LeftPos.x += 5;
+			m_Vec.x += 5;
 			if (CheckHitKey(KEY_INPUT_RSHIFT) || CheckHitKey(KEY_INPUT_LSHIFT))
 			{
-				m_LeftPos.x += 5;
+				m_Vec.x += 5;
 			}
 		}
 	}
+	m_ScrollSpeed = m_Vec;
+
+	m_LeftPos += m_Vec;
 
 	m_CollLeft = false;
 	m_CollRight = false;

@@ -21,6 +21,7 @@ class Map
 		~Map();
 
 		Vec2 GetPos() { return m_LeftPos; }
+		Vec2 GetVec() { return m_ScrollSpeed; }
 
 		// 当たり判定をセット
 		void SetCollRight(bool Right) { m_CollRight = Right; }
@@ -71,5 +72,11 @@ class Map
 
 		// マップの右端の座標
 		Vec2 m_RightPos;
+
+		// スクロールのスピード
+		Vec2 m_ScrollSpeed;
+
+		// ベクトル
+		Vec2 m_Vec;
 };
 

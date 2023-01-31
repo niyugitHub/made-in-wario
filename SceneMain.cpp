@@ -20,8 +20,7 @@ SceneMain::SceneMain() :
 	m_CollBottom(false),
 	m_CollLeft(false),
 	m_CollRight(false),
-	m_Coll(nullptr),
-	m_Enemy(new EnemyBase)
+	m_Coll(nullptr)
 {
 	for (auto& handle : m_hPlayerGraphic)
 	{
@@ -29,12 +28,14 @@ SceneMain::SceneMain() :
 	}
 	m_player = new Player;
 	m_Map = new Map;
+	m_Enemy = new EnemyBase;
 
 	m_Coll = new Collision;
 
 	m_Coll->setPlayer(m_player);
 	m_Coll->setMap(m_Map);
 	m_Coll->setEnemy(m_Enemy);
+	m_Enemy->SetMap(m_Map);
 }
 SceneMain::~SceneMain()
 {
