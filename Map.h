@@ -10,7 +10,7 @@ class Map
 
 		// チップの数
 		static constexpr int kBgNumY = 17;
-		static constexpr int kBgNumX = 66;
+		static constexpr int kBgNumX = 150;
 
 		// 一画面に表示できるマップチップの数
 		static constexpr int kChipNumY = 17;

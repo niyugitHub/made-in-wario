@@ -6,6 +6,11 @@
 
 
 Collision::Collision() :
+	m_CollTop(false),
+	m_CollBottom(false),
+	m_CollRight(false),
+	m_CollLeft(false),
+	m_CollEnemy(false),
 	m_PlayerPos(0, 0),
 	m_MapPos(0,0),
 	m_player(nullptr),
@@ -25,7 +30,10 @@ void Collision::Update()
 	m_EnemyPos = m_enemy->GetPos();
 	m_MapPos = m_Map->GetPos();
 
-	IsCollMap();
+	if (m_PlayerPos.y < Game::kScreenHeight)
+	{
+		IsCollMap();
+	}
 }
 
 bool Collision::IsCollEnemy()
@@ -69,26 +77,6 @@ void Collision::IsCollMap()
 		for (int j = PlayerPosX; j < PlayerPosX + 1; j++)
 		{
 			MapNum[i][j] = m_Map->GetMapData(i, j);
-			////âE
-			//if (m_PlayerPos.x + Player::kSideSize - 40 < j * Minigame1::kChipSize)
-			//{
-			//	m_CollRight = true;
-			//}
-			////ç∂
-			//if (m_PlayerPos.x > j * Minigame1::kChipSize + Minigame1::kChipSize / 2)
-			//{
-			//	m_CollLeft = true;
-			//}
-			//	
-			////â∫
-			//if (m_PlayerPos.y + Player::kColumnSize > i * Minigame1::kChipSize)
-			//{
-			//	m_CollBottom = true;
-			//}
-			////è„
-			//if (m_PlayerPos.y + 10 < i * Minigame1::kChipSize + Minigame1::kChipSize)
-			//{
-			//	m_CollTop = true;
 		}
 	}
 
@@ -135,40 +123,6 @@ void Collision::IsCollMap()
 				{
 					m_CollLeft = true;
 				}
-				////è„
-				//if (m_PlayerPos.y + 10 < i * Map::kChipSize + Map::kChipSize &&
-				//	m_PlayerPos.y > i * Map::kChipSize + 10 &&
-				//	m_PlayerPos.x + Player::kSideSize - 50 > j * Map::kChipSize &&
-				//	m_PlayerPos.x + 50 < j * Map::kChipSize + Map::kChipSize)
-				//{
-				//	m_CollTop = true;
-				//}
-				////â∫
-				//if (m_PlayerPos.y + (Player::kColumnSize) > i * Map::kChipSize &&
-				//	m_PlayerPos.y + 25 < i * Map::kChipSize/* + Minigame1::kChipSize*/ &&
-				//	m_PlayerPos.x + Player::kSideSize - 45 > j * Map::kChipSize &&
-				//	m_PlayerPos.x + 45 < j * Map::kChipSize + Map::kChipSize)
-				//{
-				//	m_PlayerPos.y = i * Map::kChipSize - (Player::kColumnSize)+1;
-				//	m_player->SetPos(m_PlayerPos);
-				//	m_CollBottom = true;
-				//}
-				////âE
-				//if (m_PlayerPos.x + Player::kSideSize - 35 > j * Map::kChipSize &&
-				//	m_PlayerPos.x + 60 < j * Map::kChipSize + Map::kChipSize &&
-				//	m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
-				//	m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
-				//{
-				//	m_CollRight = true;
-				//}
-				////ç∂
-				//if (m_PlayerPos.x + 35 < j * Map::kChipSize + Map::kChipSize &&
-				//	m_PlayerPos.x + Player::kSideSize - 60 > j * Map::kChipSize &&
-				//	m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
-				//	m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
-				//{
-				//	m_CollLeft = true;
-				//}
 			}
 		}
 	}
@@ -182,5 +136,11 @@ void Collision::InitColl()
 	m_CollBottom = false;
 	m_CollRight = false;
 	m_CollLeft = false;
+}
+
+bool Collision::FallPlayer()
+{
+	if (m_PlayerPos.y > Game::kScreenHeight) return true;
+	return false;
 }
 

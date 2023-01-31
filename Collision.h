@@ -31,6 +31,8 @@ public:
 
 	void InitColl();
 
+	bool FallPlayer();
+
 private:
 	// プレイヤーとマップの当たり判定
 	bool m_CollTop;

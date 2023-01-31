@@ -20,6 +20,7 @@ SceneMain::SceneMain() :
 	m_CollBottom(false),
 	m_CollLeft(false),
 	m_CollRight(false),
+	m_DeadPlayer(false),
 	m_Coll(nullptr)
 {
 	for (auto& handle : m_hPlayerGraphic)
@@ -76,38 +77,47 @@ void SceneMain::end()
 
 SceneBase* SceneMain::update()
 {
-	m_PlayerPos = m_player->GetPos();
-	
-
-//	IsCollision();
-
-	m_Coll->Update();
-
-	m_CollTop = m_Coll->IsCollTop();
-	m_CollBottom = m_Coll->IsCollBottom();
-	m_CollRight = m_Coll->IsCollRight();
-	m_CollLeft = m_Coll->IsCollLeft();
-
-	m_player->SetCollTop(m_CollTop);
-	m_player->SetCollBottom(m_CollBottom);
-
-	m_Map->SetCollRight(m_CollRight);
-	m_Map->SetCollLeft(m_CollLeft);
-
-//	m_PlayerPos = m_player->GetPos();
-
-	m_player->update();
-	m_Enemy->update();
-
-	m_Map->update();
-
-	m_Coll->InitColl();
-
-	/*if (m_Coll->IsCollEnemy())
+	if (m_Coll->FallPlayer())
 	{
- 		DrawString(0, 0, "“–‚½‚Á‚Ä‚é", GetColor(0, 255, 0));
-	}*/
+ 		m_DeadPlayer = true;
+	}
 
+	if (m_DeadPlayer)
+	{
+
+	}
+
+	if (!m_DeadPlayer)
+	{
+		m_PlayerPos = m_player->GetPos();
+
+	//	IsCollision();
+
+		m_Coll->Update();
+
+		m_CollTop = m_Coll->IsCollTop();
+		m_CollBottom = m_Coll->IsCollBottom();
+		m_CollRight = m_Coll->IsCollRight();
+		m_CollLeft = m_Coll->IsCollLeft();
+
+		m_player->SetCollTop(m_CollTop);
+		m_player->SetCollBottom(m_CollBottom);
+
+		m_Map->SetCollRight(m_CollRight);
+		m_Map->SetCollLeft(m_CollLeft);
+
+	//	m_PlayerPos = m_player->GetPos();
+
+		m_player->update();
+		m_Enemy->update();
+
+		m_Map->update();
+
+		m_Coll->InitColl();
+
+
+	}
+		
 	return this;
 }
 

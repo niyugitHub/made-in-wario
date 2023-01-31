@@ -44,6 +44,10 @@ private:
 	bool m_CollBottom;
 	bool m_CollLeft;
 	bool m_CollRight;
+
+	// プレイヤーの死亡判定
+	bool m_DeadPlayer;
+
 	
 	// プレイヤー
 	Player*m_player;

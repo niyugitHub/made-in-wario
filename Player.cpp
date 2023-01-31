@@ -22,7 +22,7 @@ namespace
 Player::Player() :
 m_pos(500, 500),
 m_vec(3, 0),
-m_Jump(12.0f),
+m_Jump(14.0f),
 m_CharaGraphX(0),
 m_CharaGraphY(0),
 m_FrameChangeChara(0),
@@ -201,7 +201,7 @@ void Player::CharaJump()
 	{
 		m_UseTwoJump = true;
 		m_TwoJump = false;
-		m_Jump = 12;
+		m_Jump = 14;
 	}
 	if (m_CollTop)
 	{
@@ -221,7 +221,7 @@ void Player::CharaJump()
 		m_Jump -= kBigGravity;
 	}
 
-	if (m_pos.y >= Game::kScreenHeight - kColumnSize || m_CollBottom)
+	if (/*m_pos.y >= Game::kScreenHeight - kColumnSize ||*/ m_CollBottom)
 	{
 		if (m_Jump < 0)
 		{
@@ -229,7 +229,7 @@ void Player::CharaJump()
 			m_TwoJump = false;
 			m_NowJump = false;
 		//	m_pos.y = Game::kScreenHeight - kColumnSize;
-			m_Jump = 12;
+			m_Jump = 14;
 		}
 	}
 
@@ -245,8 +245,8 @@ void Player::LimitMove()
 	{
 		m_pos.x = Game::kScreenWidth - kSideSize + 35;
 	}
-	if (m_pos.y > Game::kScreenHeight - kColumnSize)
+	/*if (m_pos.y > Game::kScreenHeight - kColumnSize)
 	{
 		m_pos.y = Game::kScreenHeight - kColumnSize;
-	}
+	}*/
 }
