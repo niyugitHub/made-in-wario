@@ -7,6 +7,7 @@
 //class Minigame1;
 //class Vec2;
 class Collision;
+class EnemyBase;
 
 class SceneMain : public SceneBase
 {
@@ -32,7 +33,11 @@ private:
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];
 
+	// プレイヤーのポジション
 	Vec2 m_PlayerPos;
+
+	// エネミーのポジション
+	Vec2 m_EnemyPos;
 
 	// キャラクターとブロックの衝突判定
 	bool m_CollTop;
@@ -48,4 +53,7 @@ private:
 
 	// 当たり判定
 	Collision* m_Coll;
+
+	// 敵
+	EnemyBase* m_Enemy;
 };

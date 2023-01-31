@@ -5,6 +5,7 @@
 #include"game.h"
 #include"Vec2.h"
 #include"Collision.h"
+#include"EnemyBase.h"
 
 
 namespace
@@ -13,13 +14,14 @@ namespace
 	const char* const kPlayerGraphicFilename = "data/Player.png";
 }
 
-SceneMain::SceneMain() : 
-	m_PlayerPos(0,0),
+SceneMain::SceneMain() :
+	m_PlayerPos(0, 0),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
 	m_CollRight(false),
-	m_Coll(nullptr)
+	m_Coll(nullptr),
+	m_Enemy(new EnemyBase)
 {
 	for (auto& handle : m_hPlayerGraphic)
 	{
@@ -32,6 +34,7 @@ SceneMain::SceneMain() :
 
 	m_Coll->setPlayer(m_player);
 	m_Coll->setMap(m_Map);
+	m_Coll->setEnemy(m_Enemy);
 }
 SceneMain::~SceneMain()
 {
@@ -56,6 +59,7 @@ void SceneMain::init()
 		m_player->setHandle(i, m_hPlayerGraphic[i]);
 	}
 	m_player->Init();
+	m_Enemy->Init();
 	m_Map->load();
 }
 
@@ -66,11 +70,13 @@ void SceneMain::end()
 		DeleteGraph(handle);
 	}
 	m_Map->unload();
+	m_Enemy->end();
 }
 
 SceneBase* SceneMain::update()
 {
 	m_PlayerPos = m_player->GetPos();
+	
 
 //	IsCollision();
 
@@ -90,10 +96,16 @@ SceneBase* SceneMain::update()
 //	m_PlayerPos = m_player->GetPos();
 
 	m_player->update();
+	m_Enemy->update();
 
 	m_Map->update();
 
 	m_Coll->InitColl();
+
+	/*if (m_Coll->IsCollEnemy())
+	{
+ 		DrawString(0, 0, "当たってる", GetColor(0, 255, 0));
+	}*/
 
 	return this;
 }
@@ -103,6 +115,11 @@ void SceneMain::draw()
 	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 	m_Map->draw();
 	m_player->draw();
+	m_Enemy->draw();
+	if (m_Coll->IsCollEnemy())
+	{
+		DrawString(0, 0, "当たってる", GetColor(0, 255, 0));
+	}
 }
 
 // ブロックとプレイヤーの当たり判定

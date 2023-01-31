@@ -127,7 +127,8 @@ void Player::CharaMove()
 		m_CharaMotion = 4;
 	//	m_pos.x -= m_vec.x;
 
-	//	if (m_CollLeft) m_pos.x += m_vec.x;
+	//
+		if (m_CollLeft) m_pos.x += m_vec.x;
 	}
 
 	else
@@ -222,11 +223,14 @@ void Player::CharaJump()
 
 	if (m_pos.y >= Game::kScreenHeight - kColumnSize || m_CollBottom)
 	{
-		m_UseTwoJump = false;
-		m_TwoJump = false;
-		m_NowJump = false;
-	//	m_pos.y = Game::kScreenHeight - kColumnSize;
-		m_Jump = 12;
+		if (m_Jump < 0)
+		{
+			m_UseTwoJump = false;
+			m_TwoJump = false;
+			m_NowJump = false;
+		//	m_pos.y = Game::kScreenHeight - kColumnSize;
+			m_Jump = 12;
+		}
 	}
 
 }

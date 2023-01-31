@@ -1,5 +1,6 @@
 #include "Collision.h"
 #include "Player.h"
+#include "EnemyBase.h"
 #include "Map.h"
 #include <cassert>
 
@@ -9,6 +10,7 @@ Collision::Collision() :
 	m_PlayerPos(0, 0),
 	m_MapPos(0,0),
 	m_player(nullptr),
+	m_enemy(nullptr),
 	m_Map(nullptr)
 {
 }
@@ -21,16 +23,36 @@ Collision::~Collision()
 void Collision::Update()
 {
 	m_PlayerPos = m_player->GetPos();
+	m_EnemyPos = m_enemy->GetPos();
 	m_MapPos = m_Map->GetPos();
 
-//	assert(m_MapPos.x == 0);
-
-	IsCollision();
+	IsCollMap();
 }
 
-void Collision::IsCollision()
+bool Collision::IsCollEnemy()
 {
 	// プレイヤーの位置
+	float PlayerPosLeft = m_PlayerPos.x + 30;
+	float PlayerPosRight = m_PlayerPos.x + 90;
+	float PlayerPosUp = m_PlayerPos.y + 10;
+	float PlayerPosBottom = m_PlayerPos.y + 118   ;
+
+	// エネミーの位置
+	float EnemyPosLeft = m_EnemyPos.x;
+	float EnemyPosRight = m_EnemyPos.x + 50;
+	float EnemyPosUp = m_EnemyPos.y;
+	float EnemyPosBottom = m_EnemyPos.y + 50;
+
+	if (PlayerPosLeft > EnemyPosRight) return false;
+	if (PlayerPosRight < EnemyPosLeft) return false;
+	if (PlayerPosUp > EnemyPosBottom)  return false;
+	if (PlayerPosBottom <  EnemyPosUp)  return false;
+
+	return true;
+}
+
+void Collision::IsCollMap()
+{
 	float PlayerPosX = m_PlayerPos.x / Map::kChipSize;
 	float PlayerPosY = m_PlayerPos.y / Map::kChipSize;
 
@@ -82,7 +104,7 @@ void Collision::IsCollision()
 
 				//上
 				if (m_PlayerPos.y + 10 < MapPosY + Map::kChipSize &&
-					m_PlayerPos.y > MapPosY + 10 &&
+					m_PlayerPos.y > MapPosY &&
 					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
 					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize)
 				{
@@ -95,8 +117,8 @@ void Collision::IsCollision()
 					m_PlayerPos.x + 45 < MapPosX + Map::kChipSize)
 				{
 					m_PlayerPos.y = MapPosY - (Player::kColumnSize) + 1;
-					m_player->SetPos(m_PlayerPos);
 					m_CollBottom = true;
+					m_player->SetPos(m_PlayerPos);
 				}
 				//右
 				if (m_PlayerPos.x + Player::kSideSize - 35 > MapPosX &&
@@ -152,6 +174,8 @@ void Collision::IsCollision()
 		}
 	}
 }
+
+
 
 void Collision::InitColl()
 {

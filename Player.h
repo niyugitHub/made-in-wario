@@ -31,7 +31,6 @@ public:
 	void SetCollRight(bool Right) { m_CollRight = Right; }
 	void SetCollLeft(bool Left) { m_CollLeft = Left; }
 
-
 	Vec2 GetPos() const { return m_pos; }
 
 	void Init();
