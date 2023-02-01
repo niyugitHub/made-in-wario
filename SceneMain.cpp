@@ -6,6 +6,7 @@
 #include"Vec2.h"
 #include"Collision.h"
 #include"EnemyBase.h"
+#include"Enemy1.h"
 
 
 namespace
@@ -16,10 +17,15 @@ namespace
 
 SceneMain::SceneMain() :
 	m_PlayerPos(0, 0),
+	m_EnemyPos(0,0),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
 	m_CollRight(false),
+	m_CollTopEnemy(false),
+	m_CollBottomEnemy(false),
+	m_CollLeftEnemy(false),
+	m_CollRightEnemy(false),
 	m_DeadPlayer(false),
 	m_Coll(nullptr)
 {
@@ -29,7 +35,7 @@ SceneMain::SceneMain() :
 	}
 	m_player = new Player;
 	m_Map = new Map;
-	m_Enemy = new EnemyBase;
+	m_Enemy = new Enemy1;
 
 	m_Coll = new Collision;
 
@@ -37,6 +43,7 @@ SceneMain::SceneMain() :
 	m_Coll->setMap(m_Map);
 	m_Coll->setEnemy(m_Enemy);
 	m_Enemy->SetMap(m_Map);
+	m_Enemy->SetPlayer(m_player);
 }
 SceneMain::~SceneMain()
 {
@@ -90,11 +97,11 @@ SceneBase* SceneMain::update()
 	if (!m_DeadPlayer)
 	{
 		m_PlayerPos = m_player->GetPos();
-
 	//	IsCollision();
 
 		m_Coll->Update();
 
+		// プレイヤーとマップの当たり判定
 		m_CollTop = m_Coll->IsCollTop();
 		m_CollBottom = m_Coll->IsCollBottom();
 		m_CollRight = m_Coll->IsCollRight();
@@ -102,20 +109,37 @@ SceneBase* SceneMain::update()
 
 		m_player->SetCollTop(m_CollTop);
 		m_player->SetCollBottom(m_CollBottom);
-
 		m_Map->SetCollRight(m_CollRight);
 		m_Map->SetCollLeft(m_CollLeft);
 
-	//	m_PlayerPos = m_player->GetPos();
-
 		m_player->update();
-		m_Enemy->update();
+		
 
 		m_Map->update();
 
 		m_Coll->InitColl();
+	}
 
+	if (!m_Enemy->isExist())
+	{
+		m_EnemyPos = m_Enemy->GetPos();
 
+		m_Coll->Update();
+
+		// エネミーとマップの当たり判定
+		m_CollTopEnemy = m_Coll->IsCollTopEnemy();
+		m_CollBottomEnemy = m_Coll->IsCollBottomEnemy();
+		m_CollRightEnemy = m_Coll->IsCollRightEnemy();
+		m_CollLeftEnemy = m_Coll->IsCollLeftEnemy();
+
+		m_Enemy->SetCollTop(m_CollTopEnemy);
+		m_Enemy->SetCollBottom(m_CollBottomEnemy);
+		m_Enemy->SetCollRight(m_CollRightEnemy);
+		m_Enemy->SetCollLeft(m_CollLeftEnemy);
+
+		m_Enemy->update();
+
+		m_Coll->InitColl();
 	}
 		
 	return this;
@@ -129,103 +153,6 @@ void SceneMain::draw()
 	m_Enemy->draw();
 	if (m_Coll->IsCollEnemy())
 	{
-		DrawString(0, 0, "当たってる", GetColor(0, 255, 0));
+		DrawString(0, 0, "しんだ", GetColor(0, 255, 0));
 	}
-}
-
-// ブロックとプレイヤーの当たり判定
-void SceneMain::IsCollision()
-{
-	// プレイヤーの位置
-	float PlayerPosX = m_PlayerPos.x / Map::kChipSize;
-	float PlayerPosY = m_PlayerPos.y / Map::kChipSize;
-
-	int MapNum[Map::kBgNumY][Map::kBgNumX];
-	for (int i = 0; i < Map::kBgNumY; i++)
-	{
-		for (int j = 0; j < Map::kBgNumX; j++)
-		{
-			MapNum[i][j] = 0;
-		}
-	}
-
-	for (int i = PlayerPosY; i < PlayerPosY + 1; i++)
-	{
-		for (int j = PlayerPosX; j < PlayerPosX + 1; j++)
-		{
-			MapNum[i][j] = m_Map->GetMapData(i, j);
-			////右
-			//if (m_PlayerPos.x + Player::kSideSize - 40 < j * Minigame1::kChipSize)
-			//{
-			//	m_CollRight = true;
-			//}
-			////左
-			//if (m_PlayerPos.x > j * Minigame1::kChipSize + Minigame1::kChipSize / 2)
-			//{
-			//	m_CollLeft = true;
-			//}
-			//	
-			////下
-			//if (m_PlayerPos.y + Player::kColumnSize > i * Minigame1::kChipSize)
-			//{
-			//	m_CollBottom = true;
-			//}
-			////上
-			//if (m_PlayerPos.y + 10 < i * Minigame1::kChipSize + Minigame1::kChipSize)
-			//{
-			//	m_CollTop = true;
-			}
-		}
-
-	for(int i = 0; i < Map::kBgNumY; i++)
-	{
-		for (int j = 0; j < Map::kBgNumX; j++)
-		{
-			if (m_Map->GetMapData(i, j) != 0)
-			{
-				//上
-				if (m_PlayerPos.y + 10 < i * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y > i * Map::kChipSize + 10 &&
-					m_PlayerPos.x + Player::kSideSize - 50 > j * Map::kChipSize &&
-					m_PlayerPos.x + 50 < j * Map::kChipSize + Map::kChipSize)
-				{
-   					m_CollTop = true;
-				}
-				//下
-				if (m_PlayerPos.y + (Player::kColumnSize) > i * Map::kChipSize &&
-					m_PlayerPos.y + 25 < i * Map::kChipSize/* + Minigame1::kChipSize*/ &&
-					m_PlayerPos.x + Player::kSideSize - 45 > j * Map::kChipSize &&
-					m_PlayerPos.x + 45 < j * Map::kChipSize + Map::kChipSize)
-				{
-					m_PlayerPos.y = i * Map::kChipSize - (Player::kColumnSize) + 1;
-					m_player->SetPos(m_PlayerPos);
-					m_CollBottom = true;
-				}
-				//右
-				if (m_PlayerPos.x + Player::kSideSize - 35 > j * Map::kChipSize &&
-					m_PlayerPos.x + 60 < j * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
-				{
-					m_CollRight = true;
-				}
-				//左
-				if (m_PlayerPos.x + 35 < j * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.x + Player::kSideSize - 60 > j * Map::kChipSize &&
-					m_PlayerPos.y + 25 < i * Map::kChipSize + Map::kChipSize &&
-					m_PlayerPos.y + (Map::kChipSize * 2) > i * Map::kChipSize + 20)
-				{
-					m_CollLeft = true;
-				}
-			}
-		}	
-	}
-}
-
-void SceneMain::isInitColl()
-{
-	m_CollTop = false;
-	m_CollBottom = false;
-	m_CollRight = false;
-	m_CollLeft = false;
 }

@@ -7,7 +7,7 @@
 //class Minigame1;
 //class Vec2;
 class Collision;
-class EnemyBase;
+class Enemy1;
 
 class SceneMain : public SceneBase
 {
@@ -45,6 +45,12 @@ private:
 	bool m_CollLeft;
 	bool m_CollRight;
 
+	// エネミーとブロックの衝突判定
+	bool m_CollTopEnemy;
+	bool m_CollBottomEnemy;
+	bool m_CollLeftEnemy;
+	bool m_CollRightEnemy;
+
 	// プレイヤーの死亡判定
 	bool m_DeadPlayer;
 
@@ -59,5 +65,5 @@ private:
 	Collision* m_Coll;
 
 	// 敵
-	EnemyBase* m_Enemy;
+	Enemy1* m_Enemy;
 };
