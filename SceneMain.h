@@ -23,12 +23,6 @@ public:
 	virtual SceneBase* update();
 	virtual void draw();
 
-	// 当たり判定
-	void IsCollision();
-
-	// 当たり判定初期化
-	void isInitColl();
-
 private:
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];

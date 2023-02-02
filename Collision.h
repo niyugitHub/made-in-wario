@@ -28,10 +28,14 @@ public:
 	bool IsCollRightEnemy() { return m_CollRightEnemy; }
 	bool IsCollLeftEnemy() { return m_CollLeftEnemy; }
 
+
 	void Update();
 
 	// プレイヤーとエネミーの当たり判定
 	bool IsCollEnemy();
+
+	// プレイヤーの攻撃判定
+	bool IsCollAttackPlayer();
 
 	// プレイヤーとマップの当たり判定
 	void IsCollMap();

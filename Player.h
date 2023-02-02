@@ -33,6 +33,10 @@ public:
 
 	Vec2 GetPos() const { return m_pos; }
 
+	// プレイヤーの攻撃判定と向きを返す
+	bool GetAttack() { return m_Attack; }
+	bool GetLook() { return m_LookLeft; }
+
 	void Init();
 	void end();
 
@@ -67,6 +71,9 @@ private:
 	// 時間によってキャラの動きを変える
 	int m_FrameChangeChara;
 
+	// キャラの動きを変える速度
+	int m_FrameChangeSpeed;
+
 	// 各モーションのキャラの動きの数
 	int m_CharaMotion;
 
@@ -96,6 +103,9 @@ private:
 	bool m_CollBottom;
 	bool m_CollLeft;
 	bool m_CollRight;
+
+	// キャラクターが攻撃をしたとき
+	bool m_Attack;
 
 	SceneTitle* m_SceneTitle;
 };

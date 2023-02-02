@@ -7,6 +7,8 @@ class Player;
 class EnemyBase
 {
 public:
+	static constexpr float kGravity = 0.05f;
+public:
 	EnemyBase();
 	virtual ~EnemyBase();
 
@@ -23,7 +25,7 @@ public:
 	virtual void Init();
 	virtual void end();
 
-	virtual Vec2 GetPos() { return m_Pos; }
+	virtual Vec2 GetPos() { return m_NextPos; }
 
 	virtual void update();
 	virtual void draw();
@@ -35,8 +37,13 @@ public:
 	void setExist(bool isDead) { m_isDead = isDead; }
 
 protected:
+	// 現在のエネミーのポジション
 	Vec2 m_Pos;
+	// 移動量
 	Vec2 m_Vec;
+
+	// 次のフレームのエネミーのポジション
+	Vec2 m_NextPos;
 
 	// プレイヤーの座標
 	Vec2 m_PlayerPos;

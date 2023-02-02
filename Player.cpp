@@ -26,6 +26,7 @@ m_Jump(14.0f),
 m_CharaGraphX(0),
 m_CharaGraphY(0),
 m_FrameChangeChara(0),
+m_FrameChangeSpeed(0),
 m_CharaMotion(0),
 m_Gravity(0),
 m_NowDash(false),
@@ -38,6 +39,7 @@ m_CollTop(false),
 m_CollBottom(false),
 m_CollLeft(false),
 m_CollRight(false),
+m_Attack(false),
 m_SceneTitle(nullptr)
 {
 	for (auto& handle : m_handle)
@@ -87,6 +89,8 @@ void Player::draw()
 void Player::CharaMove()
 {
 	Pad::update();
+
+	m_FrameChangeSpeed = 1;
 
 	if (CheckHitKey(KEY_INPUT_RIGHT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
 	{
@@ -159,7 +163,7 @@ void Player::CharaMove()
 		if (m_SceneTitle->isTitleEnd())
 		{
 			m_CharaMotion = 8;
-			m_FrameChangeChara++;
+			m_FrameChangeSpeed = 1;
 			m_CharaGraphY = 6;
 		}
 	}
@@ -175,12 +179,29 @@ void Player::CharaMove()
 		m_Gravity = 0;
 	}
 
-	m_FrameChangeChara++;
-
 	if (m_NowDash)
 	{
-		m_FrameChangeChara += 3;
+		m_FrameChangeSpeed = 3;
 	}
+
+	if (Pad::isTrigger(PAD_INPUT_1) && !m_Attack)
+	{
+		m_CharaGraphX = 0;
+		m_Attack = true;
+	}
+
+	if (m_Attack)
+	{
+		m_FrameChangeSpeed = 9;
+		m_CharaMotion = 8;
+		m_CharaGraphY = 8;
+		if (m_CharaGraphX == 7)
+		{
+			m_Attack = false;
+		}
+	}
+
+	m_FrameChangeChara += m_FrameChangeSpeed;
 
 	if (m_FrameChangeChara >= kFrameTime)
 	{
@@ -193,6 +214,7 @@ void Player::CharaMove()
 		m_CharaGraphX = 0;
 	}
 	m_NowDash = false;
+
 }
 
 void Player::CharaJump()
@@ -207,7 +229,7 @@ void Player::CharaJump()
 	{
 		if(m_Jump > 0) m_Jump = 0;
 	}
-	m_FrameChangeChara++;
+	m_FrameChangeSpeed = 3;
 	m_CharaGraphY = 5;
 	m_CharaMotion = 8;
 	m_pos.y -= m_Jump;

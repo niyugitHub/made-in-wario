@@ -4,15 +4,10 @@
 #include <Dxlib.h>
 #include <cassert>
 
-namespace
-{
-	// èdóÕ
-	constexpr float kGravity = 0.05f;
-}
-
 EnemyBase::EnemyBase() : 
 	m_Pos(1600,500),
 	m_Vec(3,0),
+	m_NextPos(0,0),
 	m_PlayerPos(0,0),
 	m_DistancePos(0,0),
 	m_Gravity(0),
@@ -42,11 +37,11 @@ void EnemyBase::end()
 
 void EnemyBase::update()
 {
-	
 }
 
 void EnemyBase::draw()
 {
+	if(!m_isDead)
 	DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50,m_Pos.y + 50,GetColor(255, 0, 0), true);
 }
 
@@ -78,5 +73,5 @@ void EnemyBase::MoveEnemy()
 
 	m_Vec.x += m_MapVec.x;
 
-	m_Pos += m_Vec;
+//	m_Pos += m_Vec;
 }

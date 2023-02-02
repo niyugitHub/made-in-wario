@@ -1,4 +1,5 @@
 #include <DxLib.h>
+#include<cassert>
 #include "SceneMain.h"
 #include"Player.h"
 #include"Map.h"
@@ -120,8 +121,9 @@ SceneBase* SceneMain::update()
 		m_Coll->InitColl();
 	}
 
-	if (!m_Enemy->isExist())
+	if (m_Enemy != nullptr)
 	{
+		m_Enemy->update();
 		m_EnemyPos = m_Enemy->GetPos();
 
 		m_Coll->Update();
@@ -137,7 +139,10 @@ SceneBase* SceneMain::update()
 		m_Enemy->SetCollRight(m_CollRightEnemy);
 		m_Enemy->SetCollLeft(m_CollLeftEnemy);
 
-		m_Enemy->update();
+		if (m_Coll->IsCollAttackPlayer())
+		{
+			m_Enemy->setExist(true);
+		}
 
 		m_Coll->InitColl();
 	}
@@ -147,12 +152,19 @@ SceneBase* SceneMain::update()
 
 void SceneMain::draw()
 {
-	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
+//	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 	m_Map->draw();
+
 	m_player->draw();
-	m_Enemy->draw();
+
+	if (m_Enemy != nullptr)
+	{
+		m_Enemy->draw();
+	}
 	if (m_Coll->IsCollEnemy())
 	{
 		DrawString(0, 0, "‚µ‚ñ‚¾", GetColor(0, 255, 0));
 	}
+
+	DrawFormatString(0, 0, GetColor(0, 0, 0), "x=%f,y=%f", m_EnemyPos.x, m_EnemyPos.y);
 }

@@ -3,7 +3,11 @@
 #include "EnemyBase.h"
 #include "Map.h"
 
-
+namespace
+{
+	// プレイヤーの攻撃の範囲
+	constexpr float kAttackRange = 80;
+}
 
 Collision::Collision() :
 	m_CollTop(false),
@@ -33,7 +37,17 @@ Collision::~Collision()
 void Collision::Update()
 {
 	m_PlayerPos = m_player->GetPos();
-	m_EnemyPos = m_enemy->GetPos();
+
+	if (m_enemy != nullptr)
+	{
+		m_EnemyPos = m_enemy->GetPos();
+	}
+	else
+	{
+		m_EnemyPos.x = 0;
+		m_EnemyPos.y = 0;
+	}
+
 	m_MapPos = m_Map->GetPos();
 
 	if (m_PlayerPos.y < Game::kScreenHeight)
@@ -41,11 +55,15 @@ void Collision::Update()
 		IsCollMap();
 	}
 
-	IsCollMapEnemy();
+	if (m_enemy != nullptr)
+	{
+		IsCollMapEnemy();
+	}
 }
 
 bool Collision::IsCollEnemy()
 {
+	if (m_enemy->isExist()) return false;
 	// プレイヤーの位置
 	float PlayerPosLeft = m_PlayerPos.x + 30;
 	float PlayerPosRight = m_PlayerPos.x + 90;
@@ -63,6 +81,42 @@ bool Collision::IsCollEnemy()
 	if (PlayerPosUp > EnemyPosBottom)  return false;
 	if (PlayerPosBottom <  EnemyPosUp)  return false;
 
+	return true;
+}
+
+bool Collision::IsCollAttackPlayer()
+{
+	if (!m_player->GetAttack())
+	{
+		return false;
+	}
+	// プレイヤーの位置
+	float PlayerPosLeft = m_PlayerPos.x + 30;
+	float PlayerPosRight = m_PlayerPos.x + 90;
+	float PlayerPosUp = m_PlayerPos.y + 10;
+	float PlayerPosBottom = m_PlayerPos.y + 118;
+
+	// エネミーの位置
+	float EnemyPosLeft = m_EnemyPos.x;
+	float EnemyPosRight = m_EnemyPos.x + 50;
+	float EnemyPosUp = m_EnemyPos.y;
+	float EnemyPosBottom = m_EnemyPos.y + 50;
+
+	if (m_player->GetLook())
+	{
+		if (PlayerPosLeft + kAttackRange > EnemyPosRight + kAttackRange) return false;
+		if (PlayerPosRight < EnemyPosLeft) return false;
+		if (PlayerPosUp > EnemyPosBottom)  return false;
+		if (PlayerPosBottom < EnemyPosUp)  return false;
+	}
+
+	if (!m_player->GetLook())
+	{
+		if (PlayerPosLeft > EnemyPosRight) return false;
+		if (PlayerPosRight + kAttackRange < EnemyPosLeft + kAttackRange) return false;
+		if (PlayerPosUp > EnemyPosBottom)  return false;
+		if (PlayerPosBottom < EnemyPosUp)  return false;
+	}
 	return true;
 }
 
@@ -146,8 +200,8 @@ void Collision::IsCollMap()
 
 void Collision::IsCollMapEnemy()
 {
-	float EnemyPosX = m_EnemyPos.x / Map::kChipSize;
-	float EnemyPosY = m_EnemyPos.y / Map::kChipSize;
+	int EnemyPosX = m_EnemyPos.x / Map::kChipSize;
+	int EnemyPosY = m_EnemyPos.y / Map::kChipSize;
 
 	int MapNum[Map::kBgNumY][Map::kBgNumX];
 	for (int i = 0; i < Map::kBgNumY; i++)
@@ -158,15 +212,13 @@ void Collision::IsCollMapEnemy()
 		}
 	}
 
-	for (int i = static_cast<int>(EnemyPosY); i < EnemyPosY + 1; i++)
+	for (int i = static_cast<int>(EnemyPosY); i < EnemyPosY; i++)
 	{
-		for (int j = static_cast<int>(EnemyPosX); j < EnemyPosX + 1; j++)
+		for (int j = static_cast<int>(EnemyPosX); j < EnemyPosX; j++)
 		{
 			MapNum[i][j] = m_Map->GetMapData(i, j);
 		}
 	}
-
-	EnemyDirectPos();
 
 	for (int i = 0; i < Map::kBgNumY; i++)
 	{
@@ -187,19 +239,23 @@ void Collision::IsCollMapEnemy()
 				}
 				//右
 				if (m_EnemyPos.x + 50 > MapPosX &&
-					m_EnemyPos.x < MapPosX + Map::kChipSize &&
+					m_EnemyPos.x < MapPosX &&
 					m_EnemyPos.y + 25 < MapPosY + Map::kChipSize &&
 					m_EnemyPos.y + 50 >= MapPosY + 20)
 				{
+					m_EnemyPos.x = MapPosX - 50 - 1;
 					m_CollRightEnemy = true;
+					m_enemy->SetPos(m_EnemyPos);
 				}
 				//左
 				if (m_EnemyPos.x < MapPosX + Map::kChipSize &&
-					m_EnemyPos.x + 50 > MapPosX &&
+					m_EnemyPos.x > MapPosX &&
 					m_EnemyPos.y + 25 < MapPosY + Map::kChipSize &&
 					m_EnemyPos.y + 50 >= MapPosY + 20)
 				{
+					m_EnemyPos.x = MapPosX + Map::kChipSize + 1;
 					m_CollLeftEnemy = true;
+					m_enemy->SetPos(m_EnemyPos);
 				}
 				//下
 				if (m_EnemyPos.y + 50 >= MapPosY &&
