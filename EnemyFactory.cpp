@@ -1,12 +1,12 @@
 #include "EnemyFactory.h"
 #include "Enemy1.h"
 #include "Enemy2.h"
+#include "EnemyBase.h"
 
 EnemyFactory::EnemyFactory() : 
-	m_EnemyName(kNormal),
-	m_NormalEnemy(nullptr),
-	m_JumpEnemy(nullptr)
+	m_EnemyName(kNormal)
 {
+	
 }
 
 EnemyFactory::~EnemyFactory()
@@ -15,16 +15,7 @@ EnemyFactory::~EnemyFactory()
 
 void EnemyFactory::Init()
 {
-	switch (m_EnemyName)
-	{
-	case kNormal:
-		m_NormalEnemy = new Enemy1;
-		break;
-
-	case kJump:
-		m_JumpEnemy = new Enemy2;
-		break;
-	}
+	
 }
 
 void EnemyFactory::end()
@@ -33,28 +24,33 @@ void EnemyFactory::end()
 
 void EnemyFactory::Update()
 {
-	switch (m_EnemyName)
-	{
-	case kNormal:
-		m_NormalEnemy->update();
-		break;
-
-	case kJump:
-		m_JumpEnemy->update();
-		break;
-	}
+	
 }
 
 void EnemyFactory::Draw()
 {
-	switch (m_EnemyName)
-	{
-	case kNormal:
-		m_NormalEnemy->draw();
-		break;
+	
+}
 
-	case kJump:
-		m_JumpEnemy->draw();
+std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
+{
+	switch (type) {
+	case EnemyType::kNormal:
+		m_Enemy.push_back(
+			std::make_shared<Enemy1>()
+		);
+		break;
+	case EnemyType::kJump:
+		m_Enemy.push_back(
+			std::make_shared<Enemy2>()
+		);
 		break;
 	}
+	/*enemy* penemy = new enemy;
+	penemy->setpos(pos);*/
+
+	m_Enemy.back()->SetPos(pos);
+	m_Enemy.back()->SetPlayer(m_Player);
+
+	return m_Enemy.back();
 }

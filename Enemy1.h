@@ -1,7 +1,7 @@
 #pragma once
 #include"EnemyBase.h"
 
-class Map;
+//class Map;
 
 class Enemy1 : public EnemyBase
 {

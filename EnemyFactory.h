@@ -1,12 +1,16 @@
 #pragma once
+#include "EnemyBase.h"
+#include<list>
+#include <memory>
 
 class Enemy1;
 class Enemy2;
+class Player;
 
 class EnemyFactory
 {
-private:
-	enum EnemyCategory
+public:
+	enum EnemyType
 	{
 		kNormal,
 		kJump,
@@ -17,15 +21,20 @@ public:
 
 	void setCategory(char EnemyName) { m_EnemyName = EnemyName; }
 
+	void SetPlayer(Player* player) { m_Player = player; }
+
 	void Init();
 	void end();
 
 	void Update();
 	void Draw();
 
+	std::shared_ptr<EnemyBase> Create(EnemyType type, const Vec2 pos);
+
 private:
+
 	int m_EnemyName;
-	Enemy1* m_NormalEnemy;
-	Enemy2* m_JumpEnemy;
+	std::list<std::shared_ptr<EnemyBase>> m_Enemy;
+	Player* m_Player;
 };
 
