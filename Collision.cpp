@@ -63,7 +63,7 @@ void Collision::Update()
 
 bool Collision::IsCollEnemy()
 {
-	if (m_enemy->isExist()) return false;
+	if (!m_enemy->isExist()) return false;
 	// プレイヤーの位置
 	float PlayerPosLeft = m_PlayerPos.x + 30;
 	float PlayerPosRight = m_PlayerPos.x + 90;

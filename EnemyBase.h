@@ -1,8 +1,10 @@
 #include"Vec2.h"
+#include<memory>
 #pragma once
 
 class Map;
 class Player;
+class Collision;
 
 class EnemyBase
 {
@@ -12,8 +14,9 @@ public:
 	EnemyBase();
 	virtual ~EnemyBase();
 
-	virtual void SetMap(Map* pMap) { m_Map = pMap; }
-	virtual void SetPlayer(Player* pPlayer) { m_Player = pPlayer; }
+	virtual void SetMap(std::shared_ptr<Map> pMap) { m_Map = pMap; }
+	virtual void SetPlayer(std::shared_ptr<Player> pPlayer) { m_Player = pPlayer; }
+	virtual void SetColl(std::shared_ptr<Collision> Coll) { m_Coll = Coll; }
 
 	virtual void SetCollTop(bool Top) { m_CollTop = Top; }
 	virtual void SetCollBottom(bool Bottom) { m_CollBottom = Bottom; }
@@ -33,8 +36,8 @@ public:
 	virtual void MoveEnemy();
 
 	// 存在確認
-	bool isExist() const { return m_isDead; }
-	void setExist(bool isDead) { m_isDead = isDead; }
+	bool isExist() const { return m_Exist; }
+	void setExist(bool isExist) { m_Exist = isExist; }
 
 protected:
 	// 現在のエネミーのポジション
@@ -60,7 +63,7 @@ protected:
 	Vec2 m_MapVec;
 
 	// 死亡判定
-	bool m_isDead;
+	bool m_Exist;
 
 	// エネミーとブロックの衝突判定
 	bool m_CollTop;
@@ -68,7 +71,9 @@ protected:
 	bool m_CollLeft;
 	bool m_CollRight;
 
-	Player* m_Player;
-	Map* m_Map;
+	std::shared_ptr<Player> m_Player;
+	std::shared_ptr<Map> m_Map;
+	std::shared_ptr<Collision> m_Coll;
+
 };
 

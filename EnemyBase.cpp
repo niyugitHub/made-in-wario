@@ -1,6 +1,7 @@
 #include "EnemyBase.h"
 #include "Player.h"
 #include "Map.h"
+#include "Collision.h"
 #include <Dxlib.h>
 #include <cassert>
 
@@ -13,13 +14,14 @@ EnemyBase::EnemyBase() :
 	m_Gravity(0),
 	m_MoveInverseDirection(1),
 	m_MapVec(0,0),
-	m_isDead(false),
+	m_Exist(true),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
 	m_CollRight(false),
 	m_Player(nullptr),
-	m_Map(nullptr)
+	m_Map(nullptr),
+	m_Coll(nullptr)
 {
 }
 
@@ -41,7 +43,7 @@ void EnemyBase::update()
 
 void EnemyBase::draw()
 {
-	if(!m_isDead)
+	if(m_Exist)
 	DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50,m_Pos.y + 50,GetColor(255, 0, 0), true);
 }
 

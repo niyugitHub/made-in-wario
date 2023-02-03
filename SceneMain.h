@@ -2,12 +2,14 @@
 #include"SceneBase.h"
 #include"Player.h"
 #include"Map.h"
+#include <memory>
 
 //class Player;
 //class Minigame1;
 //class Vec2;
 class Collision;
 class Enemy1;
+class EnemyFactory;
 
 class SceneMain : public SceneBase
 {
@@ -50,14 +52,17 @@ private:
 
 	
 	// プレイヤー
-	Player*m_player;
+	std::shared_ptr<Player> m_player;
 
 	// マップ
-	Map* m_Map;
+	std::shared_ptr<Map> m_Map;
 
 	// 当たり判定
-	Collision* m_Coll;
+	std::shared_ptr<Collision> m_Coll;
 
 	// 敵
-	Enemy1* m_Enemy;
+	std::shared_ptr<Enemy1> m_Enemy;
+
+	// 敵全部
+	std::shared_ptr<EnemyFactory> m_EnemyFactory;
 };

@@ -8,6 +8,7 @@
 #include"Collision.h"
 #include"EnemyBase.h"
 #include"Enemy1.h"
+#include"EnemyFactory.h"
 
 
 namespace
@@ -34,28 +35,32 @@ SceneMain::SceneMain() :
 	{
 		handle = -1;
 	}
-	m_player = new Player;
-	m_Map = new Map;
-	m_Enemy = new Enemy1;
+	m_player = std::make_shared<Player>();
+	m_Map = std::make_shared<Map>();
+	m_Enemy = std::make_shared<Enemy1>();
+	m_EnemyFactory = std::make_shared<EnemyFactory>();
+	m_Coll = std::make_shared<Collision>();
 
-	m_Coll = new Collision;
 
 	m_Coll->setPlayer(m_player);
 	m_Coll->setMap(m_Map);
 	m_Coll->setEnemy(m_Enemy);
 	m_Enemy->SetMap(m_Map);
 	m_Enemy->SetPlayer(m_player);
+	m_EnemyFactory->SetPlayer(m_player);
+	m_EnemyFactory->SetMap(m_Map);
+	m_EnemyFactory->SetColl(m_Coll);
 }
 SceneMain::~SceneMain()
 {
-	delete m_player;
+	/*delete m_player;
 	m_player = nullptr;
 
 	delete m_Map;
 	m_Map = nullptr;
 
 	delete m_Coll;
-	m_Coll = nullptr;
+	m_Coll = nullptr;*/
 }
 
 void SceneMain::init()
@@ -94,6 +99,8 @@ SceneBase* SceneMain::update()
 	{
 
 	}
+
+	m_EnemyFactory->Update();
 
 	if (!m_DeadPlayer)
 	{
@@ -141,7 +148,7 @@ SceneBase* SceneMain::update()
 
 		if (m_Coll->IsCollAttackPlayer())
 		{
-			m_Enemy->setExist(true);
+			m_Enemy->setExist(false);
 		}
 
 		m_Coll->InitColl();
@@ -154,7 +161,7 @@ void SceneMain::draw()
 {
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 	m_Map->draw();
-
+	m_EnemyFactory->Draw();
 	m_player->draw();
 
 	if (m_Enemy != nullptr)
@@ -166,5 +173,5 @@ void SceneMain::draw()
 		DrawString(0, 0, "‚µ‚ñ‚¾", GetColor(0, 255, 0));
 	}
 
-	DrawFormatString(0, 0, GetColor(0, 0, 0), "x=%f,y=%f", m_EnemyPos.x, m_EnemyPos.y);
+	//DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì”:%d", m_EnemyFactory->);
 }
