@@ -4,9 +4,9 @@
 #include "Enemy2.h"
 #include "EnemyBase.h"
 #include <DxLib.h>
+#include <cassert>
 
 EnemyFactory::EnemyFactory() : 
-	m_EnemyPos(0,0),
 	m_EnemyName(kNormal),
 	m_Frame(0),
 	m_CollTop(false),
@@ -59,31 +59,27 @@ void EnemyFactory::Update()
 		{
 			enemy->update();
 
-			/*if (m_Enemy != nullptr)
-			{*/
-			enemy->update();
-				m_EnemyPos = enemy->GetPos();
+			m_Coll->Update();
 
-				m_Coll->Update();
+			// エネミーとマップの当たり判定
+			m_CollTop = m_Coll->IsCollTopEnemy();
+			m_CollBottom = m_Coll->IsCollBottomEnemy();
+			m_CollRight = m_Coll->IsCollRightEnemy();
+			m_CollLeft = m_Coll->IsCollLeftEnemy();
 
-				// エネミーとマップの当たり判定
-				m_CollTop = m_Coll->IsCollTopEnemy();
-				m_CollBottom = m_Coll->IsCollBottomEnemy();
-				m_CollRight = m_Coll->IsCollRightEnemy();
-				m_CollLeft = m_Coll->IsCollLeftEnemy();
+			enemy->SetCollTop(m_CollTop);
+			enemy->SetCollBottom(m_CollBottom);
+			enemy->SetCollRight(m_CollRight);
+			enemy->SetCollLeft(m_CollLeft);
 
-				enemy->SetCollTop(m_CollTop);
-				enemy->SetCollBottom(m_CollBottom);
-				enemy->SetCollRight(m_CollRight);
-				enemy->SetCollLeft(m_CollLeft);
+			//assert(!m_CollBottom);
 
-				if (m_Coll->IsCollAttackPlayer())
-				{
-					enemy->setExist(false);
-				}
+			if (m_Coll->IsCollAttackPlayer())
+			{
+				enemy->setExist(false);
+			}
 
-				m_Coll->InitColl();
-			//}
+			m_Coll->InitColl();
 		}
 	}
 }
@@ -98,7 +94,7 @@ void EnemyFactory::Draw()
 		}
 	}
 	
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "敵の数%d", m_Enemy.size());
+//	DrawFormatString(0, 0, GetColor(255, 255, 255), "敵の数%d", m_Enemy.size());
 }
 
 std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)

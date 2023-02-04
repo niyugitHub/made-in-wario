@@ -128,31 +128,31 @@ SceneBase* SceneMain::update()
 		m_Coll->InitColl();
 	}
 
-	if (m_Enemy != nullptr)
-	{
-		m_Enemy->update();
-		m_EnemyPos = m_Enemy->GetPos();
+	//if (m_Enemy != nullptr)
+	//{
+	//	m_Enemy->update();
+	//	m_EnemyPos = m_Enemy->GetPos();
 
-		m_Coll->Update();
+	//	m_Coll->Update();
 
-		// エネミーとマップの当たり判定
-		m_CollTopEnemy = m_Coll->IsCollTopEnemy();
-		m_CollBottomEnemy = m_Coll->IsCollBottomEnemy();
-		m_CollRightEnemy = m_Coll->IsCollRightEnemy();
-		m_CollLeftEnemy = m_Coll->IsCollLeftEnemy();
+	//	// エネミーとマップの当たり判定
+	//	m_CollTopEnemy = m_Coll->IsCollTopEnemy();
+	//	m_CollBottomEnemy = m_Coll->IsCollBottomEnemy();
+	//	m_CollRightEnemy = m_Coll->IsCollRightEnemy();
+	//	m_CollLeftEnemy = m_Coll->IsCollLeftEnemy();
 
-		m_Enemy->SetCollTop(m_CollTopEnemy);
-		m_Enemy->SetCollBottom(m_CollBottomEnemy);
-		m_Enemy->SetCollRight(m_CollRightEnemy);
-		m_Enemy->SetCollLeft(m_CollLeftEnemy);
+	//	m_Enemy->SetCollTop(m_CollTopEnemy);
+	//	m_Enemy->SetCollBottom(m_CollBottomEnemy);
+	//	m_Enemy->SetCollRight(m_CollRightEnemy);
+	//	m_Enemy->SetCollLeft(m_CollLeftEnemy);
 
-		if (m_Coll->IsCollAttackPlayer())
-		{
-			m_Enemy->setExist(false);
-		}
+	//	if (m_Coll->IsCollAttackPlayer())
+	//	{
+	//		m_Enemy->setExist(false);
+	//	}
 
-		m_Coll->InitColl();
-	}
+	//	m_Coll->InitColl();
+	//}
 		
 	return this;
 }

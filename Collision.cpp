@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "EnemyBase.h"
 #include "Map.h"
+#include<cassert>
+#include<DxLib.h>
 
 namespace
 {
@@ -38,9 +40,11 @@ void Collision::Update()
 {
 	m_PlayerPos = m_player->GetPos();
 
+	m_EnemyPos = m_enemy->GetPos();
+
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "“GÀ•W:%d", m_EnemyPos.x);
 	if (m_enemy != nullptr)
 	{
-		m_EnemyPos = m_enemy->GetPos();
 	}
 	else
 	{
