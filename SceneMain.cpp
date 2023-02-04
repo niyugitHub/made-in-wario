@@ -44,7 +44,7 @@ SceneMain::SceneMain() :
 
 	m_Coll->setPlayer(m_player);
 	m_Coll->setMap(m_Map);
-	m_Coll->setEnemy(m_Enemy);
+	m_Coll->setEnemy(m_EnemyFactory);
 	m_Enemy->SetMap(m_Map);
 	m_Enemy->SetPlayer(m_player);
 	m_EnemyFactory->SetPlayer(m_player);

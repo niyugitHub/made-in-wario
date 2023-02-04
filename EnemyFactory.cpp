@@ -12,7 +12,8 @@ EnemyFactory::EnemyFactory() :
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollRight(false),
-	m_CollLeft(false)
+	m_CollLeft(false),
+	m_Pos(0,0)
 {
 //	m_Coll = std::make_shared<Collision>();
 }
@@ -59,7 +60,11 @@ void EnemyFactory::Update()
 		{
 			enemy->update();
 
+			m_Pos = enemy->GetPos();
+
 			m_Coll->Update();
+
+			enemy->SetPos(m_Pos);
 
 			// エネミーとマップの当たり判定
 			m_CollTop = m_Coll->IsCollTopEnemy();

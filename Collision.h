@@ -3,7 +3,7 @@
 #include<memory>
 
 class Player;
-class EnemyBase;
+class EnemyFactory;
 class Map;
 
 class Collision
@@ -15,7 +15,7 @@ public:
 
 	void setPlayer(std::shared_ptr<Player> pPlayer) { m_player = pPlayer; }
 	void setMap(std::shared_ptr<Map> pMap) { m_Map = pMap; }
-	void setEnemy(std::shared_ptr<EnemyBase> pEnemy) { m_enemy = pEnemy; }
+	void setEnemy(std::shared_ptr<EnemyFactory> pEnemy) { m_enemy = pEnemy; }
 
 	// プレイヤーとマップの当たり判定
 	bool IsCollTop() { return m_CollTop; }
@@ -85,7 +85,7 @@ private:
 	Vec2 m_MapPos;
 
 	std::shared_ptr<Player> m_player;
-	std::shared_ptr<EnemyBase> m_enemy;
+	std::shared_ptr<EnemyFactory> m_enemy;
 	std::shared_ptr<Map> m_Map;
 };
 

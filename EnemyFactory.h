@@ -24,6 +24,9 @@ public:
 
 	void setCategory(char EnemyName) { m_EnemyName = EnemyName; }
 
+	Vec2 GetPos() { return m_Pos; }
+	void SetPos(Vec2 Pos) { m_Pos = Pos; }
+
 	void SetPlayer(std::shared_ptr<Player> player) { m_Player = player; }
 	void SetMap(std::shared_ptr<Map> map) { m_Map = map; }
 	void SetColl(std::shared_ptr<Collision> Coll) { m_Coll = Coll; }
@@ -45,6 +48,7 @@ private:
 	bool m_CollRight;
 	bool m_CollLeft;
 
+	Vec2 m_Pos;
 
 	std::list<std::shared_ptr<EnemyBase>> m_Enemy;
 	std::shared_ptr<Player> m_Player;
