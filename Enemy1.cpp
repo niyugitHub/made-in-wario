@@ -5,6 +5,11 @@
 #include <Dxlib.h>
 #include <cassert>
 
+namespace
+{
+	constexpr int PlayerGraphSize = 100;
+}
+
 Enemy1::Enemy1()
 {
 	m_func = &Enemy1::UpdatePatrol;
@@ -43,7 +48,7 @@ void Enemy1::UpdatePatrol()
 
 void Enemy1::UpdateDiscovery()
 {
-	if(m_DistancePos.x > -50 && m_DistancePos.x )
+//	if(m_DistancePos.x > -50 && m_DistancePos.x )
 	m_Vec.x = 0;
 	m_MapVec = m_Map->GetVec();
 
@@ -62,12 +67,12 @@ void Enemy1::UpdateDiscovery()
 	m_Vec.x = m_MapVec.x;
 	m_Pos.x += m_Vec.x;
 
-	if (m_DistancePos.x > -500 && m_DistancePos.x < 0)
+	if (m_DistancePos.x > -500 + PlayerGraphSize / 2 && m_DistancePos.x < PlayerGraphSize / 2)
 	{
 		m_Vec.x = m_MapVec.x + 3;
 	}
 
-	if (m_DistancePos.x >= 0 && m_DistancePos.x < 500)
+	if (m_DistancePos.x >= PlayerGraphSize / 2 && m_DistancePos.x < 500 + PlayerGraphSize / 2)
 	{
 		m_Vec.x = m_MapVec.x - 3;
 	}

@@ -35,6 +35,8 @@ public:
 
 	virtual void MoveEnemy();
 
+	virtual void BasicMoveEnemy();
+
 	// ë∂ç›ämîF
 	bool isExist() const { return m_Exist; }
 	void setExist(bool isExist) { m_Exist = isExist; }

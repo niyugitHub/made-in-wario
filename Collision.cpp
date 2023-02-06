@@ -250,6 +250,7 @@ void Collision::IsCollMapEnemy()
 					m_EnemyPos.x = MapPosX - 50 - 1;
 					m_CollRightEnemy = true;
 					m_enemy->SetPos(m_EnemyPos);
+					
 				}
 				//ç∂
 				if (m_EnemyPos.x < MapPosX + Map::kChipSize &&
@@ -265,8 +266,8 @@ void Collision::IsCollMapEnemy()
 				if (m_EnemyPos.y + 50 >= MapPosY &&
 					m_EnemyPos.y < MapPosY + 50/* + Minigame1::kChipSize*/ &&
 					m_EnemyPos.x + 50 > MapPosX &&
-					m_EnemyPos.x < MapPosX + Map::kChipSize &&
-					!m_CollRightEnemy && !m_CollLeftEnemy)
+					m_EnemyPos.x < MapPosX + Map::kChipSize/* &&
+					!m_CollRightEnemy && !m_CollLeftEnemy*/)
 				{
 					m_EnemyPos.y = MapPosY - 50;
 					m_CollBottomEnemy = true;

@@ -77,3 +77,25 @@ void EnemyBase::MoveEnemy()
 
 //	m_Pos += m_Vec;
 }
+
+void EnemyBase::BasicMoveEnemy()
+{
+	m_MapVec = m_Map->GetVec();
+
+
+	if (!m_CollBottom)
+	{
+		m_Gravity += kGravity;
+		m_Vec.y += m_Gravity;
+	}
+
+	else
+	{
+		m_Gravity = 0;
+		m_Vec.y = 0;
+	}
+
+	m_Vec.x *= m_MoveInverseDirection;
+
+	m_Vec.x += m_MapVec.x;
+}

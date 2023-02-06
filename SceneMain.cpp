@@ -20,6 +20,7 @@ namespace
 SceneMain::SceneMain() :
 	m_PlayerPos(0, 0),
 	m_EnemyPos(0,0),
+	m_MapPos(0,0),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
@@ -28,7 +29,7 @@ SceneMain::SceneMain() :
 	m_CollBottomEnemy(false),
 	m_CollLeftEnemy(false),
 	m_CollRightEnemy(false),
-	m_DeadPlayer(false),
+	m_Exist(true),
 	m_Coll(nullptr)
 {
 	for (auto& handle : m_hPlayerGraphic)
@@ -90,20 +91,25 @@ void SceneMain::end()
 
 SceneBase* SceneMain::update()
 {
+	if (!m_Exist)
+	{
+		m_Map->SetMap(m_MapPos);
+		m_PlayerPos.y = 500;
+		m_PlayerPos.x = 500;
+		m_player->SetPos(m_PlayerPos);
+		m_Exist = true;
+		m_player->SetExist(m_Exist);
+	}
+
 	if (m_Coll->FallPlayer())
 	{
- 		m_DeadPlayer = true;
+		m_Exist = false;
+		m_player->SetExist(m_Exist);
 	}
+	/*m_EnemyFactory->Update();*/
 
-	if (m_DeadPlayer)
-	{
-
-	}
-
-	m_EnemyFactory->Update();
-
-	if (!m_DeadPlayer)
-	{
+	/*if (!m_DeadPlayer)
+	{*/
 		m_PlayerPos = m_player->GetPos();
 	//	IsCollision();
 
@@ -126,7 +132,9 @@ SceneBase* SceneMain::update()
 		m_Map->update();
 
 		m_Coll->InitColl();
-	}
+	//}
+
+	m_EnemyFactory->Update();
 
 	//if (m_Enemy != nullptr)
 	//{
@@ -164,10 +172,10 @@ void SceneMain::draw()
 	m_EnemyFactory->Draw();
 	m_player->draw();
 
-	if (m_Enemy != nullptr)
+	/*if (m_Enemy != nullptr)
 	{
 		m_Enemy->draw();
-	}
+	}*/
 	if (m_Coll->IsCollEnemy())
 	{
 		DrawString(0, 0, "‚µ‚ñ‚¾", GetColor(0, 255, 0));

@@ -31,6 +31,8 @@ public:
 	void SetCollRight(bool Right) { m_CollRight = Right; }
 	void SetCollLeft(bool Left) { m_CollLeft = Left; }
 
+	void SetExist(bool Exist) { m_Exist = Exist; }
+
 	Vec2 GetPos() const { return m_pos; }
 
 	// プレイヤーの攻撃判定と向きを返す
@@ -51,6 +53,9 @@ public:
 
 	// 動きの制限
 	void LimitMove();
+
+	// プレイヤーが死んだときの処理
+	void NotExist();
 
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
@@ -106,6 +111,9 @@ private:
 
 	// キャラクターが攻撃をしたとき
 	bool m_Attack;
+
+	// キャラクターの存在確認
+	bool m_Exist;
 
 	SceneTitle* m_SceneTitle;
 };

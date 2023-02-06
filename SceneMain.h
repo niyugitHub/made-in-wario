@@ -35,6 +35,9 @@ private:
 	// エネミーのポジション
 	Vec2 m_EnemyPos;
 
+	// マップのポジション初期化
+	Vec2 m_MapPos;
+
 	// キャラクターとブロックの衝突判定
 	bool m_CollTop;
 	bool m_CollBottom;
@@ -47,8 +50,8 @@ private:
 	bool m_CollLeftEnemy;
 	bool m_CollRightEnemy;
 
-	// プレイヤーの死亡判定
-	bool m_DeadPlayer;
+	// プレイヤーの存在確認
+	bool m_Exist;
 
 	
 	// プレイヤー

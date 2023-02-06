@@ -20,7 +20,7 @@ namespace
 }
 
 Player::Player() :
-m_pos(500, 500),
+m_pos(500, 800),
 m_vec(3, 0),
 m_Jump(14.0f),
 m_CharaGraphX(0),
@@ -40,6 +40,7 @@ m_CollBottom(false),
 m_CollLeft(false),
 m_CollRight(false),
 m_Attack(false),
+m_Exist(true),
 m_SceneTitle(nullptr)
 {
 	for (auto& handle : m_handle)
@@ -66,6 +67,8 @@ void Player::end()
 
 void Player::update()
 {
+	if(!m_Exist) NotExist();
+
 	CharaMove();
 
 	LimitMove();
@@ -155,7 +158,7 @@ void Player::CharaMove()
 
 	if (m_NowJump)
 	{
-		CharaJump();
+   		CharaJump();
 	}
 
   	if (m_SceneTitle != nullptr)
@@ -198,6 +201,8 @@ void Player::CharaMove()
 		if (m_CharaGraphX == 7)
 		{
 			m_Attack = false;
+			/*m_CharaGraphY = 0;
+			m_CharaMotion = 2;*/
 		}
 	}
 
@@ -271,4 +276,9 @@ void Player::LimitMove()
 	{
 		m_pos.y = Game::kScreenHeight - kColumnSize;
 	}*/
+}
+
+void Player::NotExist()
+{
+	m_Jump = 0;
 }

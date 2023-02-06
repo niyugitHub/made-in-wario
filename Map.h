@@ -23,6 +23,8 @@ class Map
 		Vec2 GetPos() { return m_LeftPos; }
 		Vec2 GetVec() { return m_ScrollSpeed; }
 
+		void SetMap(Vec2 Pos) { m_LeftPos = Pos; }
+
 		// “–‚½‚è”»’è‚ðƒZƒbƒg
 		void SetCollRight(bool Right) { m_CollRight = Right; }
 		void SetCollLeft(bool Left) { m_CollLeft = Left; }

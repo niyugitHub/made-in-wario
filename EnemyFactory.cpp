@@ -64,7 +64,6 @@ void EnemyFactory::Update()
 
 			m_Coll->Update();
 
-			enemy->SetPos(m_Pos);
 
 			// エネミーとマップの当たり判定
 			m_CollTop = m_Coll->IsCollTopEnemy();
@@ -77,7 +76,7 @@ void EnemyFactory::Update()
 			enemy->SetCollRight(m_CollRight);
 			enemy->SetCollLeft(m_CollLeft);
 
-			//assert(!m_CollBottom);
+			enemy->SetPos(m_Pos);
 
 			if (m_Coll->IsCollAttackPlayer())
 			{
