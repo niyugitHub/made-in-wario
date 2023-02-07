@@ -5,6 +5,7 @@
 class Player;
 class EnemyFactory;
 class Map;
+class Item;
 
 class Collision
 {
@@ -16,6 +17,7 @@ public:
 	void setPlayer(std::shared_ptr<Player> pPlayer) { m_player = pPlayer; }
 	void setMap(std::shared_ptr<Map> pMap) { m_Map = pMap; }
 	void setEnemy(std::shared_ptr<EnemyFactory> pEnemy) { m_enemy = pEnemy; }
+	void setItem(std::shared_ptr<Item> pItem) { m_Item = pItem; }
 
 	// プレイヤーとマップの当たり判定
 	bool IsCollTop() { return m_CollTop; }
@@ -37,6 +39,9 @@ public:
 
 	// プレイヤーの攻撃判定
 	bool IsCollAttackPlayer();
+
+	// プレイヤーとアイテムの当たり判定
+	bool IsCollItem();
 
 	// プレイヤーとマップの当たり判定
 	void IsCollMap();
@@ -84,8 +89,11 @@ private:
 
 	Vec2 m_MapPos;
 
+	Vec2 m_ItemPos;
+
 	std::shared_ptr<Player> m_player;
 	std::shared_ptr<EnemyFactory> m_enemy;
 	std::shared_ptr<Map> m_Map;
+	std::shared_ptr<Item> m_Item;
 };
 

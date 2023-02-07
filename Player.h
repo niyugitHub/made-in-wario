@@ -31,6 +31,8 @@ public:
 	void SetCollRight(bool Right) { m_CollRight = Right; }
 	void SetCollLeft(bool Left) { m_CollLeft = Left; }
 
+	void SetCollItemTwoJump(bool TwoJump) { m_PossibleTwoJump = TwoJump; }
+
 	void SetExist(bool Exist) { m_Exist = Exist; }
 
 	Vec2 GetPos() const { return m_pos; }
@@ -108,6 +110,9 @@ private:
 	bool m_CollBottom;
 	bool m_CollLeft;
 	bool m_CollRight;
+
+	// プレイヤーとアイテムが触れたとき(二段ジャンプ)
+	bool m_PossibleTwoJump;
 
 	// キャラクターが攻撃をしたとき
 	bool m_Attack;

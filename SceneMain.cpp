@@ -9,6 +9,7 @@
 #include"EnemyBase.h"
 #include"Enemy1.h"
 #include"EnemyFactory.h"
+#include"Item.h"
 
 
 namespace
@@ -38,19 +39,22 @@ SceneMain::SceneMain() :
 	}
 	m_player = std::make_shared<Player>();
 	m_Map = std::make_shared<Map>();
-	m_Enemy = std::make_shared<Enemy1>();
+//	m_Enemy = std::make_shared<Enemy1>();
 	m_EnemyFactory = std::make_shared<EnemyFactory>();
 	m_Coll = std::make_shared<Collision>();
+	m_Item = std::make_shared<Item>();
 
 
 	m_Coll->setPlayer(m_player);
 	m_Coll->setMap(m_Map);
 	m_Coll->setEnemy(m_EnemyFactory);
-	m_Enemy->SetMap(m_Map);
-	m_Enemy->SetPlayer(m_player);
+	m_Coll->setItem(m_Item);
+//	m_Enemy->SetMap(m_Map);
+//	m_Enemy->SetPlayer(m_player);
 	m_EnemyFactory->SetPlayer(m_player);
 	m_EnemyFactory->SetMap(m_Map);
 	m_EnemyFactory->SetColl(m_Coll);
+	m_Item->SetMap(m_Map);
 }
 SceneMain::~SceneMain()
 {
@@ -75,8 +79,9 @@ void SceneMain::init()
 		m_player->setHandle(i, m_hPlayerGraphic[i]);
 	}
 	m_player->Init();
-	m_Enemy->Init();
+//	m_Enemy->Init();
 	m_Map->load();
+	m_Item->Init();
 }
 
 void SceneMain::end()
@@ -86,7 +91,7 @@ void SceneMain::end()
 		DeleteGraph(handle);
 	}
 	m_Map->unload();
-	m_Enemy->end();
+//	m_Enemy->end();
 }
 
 SceneBase* SceneMain::update()
@@ -126,15 +131,19 @@ SceneBase* SceneMain::update()
 		m_Map->SetCollRight(m_CollRight);
 		m_Map->SetCollLeft(m_CollLeft);
 
-		m_player->update();
-		
-
 		m_Map->update();
+		m_player->update();
+		m_Item->Update();
 
 		m_Coll->InitColl();
 	//}
 
 	m_EnemyFactory->Update();
+
+	if (m_Coll->IsCollItem())
+	{
+		m_player->SetCollItemTwoJump(true);
+	}
 
 	//if (m_Enemy != nullptr)
 	//{
@@ -171,6 +180,7 @@ void SceneMain::draw()
 	m_Map->draw();
 	m_EnemyFactory->Draw();
 	m_player->draw();
+	m_Item->Draw();
 
 	/*if (m_Enemy != nullptr)
 	{
@@ -179,6 +189,11 @@ void SceneMain::draw()
 	if (m_Coll->IsCollEnemy())
 	{
 		DrawString(0, 0, "‚µ‚ñ‚¾", GetColor(0, 255, 0));
+	}
+
+	if (m_Coll->IsCollItem())
+	{
+		DrawString(300, 0, "aafakla", GetColor(0, 255, 0));
 	}
 
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì”:%d", m_EnemyFactory->);

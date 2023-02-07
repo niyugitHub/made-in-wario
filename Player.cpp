@@ -40,6 +40,7 @@ m_CollBottom(false),
 m_CollLeft(false),
 m_CollRight(false),
 m_Attack(false),
+m_PossibleTwoJump(false),
 m_Exist(true),
 m_SceneTitle(nullptr)
 {
@@ -224,7 +225,7 @@ void Player::CharaMove()
 
 void Player::CharaJump()
 {
-	if (m_TwoJump && !m_UseTwoJump)
+	if (m_TwoJump && !m_UseTwoJump && m_PossibleTwoJump)
 	{
 		m_UseTwoJump = true;
 		m_TwoJump = false;

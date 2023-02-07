@@ -32,11 +32,11 @@ Enemy2::~Enemy2()
 void Enemy2::update()
 {
 	m_PlayerPos = m_Player->GetPos();
+	m_NextPos = m_Pos;
+
 	(this->*m_func)();
 
 	m_DistancePos = m_Pos - m_PlayerPos;
-
-	m_NextPos = m_Pos;
 
 	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
 	{
@@ -53,8 +53,13 @@ void Enemy2::draw()
 void Enemy2::UpdatePatrol()
 {
 	BasicMoveEnemy();
-
 	m_Pos += m_Vec;
+
+	if (m_CollBottom)
+	{
+		m_FlySpeed *= -1;
+	}
+
 	m_Frame++;
 
 	if (m_Frame % 70 == 0)
@@ -70,13 +75,23 @@ void Enemy2::UpdatePatrol()
 	if (m_Vec.y <= -3)
 		m_Vec.y = -3;
 
-	m_Pos.y += m_Vec.y;
+	m_NextPos += m_Vec;
+
+	m_Pos = m_NextPos;
+	/*if (!m_CollBottom && !m_CollTop)
+	{
+	}
+	else
+	{
+		m_FlySpeed *= -1;
+		m_Frame = 35;
+	}*/
 
 	//m_Vec.x += 3;
-	/*if (m_FieldSpeed < 3)
-	{
-		m_FieldSpeed += kMoveFly;
-	}*/
+	//if (m_FieldSpeed < 3)
+	//{
+	//	m_FieldSpeed += kMoveFly;
+	//}
 
 	//if (m_DistancePos.x >= kPlayerGraphSize / 2 && m_DistancePos.x < 500 + kPlayerGraphSize / 2)
 	//{

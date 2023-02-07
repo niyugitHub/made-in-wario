@@ -8,8 +8,8 @@
 //class Minigame1;
 //class Vec2;
 class Collision;
-class Enemy1;
 class EnemyFactory;
+class Item;
 
 class SceneMain : public SceneBase
 {
@@ -63,8 +63,8 @@ private:
 	// 当たり判定
 	std::shared_ptr<Collision> m_Coll;
 
-	// 敵
-	std::shared_ptr<Enemy1> m_Enemy;
+	// アイテム
+	std::shared_ptr<Item> m_Item;
 
 	// 敵全部
 	std::shared_ptr<EnemyFactory> m_EnemyFactory;

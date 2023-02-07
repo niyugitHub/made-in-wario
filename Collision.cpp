@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "EnemyFactory.h"
 #include "Map.h"
+#include "Item.h"
 #include<cassert>
 #include<DxLib.h>
 
@@ -27,7 +28,8 @@ Collision::Collision() :
 	m_MapColl(false),
 	m_player(nullptr),
 	m_enemy(nullptr),
-	m_Map(nullptr)
+	m_Map(nullptr),
+	m_Item(nullptr)
 {
 }
 
@@ -41,6 +43,8 @@ void Collision::Update()
 	m_PlayerPos = m_player->GetPos();
 
 	m_EnemyPos = m_enemy->GetPos();
+
+	/*m_ItemPos = m_Item->GetPos();*/
 
 	if (m_enemy != nullptr)
 	{
@@ -120,6 +124,29 @@ bool Collision::IsCollAttackPlayer()
 		if (PlayerPosUp > EnemyPosBottom)  return false;
 		if (PlayerPosBottom < EnemyPosUp)  return false;
 	}
+	return true;
+}
+
+bool Collision::IsCollItem()
+{
+	m_ItemPos = m_Item->GetPos();
+	// プレイヤーの位置
+	float PlayerPosLeft = m_PlayerPos.x + 30;
+	float PlayerPosRight = m_PlayerPos.x + 90;
+	float PlayerPosUp = m_PlayerPos.y + 10;
+	float PlayerPosBottom = m_PlayerPos.y + 118;
+
+	// エネミーの位置
+	float ItemPosLeft = m_ItemPos.x;
+	float ItemPosRight = m_ItemPos.x + 50;
+	float ItemPosUp = m_ItemPos.y;
+	float ItemPosBottom = m_ItemPos.y + 50;
+
+	if (PlayerPosLeft > ItemPosRight) return false;
+	if (PlayerPosRight < ItemPosLeft) return false;
+	if (PlayerPosUp > ItemPosBottom)  return false;
+	if (PlayerPosBottom < ItemPosUp)  return false;
+
 	return true;
 }
 
