@@ -35,9 +35,9 @@ void EnemyFactory::Update()
 {
 	m_Frame++;
 
-	if (m_Frame % 60 == 0)
+	if (m_Frame == 1)
 	{
-		Create(kNormal, { 1500,600 });
+		Create(kJump, { 1500,600 });
 	}
 	//‚¢‚È‚­‚È‚Á‚½“G‚ÍÁ‚¦‚Ä‚à‚ç‚¤
 	//Á‚·–½—ß‚Ì‚­‚¹‚ÉAÀÛ‚É‚ÍŒˆ‚µ‚Ä‚È‚­‚ÄAŒã‚ë‚É‚æ‚¯‚Ä‚é‚¾‚¯
@@ -98,7 +98,7 @@ void EnemyFactory::Draw()
 		}
 	}
 	
-//	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì”%d", m_Enemy.size());
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì”%d", m_Enemy.size());
 }
 
 std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)

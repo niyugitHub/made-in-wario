@@ -9,10 +9,12 @@ public:
 
 	void update();
 
+	void draw();
+
 private:
 	int m_Frame;
-
-	Vec2 m_Vec;
+	float m_FlySpeed;
+	float m_FieldSpeed;
 
 	void UpdatePatrol();	// ’Êí
 	void UpdateDiscovery();		// ƒvƒŒƒCƒ„[‚ª‹ß‚Ã‚¢‚½‚Æ‚«

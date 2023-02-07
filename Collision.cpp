@@ -42,7 +42,6 @@ void Collision::Update()
 
 	m_EnemyPos = m_enemy->GetPos();
 
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "ìGç¿ïW:%d", m_EnemyPos.x);
 	if (m_enemy != nullptr)
 	{
 	}

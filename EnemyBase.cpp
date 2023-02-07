@@ -80,16 +80,17 @@ void EnemyBase::MoveEnemy()
 
 void EnemyBase::BasicMoveEnemy()
 {
+	m_Vec.x = 0;
 	m_MapVec = m_Map->GetVec();
 
 
-	if (!m_CollBottom)
+	/*if (!m_CollBottom)
 	{
 		m_Gravity += kGravity;
 		m_Vec.y += m_Gravity;
-	}
+	}*/
 
-	else
+	if(m_CollBottom)
 	{
 		m_Gravity = 0;
 		m_Vec.y = 0;
