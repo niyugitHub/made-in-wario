@@ -39,6 +39,8 @@ public:
 
 	std::shared_ptr<EnemyBase> Create(EnemyType type, const Vec2 pos);
 
+	void Stage1Enemy();
+
 private:
 	int m_EnemyName;
 	int m_Frame;

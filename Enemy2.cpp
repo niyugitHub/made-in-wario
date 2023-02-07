@@ -7,10 +7,10 @@
 
 namespace
 {
-	constexpr int kPlayerGraphSize = 100;
+	constexpr float kPlayerGraphSize = 100.0f;
 	
 	// プレイヤーを追いかけるときの速度
-	constexpr float kMoveChaseFly = 0.1f;
+	constexpr float kMoveChaseFly = 0.15f;
 	constexpr float kMoveChaseField = 0.15f;
 
 	// 通常時の速度
@@ -110,7 +110,8 @@ void Enemy2::UpdateDiscovery()
 			m_FieldSpeed -= kMoveChaseField;
 		}
 	}
-	else
+	
+	if(m_DistancePos.x < -500 || m_DistancePos.x > 500 + kPlayerGraphSize / 2)
 	{
 		m_FlySpeed = -kMoveFly;
 		m_Frame = 35;
@@ -144,7 +145,7 @@ void Enemy2::UpdateDiscovery()
 
 	if (!m_CollRight && !m_CollLeft)
 	{
-		m_Pos = m_NextPos;
+		m_Pos.x = m_NextPos.x;
 	}
 }
 

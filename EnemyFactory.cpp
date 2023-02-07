@@ -33,12 +33,15 @@ void EnemyFactory::end()
 
 void EnemyFactory::Update()
 {
-	m_Frame++;
+	//m_Coll->InitColl();
+	/*m_Frame++;
 
 	if (m_Frame == 1)
 	{
 		Create(kJump, { 1500,600 });
-	}
+	}*/
+
+	Stage1Enemy();
 	//いなくなった敵は消えてもらう
 	//消す命令のくせに、実際には決してなくて、後ろによけてるだけ
 	auto rmIt = std::remove_if(//条件に合致したものを消す
@@ -64,7 +67,6 @@ void EnemyFactory::Update()
 
 			m_Coll->Update();
 
-
 			// エネミーとマップの当たり判定
 			m_CollTop = m_Coll->IsCollTopEnemy();
 			m_CollBottom = m_Coll->IsCollBottomEnemy();
@@ -83,7 +85,7 @@ void EnemyFactory::Update()
 				enemy->setExist(false);
 			}
 
-			m_Coll->InitColl();
+			/*m_Coll->InitColl();*/
 		}
 	}
 }
@@ -124,4 +126,36 @@ std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
 	m_Enemy.back()->SetColl(m_Coll);
 
 	return m_Enemy.back();
+}
+
+void EnemyFactory::Stage1Enemy()
+{
+	m_Frame++;
+
+	if (m_Frame == 1)
+	{
+		Create(kNormal, { 1000,600 });
+		Create(kNormal, { 3000,800 });
+		Create(kNormal, { 4000,800 });
+		Create(kNormal, { 5000,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });
+		Create(kJump, { 1600,600 });
+		Create(kJump, { 1700,600 });
+		Create(kJump, { 1800,600 });
+		Create(kJump, { 1900,600 });
+		Create(kJump, { 2000,600 });
+		Create(kJump, { 300,600 });
+		Create(kJump, { 3000,600 });
+		Create(kJump, { 3500,600 });
+		Create(kJump, { 4000,600 });
+		Create(kJump, { 1500,600 });
+		Create(kJump, { 1500,600 });
+	}
 }
