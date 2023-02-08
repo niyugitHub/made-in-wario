@@ -89,9 +89,6 @@
     <ClInclude Include="vec2.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SceneBase.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
@@ -129,6 +126,9 @@
       <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

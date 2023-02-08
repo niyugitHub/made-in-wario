@@ -8,6 +8,10 @@ class Collision;
 class Player 
 {
 public:
+	// プレイヤーの初期位置
+	static constexpr float kFristPlayerPosX = 760.0f;
+	static constexpr float kFristPlayerPosY = 500.0f;
+
 	static constexpr int kSideSize = 128;
 	static constexpr int kColumnSize = 128;
 
@@ -37,6 +41,11 @@ public:
 
 	Vec2 GetPos() const { return m_pos; }
 
+	void SetAttackPower(int AttackPower) { m_AttackPower = AttackPower; }
+	int GetAttackPower() { return m_AttackPower; }
+
+	int GetMove() const { return m_StartMove; }
+
 	// プレイヤーの攻撃判定と向きを返す
 	bool GetAttack() { return m_Attack; }
 	bool GetLook() { return m_LookLeft; }
@@ -59,12 +68,23 @@ public:
 	// プレイヤーが死んだときの処理
 	void NotExist();
 
+	// プレイヤーの動き初めの処理
+	void IsMoveStartLeft();
+
+	// プレイヤーの動き初めの処理
+	void IsMoveStartRight();
+
+	// プレイヤーが止まったときの処理
+	void IsMoveStop();
+
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
 private:
 	Vec2 m_pos;
 	Vec2 m_vec;
+
+	float m_StartMove;
 
 	float m_Jump;
 
@@ -116,6 +136,15 @@ private:
 
 	// キャラクターが攻撃をしたとき
 	bool m_Attack;
+
+	// 動きを開始したときのフラグ
+	bool m_IsMove;
+
+	// プレイヤーの攻撃力　
+	int m_AttackPower;
+
+	// プレイヤーの体力
+	int m_Hp;
 
 	// キャラクターの存在確認
 	bool m_Exist;

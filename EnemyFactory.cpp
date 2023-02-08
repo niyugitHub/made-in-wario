@@ -3,12 +3,14 @@
 #include "Enemy1.h"
 #include "Enemy2.h"
 #include "EnemyBase.h"
+#include "Player.h"
 #include <DxLib.h>
 #include <cassert>
 
 EnemyFactory::EnemyFactory() : 
 	m_EnemyName(kNormal),
 	m_Frame(0),
+	m_Hp(0),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollRight(false),
@@ -71,7 +73,7 @@ void EnemyFactory::Update()
 
 			if (m_Coll->IsCollEnemy())
 			{
-				DrawString(0, 0, "しんだ", GetColor(0, 255, 0));
+				DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
 			}
 
 			// エネミーとマップの当たり判定
@@ -87,9 +89,13 @@ void EnemyFactory::Update()
 
 			enemy->SetPos(m_Pos);
 
-			if (m_Coll->IsCollAttackPlayer())
+			if (m_Coll->IsCollAttackPlayer() && enemy->GetHit(true))
 			{
-				enemy->setExist(false);
+				enemy->GetHit(true);
+				m_Hp = enemy->GetHp();
+				m_Hp -= m_Player->GetAttackPower();
+				enemy->SetHp(m_Hp);
+				//enemy->setExist(false);
 			}
 		}
 	}
@@ -133,6 +139,10 @@ std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
 	return m_Enemy.back();
 }
 
+void EnemyFactory::AttackDamage()
+{
+}
+
 void EnemyFactory::Stage1Enemy()
 {
 	m_Frame++;
@@ -140,7 +150,7 @@ void EnemyFactory::Stage1Enemy()
 	if (m_Frame == 1)
 	{
 		Create(kJump, { 300,600 });
-		Create(kJump, { 1500,600 });
+		/*Create(kJump, { 1500,600 });
 		Create(kJump, { 1500,600 });
 		Create(kJump, { 1600,600 });
 		Create(kJump, { 1700,600 });
@@ -163,7 +173,7 @@ void EnemyFactory::Stage1Enemy()
 		Create(kNormal, { 1500,600 });
 		Create(kNormal, { 1500,600 });
 		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
+		Create(kNormal, { 1500,600 });*/
 
 	}
 

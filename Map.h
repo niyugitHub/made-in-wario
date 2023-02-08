@@ -1,6 +1,9 @@
 #pragma once
 #include "game.h"
 #include "Vec2.h"
+#include <memory>
+
+class Player;
 
 class Map
 {
@@ -19,6 +22,8 @@ class Map
 	public:
 		Map();
 		~Map();
+
+		void setPlayer(std::shared_ptr<Player> pPlayer) { m_player = pPlayer; }
 
 		Vec2 GetPos() { return m_LeftPos; }
 		Vec2 GetVec() { return m_ScrollSpeed; }
@@ -80,5 +85,8 @@ class Map
 
 		// ベクトル
 		Vec2 m_Vec;
+
+		// プレイヤー
+		std::shared_ptr<Player> m_player;
 };
 

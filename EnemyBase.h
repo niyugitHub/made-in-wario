@@ -25,6 +25,13 @@ public:
 
 	virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }
 
+	// エネミーの体力
+	void SetHp(int Hp) { m_Hp = Hp; }
+	int GetHp() { return m_Hp; }
+
+	// 攻撃がヒット
+	bool SetHit(bool HitAttack) {  HitAttack; }
+
 	virtual void Init();
 	virtual void end();
 
@@ -58,6 +65,8 @@ protected:
 
 	float m_Gravity;
 
+	int m_Hp; // 敵の体力
+
 	// 壁に当たった時に逆方向に進むための変数
 	int m_MoveInverseDirection;
 
@@ -72,6 +81,8 @@ protected:
 	bool m_CollBottom;
 	bool m_CollLeft;
 	bool m_CollRight;
+
+	bool m_HitAttack
 
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;

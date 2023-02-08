@@ -12,6 +12,7 @@ EnemyBase::EnemyBase() :
 	m_PlayerPos(0,0),
 	m_DistancePos(0,0),
 	m_Gravity(0),
+	m_Hp(30),
 	m_MoveInverseDirection(1),
 	m_MapVec(0,0),
 	m_Exist(true),
@@ -39,6 +40,7 @@ void EnemyBase::end()
 
 void EnemyBase::update()
 {
+
 }
 
 void EnemyBase::draw()

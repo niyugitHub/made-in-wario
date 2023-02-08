@@ -9,6 +9,9 @@ public:
 	Enemy1();
 	~Enemy1();
 
+	/*void SetHp(int Hp) { m_Hp = Hp; }
+	int GetHp() { return m_Hp; }*/
+
 	 void update();
 
 private:
@@ -17,5 +20,6 @@ private:
 	void updateAttack();		// プレイヤーに攻撃がヒットしたとき
 	// update処理メンバ関数ポインタ
 	void(Enemy1::* m_func)();
+
 };
 

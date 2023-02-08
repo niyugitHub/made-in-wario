@@ -3,7 +3,9 @@
 #include<DxLib.h>
 
 Item::Item() :
-	m_Pos(1000,700)
+	m_ItemType(0),
+	m_Pos(1000,700),
+	m_Exist(true)
 {
 }
 
@@ -22,7 +24,12 @@ void Item::Update()
 
 void Item::Draw()
 {
-	DrawBox(m_Pos.x, m_Pos.y,
-		m_Pos.x + 50, m_Pos.y + 50,
-		GetColor(255, 255, 255), true);
+	if (m_Exist)
+	{
+		DrawBox(m_Pos.x, m_Pos.y,
+			m_Pos.x + 50, m_Pos.y + 50,
+			GetColor(255, 255, 255), true);
+	}
+
+//	if(m_ItemType == kTwoJump)
 }

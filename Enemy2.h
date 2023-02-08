@@ -13,6 +13,7 @@ public:
 
 private:
 	int m_Frame;
+
 	float m_FlySpeed;
 	float m_FieldSpeed;
 

@@ -31,6 +31,10 @@ Enemy2::~Enemy2()
 
 void Enemy2::update()
 {
+	if (m_Hp < -1110)
+	{
+		m_Exist = false;
+	}
 	m_PlayerPos = m_Player->GetPos();
 	m_NextPos = m_Pos;
 

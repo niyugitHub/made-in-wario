@@ -7,6 +7,10 @@
 
 namespace
 {
+	//// プレイヤーの初期位置
+	//constexpr float kFristPlayerPosX = 760.0f;
+	//constexpr float kFristPlayerPosY = 500.0f;
+
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
 
@@ -17,11 +21,18 @@ namespace
 	constexpr float kBigGravity = 1.2f;
 	constexpr float kGravity = 0.8f;
 	constexpr float kSmallGravity = 0.5f;
+
+	// 動き始めのプレイヤーのスピード
+	constexpr float kStartMoveSpeed = 4.0f;
+
+	// 動き始めのプレイヤーのスピード減少
+	constexpr float kStartMoveSpeedDown = 0.2f;
 }
 
 Player::Player() :
-m_pos(500, 800),
+m_pos(kFristPlayerPosX, kFristPlayerPosY),
 m_vec(3, 0),
+m_StartMove(kStartMoveSpeed),
 m_Jump(14.0f),
 m_CharaGraphX(0),
 m_CharaGraphY(0),
@@ -40,6 +51,9 @@ m_CollBottom(false),
 m_CollLeft(false),
 m_CollRight(false),
 m_Attack(false),
+m_IsMove(false),
+m_AttackPower(10),
+m_Hp(3),
 m_PossibleTwoJump(false),
 m_Exist(true),
 m_SceneTitle(nullptr)
@@ -88,6 +102,13 @@ void Player::draw()
 	{
 		DrawTurnGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
 	}
+
+	if (m_PossibleTwoJump)
+	{
+		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
+	}
+
+	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
 }
 
 void Player::CharaMove()
@@ -98,6 +119,7 @@ void Player::CharaMove()
 
 	if (CheckHitKey(KEY_INPUT_RIGHT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
 	{
+		IsMoveStartRight();
 		m_NowDash = true;
 		m_LookLeft = false;
 		m_CharaGraphY = 3;
@@ -109,6 +131,7 @@ void Player::CharaMove()
 
 	else if (CheckHitKey(KEY_INPUT_LEFT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
 	{
+		IsMoveStartLeft();
 		m_NowDash = true;
 		m_LookLeft = true;
 		m_CharaGraphY = 3;
@@ -120,6 +143,7 @@ void Player::CharaMove()
 
 	else if (CheckHitKey(KEY_INPUT_RIGHT))
 	{
+		IsMoveStop();
 		m_LookLeft = false;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
@@ -130,6 +154,7 @@ void Player::CharaMove()
 
 	else if (CheckHitKey(KEY_INPUT_LEFT))
 	{
+		IsMoveStop();
 		m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
@@ -141,11 +166,12 @@ void Player::CharaMove()
 
 	else
 	{
+		IsMoveStop();
 		m_CharaGraphY = 0;
 		m_CharaMotion = 2;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_10) && !m_CollBottom)
+	if (Pad::isTrigger(PAD_INPUT_10) && !m_CollBottom && m_PossibleTwoJump)
 	{
 		m_NowJump = true;
 		m_TwoJump = true;
@@ -282,4 +308,62 @@ void Player::LimitMove()
 void Player::NotExist()
 {
 	m_Jump = 0;
+}
+
+void Player::IsMoveStartLeft()
+{
+	if (!m_IsMove || m_pos.x < kFristPlayerPosX)
+	{
+		m_StartMove = kStartMoveSpeed;
+		m_IsMove = true;
+	}
+	
+	m_StartMove -= kStartMoveSpeedDown;
+
+	if (m_StartMove > 0)
+	{
+		m_pos.x += m_StartMove;
+	}
+	else
+	{
+		m_StartMove = 0;
+	}
+}
+
+void Player::IsMoveStartRight()
+{
+	if (!m_IsMove || m_pos.x > kFristPlayerPosX)
+	{
+		m_StartMove = -kStartMoveSpeed;
+		m_IsMove = true;
+	}
+
+	m_StartMove += kStartMoveSpeedDown;
+
+	if (m_StartMove < 0)
+	{
+		m_pos.x += m_StartMove;
+	}
+	else
+	{
+		m_StartMove = 0;
+	}
+}
+
+void Player::IsMoveStop()
+{
+	m_IsMove = false;
+	m_StartMove = 0;
+
+	if (m_pos.x < kFristPlayerPosX - 30)
+	{
+		m_StartMove = kStartMoveSpeed;
+		m_pos.x += m_StartMove;
+	}
+
+	if (m_pos.x > kFristPlayerPosX + 30)
+	{
+		m_StartMove = -kStartMoveSpeed;
+		m_pos.x += m_StartMove;
+	}
 }

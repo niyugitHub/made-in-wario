@@ -2,6 +2,7 @@
 
 #include "Map.h"
 #include "game.h"
+#include"Player.h"
 
 namespace
 {
@@ -50,7 +51,8 @@ Map::Map() :
 	m_LeftPos(0, 0),
 	m_RightPos(0, 0),
 	m_ScrollSpeed(0, 0),
-	m_Vec(0,0)
+	m_Vec(0,0),
+	m_player(nullptr)
 {
 	for (int i = 0; i < kBgNumY; i++)
 	{
@@ -59,6 +61,8 @@ Map::Map() :
 			m_MapData[i][j] = kMapData[i][j];
 		}
 	}
+
+	
 }
 
 Map::~Map()
@@ -104,6 +108,14 @@ void Map::update()
 			}
 		}
 	}
+
+	/*if (m_player->GetPos().x < Player::kFristPlayerPosX - 30)
+	{
+		m_Vec.x += m_player->GetMove();
+	}*/
+
+	m_Vec.x += m_player->GetMove();
+
 	m_ScrollSpeed = m_Vec;
 
 	m_LeftPos += m_Vec;

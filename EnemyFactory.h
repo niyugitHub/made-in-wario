@@ -39,16 +39,23 @@ public:
 
 	std::shared_ptr<EnemyBase> Create(EnemyType type, const Vec2 pos);
 
+	void AttackDamage();
+
 	void Stage1Enemy();
 
 private:
 	int m_EnemyName;
 	int m_Frame;
 
+	int m_Hp; // “G‚Ì‘Ì—Í
+
 	bool m_CollTop;
 	bool m_CollBottom;
 	bool m_CollRight;
 	bool m_CollLeft;
+
+	//// ‘¶İŠm”F
+	//bool m_Exist;
 
 	Vec2 m_Pos;
 

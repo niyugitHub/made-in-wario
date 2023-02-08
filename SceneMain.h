@@ -14,6 +14,15 @@ class Item;
 class SceneMain : public SceneBase
 {
 public:
+	enum ItemType
+	{
+		kTwoJump,
+		kAttackUp,
+	};
+public:
+	static constexpr int kItemNum = 25;
+	static constexpr int kStageItemNum = 5;
+public:
 	SceneMain();
 	virtual ~SceneMain();
 
@@ -24,6 +33,9 @@ public:
 
 	virtual SceneBase* update();
 	virtual void draw();
+
+	// アイテムの位置の調整
+	void IsItemPosition();
 
 private:
 	// プレイヤーのグラフィックハンドル
@@ -37,6 +49,9 @@ private:
 
 	// マップのポジション初期化
 	Vec2 m_MapPos;
+
+	// アイテムのポジション
+	Vec2 m_ItemPos;
 
 	// キャラクターとブロックの衝突判定
 	bool m_CollTop;
@@ -53,6 +68,16 @@ private:
 	// プレイヤーの存在確認
 	bool m_Exist;
 
+	// アイテムの存在確認
+	bool m_ItemExist[kItemNum];
+
+	// アイテムの個数
+	int m_ItemNum;
+	// 1ステージごとのアイテム個数
+	int m_StageItemNum;
+
+	// プレイヤーの攻撃力
+	int m_AttackPower;
 	
 	// プレイヤー
 	std::shared_ptr<Player> m_player;
@@ -64,7 +89,7 @@ private:
 	std::shared_ptr<Collision> m_Coll;
 
 	// アイテム
-	std::shared_ptr<Item> m_Item;
+	std::shared_ptr<Item> m_Item[kItemNum];
 
 	// 敵全部
 	std::shared_ptr<EnemyFactory> m_EnemyFactory;

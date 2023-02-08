@@ -11,7 +11,6 @@
 #include"EnemyFactory.h"
 #include"Item.h"
 
-
 namespace
 {
 	// グラフィックファイル名
@@ -20,8 +19,9 @@ namespace
 
 SceneMain::SceneMain() :
 	m_PlayerPos(0, 0),
-	m_EnemyPos(0,0),
-	m_MapPos(0,0),
+	m_EnemyPos(0, 0),
+	m_MapPos(0, 0),
+	m_ItemPos(500, 800),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
@@ -30,6 +30,9 @@ SceneMain::SceneMain() :
 	m_CollBottomEnemy(false),
 	m_CollLeftEnemy(false),
 	m_CollRightEnemy(false),
+	m_ItemNum(25),
+	m_StageItemNum(5),
+	m_AttackPower(10),
 	m_Exist(true),
 	m_Coll(nullptr)
 {
@@ -42,19 +45,47 @@ SceneMain::SceneMain() :
 //	m_Enemy = std::make_shared<Enemy1>();
 	m_EnemyFactory = std::make_shared<EnemyFactory>();
 	m_Coll = std::make_shared<Collision>();
-	m_Item = std::make_shared<Item>();
 
+	for (auto& pItemExist : m_ItemExist)
+	{
+		pItemExist = true;
+	}
+
+	for (auto& pItem : m_Item)
+	{
+		pItem = std::make_shared<Item>();
+		pItem->SetItemType(ItemType::kAttackUp);
+	}
+
+	for (int i = 0; i < kItemNum; i++)
+	{
+		/*m_Item[i] = std::make_shared<Item>();*/
+		m_Item[0]->SetPos(m_ItemPos);
+		m_Item[0]->SetItemType(ItemType::kTwoJump);
+	}
+
+	m_Map->setPlayer(m_player);
 
 	m_Coll->setPlayer(m_player);
 	m_Coll->setMap(m_Map);
 	m_Coll->setEnemy(m_EnemyFactory);
-	m_Coll->setItem(m_Item);
+//	m_Coll->setItem(m_Item);
+
+	for (auto& pItem : m_Item)
+	{
+		m_Coll->setItem(pItem);
+	}
+ 
 //	m_Enemy->SetMap(m_Map);
 //	m_Enemy->SetPlayer(m_player);
 	m_EnemyFactory->SetPlayer(m_player);
 	m_EnemyFactory->SetMap(m_Map);
 	m_EnemyFactory->SetColl(m_Coll);
-	m_Item->SetMap(m_Map);
+//	m_Item->SetMap(m_Map);
+	for (auto& pItem : m_Item)
+	{
+		pItem->SetMap(m_Map);
+	}
 }
 SceneMain::~SceneMain()
 {
@@ -81,7 +112,11 @@ void SceneMain::init()
 	m_player->Init();
 //	m_Enemy->Init();
 	m_Map->load();
-	m_Item->Init();
+//	m_Item->Init();
+	for (auto& pItem : m_Item)
+	{
+		pItem->Init();
+	}
 }
 
 void SceneMain::end()
@@ -131,19 +166,60 @@ SceneBase* SceneMain::update()
 		m_Map->SetCollRight(m_CollRight);
 		m_Map->SetCollLeft(m_CollLeft);
 
-		m_Map->update();
 		m_player->update();
-		m_Item->Update();
+		m_Map->update();
+		/*m_Item->Update();*/
+
+		/*for (auto& pItem : m_Item)
+		{
+			pItem->Update();
+			m_Coll->setItem(pItem);
+
+			if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kTwoJump)
+			{
+				m_player->SetCollItemTwoJump(true);
+			}
+
+			if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kAttackUp)
+			{
+				m_AttackPower += 10;
+				m_player->SetAttackPower(m_AttackPower);
+			}
+		}*/
+
+		for (int i = 0; i < kItemNum; i++)
+		{
+			if (m_ItemExist[i])
+			{
+				m_Item[i]->Update();
+				m_Coll->setItem(m_Item[i]);
+
+				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == ItemType::kTwoJump)
+				{
+					m_player->SetCollItemTwoJump(true);
+ 					m_ItemExist[i] = false;
+					m_Item[i]->SetExist(m_ItemExist[i]);
+				}
+
+				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == ItemType::kAttackUp)
+				{
+					m_AttackPower += 10;
+					m_player->SetAttackPower(m_AttackPower);
+					m_ItemExist[i] = false;
+					m_Item[i]->SetExist(m_ItemExist[i]);
+				}
+			}
+		}
 
 		m_Coll->InitColl();
 	//}
 
 	m_EnemyFactory->Update();
 
-	if (m_Coll->IsCollItem())
+	/*if (m_Coll->IsCollItem())
 	{
 		m_player->SetCollItemTwoJump(true);
-	}
+	}*/
 
 	//if (m_Enemy != nullptr)
 	//{
@@ -180,16 +256,31 @@ void SceneMain::draw()
 	m_Map->draw();
 	m_EnemyFactory->Draw();
 	m_player->draw();
-	m_Item->Draw();
+//	m_Item->Draw();
+
+	for (auto& pItem : m_Item)
+	{
+		pItem->Draw();
+
+		if (pItem->GetItemType() == ItemType::kTwoJump)
+		{
+			DrawString(pItem->GetPos().x, pItem->GetPos().y,"ジャンプ", GetColor(0, 255, 0));
+		}
+
+		if (pItem->GetItemType() == ItemType::kAttackUp)
+		{
+			DrawString(pItem->GetPos().x, pItem->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
+		}
+	}
 
 	/*if (m_Enemy != nullptr)
 	{
 		m_Enemy->draw();
 	}*/
-	if (m_Coll->IsCollEnemy())
+	/*if (m_Coll->IsCollEnemy())
 	{
 		DrawString(0, 0, "しんだ", GetColor(0, 255, 0));
-	}
+	}*/
 
 	if (m_Coll->IsCollItem())
 	{
@@ -197,4 +288,8 @@ void SceneMain::draw()
 	}
 
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "敵の数:%d", m_EnemyFactory->);
+}
+
+void SceneMain::IsItemPosition()
+{
 }
