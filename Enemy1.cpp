@@ -28,11 +28,12 @@ void Enemy1::update()
 	}
 
 	m_PlayerPos = m_Player->GetPos();
-	(this->*m_func)();
 
 	m_DistancePos = m_Pos - m_PlayerPos;
 
 	m_NextPos = m_Pos;
+	(this->*m_func)();
+
 
 	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
 	{
@@ -49,7 +50,12 @@ void Enemy1::UpdatePatrol()
 {
 	MoveEnemy();
 
-	m_Pos += m_Vec;
+	m_NextPos += m_Vec;
+
+	if (!m_CollRight && !m_CollLeft)
+	{
+		m_Pos = m_NextPos;
+	}
 }
 
 void Enemy1::UpdateDiscovery()
