@@ -35,7 +35,7 @@ public:
 	virtual void draw();
 
 	// アイテムの位置の調整
-	void IsItemPosition();
+	void IsItemPosition(int StageNum);
 
 private:
 	// プレイヤーのグラフィックハンドル
@@ -78,6 +78,9 @@ private:
 
 	// プレイヤーの攻撃力
 	int m_AttackPower;
+
+	// 今どこのステージをプレイしているか
+	int m_Stage;
 	
 	// プレイヤー
 	std::shared_ptr<Player> m_player;

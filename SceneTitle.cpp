@@ -2,6 +2,7 @@
 #include "SceneTitle.h"
 #include "SceneMain.h"
 #include"game.h"
+#include"Pad.h"
 
 namespace
 {
@@ -93,7 +94,8 @@ void SceneTitle::FadeinUpdate()
 
 void SceneTitle::TitleSceneUpdate()
 {
-	if (CheckHitKey(KEY_INPUT_Z))
+	Pad::update();
+	if (Pad::isTrigger(PAD_INPUT_10))
 	{
 		m_IsTitleEnd = true;
 		m_player->SetTitle(this);

@@ -54,7 +54,9 @@ m_Attack(false),
 m_HitAttack(false),
 m_IsMove(false),
 m_AttackPower(10),
-m_Hp(3),
+m_Hp(500000),
+m_MaxHp(3),
+m_NoDamageFrame(0),
 m_PossibleTwoJump(false),
 m_Exist(true),
 m_SceneTitle(nullptr)
@@ -83,7 +85,15 @@ void Player::end()
 
 void Player::update()
 {
-	if(!m_Exist) NotExist();
+	if (m_Hp <= 0)
+	{
+		m_Exist = false;
+	}
+
+	if (m_NoDamageFrame >= 0)
+	{
+		m_NoDamageFrame--;
+	}
 
 	CharaMove();
 
@@ -104,12 +114,15 @@ void Player::draw()
 		DrawTurnGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
 	}
 
+#ifdef _DEBUG
 	if (m_PossibleTwoJump)
 	{
 		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
 	}
 
+	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
+#endif
 }
 
 void Player::CharaMove()
@@ -118,16 +131,16 @@ void Player::CharaMove()
 
 	m_FrameChangeSpeed = 1;
 
-	if (CheckHitKey(KEY_INPUT_RIGHT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
+	if (Pad::isPress(PAD_INPUT_RIGHT) && Pad::isPress(PAD_INPUT_3))
 	{
 		IsMoveStartRight();
 		m_NowDash = true;
 		m_LookLeft = false;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-	//	m_pos.x += m_vec.x * 2;
+		//	m_pos.x += m_vec.x * 2;
 
-	//	if (m_CollRight) m_pos.x -= m_vec.x * 2;
+		//	if (m_CollRight) m_pos.x -= m_vec.x * 2;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_LEFT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
@@ -137,31 +150,31 @@ void Player::CharaMove()
 		m_LookLeft = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-	//	m_pos.x -= m_vec.x * 2;
-		
-	//	if(m_CollLeft) m_pos.x += m_vec.x * 2;
+		//	m_pos.x -= m_vec.x * 2;
+
+		//	if(m_CollLeft) m_pos.x += m_vec.x * 2;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_RIGHT))
 	{
-	//	IsMoveStop();
+		//	IsMoveStop();
 		m_LookLeft = false;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-	//	m_pos.x += m_vec.x;
+		//	m_pos.x += m_vec.x;
 
-	//	if (m_CollRight) m_pos.x -= m_vec.x;
+		//	if (m_CollRight) m_pos.x -= m_vec.x;
 	}
 
 	else if (CheckHitKey(KEY_INPUT_LEFT))
 	{
-	//	IsMoveStop();
+		//	IsMoveStop();
 		m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-	//	m_pos.x -= m_vec.x;
+		//	m_pos.x -= m_vec.x;
 
-	//
+		//
 		if (m_CollLeft) m_pos.x += m_vec.x;
 	}
 
@@ -172,13 +185,13 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_10) && !m_CollBottom && m_PossibleTwoJump)
+	if (Pad::isTrigger(PAD_INPUT_2) && !m_CollBottom && m_PossibleTwoJump)
 	{
 		m_NowJump = true;
 		m_TwoJump = true;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_10) && m_CollBottom)
+	if (Pad::isTrigger(PAD_INPUT_2) && m_CollBottom)
 	{
 		m_NowJump = true;
 		m_CollBottom = false;
@@ -186,10 +199,10 @@ void Player::CharaMove()
 
 	if (m_NowJump)
 	{
-   		CharaJump();
+		CharaJump();
 	}
 
-  	if (m_SceneTitle != nullptr)
+	if (m_SceneTitle != nullptr)
 	{
 		if (m_SceneTitle->isTitleEnd())
 		{
@@ -215,7 +228,7 @@ void Player::CharaMove()
 		m_FrameChangeSpeed = 3;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_1) && !m_Attack)
+	if (Pad::isTrigger(PAD_INPUT_9) && !m_Attack)
 	{
 		m_CharaGraphX = 0;
 		m_Attack = true;
@@ -249,6 +262,137 @@ void Player::CharaMove()
 	}
 	m_NowDash = false;
 
+	//if (CheckHitKey(KEY_INPUT_RIGHT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
+	//{
+	//	IsMoveStartRight();
+	//	m_NowDash = true;
+	//	m_LookLeft = false;
+	//	m_CharaGraphY = 3;
+	//	m_CharaMotion = 8;
+	////	m_pos.x += m_vec.x * 2;
+
+	////	if (m_CollRight) m_pos.x -= m_vec.x * 2;
+	//}
+
+	//else if (CheckHitKey(KEY_INPUT_LEFT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
+	//{
+	//	IsMoveStartLeft();
+	//	m_NowDash = true;
+	//	m_LookLeft = true;
+	//	m_CharaGraphY = 3;
+	//	m_CharaMotion = 8;
+	////	m_pos.x -= m_vec.x * 2;
+	//	
+	////	if(m_CollLeft) m_pos.x += m_vec.x * 2;
+	//}
+
+	//else if (CheckHitKey(KEY_INPUT_RIGHT))
+	//{
+	////	IsMoveStop();
+	//	m_LookLeft = false;
+	//	m_CharaGraphY = 2;
+	//	m_CharaMotion = 4;
+	////	m_pos.x += m_vec.x;
+
+	////	if (m_CollRight) m_pos.x -= m_vec.x;
+	//}
+
+	//else if (CheckHitKey(KEY_INPUT_LEFT))
+	//{
+	////	IsMoveStop();
+	//	m_LookLeft = true;
+	//	m_CharaGraphY = 2;
+	//	m_CharaMotion = 4;
+	////	m_pos.x -= m_vec.x;
+
+	////
+	//	if (m_CollLeft) m_pos.x += m_vec.x;
+	//}
+
+	//else
+	//{
+	//	IsMoveStop();
+	//	m_CharaGraphY = 0;
+	//	m_CharaMotion = 2;
+	//}
+
+	//if (Pad::isTrigger(PAD_INPUT_10) && !m_CollBottom && m_PossibleTwoJump)
+	//{
+	//	m_NowJump = true;
+	//	m_TwoJump = true;
+	//}
+
+	//if (Pad::isTrigger(PAD_INPUT_10) && m_CollBottom)
+	//{
+	//	m_NowJump = true;
+	//	m_CollBottom = false;
+	//}
+
+	//if (m_NowJump)
+	//{
+ //  		CharaJump();
+	//}
+
+ // 	if (m_SceneTitle != nullptr)
+	//{
+	//	if (m_SceneTitle->isTitleEnd())
+	//	{
+	//		m_CharaMotion = 8;
+	//		m_FrameChangeSpeed = 1;
+	//		m_CharaGraphY = 6;
+	//	}
+	//}
+
+	//if (!m_CollBottom && !m_NowJump)
+	//{
+	//	m_pos.y += m_Gravity;
+	//	m_Gravity += kGravity;
+	//}
+
+	//else
+	//{
+	//	m_Gravity = 0;
+	//}
+
+	//if (m_NowDash)
+	//{
+	//	m_FrameChangeSpeed = 3;
+	//}
+
+	//if (Pad::isTrigger(PAD_INPUT_1) && !m_Attack)
+	//{
+	//	m_CharaGraphX = 0;
+	//	m_Attack = true;
+	//	m_HitAttack = false;
+	//}
+
+	//if (m_Attack)
+	//{
+	//	m_FrameChangeSpeed = 9;
+	//	m_CharaMotion = 8;
+	//	m_CharaGraphY = 8;
+	//	if (m_CharaGraphX == 7)
+	//	{
+	//		m_Attack = false;
+	//		/*m_CharaGraphY = 0;
+	//		m_CharaMotion = 2;*/
+	//	}
+	//}
+
+	//m_FrameChangeChara += m_FrameChangeSpeed;
+
+	//if (m_FrameChangeChara >= kFrameTime)
+	//{
+	//	m_FrameChangeChara = 0;
+	//	m_CharaGraphX++;
+	//}
+
+	//if (m_CharaGraphX >= m_CharaMotion)
+	//{
+	//	m_CharaGraphX = 0;
+	//}
+	//m_NowDash = false;
+
 }
 
 void Player::CharaJump()
@@ -268,7 +412,7 @@ void Player::CharaJump()
 	m_CharaMotion = 8;
 	m_pos.y -= m_Jump;
 
-	if (CheckHitKey(KEY_INPUT_SPACE))
+	if (Pad::isPress(PAD_INPUT_2))
 	{
 		m_Jump -= kSmallGravity;
 	}
@@ -310,6 +454,7 @@ void Player::LimitMove()
 void Player::NotExist()
 {
 	m_Jump = 0;
+	m_Hp = m_MaxHp;
 }
 
 void Player::IsMoveStartLeft()
@@ -368,4 +513,9 @@ void Player::IsMoveStop()
 		m_StartMove = -kStartMoveSpeed;
 		m_pos.x += m_StartMove;
 	}
+}
+
+void Player::Ondamage()
+{
+	m_Hp--;
 }

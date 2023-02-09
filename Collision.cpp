@@ -9,7 +9,7 @@
 namespace
 {
 	// ƒvƒŒƒCƒ„[‚ÌUŒ‚‚Ì”ÍˆÍ
-	constexpr float kAttackRange = 80;
+	constexpr float kAttackRange = 50;
 }
 
 Collision::Collision() :
@@ -111,7 +111,7 @@ bool Collision::IsCollAttackPlayer()
 
 	if (m_player->GetLook())
 	{
-		if (PlayerPosLeft + kAttackRange > EnemyPosRight + kAttackRange) return false;
+		if (PlayerPosLeft - kAttackRange > EnemyPosRight) return false;
 		if (PlayerPosRight < EnemyPosLeft) return false;
 		if (PlayerPosUp > EnemyPosBottom)  return false;
 		if (PlayerPosBottom < EnemyPosUp)  return false;
@@ -120,7 +120,7 @@ bool Collision::IsCollAttackPlayer()
 	if (!m_player->GetLook())
 	{
 		if (PlayerPosLeft > EnemyPosRight) return false;
-		if (PlayerPosRight + kAttackRange < EnemyPosLeft + kAttackRange) return false;
+		if (PlayerPosRight + kAttackRange < EnemyPosLeft) return false;
 		if (PlayerPosUp > EnemyPosBottom)  return false;
 		if (PlayerPosBottom < EnemyPosUp)  return false;
 	}

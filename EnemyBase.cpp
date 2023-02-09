@@ -7,7 +7,7 @@
 
 namespace
 {
-	constexpr float kKnockBackSpeedDown = 0.3f;
+	constexpr float kKnockBackSpeedDown = 1.0f;
 }
 
 EnemyBase::EnemyBase() : 
@@ -20,7 +20,7 @@ EnemyBase::EnemyBase() :
 	m_Hp(30),
 	m_HitAttack(false),
 	m_KnockBackSpeed(12.0f),
-	m_MaxKnockBackSpeed(12.0f),
+	m_MaxKnockBackSpeed(17.0f),
 	m_MoveInverseDirection(1),
 	m_MapVec(0,0),
 	m_Exist(true),
@@ -55,6 +55,10 @@ void EnemyBase::draw()
 {
 	if(m_Exist)
 	DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50,m_Pos.y + 50,GetColor(255, 0, 0), true);
+
+#ifdef _DEBUG
+	DrawFormatString(0, 100, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
+#endif
 }
 
 void EnemyBase::MoveEnemy()
@@ -132,4 +136,9 @@ void EnemyBase::KnockBack()
 			m_KnockBackSpeed -= kKnockBackSpeedDown;
 		}
 	}
+}
+
+void EnemyBase::OnDamage(int damage)
+{
+	m_Hp -= damage;
 }

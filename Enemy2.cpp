@@ -54,9 +54,9 @@ void Enemy2::draw()
 	if (m_Exist)
 		DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50, m_Pos.y + 50, GetColor(0, 255, 0), true);
 
-#ifdef _DEBUG
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
-#endif
+//#ifdef _DEBUG
+//	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
+//#endif
 }
 
 void Enemy2::UpdatePatrol()

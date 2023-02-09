@@ -25,10 +25,6 @@ public:
 
 	virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }
 
-	// エネミーの体力
-	void SetHp(int Hp) { m_Hp = Hp; }
-	int GetHp() { return m_Hp; }
-
 	// 攻撃がヒット
 	void SetHit(bool HitAttack) { m_HitAttack = HitAttack; }
 	bool GetHit() { return m_HitAttack; }
@@ -47,7 +43,9 @@ public:
 
 	virtual void InitKnockBack(); // ノックバックのスピードを初期化
 
-	virtual void KnockBack();
+	virtual void KnockBack(); // ノックバック処理
+
+	virtual void OnDamage(int damage); // ダメージを受けた時の処理
 
 	// 存在確認
 	bool isExist() const { return m_Exist; }

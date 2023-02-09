@@ -38,6 +38,7 @@ public:
 	void SetCollItemTwoJump(bool TwoJump) { m_PossibleTwoJump = TwoJump; }
 
 	void SetExist(bool Exist) { m_Exist = Exist; }
+	bool GetExist() { return m_Exist; }
 
 	Vec2 GetPos() const { return m_pos; }
 
@@ -53,6 +54,10 @@ public:
 	// 攻撃ヒット確認
 	void SetHitAttack(bool HitAttack) { m_HitAttack = HitAttack; }
 	bool GetHitAttack() { return m_HitAttack; }
+
+	// 無敵時間
+	void SetNoDamageFrame(int NoDamage) { m_NoDamageFrame = NoDamage; }
+	int GetNoDamageFrame() { return m_NoDamageFrame; }
 
 	void Init();
 	void end();
@@ -80,6 +85,9 @@ public:
 
 	// プレイヤーが止まったときの処理
 	void IsMoveStop();
+
+	//// 敵の攻撃が当たった時
+	void Ondamage();
 
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
@@ -152,6 +160,11 @@ private:
 
 	// プレイヤーの体力
 	int m_Hp;
+	// プレイヤーの最大体力
+	int m_MaxHp;
+
+	// プレイヤーの無敵時間
+	int m_NoDamageFrame;
 
 	// キャラクターの存在確認
 	bool m_Exist;

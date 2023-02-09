@@ -12,7 +12,7 @@ namespace
 
 Enemy1::Enemy1()
 {
-	m_Hp = 1000;
+	m_Hp = 30;
 	m_func = &Enemy1::UpdatePatrol;
 }
 

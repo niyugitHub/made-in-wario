@@ -33,6 +33,7 @@ SceneMain::SceneMain() :
 	m_ItemNum(25),
 	m_StageItemNum(5),
 	m_AttackPower(10),
+	m_Stage(0),
 	m_Exist(true),
 	m_Coll(nullptr)
 {
@@ -57,12 +58,8 @@ SceneMain::SceneMain() :
 		pItem->SetItemType(ItemType::kAttackUp);
 	}
 
-	for (int i = 0; i < kItemNum; i++)
-	{
-		/*m_Item[i] = std::make_shared<Item>();*/
-		m_Item[0]->SetPos(m_ItemPos);
-		m_Item[0]->SetItemType(ItemType::kTwoJump);
-	}
+	m_Item[0]->SetPos(m_ItemPos);
+	m_Item[0]->SetItemType(ItemType::kTwoJump);
 
 	m_Map->setPlayer(m_player);
 
@@ -131,20 +128,34 @@ void SceneMain::end()
 
 SceneBase* SceneMain::update()
 {
-	if (!m_Exist)
+	if (!m_player->GetExist())
 	{
+		m_player->NotExist();
 		m_Map->SetMap(m_MapPos);
-		m_PlayerPos.y = 500;
-		m_PlayerPos.x = 500;
+		m_PlayerPos.y = Player::kFristPlayerPosY;
+		m_PlayerPos.x = Player::kFristPlayerPosX;
 		m_player->SetPos(m_PlayerPos);
 		m_Exist = true;
 		m_player->SetExist(m_Exist);
+
+		for (auto& pItem : m_Item)
+		{
+			pItem->SetItemType(ItemType::kAttackUp);
+		}
+
+		m_Item[0]->SetPos(m_ItemPos);
+		m_Item[0]->SetItemType(ItemType::kTwoJump);
+
+		m_EnemyFactory = std::make_shared<EnemyFactory>();
+		m_Coll->setEnemy(m_EnemyFactory);
+		m_EnemyFactory->SetPlayer(m_player);
+		m_EnemyFactory->SetMap(m_Map);
+		m_EnemyFactory->SetColl(m_Coll);
 	}
 
 	if (m_Coll->FallPlayer())
 	{
-		m_Exist = false;
-		m_player->SetExist(m_Exist);
+		m_player->SetExist(false);
 	}
 	/*m_EnemyFactory->Update();*/
 
@@ -186,8 +197,9 @@ SceneBase* SceneMain::update()
 				m_player->SetAttackPower(m_AttackPower);
 			}
 		}*/
+		IsItemPosition(1);
 
-		for (int i = 0; i < kItemNum; i++)
+		for (int i = m_Stage - 1; i < m_Stage * 5; i++)
 		{
 			if (m_ItemExist[i])
 			{
@@ -258,7 +270,27 @@ void SceneMain::draw()
 	m_player->draw();
 //	m_Item->Draw();
 
-	for (auto& pItem : m_Item)
+	for (int i = 0; i < kStageItemNum; i++)
+	{
+		m_Item[i]->Draw();
+
+#ifdef _DEBUG
+		if (m_Item[i]->GetExist())
+		{
+			if (m_Item[i]->GetItemType() == ItemType::kTwoJump)
+			{
+				DrawString(m_Item[i]->GetPos().x, m_Item[i]->GetPos().y, "ジャンプ", GetColor(0, 255, 0));
+			}
+
+			if (m_Item[i]->GetItemType() == ItemType::kAttackUp)
+			{
+				DrawString(m_Item[i]->GetPos().x, m_Item[i]->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
+			}
+		}
+#endif
+	}
+
+	/*for (auto& pItem : m_Item)
 	{
 		pItem->Draw();
 
@@ -276,7 +308,7 @@ void SceneMain::draw()
 			}
 		}
 #endif
-	}
+	}*/
 
 	/*if (m_Enemy != nullptr)
 	{
@@ -290,6 +322,7 @@ void SceneMain::draw()
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "敵の数:%d", m_EnemyFactory->);
 }
 
-void SceneMain::IsItemPosition()
+void SceneMain::IsItemPosition(int StageNum)
 {
+	m_Stage = StageNum;
 }

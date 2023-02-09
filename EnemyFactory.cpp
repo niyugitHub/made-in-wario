@@ -10,7 +10,6 @@
 EnemyFactory::EnemyFactory() : 
 	m_EnemyName(kNormal),
 	m_Frame(0),
-	m_Hp(0),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollRight(false),
@@ -81,9 +80,11 @@ void EnemyFactory::Update()
 
 			m_Coll->Update();
 
-			if (m_Coll->IsCollEnemy())
+			if (m_Coll->IsCollEnemy() && m_Player->GetNoDamageFrame() <= 0)
 			{
 				DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
+				m_Player->Ondamage();
+				m_Player->SetNoDamageFrame(100);
 			}
 
 			// エネミーとマップの当たり判定
@@ -103,11 +104,8 @@ void EnemyFactory::Update()
 			{
 				m_Player->SetHitAttack(true);
 				enemy->SetHit(true);
-				m_Hp = enemy->GetHp();
-				m_Hp -= m_Player->GetAttackPower();
-				enemy->SetHp(m_Hp);
+				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
-				//enemy->setExist(false);
 			}
 
 			if (enemy->GetHit())
@@ -127,8 +125,14 @@ void EnemyFactory::Draw()
 			enemy->draw();
 		}
 	}
-	
+#ifdef _DEBUG
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "敵の数%d", m_Enemy.size());
+
+	if (m_Player->GetNoDamageFrame() > 0)
+	{
+		DrawFormatString(0, 200, GetColor(255, 255, 255), "無敵時間%d", m_Player->GetNoDamageFrame());
+	}
+#endif
 }
 
 std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
@@ -166,7 +170,7 @@ void EnemyFactory::Stage1Enemy()
 
 	if (m_Frame == 1)
 	{
-		/*Create(kJump, { 300,600 });
+		Create(kJump, { 300,600 });
 		Create(kJump, { 1500,600 });
 		Create(kJump, { 1500,600 });
 		Create(kJump, { 1600,600 });
@@ -178,9 +182,9 @@ void EnemyFactory::Stage1Enemy()
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });
 		Create(kJump, { 4000,600 });
-		Create(kJump, { 1500,600 });*/
+		Create(kJump, { 1500,600 });
 		Create(kNormal, { 1000,600 });
-		/*Create(kNormal, { 3000,800 });
+		Create(kNormal, { 3000,800 });
 		Create(kNormal, { 4000,800 });
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 1500,600 });
@@ -190,7 +194,7 @@ void EnemyFactory::Stage1Enemy()
 		Create(kNormal, { 1500,600 });
 		Create(kNormal, { 1500,600 });
 		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });*/
+		Create(kNormal, { 1500,600 });
 
 	}
 
