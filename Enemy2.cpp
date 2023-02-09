@@ -22,6 +22,7 @@ Enemy2::Enemy2() :
 	m_FlySpeed(-kMoveFly),
 	m_FieldSpeed(0.0f)
 {
+	m_Hp = 50;
 	m_func = &Enemy2::UpdatePatrol;
 }
 
@@ -31,7 +32,7 @@ Enemy2::~Enemy2()
 
 void Enemy2::update()
 {
-	if (m_Hp < -1110)
+	if (m_Hp <= 0)
 	{
 		m_Exist = false;
 	}
@@ -52,6 +53,10 @@ void Enemy2::draw()
 {
 	if (m_Exist)
 		DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50, m_Pos.y + 50, GetColor(0, 255, 0), true);
+
+#ifdef _DEBUG
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
+#endif
 }
 
 void Enemy2::UpdatePatrol()

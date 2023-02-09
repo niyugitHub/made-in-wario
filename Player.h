@@ -50,6 +50,10 @@ public:
 	bool GetAttack() { return m_Attack; }
 	bool GetLook() { return m_LookLeft; }
 
+	// 攻撃ヒット確認
+	void SetHitAttack(bool HitAttack) { m_HitAttack = HitAttack; }
+	bool GetHitAttack() { return m_HitAttack; }
+
 	void Init();
 	void end();
 
@@ -136,6 +140,9 @@ private:
 
 	// キャラクターが攻撃をしたとき
 	bool m_Attack;
+
+	// 攻撃がヒットしたとき
+	bool m_HitAttack;
 
 	// 動きを開始したときのフラグ
 	bool m_IsMove;

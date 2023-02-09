@@ -51,6 +51,7 @@ m_CollBottom(false),
 m_CollLeft(false),
 m_CollRight(false),
 m_Attack(false),
+m_HitAttack(false),
 m_IsMove(false),
 m_AttackPower(10),
 m_Hp(3),
@@ -143,7 +144,7 @@ void Player::CharaMove()
 
 	else if (CheckHitKey(KEY_INPUT_RIGHT))
 	{
-		IsMoveStop();
+	//	IsMoveStop();
 		m_LookLeft = false;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
@@ -154,7 +155,7 @@ void Player::CharaMove()
 
 	else if (CheckHitKey(KEY_INPUT_LEFT))
 	{
-		IsMoveStop();
+	//	IsMoveStop();
 		m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
@@ -218,6 +219,7 @@ void Player::CharaMove()
 	{
 		m_CharaGraphX = 0;
 		m_Attack = true;
+		m_HitAttack = false;
 	}
 
 	if (m_Attack)

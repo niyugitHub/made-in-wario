@@ -2,8 +2,13 @@
 
 namespace Game
 {
+#ifdef _DEBUG
 	// ウインドウモード設定
 	constexpr bool kWindowMode = true;
+#else
+	constexpr bool kWindowMode = false;
+#endif
+
 	// ウインドウ名
 	const char* const kTitleText = "ゲーム名";
 	// ウインドウサイズ

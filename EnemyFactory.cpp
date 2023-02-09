@@ -58,6 +58,14 @@ void EnemyFactory::Update()
 	//ŽÀÛ‚É”ÍˆÍ‚ðŽw’è‚µ‚ÄÁ‚·
 	m_Enemy.erase(rmIt, m_Enemy.end());
 	//‚±‚±‚Ü‚Å‚â‚ç‚È‚¢‚ÆŽÀÛ‚É‚ÍÁ‚¦‚È‚¢‚Ì‚Å’ˆÓ
+
+	for (auto& enemy : m_Enemy)
+	{
+		if (!m_Player->GetHitAttack())
+		{
+			enemy->SetHit(false);
+		}
+	}
 	
 	for (auto& enemy : m_Enemy)
 	{
@@ -66,6 +74,8 @@ void EnemyFactory::Update()
 			m_Coll->InitColl();
 
 			enemy->update();
+			
+			/*enemy->update();*/
 
 			m_Pos = enemy->GetPos();
 
@@ -89,13 +99,20 @@ void EnemyFactory::Update()
 
 			enemy->SetPos(m_Pos);
 
-			if (m_Coll->IsCollAttackPlayer() && enemy->GetHit(true))
+			if (m_Coll->IsCollAttackPlayer() && !enemy->GetHit())
 			{
-				enemy->GetHit(true);
+				m_Player->SetHitAttack(true);
+				enemy->SetHit(true);
 				m_Hp = enemy->GetHp();
 				m_Hp -= m_Player->GetAttackPower();
 				enemy->SetHp(m_Hp);
+				enemy->InitKnockBack();
 				//enemy->setExist(false);
+			}
+
+			if (enemy->GetHit())
+			{
+				enemy->KnockBack();
 			}
 		}
 	}
@@ -149,8 +166,8 @@ void EnemyFactory::Stage1Enemy()
 
 	if (m_Frame == 1)
 	{
-		Create(kJump, { 300,600 });
-		/*Create(kJump, { 1500,600 });
+		/*Create(kJump, { 300,600 });
+		Create(kJump, { 1500,600 });
 		Create(kJump, { 1500,600 });
 		Create(kJump, { 1600,600 });
 		Create(kJump, { 1700,600 });
@@ -161,9 +178,9 @@ void EnemyFactory::Stage1Enemy()
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });
 		Create(kJump, { 4000,600 });
-		Create(kJump, { 1500,600 });
+		Create(kJump, { 1500,600 });*/
 		Create(kNormal, { 1000,600 });
-		Create(kNormal, { 3000,800 });
+		/*Create(kNormal, { 3000,800 });
 		Create(kNormal, { 4000,800 });
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 1500,600 });

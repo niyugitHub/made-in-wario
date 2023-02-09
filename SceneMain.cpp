@@ -262,15 +262,20 @@ void SceneMain::draw()
 	{
 		pItem->Draw();
 
-		if (pItem->GetItemType() == ItemType::kTwoJump)
+#ifdef _DEBUG
+		if (pItem->GetExist())
 		{
-			DrawString(pItem->GetPos().x, pItem->GetPos().y,"ジャンプ", GetColor(0, 255, 0));
-		}
+			if (pItem->GetItemType() == ItemType::kTwoJump)
+			{
+				DrawString(pItem->GetPos().x, pItem->GetPos().y,"ジャンプ", GetColor(0, 255, 0));
+			}
 
-		if (pItem->GetItemType() == ItemType::kAttackUp)
-		{
-			DrawString(pItem->GetPos().x, pItem->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
+			if (pItem->GetItemType() == ItemType::kAttackUp)
+			{
+				DrawString(pItem->GetPos().x, pItem->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
+			}
 		}
+#endif
 	}
 
 	/*if (m_Enemy != nullptr)
@@ -281,11 +286,6 @@ void SceneMain::draw()
 	{
 		DrawString(0, 0, "しんだ", GetColor(0, 255, 0));
 	}*/
-
-	if (m_Coll->IsCollItem())
-	{
-		DrawString(300, 0, "aafakla", GetColor(0, 255, 0));
-	}
 
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "敵の数:%d", m_EnemyFactory->);
 }

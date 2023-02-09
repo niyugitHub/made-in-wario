@@ -5,6 +5,11 @@
 #include <Dxlib.h>
 #include <cassert>
 
+namespace
+{
+	constexpr float kKnockBackSpeedDown = 0.3f;
+}
+
 EnemyBase::EnemyBase() : 
 	m_Pos(1600,500),
 	m_Vec(3,0),
@@ -13,6 +18,9 @@ EnemyBase::EnemyBase() :
 	m_DistancePos(0,0),
 	m_Gravity(0),
 	m_Hp(30),
+	m_HitAttack(false),
+	m_KnockBackSpeed(12.0f),
+	m_MaxKnockBackSpeed(12.0f),
 	m_MoveInverseDirection(1),
 	m_MapVec(0,0),
 	m_Exist(true),
@@ -101,4 +109,27 @@ void EnemyBase::BasicMoveEnemy()
 	m_Vec.x *= m_MoveInverseDirection;
 
 	m_Vec.x += m_MapVec.x;
+}
+
+void EnemyBase::InitKnockBack()
+{
+	m_KnockBackSpeed = m_MaxKnockBackSpeed;
+}
+
+void EnemyBase::KnockBack()
+{
+	if (m_KnockBackSpeed > 0)
+	{
+		if (m_Player->GetPos().x < m_Pos.x)
+		{
+			m_Pos.x += m_KnockBackSpeed;
+			m_KnockBackSpeed -= kKnockBackSpeedDown;
+		}
+
+		else if (m_Player->GetPos().x >= m_Pos.x)
+		{
+			m_Pos.x -= m_KnockBackSpeed;
+			m_KnockBackSpeed -= kKnockBackSpeedDown;
+		}
+	}
 }

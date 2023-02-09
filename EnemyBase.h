@@ -30,7 +30,8 @@ public:
 	int GetHp() { return m_Hp; }
 
 	// 攻撃がヒット
-	bool SetHit(bool HitAttack) {  HitAttack; }
+	void SetHit(bool HitAttack) { m_HitAttack = HitAttack; }
+	bool GetHit() { return m_HitAttack; }
 
 	virtual void Init();
 	virtual void end();
@@ -43,6 +44,10 @@ public:
 	virtual void MoveEnemy();
 
 	virtual void BasicMoveEnemy();
+
+	virtual void InitKnockBack(); // ノックバックのスピードを初期化
+
+	virtual void KnockBack();
 
 	// 存在確認
 	bool isExist() const { return m_Exist; }
@@ -67,6 +72,11 @@ protected:
 
 	int m_Hp; // 敵の体力
 
+	bool m_HitAttack; // プレイヤーの攻撃がヒットしたとき
+
+	float m_KnockBackSpeed; // ノックバックのスピード
+	float m_MaxKnockBackSpeed; // ノックバック時の最大スピード
+
 	// 壁に当たった時に逆方向に進むための変数
 	int m_MoveInverseDirection;
 
@@ -81,8 +91,6 @@ protected:
 	bool m_CollBottom;
 	bool m_CollLeft;
 	bool m_CollRight;
-
-	bool m_HitAttack
 
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;

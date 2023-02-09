@@ -12,6 +12,7 @@ namespace
 
 Enemy1::Enemy1()
 {
+	m_Hp = 1000;
 	m_func = &Enemy1::UpdatePatrol;
 }
 
@@ -21,6 +22,11 @@ Enemy1::~Enemy1()
 
 void Enemy1::update()
 {
+	if (m_Hp <= 0)
+	{
+		m_Exist = false;
+	}
+
 	m_PlayerPos = m_Player->GetPos();
 	(this->*m_func)();
 
