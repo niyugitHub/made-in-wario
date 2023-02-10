@@ -59,6 +59,9 @@ public:
 	void SetNoDamageFrame(int NoDamage) { m_NoDamageFrame = NoDamage; }
 	int GetNoDamageFrame() { return m_NoDamageFrame; }
 
+	// 敵座標取得
+	void SetEnemyPos(Vec2 EnemyPos) { m_EnemyPos = EnemyPos; };
+
 	void Init();
 	void end();
 
@@ -89,12 +92,18 @@ public:
 	//// 敵の攻撃が当たった時
 	void Ondamage();
 
+	// ノックバック処理
+	void IsKnockBack(Vec2 EnemyPos);
+
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
 private:
 	Vec2 m_pos;
 	Vec2 m_vec;
+
+	// 敵座標取得
+	Vec2 m_EnemyPos;
 
 	float m_StartMove;
 
@@ -165,6 +174,9 @@ private:
 
 	// プレイヤーの無敵時間
 	int m_NoDamageFrame;
+
+	// ノックバックスピード
+	float m_KnockBack;
 
 	// キャラクターの存在確認
 	bool m_Exist;

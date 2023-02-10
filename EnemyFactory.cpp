@@ -85,6 +85,7 @@ void EnemyFactory::Update()
 				DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
 				m_Player->Ondamage();
 				m_Player->SetNoDamageFrame(100);
+				m_Player->SetEnemyPos(m_Pos);
 			}
 
 			// エネミーとマップの当たり判定

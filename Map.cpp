@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "game.h"
 #include"Player.h"
+#include "Pad.h"
 
 namespace
 {
@@ -85,24 +86,24 @@ void Map::update()
 	m_Vec.x = 0;
 	m_Vec.y = 0;
 
-	if (CheckHitKey(KEY_INPUT_RIGHT))
+	if (Pad::isPress(PAD_INPUT_RIGHT))
 	{
 		if (!m_CollRight)
 		{
 			m_Vec.x -= 5;
-			if (CheckHitKey(KEY_INPUT_RSHIFT) || CheckHitKey(KEY_INPUT_LSHIFT))
+			if (Pad::isPress(PAD_INPUT_3))
 			{
 				m_Vec.x -= 5;
 			}
 		}
 	}
 
-	if (CheckHitKey(KEY_INPUT_LEFT))
+	if (Pad::isPress(PAD_INPUT_LEFT))
 	{
 		if (!m_CollLeft)
 		{
 			m_Vec.x += 5;
-			if (CheckHitKey(KEY_INPUT_RSHIFT) || CheckHitKey(KEY_INPUT_LSHIFT))
+			if (Pad::isPress(PAD_INPUT_3))
 			{
 				m_Vec.x += 5;
 			}

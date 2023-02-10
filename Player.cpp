@@ -27,7 +27,14 @@ namespace
 
 	// 動き始めのプレイヤーのスピード減少
 	constexpr float kStartMoveSpeedDown = 0.2f;
+
+	// ノックバック時のスピード減少量
+	constexpr float kKnockBackSpeed = 12.0f;
+	// ノックバック時のスピード減少量
+	constexpr float kKnockBackSpeedDown = 0.5f;
 }
+
+//Player::Player(handle) :m_handle = handle 
 
 Player::Player() :
 m_pos(kFristPlayerPosX, kFristPlayerPosY),
@@ -57,6 +64,7 @@ m_AttackPower(10),
 m_Hp(500000),
 m_MaxHp(3),
 m_NoDamageFrame(0),
+m_KnockBack(kKnockBackSpeed),
 m_PossibleTwoJump(false),
 m_Exist(true),
 m_SceneTitle(nullptr)
@@ -90,9 +98,20 @@ void Player::update()
 		m_Exist = false;
 	}
 
+	if (m_NoDamageFrame == 100)
+	{
+		m_Jump = 0;
+		m_KnockBack = kKnockBackSpeed;
+	}
+
 	if (m_NoDamageFrame >= 0)
 	{
 		m_NoDamageFrame--;
+	}
+
+	if (m_NoDamageFrame > 0)
+	{
+		IsKnockBack(m_EnemyPos);
 	}
 
 	CharaMove();
@@ -104,6 +123,24 @@ void Player::draw()
 {
 	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 
+#ifdef _DEBUG
+	if (m_PossibleTwoJump)
+	{
+		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
+	}
+
+	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
+	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
+#endif
+
+	if (m_NoDamageFrame > 0)
+	{
+		if ((m_NoDamageFrame / 10) % 2 == 0)
+		{
+			return;
+		}
+	}
+
 	if (!m_LookLeft)
 	{
 		DrawGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
@@ -114,15 +151,6 @@ void Player::draw()
 		DrawTurnGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
 	}
 
-#ifdef _DEBUG
-	if (m_PossibleTwoJump)
-	{
-		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
-	}
-
-	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
-	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
-#endif
 }
 
 void Player::CharaMove()
@@ -133,9 +161,9 @@ void Player::CharaMove()
 
 	if (Pad::isPress(PAD_INPUT_RIGHT) && Pad::isPress(PAD_INPUT_3))
 	{
+		if (!m_Attack) m_LookLeft = false;
 		IsMoveStartRight();
 		m_NowDash = true;
-		m_LookLeft = false;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
 		//	m_pos.x += m_vec.x * 2;
@@ -143,11 +171,11 @@ void Player::CharaMove()
 		//	if (m_CollRight) m_pos.x -= m_vec.x * 2;
 	}
 
-	else if (CheckHitKey(KEY_INPUT_LEFT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
+	else if (Pad::isPress(PAD_INPUT_LEFT) && Pad::isPress(PAD_INPUT_3))
 	{
+		if (!m_Attack) m_LookLeft = true;
 		IsMoveStartLeft();
 		m_NowDash = true;
-		m_LookLeft = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
 		//	m_pos.x -= m_vec.x * 2;
@@ -155,10 +183,11 @@ void Player::CharaMove()
 		//	if(m_CollLeft) m_pos.x += m_vec.x * 2;
 	}
 
-	else if (CheckHitKey(KEY_INPUT_RIGHT))
+	else if (Pad::isPress(PAD_INPUT_RIGHT))
 	{
 		//	IsMoveStop();
-		m_LookLeft = false;
+		if(!m_Attack) m_LookLeft = false;
+		
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
 		//	m_pos.x += m_vec.x;
@@ -166,10 +195,10 @@ void Player::CharaMove()
 		//	if (m_CollRight) m_pos.x -= m_vec.x;
 	}
 
-	else if (CheckHitKey(KEY_INPUT_LEFT))
+	else if (Pad::isPress(PAD_INPUT_LEFT))
 	{
 		//	IsMoveStop();
-		m_LookLeft = true;
+		if (!m_Attack) m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
 		//	m_pos.x -= m_vec.x;
@@ -185,13 +214,13 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_2) && !m_CollBottom && m_PossibleTwoJump)
+	if (Pad::isTrigger(PAD_INPUT_1) && !m_CollBottom && m_PossibleTwoJump)
 	{
 		m_NowJump = true;
 		m_TwoJump = true;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_2) && m_CollBottom)
+	if (Pad::isTrigger(PAD_INPUT_1) && m_CollBottom)
 	{
 		m_NowJump = true;
 		m_CollBottom = false;
@@ -228,7 +257,7 @@ void Player::CharaMove()
 		m_FrameChangeSpeed = 3;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_9) && !m_Attack)
+	if (Pad::isTrigger(PAD_INPUT_5) || Pad::isTrigger(PAD_INPUT_6) && !m_Attack)
 	{
 		m_CharaGraphX = 0;
 		m_Attack = true;
@@ -412,7 +441,7 @@ void Player::CharaJump()
 	m_CharaMotion = 8;
 	m_pos.y -= m_Jump;
 
-	if (Pad::isPress(PAD_INPUT_2))
+	if (Pad::isPress(PAD_INPUT_1))
 	{
 		m_Jump -= kSmallGravity;
 	}
@@ -423,13 +452,13 @@ void Player::CharaJump()
 
 	if (/*m_pos.y >= Game::kScreenHeight - kColumnSize ||*/ m_CollBottom)
 	{
-		if (m_Jump < 0)
+		if (m_Jump <= 0)
 		{
 			m_UseTwoJump = false;
 			m_TwoJump = false;
 			m_NowJump = false;
-		//	m_pos.y = Game::kScreenHeight - kColumnSize;
 			m_Jump = 14;
+		//	m_pos.y = Game::kScreenHeight - kColumnSize;
 		}
 	}
 
@@ -518,4 +547,17 @@ void Player::IsMoveStop()
 void Player::Ondamage()
 {
 	m_Hp--;
+}
+
+void Player::IsKnockBack(Vec2 EnemyPos)
+{
+	Vec2 vel = m_pos - EnemyPos;
+
+	vel = vel.normalize();
+	vel *= m_KnockBack;
+	m_KnockBack -= kKnockBackSpeedDown;
+	if (m_KnockBack > 0)
+	{
+		m_pos += vel;
+	}
 }
