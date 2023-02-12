@@ -81,10 +81,7 @@ public:
 	void NotExist();
 
 	// プレイヤーの動き初めの処理
-	void IsMoveStartLeft();
-
-	// プレイヤーの動き初めの処理
-	void IsMoveStartRight();
+	void IsMoveStart();
 
 	// プレイヤーが止まったときの処理
 	void IsMoveStop();
@@ -160,9 +157,6 @@ private:
 
 	// 攻撃がヒットしたとき
 	bool m_HitAttack;
-
-	// 動きを開始したときのフラグ
-	bool m_IsMove;
 
 	// プレイヤーの攻撃力　
 	int m_AttackPower;

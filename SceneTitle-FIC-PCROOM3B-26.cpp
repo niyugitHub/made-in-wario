@@ -94,6 +94,7 @@ void SceneTitle::FadeinUpdate()
 
 void SceneTitle::TitleSceneUpdate()
 {
+	Pad::update();
 	if (Pad::isTrigger(PAD_INPUT_10))
 	{
 		m_IsTitleEnd = true;

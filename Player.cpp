@@ -23,10 +23,7 @@ namespace
 	constexpr float kSmallGravity = 0.5f;
 
 	// 動き始めのプレイヤーのスピード
-	constexpr float kStartMoveSpeed = 4.0f;
-
-	// 動き始めのプレイヤーのスピード減少
-	constexpr float kStartMoveSpeedDown = 0.2f;
+	constexpr float kStartMoveSpeed = 6.0f;
 
 	// ノックバック時のスピード減少量
 	constexpr float kKnockBackSpeed = 12.0f;
@@ -37,9 +34,9 @@ namespace
 //Player::Player(handle) :m_handle = handle 
 
 Player::Player() :
-m_pos(kFristPlayerPosX, kFristPlayerPosY),
+m_pos(kFristPlayerPosX + (kSideSize / 2), kFristPlayerPosY),
 m_vec(3, 0),
-m_StartMove(kStartMoveSpeed),
+m_StartMove(0),
 m_Jump(14.0f),
 m_CharaGraphX(0),
 m_CharaGraphY(0),
@@ -59,7 +56,6 @@ m_CollLeft(false),
 m_CollRight(false),
 m_Attack(false),
 m_HitAttack(false),
-m_IsMove(false),
 m_AttackPower(10),
 m_Hp(500000),
 m_MaxHp(3),
@@ -93,6 +89,8 @@ void Player::end()
 
 void Player::update()
 {
+	IsMoveStart();
+
 	if (m_Hp <= 0)
 	{
 		m_Exist = false;
@@ -109,10 +107,10 @@ void Player::update()
 		m_NoDamageFrame--;
 	}
 
-	if (m_NoDamageFrame > 0)
+	/*if (m_NoDamageFrame > 0)
 	{
 		IsKnockBack(m_EnemyPos);
-	}
+	}*/
 
 	CharaMove();
 
@@ -162,7 +160,6 @@ void Player::CharaMove()
 	if (Pad::isPress(PAD_INPUT_RIGHT) && Pad::isPress(PAD_INPUT_3))
 	{
 		if (!m_Attack) m_LookLeft = false;
-		IsMoveStartRight();
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
@@ -174,7 +171,6 @@ void Player::CharaMove()
 	else if (Pad::isPress(PAD_INPUT_LEFT) && Pad::isPress(PAD_INPUT_3))
 	{
 		if (!m_Attack) m_LookLeft = true;
-		IsMoveStartLeft();
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
@@ -185,7 +181,6 @@ void Player::CharaMove()
 
 	else if (Pad::isPress(PAD_INPUT_RIGHT))
 	{
-		//	IsMoveStop();
 		if(!m_Attack) m_LookLeft = false;
 		
 		m_CharaGraphY = 2;
@@ -197,7 +192,6 @@ void Player::CharaMove()
 
 	else if (Pad::isPress(PAD_INPUT_LEFT))
 	{
-		//	IsMoveStop();
 		if (!m_Attack) m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
@@ -214,17 +208,17 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_1) && !m_CollBottom && m_PossibleTwoJump)
+	if (Pad::isTrigger(PAD_INPUT_1) && m_NowJump && !m_UseTwoJump)
 	{
-		m_NowJump = true;
 		m_TwoJump = true;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_1) && m_CollBottom)
+	if (Pad::isTrigger(PAD_INPUT_1) && !m_NowJump/* && !m_CollBottom && m_PossibleTwoJump*/)
 	{
+		m_Jump = 14;
 		m_NowJump = true;
-		m_CollBottom = false;
 	}
+
 
 	if (m_NowJump)
 	{
@@ -290,8 +284,151 @@ void Player::CharaMove()
 		m_CharaGraphX = 0;
 	}
 	m_NowDash = false;
+}
 
-	//if (CheckHitKey(KEY_INPUT_RIGHT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
+void Player::CharaJump()
+{
+	if (m_TwoJump && m_PossibleTwoJump)
+	{
+		m_TwoJump = false;
+		m_UseTwoJump = true;
+		m_Jump = 14;
+	}
+	if (m_CollTop)
+	{
+		if(m_Jump > 0) m_Jump = 0;
+	}
+	m_FrameChangeSpeed = 3;
+	m_CharaGraphY = 5;
+	m_CharaMotion = 8;
+	m_pos.y -= m_Jump;
+
+	if (Pad::isPress(PAD_INPUT_1))
+	{
+		m_Jump -= kSmallGravity;
+	}
+	else
+	{
+		m_Jump -= kBigGravity;
+	}
+
+	if (/*m_pos.y >= Game::kScreenHeight - kColumnSize ||*/ m_CollBottom)
+	{
+		if (m_Jump <= 0)
+		{
+			m_TwoJump = false;
+			m_NowJump = false;
+			m_UseTwoJump = false;
+			m_Jump = 14;
+		//	m_pos.y = Game::kScreenHeight - kColumnSize;
+		}
+	}
+
+}
+
+void Player::LimitMove()
+{
+	if (m_pos.x < 0 - 35)
+	{
+		m_pos.x = -35;
+	}
+	if (m_pos.x > Game::kScreenWidth - kSideSize + 35)
+	{
+		m_pos.x = Game::kScreenWidth - kSideSize + 35;
+	}
+	/*if (m_pos.y > Game::kScreenHeight - kColumnSize)
+	{
+		m_pos.y = Game::kScreenHeight - kColumnSize;
+	}*/
+}
+
+void Player::NotExist()
+{
+	m_Jump = 0;
+	m_Hp = m_MaxHp;
+}
+
+void Player::IsMoveStart()
+{
+	if (m_LookLeft)
+	{
+		if (m_pos.x < kFristPlayerPosX + (kSideSize / 2) + 30)
+		{
+			m_StartMove = kStartMoveSpeed;
+			m_pos.x += m_StartMove;
+		}
+
+		else
+		{
+			m_StartMove = 0;
+		}
+	}
+
+	if (!m_LookLeft)
+	{
+		if (m_pos.x > kFristPlayerPosX + (kSideSize / 2) - 30)
+		{
+			m_StartMove = -kStartMoveSpeed;
+			m_pos.x += m_StartMove;
+		}
+
+		else
+		{
+			m_StartMove = 0;
+		}
+	}
+}
+
+void Player::IsMoveStop()
+{
+	/*m_StartMove = 0;
+
+	if (m_pos.x > kFristPlayerPosX + (kSideSize / 2) + 10 && m_LookLeft)
+	{
+		m_StartMove = -kStartMoveSpeed;
+		m_pos.x += m_StartMove;
+	}
+
+	if (m_pos.x < kFristPlayerPosX + (kSideSize / 2) - 10 && !m_LookLeft)
+	{
+		m_StartMove = kStartMoveSpeed;
+		m_pos.x += m_StartMove;
+	}*/
+}
+
+void Player::Ondamage()
+{
+	m_Hp--;
+}
+
+void Player::IsKnockBack(Vec2 EnemyPos)
+{
+	Vec2 vel = m_pos - EnemyPos;
+
+	vel = vel.normalize();
+	vel *= m_KnockBack;
+	m_KnockBack -= kKnockBackSpeedDown;
+	if (m_KnockBack > 0)
+	{
+		m_pos.y += vel.y;
+		m_StartMove = -vel.x;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//if (CheckHitKey(KEY_INPUT_RIGHT) && CheckHitKey(KEY_INPUT_LSHIFT) || CheckHitKey(KEY_INPUT_RSHIFT))
 	//{
 	//	IsMoveStartRight();
 	//	m_NowDash = true;
@@ -421,143 +558,3 @@ void Player::CharaMove()
 	//	m_CharaGraphX = 0;
 	//}
 	//m_NowDash = false;
-
-}
-
-void Player::CharaJump()
-{
-	if (m_TwoJump && !m_UseTwoJump && m_PossibleTwoJump)
-	{
-		m_UseTwoJump = true;
-		m_TwoJump = false;
-		m_Jump = 14;
-	}
-	if (m_CollTop)
-	{
-		if(m_Jump > 0) m_Jump = 0;
-	}
-	m_FrameChangeSpeed = 3;
-	m_CharaGraphY = 5;
-	m_CharaMotion = 8;
-	m_pos.y -= m_Jump;
-
-	if (Pad::isPress(PAD_INPUT_1))
-	{
-		m_Jump -= kSmallGravity;
-	}
-	else
-	{
-		m_Jump -= kBigGravity;
-	}
-
-	if (/*m_pos.y >= Game::kScreenHeight - kColumnSize ||*/ m_CollBottom)
-	{
-		if (m_Jump <= 0)
-		{
-			m_UseTwoJump = false;
-			m_TwoJump = false;
-			m_NowJump = false;
-			m_Jump = 14;
-		//	m_pos.y = Game::kScreenHeight - kColumnSize;
-		}
-	}
-
-}
-
-void Player::LimitMove()
-{
-	if (m_pos.x < 0 - 35)
-	{
-		m_pos.x = -35;
-	}
-	if (m_pos.x > Game::kScreenWidth - kSideSize + 35)
-	{
-		m_pos.x = Game::kScreenWidth - kSideSize + 35;
-	}
-	/*if (m_pos.y > Game::kScreenHeight - kColumnSize)
-	{
-		m_pos.y = Game::kScreenHeight - kColumnSize;
-	}*/
-}
-
-void Player::NotExist()
-{
-	m_Jump = 0;
-	m_Hp = m_MaxHp;
-}
-
-void Player::IsMoveStartLeft()
-{
-	if (!m_IsMove || m_pos.x < kFristPlayerPosX)
-	{
-		m_StartMove = kStartMoveSpeed;
-		m_IsMove = true;
-	}
-	
-	m_StartMove -= kStartMoveSpeedDown;
-
-	if (m_StartMove > 0)
-	{
-		m_pos.x += m_StartMove;
-	}
-	else
-	{
-		m_StartMove = 0;
-	}
-}
-
-void Player::IsMoveStartRight()
-{
-	if (!m_IsMove || m_pos.x > kFristPlayerPosX)
-	{
-		m_StartMove = -kStartMoveSpeed;
-		m_IsMove = true;
-	}
-
-	m_StartMove += kStartMoveSpeedDown;
-
-	if (m_StartMove < 0)
-	{
-		m_pos.x += m_StartMove;
-	}
-	else
-	{
-		m_StartMove = 0;
-	}
-}
-
-void Player::IsMoveStop()
-{
-	m_IsMove = false;
-	m_StartMove = 0;
-
-	if (m_pos.x < kFristPlayerPosX - 30)
-	{
-		m_StartMove = kStartMoveSpeed;
-		m_pos.x += m_StartMove;
-	}
-
-	if (m_pos.x > kFristPlayerPosX + 30)
-	{
-		m_StartMove = -kStartMoveSpeed;
-		m_pos.x += m_StartMove;
-	}
-}
-
-void Player::Ondamage()
-{
-	m_Hp--;
-}
-
-void Player::IsKnockBack(Vec2 EnemyPos)
-{
-	Vec2 vel = m_pos - EnemyPos;
-
-	vel = vel.normalize();
-	vel *= m_KnockBack;
-	m_KnockBack -= kKnockBackSpeedDown;
-	if (m_KnockBack > 0)
-	{
-		m_pos += vel;
-	}
-}

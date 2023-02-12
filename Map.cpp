@@ -115,6 +115,7 @@ void Map::update()
 		m_Vec.x += m_player->GetMove();
 	}*/
 
+	
 	m_Vec.x += m_player->GetMove();
 
 	m_ScrollSpeed = m_Vec;
