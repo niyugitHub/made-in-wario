@@ -59,6 +59,10 @@ SceneMain::SceneMain() :
 	}
 
 	m_Item[0]->SetPos(m_ItemPos);
+	m_Item[1]->SetPos({ 1300, 900 });
+	m_Item[2]->SetPos({ 2150,600 });
+	m_Item[3]->SetPos({ 3000,700 });
+	m_Item[4]->SetPos({ 4000,700 });
 	m_Item[0]->SetItemType(ItemType::kTwoJump);
 
 	m_Map->setPlayer(m_player);
@@ -144,6 +148,11 @@ SceneBase* SceneMain::update()
 		}
 
 		m_Item[0]->SetPos(m_ItemPos);
+		m_Item[1]->SetPos({ 1300, 900 });
+		m_Item[2]->SetPos({ 2150,600 });
+		m_Item[3]->SetPos({ 3000,700 });
+		m_Item[4]->SetPos({ 4000,700 });
+		m_Item[0]->SetItemType(ItemType::kTwoJump);
 		m_Item[0]->SetItemType(ItemType::kTwoJump);
 
 		m_EnemyFactory = std::make_shared<EnemyFactory>();
@@ -274,7 +283,6 @@ void SceneMain::draw()
 	{
 		m_Item[i]->Draw();
 
-#ifdef _DEBUG
 		if (m_Item[i]->GetExist())
 		{
 			if (m_Item[i]->GetItemType() == ItemType::kTwoJump)
@@ -287,6 +295,7 @@ void SceneMain::draw()
 				DrawString(m_Item[i]->GetPos().x, m_Item[i]->GetPos().y, "UŒ‚—ÍƒAƒbƒv", GetColor(0, 255, 0));
 			}
 		}
+#ifdef _DEBUG
 #endif
 	}
 

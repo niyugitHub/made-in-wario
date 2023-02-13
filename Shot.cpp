@@ -42,8 +42,9 @@ void Shot::Update()
 
 void Shot::Draw()
 {
+	if(m_Exist)
 	DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50, m_Pos.y + 50,
 		GetColor(0, 255, 255), true);
 
-	DrawFormatString(500, 0, GetColor(255, 255, 255), "ìGÇÃêî%f", m_Pos.y);
+//	DrawFormatString(500, 0, GetColor(255, 255, 255), "ìGÇÃêî%f", m_Pos.y);
 }

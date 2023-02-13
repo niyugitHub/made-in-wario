@@ -57,7 +57,7 @@ m_CollRight(false),
 m_Attack(false),
 m_HitAttack(false),
 m_AttackPower(10),
-m_Hp(500000),
+m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(kKnockBackSpeed),
@@ -122,7 +122,6 @@ void Player::draw()
 {
 	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 
-#ifdef _DEBUG
 	if (m_PossibleTwoJump)
 	{
 		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
@@ -130,6 +129,7 @@ void Player::draw()
 
 	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
+#ifdef _DEBUG
 #endif
 
 	if (m_NoDamageFrame > 0)

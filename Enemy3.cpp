@@ -42,6 +42,8 @@ void Enemy3::update()
 
 	m_Shot->SetMapVec(m_MapVec);
 
+	m_NextPos = m_Pos;
+
 	if (!m_CollBottom)
 	{
 		m_Gravity += kGravity;
@@ -53,7 +55,9 @@ void Enemy3::update()
 		m_Gravity = 0;
 		m_Vec.y = 0;
 	}
-	m_NextPos = m_Pos;
+
+	m_DistancePos = m_Pos - m_PlayerPos;
+	m_DistancePos.x -= static_cast<float>(Player::kSideSize) / 2;
 
 	(this->*m_func)();
 
@@ -62,11 +66,9 @@ void Enemy3::update()
 
 	if (!m_CollBottom && !m_CollRight && !m_CollLeft)
 	{
-		m_Pos = m_NextPos;
 	}
+	m_Pos = m_NextPos;
 
-	m_DistancePos = m_Pos - m_PlayerPos;
-	m_DistancePos.x -= static_cast<float>(Player::kSideSize) / 2;
 
 	if (m_Shot->GetExist())
 	{
@@ -84,12 +86,12 @@ void Enemy3::draw()
 
 	m_Shot->Draw();
 
-	//DrawFormatString(500, 0, GetColor(255, 255, 255), "“G‚Ì”%f", m_DistancePos.x);
+	DrawFormatString(800, 0, GetColor(255, 255, 255), "“G‚ÌÀ•W%f", m_Pos.x);
 }
 
 void Enemy3::UpdatePatrol()
 {
-	if (m_DistancePos.x > -800 && m_DistancePos.x < 800)
+	if (m_DistancePos.x > -650 && m_DistancePos.x < 650)
 	{
 		m_func = &Enemy3::UpdateDiscovery;
 	}

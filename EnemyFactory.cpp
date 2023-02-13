@@ -188,33 +188,28 @@ void EnemyFactory::Stage1Enemy()
 
 	if (m_Frame == 1)
 	{
-		Create(kThrow, { 1200,600 });
-	//	Create(kJump, { 300,600 });
-		/*Create(kJump, { 1500,600 });
-		Create(kJump, { 1500,600 });
-		Create(kJump, { 1600,600 });
-		Create(kJump, { 1700,600 });
-		Create(kJump, { 1800,600 });
+		Create(kThrow, { 2050,400 });
+		Create(kThrow, { 4000,800 });
+		Create(kJump, { 4000,600 });
+		Create(kThrow, { 5500,800 });
+		Create(kThrow, { 5300,800 });
+		Create(kJump, { 1000,400 });
 		Create(kJump, { 1900,600 });
-		Create(kJump, { 2000,600 });
-		Create(kJump, { 300,600 });
+		Create(kJump, { 1900,300 });
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });
-		Create(kJump, { 4000,600 });
-		Create(kJump, { 1500,600 });
-		Create(kNormal, { 1000,600 });
+		Create(kJump, { 5000,600 });
+		Create(kJump, { 5500,600 });
+		Create(kJump, { 5500,400 });
+		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,200 });
+		Create(kNormal, { 1600,600 });
 		Create(kNormal, { 3000,800 });
 		Create(kNormal, { 4000,800 });
 		Create(kNormal, { 5000,600 });
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });*/
-
+		Create(kNormal, { 5500,800 });
+		Create(kNormal, { 6000,800 });
+		Create(kNormal, { 6500,600 });
 	}
 
 	/*if (m_Frame == 2)
