@@ -37,6 +37,9 @@ public:
 	// プレイヤーとエネミーの当たり判定
 	bool IsCollEnemy();
 
+	// プレイヤーとエネミーの投げ物の当たり判定
+	bool IsCollThrowEnemy();
+
 	// プレイヤーの攻撃判定
 	bool IsCollAttackPlayer();
 
@@ -86,6 +89,8 @@ private:
 	Vec2 m_PlayerPos;
 
 	Vec2 m_EnemyPos;
+
+	Vec2 m_ThrowPos;
 
 	Vec2 m_MapPos;
 

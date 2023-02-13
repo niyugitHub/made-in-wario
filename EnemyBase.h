@@ -5,6 +5,7 @@
 class Map;
 class Player;
 class Collision;
+class Shot;
 
 class EnemyBase
 {
@@ -32,7 +33,11 @@ public:
 	virtual void Init();
 	virtual void end();
 
+	// 敵座標取得
 	virtual Vec2 GetPos() { return m_NextPos; }
+
+	// 敵が投げた物の座標取得
+	virtual Vec2 GetThrowPos() { return m_ThrowPos; }
 
 	virtual void update();
 	virtual void draw();
@@ -47,6 +52,8 @@ public:
 
 	virtual void OnDamage(int damage); // ダメージを受けた時の処理
 
+	virtual bool CollThrow(); // ショットとプレイヤーの当たり判定
+
 	// 存在確認
 	bool isExist() const { return m_Exist; }
 	void setExist(bool isExist) { m_Exist = isExist; }
@@ -59,6 +66,9 @@ protected:
 
 	// 次のフレームのエネミーのポジション
 	Vec2 m_NextPos;
+
+	// 投げ物の座標
+	Vec2 m_ThrowPos;
 
 	// プレイヤーの座標
 	Vec2 m_PlayerPos;
@@ -93,6 +103,6 @@ protected:
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;
 	std::shared_ptr<Collision> m_Coll;
-
+	std::shared_ptr<Shot> m_Shot;
 };
 

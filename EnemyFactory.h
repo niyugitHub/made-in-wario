@@ -6,6 +6,7 @@
 
 class Enemy1;
 class Enemy2;
+class Enemy3;
 class Player;
 class Map;
 class Collision;
@@ -17,6 +18,7 @@ public:
 	{
 		kNormal,
 		kJump,
+		kThrow,
 	};
 public:
 	EnemyFactory();
@@ -26,6 +28,8 @@ public:
 
 	Vec2 GetPos() { return m_Pos; }
 	void SetPos(Vec2 Pos) { m_Pos = Pos; }
+
+	Vec2 GetThrowPos() { return m_ThrowPos; }
 
 	void SetPlayer(std::shared_ptr<Player> player) { m_Player = player; }
 	void SetMap(std::shared_ptr<Map> map) { m_Map = map; }
@@ -56,6 +60,8 @@ private:
 	//bool m_Exist;
 
 	Vec2 m_Pos;
+
+	Vec2 m_ThrowPos;
 
 	std::list<std::shared_ptr<EnemyBase>> m_Enemy;
 	std::shared_ptr<Player> m_Player;

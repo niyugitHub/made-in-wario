@@ -62,6 +62,7 @@ m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(kKnockBackSpeed),
 m_PossibleTwoJump(false),
+m_Vel(0,0),
 m_Exist(true),
 m_SceneTitle(nullptr)
 {
@@ -107,10 +108,10 @@ void Player::update()
 		m_NoDamageFrame--;
 	}
 
-	/*if (m_NoDamageFrame > 0)
+	if (m_NoDamageFrame > 0)
 	{
 		IsKnockBack(m_EnemyPos);
-	}*/
+	}
 
 	CharaMove();
 
@@ -403,15 +404,27 @@ void Player::Ondamage()
 
 void Player::IsKnockBack(Vec2 EnemyPos)
 {
-	Vec2 vel = m_pos - EnemyPos;
+	if (m_NoDamageFrame <= 0)
+	{
+		m_Vel.x = 0;
+		m_Vel.y = 0;
+		return;
+	}
 
-	vel = vel.normalize();
-	vel *= m_KnockBack;
+	if (m_KnockBack <= 0)
+	{
+		m_Vel.x = 0;
+		m_Vel.y = 0;
+		return;
+	}
+	m_Vel = m_pos - EnemyPos;
+
+	m_Vel = m_Vel.normalize();
+	m_Vel *= m_KnockBack;
 	m_KnockBack -= kKnockBackSpeedDown;
 	if (m_KnockBack > 0)
 	{
-		m_pos.y += vel.y;
-		m_StartMove = -vel.x;
+		m_pos.y += m_Vel.y;
 	}
 }
 

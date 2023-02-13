@@ -45,7 +45,8 @@ public:
 	void SetAttackPower(int AttackPower) { m_AttackPower = AttackPower; }
 	int GetAttackPower() { return m_AttackPower; }
 
-	int GetMove() const { return m_StartMove; }
+	float GetMove() const { return m_StartMove; }
+	float GetKnockBack() const { return m_Vel.x; }
 
 	// プレイヤーの攻撃判定と向きを返す
 	bool GetAttack() { return m_Attack; }
@@ -171,6 +172,8 @@ private:
 
 	// ノックバックスピード
 	float m_KnockBack;
+
+	Vec2 m_Vel; // ノックバックの距離
 
 	// キャラクターの存在確認
 	bool m_Exist;

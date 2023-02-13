@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Collision.h"
+#include "Shot.h"
 #include <Dxlib.h>
 #include <cassert>
 
@@ -14,6 +15,7 @@ EnemyBase::EnemyBase() :
 	m_Pos(1600,500),
 	m_Vec(3,0),
 	m_NextPos(0,0),
+	m_ThrowPos(0,0),
 	m_PlayerPos(0,0),
 	m_DistancePos(0,0),
 	m_Gravity(0),
@@ -32,6 +34,7 @@ EnemyBase::EnemyBase() :
 	m_Map(nullptr),
 	m_Coll(nullptr)
 {
+	m_Shot = std::make_shared<Shot>();
 }
 
 EnemyBase::~EnemyBase()
@@ -110,7 +113,7 @@ void EnemyBase::BasicMoveEnemy()
 		m_Vec.y = 0;
 	}
 
-	m_Vec.x *= m_MoveInverseDirection;
+//	m_Vec.x *= m_MoveInverseDirection;
 
 	m_Vec.x += m_MapVec.x;
 }
@@ -141,4 +144,28 @@ void EnemyBase::KnockBack()
 void EnemyBase::OnDamage(int damage)
 {
 	m_Hp -= damage;
+}
+
+bool EnemyBase::CollThrow()
+{
+	// プレイヤーの位置
+	float PlayerPosLeft = m_PlayerPos.x + 30;
+	float PlayerPosRight = m_PlayerPos.x + 90;
+	float PlayerPosUp = m_PlayerPos.y + 10;
+	float PlayerPosBottom = m_PlayerPos.y + 118;
+
+	m_ThrowPos = m_Shot->GetPos();
+
+	// エネミーの位置
+	float EnemyPosLeft = m_ThrowPos.x;
+	float EnemyPosRight = m_ThrowPos.x + 50;
+	float EnemyPosUp = m_ThrowPos.y;
+	float EnemyPosBottom = m_ThrowPos.y + 50;
+
+	if (PlayerPosLeft > EnemyPosRight) return false;
+	if (PlayerPosRight < EnemyPosLeft) return false;
+	if (PlayerPosUp > EnemyPosBottom)  return false;
+	if (PlayerPosBottom < EnemyPosUp)  return false;
+
+	return true;
 }

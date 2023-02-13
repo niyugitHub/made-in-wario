@@ -116,7 +116,9 @@ void Map::update()
 	}*/
 
 	
-	m_Vec.x += m_player->GetMove();
+//	m_Vec.x += m_player->GetMove();
+
+	PlayerMove(m_player->GetKnockBack(), m_player->GetMove());
 
 	m_ScrollSpeed = m_Vec;
 
@@ -129,6 +131,12 @@ void Map::update()
 void Map::draw()
 {
 	drawMap();
+}
+
+void Map::PlayerMove(float knockback, float Move)
+{
+	m_Vec.x -= knockback;
+	m_Vec.x += Move;
 }
 
 int Map::chipNumX()

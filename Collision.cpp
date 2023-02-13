@@ -23,7 +23,10 @@ Collision::Collision() :
 	m_CollLeftEnemy(false),
 	m_CollEnemy(false),
 	m_PlayerPos(0, 0),
+	m_EnemyPos(0,0),
+	m_ThrowPos(0,0),
 	m_MapPos(0,0),
+	m_ItemPos(0,0),
 	m_CollSingle(false),
 	m_MapColl(false),
 	m_player(nullptr),
@@ -90,6 +93,30 @@ bool Collision::IsCollEnemy()
 
 	return true;
 }
+
+//bool Collision::IsCollThrowEnemy()
+//{
+//	// プレイヤーの位置
+//	float PlayerPosLeft = m_PlayerPos.x + 30;
+//	float PlayerPosRight = m_PlayerPos.x + 90;
+//	float PlayerPosUp = m_PlayerPos.y + 10;
+//	float PlayerPosBottom = m_PlayerPos.y + 118;
+//
+//	m_ThrowPos = m_enemy->GetThrowPos();
+//
+//	// エネミーの位置
+//	float EnemyPosLeft = m_ThrowPos.x;
+//	float EnemyPosRight = m_ThrowPos.x + 50;
+//	float EnemyPosUp = m_ThrowPos.y;
+//	float EnemyPosBottom = m_ThrowPos.y + 50;
+//
+//	if (PlayerPosLeft > EnemyPosRight) return false;
+//	if (PlayerPosRight < EnemyPosLeft) return false;
+//	if (PlayerPosUp > EnemyPosBottom)  return false;
+//	if (PlayerPosBottom < EnemyPosUp)  return false;
+//
+//	return true;
+//}
 
 bool Collision::IsCollAttackPlayer()
 {

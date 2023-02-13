@@ -44,6 +44,9 @@ class Map
 
 		// 描画
 		void draw();
+
+		// プレイヤーの向きとノックバックの移動量
+		void PlayerMove(float knockback, float Move);
 	private:
 		// マップチップの数を取得する
 		int chipNumX();

@@ -2,6 +2,7 @@
 #include "EnemyFactory.h"
 #include "Enemy1.h"
 #include "Enemy2.h"
+#include "Enemy3.h"
 #include "EnemyBase.h"
 #include "Player.h"
 #include <DxLib.h>
@@ -14,7 +15,8 @@ EnemyFactory::EnemyFactory() :
 	m_CollBottom(false),
 	m_CollRight(false),
 	m_CollLeft(false),
-	m_Pos(0,0)
+	m_Pos(0,0),
+	m_ThrowPos(0,0)
 {
 //	m_Coll = std::make_shared<Collision>();
 }
@@ -77,12 +79,21 @@ void EnemyFactory::Update()
 			/*enemy->update();*/
 
 			m_Pos = enemy->GetPos();
+			m_ThrowPos = enemy->GetThrowPos();
 
 			m_Coll->Update();
 
+			if (enemy->CollThrow() && m_Player->GetNoDamageFrame() <= 0)
+			{
+			//	DrawString(500, 0, "‚µ‚ñ‚¾", GetColor(100, 255, 100));
+				m_Player->Ondamage();
+				m_Player->SetNoDamageFrame(100);
+				m_Player->SetEnemyPos(m_Pos);
+			}
+
 			if (m_Coll->IsCollEnemy() && m_Player->GetNoDamageFrame() <= 0)
 			{
-				DrawString(500, 0, "‚µ‚ñ‚¾", GetColor(100, 255, 100));
+			//	DrawString(500, 0, "‚µ‚ñ‚¾", GetColor(100, 255, 100));
 				m_Player->Ondamage();
 				m_Player->SetNoDamageFrame(100);
 				m_Player->SetEnemyPos(m_Pos);
@@ -149,6 +160,12 @@ std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
 			std::make_shared<Enemy2>()
 		);
 		break;
+
+	case EnemyType::kThrow:
+		m_Enemy.push_back(
+			std::make_shared<Enemy3>()
+		);
+		break;
 	}
 	/*enemy* penemy = new enemy;
 	penemy->setpos(pos);*/
@@ -171,8 +188,9 @@ void EnemyFactory::Stage1Enemy()
 
 	if (m_Frame == 1)
 	{
-		/*Create(kJump, { 300,600 });
-		Create(kJump, { 1500,600 });
+		Create(kThrow, { 1200,600 });
+	//	Create(kJump, { 300,600 });
+		/*Create(kJump, { 1500,600 });
 		Create(kJump, { 1500,600 });
 		Create(kJump, { 1600,600 });
 		Create(kJump, { 1700,600 });
