@@ -29,6 +29,9 @@ namespace
 	constexpr float kKnockBackSpeed = 12.0f;
 	// ノックバック時のスピード減少量
 	constexpr float kKnockBackSpeedDown = 0.5f;
+
+	// ヒールゲージ最大
+	constexpr int kMaxHealGauge = 90;
 }
 
 //Player::Player(handle) :m_handle = handle 
@@ -64,6 +67,7 @@ m_KnockBack(kKnockBackSpeed),
 m_PossibleTwoJump(false),
 m_HealFrame(0),
 m_Vel(0,0),
+m_HealGauge(kMaxHealGauge),
 m_Exist(true),
 m_SceneTitle(nullptr)
 {
@@ -160,6 +164,7 @@ void Player::draw()
 
 	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "回復ゲージ%d", m_HealGauge);
 #ifdef _DEBUG
 #endif
 
@@ -285,7 +290,7 @@ void Player::CharaMove()
 		m_FrameChangeSpeed = 3;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_5) || Pad::isTrigger(PAD_INPUT_6) && !m_Attack)
+	if (Pad::isTrigger(PAD_INPUT_5) && !m_Attack || Pad::isTrigger(PAD_INPUT_6) && !m_Attack)
 	{
 		m_CharaGraphX = 0;
 		m_Attack = true;
@@ -380,6 +385,7 @@ void Player::NotExist()
 {
 	m_Jump = 0;
 	m_Hp = m_MaxHp;
+	m_HealGauge = 0;
 }
 
 void Player::IsMoveStart()
@@ -463,14 +469,19 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 
 void Player::IsHeal()
 {
-	if (Pad::isPress(PAD_INPUT_2))
+	if (Pad::isPress(PAD_INPUT_2) && m_HealGauge >= 30 && m_Hp < m_MaxHp)
 	{
 		m_HealFrame++;
 
-		if (m_HealFrame >= 60 && m_Hp < m_MaxHp)
+		/*if (m_HealFrame > 30)
+		{
+			m_HealGauge--;
+		}*/
+		if (m_HealFrame >= 60)
 		{
 			m_Hp++;
 			m_HealFrame = 0;
+			m_HealGauge -= 30;
 		}
 	}
 
@@ -478,6 +489,17 @@ void Player::IsHeal()
 	{
 		m_HealFrame = 0;
 	}
+
+
+	if (m_HealGauge <= 0)
+	{
+		m_HealGauge = 0;
+	}
+}
+
+void Player::IsHealGauge()
+{
+	if(m_HealGauge < kMaxHealGauge) m_HealGauge += 10;
 }
 
 

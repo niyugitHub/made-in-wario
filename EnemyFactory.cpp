@@ -83,6 +83,7 @@ void EnemyFactory::Update()
 
 			m_Coll->Update();
 
+			// ƒGƒlƒ~[‚ÌUŒ‚‚ª‚ ‚½‚Á‚½•ƒvƒŒƒCƒ„[‚Ì–³“GŽžŠÔ‚ª‚OˆÈ‰º‚ÌŽž
 			if (enemy->CollThrow() && m_Player->GetNoDamageFrame() <= 0)
 			{
 			//	DrawString(500, 0, "‚µ‚ñ‚¾", GetColor(100, 255, 100));
@@ -91,6 +92,7 @@ void EnemyFactory::Update()
 				m_Player->SetEnemyPos(m_Pos);
 			}
 
+			// ƒGƒlƒ~[‚ÌUŒ‚‚ª‚ ‚½‚Á‚½•ƒvƒŒƒCƒ„[‚Ì–³“GŽžŠÔ‚ª‚OˆÈ‰º‚ÌŽž
 			if (m_Coll->IsCollEnemy() && m_Player->GetNoDamageFrame() <= 0)
 			{
 			//	DrawString(500, 0, "‚µ‚ñ‚¾", GetColor(100, 255, 100));
@@ -112,9 +114,11 @@ void EnemyFactory::Update()
 
 			enemy->SetPos(m_Pos);
 
+			// ƒvƒŒƒCƒ„[‚ÌUŒ‚‚ª“G‚É“–‚½‚Á‚½Žž
 			if (m_Coll->IsCollAttackPlayer() && !enemy->GetHit())
 			{
 				m_Player->SetHitAttack(true);
+				m_Player->IsHealGauge();
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();

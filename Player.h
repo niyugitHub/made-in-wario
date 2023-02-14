@@ -96,6 +96,9 @@ public:
 	// 回復処理
 	void IsHeal();
 
+	// 回復ゲージ
+	void IsHealGauge();
+
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
@@ -178,6 +181,9 @@ private:
 
 	// 回復にかかる時間
 	int m_HealFrame;
+
+	// 回復に必要なゲージ
+	int m_HealGauge;
 
 	Vec2 m_Vel; // ノックバックの距離
 

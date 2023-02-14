@@ -140,7 +140,6 @@ SceneBase* SceneMain::update()
 		Pad::update();
 		if (Pad::isTrigger(PAD_INPUT_1))
 		{
-
 			m_Map->SetMap(m_MapPos);
 			m_PlayerPos.y = Player::kFristPlayerPosY;
 			m_PlayerPos.x = Player::kFristPlayerPosX;
