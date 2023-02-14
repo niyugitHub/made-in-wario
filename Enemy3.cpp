@@ -86,7 +86,7 @@ void Enemy3::draw()
 
 	m_Shot->Draw();
 
-	DrawFormatString(800, 0, GetColor(255, 255, 255), "“G‚ÌÀ•W%f", m_Pos.x);
+//	DrawFormatString(800, 0, GetColor(255, 255, 255), "“G‚ÌÀ•W%f", m_Pos.x);
 }
 
 void Enemy3::UpdatePatrol()

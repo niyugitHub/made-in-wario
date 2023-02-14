@@ -61,8 +61,10 @@ void Enemy1::UpdatePatrol()
 void Enemy1::UpdateDiscovery()
 {
 //	if(m_DistancePos.x > -50 && m_DistancePos.x )
-	m_Vec.x = 0;
-	m_MapVec = m_Map->GetVec();
+	/*m_Vec.x = 0;
+	m_MapVec = m_Map->GetVec();*/
+
+	BasicMoveEnemy();
 
 	if (!m_CollBottom)
 	{
@@ -75,9 +77,6 @@ void Enemy1::UpdateDiscovery()
 		m_Gravity = 0;
 		m_Vec.y = 0;
 	}
-
-	m_Vec.x = m_MapVec.x;
-	m_Pos.x += m_Vec.x;
 
 	if (m_DistancePos.x > -500 + PlayerGraphSize / 2 && m_DistancePos.x < PlayerGraphSize / 2)
 	{

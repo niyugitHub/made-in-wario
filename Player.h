@@ -93,6 +93,9 @@ public:
 	// ノックバック処理
 	void IsKnockBack(Vec2 EnemyPos);
 
+	// 回復処理
+	void IsHeal();
+
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
@@ -172,6 +175,9 @@ private:
 
 	// ノックバックスピード
 	float m_KnockBack;
+
+	// 回復にかかる時間
+	int m_HealFrame;
 
 	Vec2 m_Vel; // ノックバックの距離
 

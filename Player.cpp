@@ -62,6 +62,7 @@ m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(kKnockBackSpeed),
 m_PossibleTwoJump(false),
+m_HealFrame(0),
 m_Vel(0,0),
 m_Exist(true),
 m_SceneTitle(nullptr)
@@ -90,32 +91,62 @@ void Player::end()
 
 void Player::update()
 {
-	IsMoveStart();
-
-	if (m_Hp <= 0)
+	if (m_Exist)
 	{
-		m_Exist = false;
-	}
+		IsMoveStart();
 
-	if (m_NoDamageFrame == 100)
+		if (m_Hp <= 0)
+		{
+			m_Exist = false;
+		}
+
+		if (m_NoDamageFrame == 100)
+		{
+			m_Jump = 0;
+			m_KnockBack = kKnockBackSpeed;
+		}
+
+		if (m_NoDamageFrame >= 0)
+		{
+			m_NoDamageFrame--;
+		}
+
+		if (m_NoDamageFrame > 0)
+		{
+			IsKnockBack(m_EnemyPos);
+		}
+
+		CharaMove();
+
+		LimitMove();
+	}
+	else if (!m_Exist)
 	{
-		m_Jump = 0;
-		m_KnockBack = kKnockBackSpeed;
+		if (!m_CollBottom)
+		{
+			m_pos.y += m_Gravity;
+			m_Gravity += kGravity;
+		}
+
+		else
+		{
+			m_Gravity = 0;
+		}
+
+		m_CharaGraphY = 7;
+		m_CharaMotion = 8;
+		m_FrameChangeSpeed = 3;
+
+		m_CharaGraphX = 0;
+		m_FrameChangeChara += m_FrameChangeSpeed;
+
+		m_CharaGraphX = m_FrameChangeChara / kFrameTime;
+
+		if (m_CharaGraphX >= 7)
+		{
+			m_CharaGraphX = 7;
+		}
 	}
-
-	if (m_NoDamageFrame >= 0)
-	{
-		m_NoDamageFrame--;
-	}
-
-	if (m_NoDamageFrame > 0)
-	{
-		IsKnockBack(m_EnemyPos);
-	}
-
-	CharaMove();
-
-	LimitMove();
 }
 
 void Player::draw()
@@ -226,6 +257,8 @@ void Player::CharaMove()
 		CharaJump();
 	}
 
+	IsHeal();
+
 	if (m_SceneTitle != nullptr)
 	{
 		if (m_SceneTitle->isTitleEnd())
@@ -293,7 +326,7 @@ void Player::CharaJump()
 	{
 		m_TwoJump = false;
 		m_UseTwoJump = true;
-		m_Jump = 14;
+		m_Jump = 12;
 	}
 	if (m_CollTop)
 	{
@@ -425,6 +458,25 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 	if (m_KnockBack > 0)
 	{
 		m_pos.y += m_Vel.y;
+	}
+}
+
+void Player::IsHeal()
+{
+	if (Pad::isPress(PAD_INPUT_2))
+	{
+		m_HealFrame++;
+
+		if (m_HealFrame >= 60 && m_Hp < m_MaxHp)
+		{
+			m_Hp++;
+			m_HealFrame = 0;
+		}
+	}
+
+	else
+	{
+		m_HealFrame = 0;
 	}
 }
 

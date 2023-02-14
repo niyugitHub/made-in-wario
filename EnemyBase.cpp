@@ -87,8 +87,10 @@ void EnemyBase::MoveEnemy()
 	{
 		m_MoveInverseDirection *= -1;
 	}
-
+	 
 	m_Vec.x *= m_MoveInverseDirection;
+
+	/*m_Vec.x += m_MapVec.x;*/
 
 	m_Vec.x += m_MapVec.x;
 
@@ -114,7 +116,6 @@ void EnemyBase::BasicMoveEnemy()
 	}
 
 //	m_Vec.x *= m_MoveInverseDirection;
-
 	m_Vec.x += m_MapVec.x;
 }
 

@@ -10,6 +10,7 @@
 #include"Enemy1.h"
 #include"EnemyFactory.h"
 #include"Item.h"
+#include "Pad.h"
 
 namespace
 {
@@ -21,7 +22,7 @@ SceneMain::SceneMain() :
 	m_PlayerPos(0, 0),
 	m_EnemyPos(0, 0),
 	m_MapPos(0, 0),
-	m_ItemPos(500, 800),
+	m_ItemPos(500, 500),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
@@ -135,31 +136,37 @@ SceneBase* SceneMain::update()
 	if (!m_player->GetExist())
 	{
 		m_player->NotExist();
-		m_Map->SetMap(m_MapPos);
-		m_PlayerPos.y = Player::kFristPlayerPosY;
-		m_PlayerPos.x = Player::kFristPlayerPosX;
-		m_player->SetPos(m_PlayerPos);
-		m_Exist = true;
-		m_player->SetExist(m_Exist);
 
-		for (auto& pItem : m_Item)
+		Pad::update();
+		if (Pad::isTrigger(PAD_INPUT_1))
 		{
-			pItem->SetItemType(ItemType::kAttackUp);
+
+			m_Map->SetMap(m_MapPos);
+			m_PlayerPos.y = Player::kFristPlayerPosY;
+			m_PlayerPos.x = Player::kFristPlayerPosX;
+			m_player->SetPos(m_PlayerPos);
+			m_Exist = true;
+			m_player->SetExist(m_Exist);
+
+			for (auto& pItem : m_Item)
+			{
+				pItem->SetItemType(ItemType::kAttackUp);
+			}
+
+			m_Item[0]->SetPos(m_ItemPos);
+			m_Item[1]->SetPos({ 1300, 900 });
+			m_Item[2]->SetPos({ 2150,600 });
+			m_Item[3]->SetPos({ 3000,700 });
+			m_Item[4]->SetPos({ 4000,700 });
+			m_Item[0]->SetItemType(ItemType::kTwoJump);
+			m_Item[0]->SetItemType(ItemType::kTwoJump);
+
+			m_EnemyFactory = std::make_shared<EnemyFactory>();
+			m_Coll->setEnemy(m_EnemyFactory);
+			m_EnemyFactory->SetPlayer(m_player);
+			m_EnemyFactory->SetMap(m_Map);
+			m_EnemyFactory->SetColl(m_Coll);
 		}
-
-		m_Item[0]->SetPos(m_ItemPos);
-		m_Item[1]->SetPos({ 1300, 900 });
-		m_Item[2]->SetPos({ 2150,600 });
-		m_Item[3]->SetPos({ 3000,700 });
-		m_Item[4]->SetPos({ 4000,700 });
-		m_Item[0]->SetItemType(ItemType::kTwoJump);
-		m_Item[0]->SetItemType(ItemType::kTwoJump);
-
-		m_EnemyFactory = std::make_shared<EnemyFactory>();
-		m_Coll->setEnemy(m_EnemyFactory);
-		m_EnemyFactory->SetPlayer(m_player);
-		m_EnemyFactory->SetMap(m_Map);
-		m_EnemyFactory->SetColl(m_Coll);
 	}
 
 	if (m_Coll->FallPlayer())
@@ -168,46 +175,47 @@ SceneBase* SceneMain::update()
 	}
 	/*m_EnemyFactory->Update();*/
 
-	/*if (!m_DeadPlayer)
-	{*/
-		m_PlayerPos = m_player->GetPos();
+	
+	m_PlayerPos = m_player->GetPos();
 	//	IsCollision();
 
-		m_Coll->Update();
+	m_Coll->Update();
 
-		// プレイヤーとマップの当たり判定
-		m_CollTop = m_Coll->IsCollTop();
-		m_CollBottom = m_Coll->IsCollBottom();
-		m_CollRight = m_Coll->IsCollRight();
-		m_CollLeft = m_Coll->IsCollLeft();
+	// プレイヤーとマップの当たり判定
+	m_CollTop = m_Coll->IsCollTop();
+	m_CollBottom = m_Coll->IsCollBottom();
+	m_CollRight = m_Coll->IsCollRight();
+	m_CollLeft = m_Coll->IsCollLeft();
 
-		m_player->SetCollTop(m_CollTop);
-		m_player->SetCollBottom(m_CollBottom);
-		m_Map->SetCollRight(m_CollRight);
-		m_Map->SetCollLeft(m_CollLeft);
+	m_player->SetCollTop(m_CollTop);
+	m_player->SetCollBottom(m_CollBottom);
+	m_Map->SetCollRight(m_CollRight);
+	m_Map->SetCollLeft(m_CollLeft);
 
-		m_player->update();
-		m_Map->update();
-		/*m_Item->Update();*/
+	m_player->update();
+	m_Map->update();
+	/*m_Item->Update();*/
 
-		/*for (auto& pItem : m_Item)
+	/*for (auto& pItem : m_Item)
+	{
+		pItem->Update();
+		m_Coll->setItem(pItem);
+
+		if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kTwoJump)
 		{
-			pItem->Update();
-			m_Coll->setItem(pItem);
+			m_player->SetCollItemTwoJump(true);
+		}
 
-			if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kTwoJump)
-			{
-				m_player->SetCollItemTwoJump(true);
-			}
+		if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kAttackUp)
+		{
+			m_AttackPower += 10;
+			m_player->SetAttackPower(m_AttackPower);
+		}
+	}*/
+	IsItemPosition(1);
 
-			if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kAttackUp)
-			{
-				m_AttackPower += 10;
-				m_player->SetAttackPower(m_AttackPower);
-			}
-		}*/
-		IsItemPosition(1);
-
+	if (m_player->GetExist())
+	{
 		for (int i = m_Stage - 1; i < m_Stage * 5; i++)
 		{
 			if (m_ItemExist[i])
@@ -218,7 +226,7 @@ SceneBase* SceneMain::update()
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == ItemType::kTwoJump)
 				{
 					m_player->SetCollItemTwoJump(true);
- 					m_ItemExist[i] = false;
+					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
 				}
 
@@ -231,11 +239,13 @@ SceneBase* SceneMain::update()
 				}
 			}
 		}
+	}
 
-		m_Coll->InitColl();
+	m_Coll->InitColl();
 	//}
 
 	m_EnemyFactory->Update();
+	
 
 	/*if (m_Coll->IsCollItem())
 	{
