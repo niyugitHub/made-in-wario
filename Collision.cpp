@@ -58,12 +58,10 @@ void Collision::Update()
 		m_EnemyPos.y = 0;
 	}
 
-	m_MapPos = m_Map->GetPos();
-
-	if (m_PlayerPos.y < Game::kScreenHeight)
+	/*if (m_PlayerPos.y < Game::kScreenHeight)
 	{
 		IsCollMap();
-	}
+	}*/
 
 	if (m_enemy != nullptr)
 	{
@@ -289,8 +287,8 @@ void Collision::IsCollMapEnemy()
 		{
 			if (m_Map->GetMapData(i, j) != 0)
 			{
-				float MapPosX = m_MapPos.x + j * Map::kChipSize;
-				float MapPosY = m_MapPos.y / 64 + i * Map::kChipSize;
+				float MapPosX = j * Map::kChipSize;
+				float MapPosY = i * Map::kChipSize;
 
 				//è„
 				if (m_EnemyPos.y + 10 < MapPosY + Map::kChipSize &&
@@ -383,12 +381,6 @@ void Collision::InitColl()
 	m_CollBottomEnemy = false;
 	m_CollRightEnemy = false;
 	m_CollLeftEnemy = false;
-}
-
-bool Collision::FallPlayer()
-{
-	if (m_PlayerPos.y > Game::kScreenHeight) return true;
-	return false;
 }
 
 void Collision::PlayerDirectPos()

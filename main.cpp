@@ -23,10 +23,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	// windowモード設定
 	ChangeWindowMode(kWindouwMode);
-	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
-	{
-		return -1;			// エラーが起きたら直ちに終了
-	}
 	
 	// ウインドウ名設定
 	SetMainWindowText("ゲーム名");

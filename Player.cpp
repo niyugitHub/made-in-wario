@@ -27,8 +27,6 @@ namespace
 	constexpr float kStartMoveSpeed = 6.0f;
 
 	// ノックバック時のスピード減少量
-	constexpr float kKnockBackSpeed = 12.0f;
-	// ノックバック時のスピード減少量
 	constexpr float kKnockBackSpeedDown = 0.5f;
 
 	// ヒールゲージ最大
@@ -67,8 +65,9 @@ m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
 m_PossibleTwoJump(false),
-m_HealFrame(0),
-m_HealGauge(kMaxHealGauge),
+m_PushFrame(0),
+m_Gauge(kMaxHealGauge),
+m_PossibleShot(false),
 m_Exist(true),
 m_Map(std::make_shared<Map>()),
 m_SceneTitle(nullptr)
@@ -107,7 +106,7 @@ void Player::update()
 		if (m_NoDamageFrame == 100)
 		{
 			m_Jump = 0;
-			m_KnockBack = kKnockBackSpeed;
+		//	m_KnockBack = kKnockBackSpeed;
 		}
 
 		if (m_NoDamageFrame >= 0)
@@ -115,7 +114,7 @@ void Player::update()
 			m_NoDamageFrame--;
 		}
 
-		if (m_NoDamageFrame > 0)
+		if (m_KnockBack > 0)
 		{
 			IsKnockBack(m_EnemyPos);
 		}
@@ -126,11 +125,12 @@ void Player::update()
 
 		LimitMove();
 	}
-	else if (!m_Exist)
+	if (!m_Exist)
 	{
+		IsColl();
 		if (!m_CollBottom)
 		{
-			m_pos.y += m_Gravity;
+			m_NextPos.y += m_Gravity;
 			m_Gravity += kGravity;
 		}
 
@@ -177,7 +177,7 @@ void Player::draw(Vec2 offset)
 
 	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
-	DrawFormatString(0, 500, GetColor(255, 255, 255), "回復ゲージ%d", m_HealGauge);
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "回復ゲージ%d", m_Gauge);
 #ifdef _DEBUG
 	/*DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);*/
 #endif
@@ -217,7 +217,7 @@ void Player::CharaMove()
 		m_CharaMotion = 8;
 		if(m_KnockBack <= 0) m_NextPos.x += m_vec.x * 2;
 
-			if (m_CollRight) m_NextPos.x -= m_vec.x * 2;
+		//	if (m_CollRight) m_NextPos.x -= m_vec.x * 2;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_LEFT) && Pad::isPress(PAD_INPUT_3))
@@ -270,7 +270,7 @@ void Player::CharaMove()
 		CharaJump();
 	}
 
-	IsHeal();
+	IsActiveGauge();
 
 	if (m_SceneTitle != nullptr)
 	{
@@ -375,25 +375,27 @@ void Player::CharaJump()
 
 void Player::LimitMove()
 {
-	/*if (m_pos.x < 0 - 35)
+	if (m_NextPos.x < 0)
 	{
-		m_pos.x = -35;
+		m_NextPos.x = 0;
 	}
-	if (m_pos.x > Game::kScreenWidth - kSideSize + 35)
+
+	if (m_NextPos.x > Map::kChipSize * Map::kBgNumX - kSideSize)
 	{
-		m_pos.x = Game::kScreenWidth - kSideSize + 35;
-	}*/
-	/*if (m_pos.y > Game::kScreenHeight - kColumnSize)
+		m_NextPos.x = Map::kChipSize * Map::kBgNumX - kSideSize;
+	}
+
+	if (FallPlayer())
 	{
-		m_pos.y = Game::kScreenHeight - kColumnSize;
-	}*/
+		m_Exist = false;
+	}
 }
 
 void Player::NotExist()
 {
 	m_Jump = 0;
 	m_Hp = m_MaxHp;
-	m_HealGauge = 0;
+	m_Gauge = 0;
 }
 
 void Player::IsMoveStart()
@@ -457,12 +459,12 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 	Vel *= m_KnockBack;
 	m_KnockBack -= kKnockBackSpeedDown;
 
-	if (m_NoDamageFrame <= 0)
+	/*if (m_NoDamageFrame <= 0)
 	{
 		Vel.x = 0;
 		Vel.y = 0;
 		return;
-	}
+	}*/
 
 	if (m_KnockBack <= 0)
 	{
@@ -470,67 +472,63 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 		Vel.y = 0;
 		return;
 	}
-	if (m_KnockBack > 0)
+
+	if (m_CollBottom)
 	{
-	//	m_NextPos += Vel;
+		//	m_NextPos += Vel;
+		m_pos.x += Vel.x;
+	}
+	else
+	{
+		//	m_NextPos += Vel;
 		m_pos += Vel;
 	}
 }
 
-void Player::IsHeal()
+void Player::IsActiveGauge()
 {
-	if (Pad::isPress(PAD_INPUT_2) && m_HealGauge >= 30 && m_Hp < m_MaxHp)
+	if (PushButton() && m_Gauge >= 30)
 	{
-		m_HealFrame++;
+		m_PushFrame++;
 
 		/*if (m_HealFrame > 30)
 		{
 			m_HealGauge--;
 		}*/
-		if (m_HealFrame >= 60)
+		if (m_PushFrame >= 60 && m_Hp < m_MaxHp)
 		{
 			m_Hp++;
-			m_HealFrame = 0;
-			m_HealGauge -= 30;
+			m_PushFrame = 0;
+			m_Gauge -= 30;
 		}
+	}
+
+	else if(Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30)
+	{
+		m_PushFrame = 0;
 	}
 
 	else
 	{
-		m_HealFrame = 0;
+		m_PushFrame = 0;
 	}
 
 
-	if (m_HealGauge <= 0)
+	if (m_Gauge <= 0)
 	{
-		m_HealGauge = 0;
+		m_Gauge = 0;
 	}
 }
 
-void Player::IsHealGauge()
+void Player::IsGauge()
 {
-	if(m_HealGauge < kMaxHealGauge) m_HealGauge += 10;
+	if(m_Gauge < kMaxHealGauge) m_Gauge += 10;
 }
 
 void Player::IsColl()
 {
-	
-	//int MapNum[Map::kBgNumY][Map::kBgNumX];
-	/*for (int i = 0; i < Map::kBgNumY; i++)
-	{
-		for (int j = 0; j < Map::kBgNumX; j++)
-		{
-			MapNum[i][j] = 0;
-		}
-	}
-	for (int i = static_cast<int> (PlayerPosY); i < PlayerPosY + 1; i++)
-	{
-		for (int j = static_cast<int>(PlayerPosX); j < PlayerPosX + 1; j++)
-		{
-			MapNum[i][j] = m_Map->GetMapData(i, j);
-		}
-	}
-	*/
+	float PlayerTop = m_NextPos.y;
+	float PlayerBottom = m_NextPos.y + Player::kSideSize;
 
 	for (int i = 0; i < Map::kBgNumY; i++)
 	{
@@ -592,6 +590,30 @@ void Player::InitColl()
 	m_CollBottom = false;
 	m_CollRight = false;
 	m_CollLeft = false;
+}
+
+bool Player::PushButton()
+{
+	//現在のパッドの状態を取得
+	int padState = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+
+	// Bボタンを押したときだけ反応
+	if (padState == (PAD_INPUT_2))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Player::FallPlayer()
+{
+	if (m_pos.y > Game::kScreenHeight)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 

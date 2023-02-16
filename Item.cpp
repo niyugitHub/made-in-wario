@@ -22,12 +22,12 @@ void Item::Update()
 	m_Pos += m_Map->GetVec();
 }
 
-void Item::Draw()
+void Item::Draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
-		DrawBox(m_Pos.x, m_Pos.y,
-			m_Pos.x + 50, m_Pos.y + 50,
+		DrawBox(m_Pos.x + offset.x, m_Pos.y,
+			m_Pos.x + 50 + offset.x, m_Pos.y + 50,
 			GetColor(255, 255, 255), true);
 	}
 

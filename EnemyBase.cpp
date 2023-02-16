@@ -62,11 +62,11 @@ void EnemyBase::draw(Vec2 offset)
 
 #ifdef _DEBUG
 //	DrawFormatString(0, 100, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
-	DrawFormatString(0, 100, GetColor(255, 255, 255), "offset.x%f", offset.x);
-	DrawFormatString(0, 200, GetColor(255, 255, 255), "Vec.x%f", m_Vec.x);
-	DrawFormatString(300, 0, GetColor(255, 255, 255), "Pos.x%f", m_Pos.x);
-	DrawFormatString(900, 0, GetColor(255, 255, 255), "PlayerPos.x%f", m_PlayerPos.x);
-	DrawFormatString(600, 100, GetColor(255, 255, 255), "DistancePos.x%f", m_DistancePos.x);
+//	DrawFormatString(0, 100, GetColor(255, 255, 255), "offset.x%f", offset.x);
+//	DrawFormatString(0, 200, GetColor(255, 255, 255), "Vec.x%f", m_Vec.x);
+//	DrawFormatString(300, 0, GetColor(255, 255, 255), "Pos.x%f", m_Pos.x);
+//	DrawFormatString(900, 0, GetColor(255, 255, 255), "PlayerPos.x%f", m_PlayerPos.x);
+//	DrawFormatString(600, 100, GetColor(255, 255, 255), "DistancePos.x%f", m_DistancePos.x);
 #endif
 }
 

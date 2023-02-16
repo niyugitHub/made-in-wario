@@ -90,7 +90,8 @@ void EnemyFactory::Update()
 				m_Player->Ondamage();
 				m_Player->SetNoDamageFrame(100);
 				m_Player->SetEnemyPos(m_Pos);
-				m_Player->IsKnockBack(m_Pos);
+				m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
+			//	m_Player->IsKnockBack(m_Pos);
 			}
 
 			// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
@@ -99,6 +100,7 @@ void EnemyFactory::Update()
 			//	DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
 				m_Player->Ondamage();
 				m_Player->SetNoDamageFrame(100);
+				m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
 				m_Player->SetEnemyPos(m_Pos);
 			}
 
@@ -119,7 +121,9 @@ void EnemyFactory::Update()
 			if (m_Coll->IsCollAttackPlayer() && !enemy->GetHit())
 			{
 				m_Player->SetHitAttack(true);
-				m_Player->IsHealGauge();
+				m_Player->IsGauge();
+				m_Player->SetEnemyPos(m_Pos);
+				m_Player->SetKnockBackSpeed(Player::kHitKnockBackSpeed);
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
@@ -194,12 +198,12 @@ void EnemyFactory::Stage1Enemy()
 	if (m_Frame == 1)
 	{
 		//Create(kJump, { 1000,400 });
-		/*Create(kThrow, { 2050,400 });
 		Create(kThrow, { 4000,800 });
+		Create(kJump, { 1900,600 });
+		/*Create(kThrow, { 2050,400 });
 		Create(kJump, { 4000,600 });
 		Create(kThrow, { 5500,800 });
 		Create(kThrow, { 5300,800 });
-		Create(kJump, { 1900,600 });
 		Create(kJump, { 1900,300 });
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });

@@ -139,7 +139,7 @@ SceneBase* SceneMain::update()
 		m_player->NotExist();
 
 		Pad::update();
-		if (Pad::isTrigger(PAD_INPUT_1))
+		if (Pad::isTrigger(PAD_INPUT_2))
 		{
 			m_Map->SetMap(m_MapPos);
 			m_PlayerPos.y = Player::kFristPlayerPosY;
@@ -169,30 +169,7 @@ SceneBase* SceneMain::update()
 		}
 	}
 
-	//if (m_Coll->FallPlayer())
-	//{
-	//	m_player->SetExist(false);
-	//}
-	///*m_EnemyFactory->Update();*/
-
-	//
-	//m_PlayerPos = m_player->GetPos();
-	////	IsCollision();
-
-	//m_Coll->Update();
-
-	//// プレイヤーとマップの当たり判定
-	//m_CollTop = m_Coll->IsCollTop();
-	//m_CollBottom = m_Coll->IsCollBottom();
-	//m_CollRight = m_Coll->IsCollRight();
-	//m_CollLeft = m_Coll->IsCollLeft();
-
 	m_Coll->Update();
-
-	m_player->SetCollTop(m_CollTop);
-	m_player->SetCollBottom(m_CollBottom);
-	m_player->SetCollRight(m_CollRight);
-	m_player->SetCollLeft(m_CollLeft);
 
 	m_player->update();
 
@@ -220,37 +197,11 @@ SceneBase* SceneMain::update()
 	}
 	m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 
+	//マップのアップデート
 	m_Map->update(m_offset);
 
-	if (m_Coll->FallPlayer())
-	{
-		m_player->SetExist(false);
-	}
-	/*m_EnemyFactory->Update();*/
-
-
 	m_PlayerPos = m_player->GetPos();
-	//	IsCollision();
-
-	/*m_Coll->Update();*/
-	/*m_Item->Update();*/
-
-	/*for (auto& pItem : m_Item)
-	{
-		pItem->Update();
-		m_Coll->setItem(pItem);
-
-		if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kTwoJump)
-		{
-			m_player->SetCollItemTwoJump(true);
-		}
-
-		if (m_Coll->IsCollItem() && pItem->GetItemType() == ItemType::kAttackUp)
-		{
-			m_AttackPower += 10;
-			m_player->SetAttackPower(m_AttackPower);
-		}
-	}*/
+	
 	IsItemPosition(1);
 
 	if (m_player->GetExist())
@@ -332,18 +283,18 @@ void SceneMain::draw()
 
 	for (int i = 0; i < kStageItemNum; i++)
 	{
-		m_Item[i]->Draw();
+		m_Item[i]->Draw(m_offset);
 
 		if (m_Item[i]->GetExist())
 		{
 			if (m_Item[i]->GetItemType() == ItemType::kTwoJump)
 			{
-				DrawString(m_Item[i]->GetPos().x, m_Item[i]->GetPos().y, "ジャンプ", GetColor(0, 255, 0));
+				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "ジャンプ", GetColor(0, 255, 0));
 			}
 
 			if (m_Item[i]->GetItemType() == ItemType::kAttackUp)
 			{
-				DrawString(m_Item[i]->GetPos().x, m_Item[i]->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
+				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
 			}
 		}
 #ifdef _DEBUG

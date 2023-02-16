@@ -76,15 +76,15 @@ void Enemy3::update()
 	}
 }
 
-void Enemy3::draw()
+void Enemy3::draw(Vec2 offset)
 {
 	if (m_Exist)
-		DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50, m_Pos.y + 50, GetColor(0, 0, 255), true);
+		DrawBox(m_Pos.x + offset.x, m_Pos.y , m_Pos.x + 50 + offset.x, m_Pos.y + 50, GetColor(0, 0, 255), true);
 
 	/*DrawBox(m_ThrowPos.x, m_ThrowPos.y, m_ThrowPos.x + 50, m_ThrowPos.y + 50,
 		GetColor(0, 255, 255), true);*/
 
-	m_Shot->Draw();
+	m_Shot->Draw(offset);
 
 //	DrawFormatString(800, 0, GetColor(255, 255, 255), "“G‚ÌÀ•W%f", m_Pos.x);
 }

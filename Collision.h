@@ -54,8 +54,6 @@ public:
 
 	void InitColl();
 
-	bool FallPlayer();
-
 	// プレイヤーの上下左右の座標
 	void PlayerDirectPos();
 

@@ -25,7 +25,7 @@ public:
 
 	void Update();
 
-	void Draw();
+	void Draw(Vec2 offset);
 
 private:
 	int m_ItemType;

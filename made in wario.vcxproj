@@ -164,6 +164,7 @@
     <ClCompile Include="MinigameBase.cpp" />
     <ClCompile Include="Pad.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerShot.cpp" />
     <ClCompile Include="SceneBase.cpp" />
     <ClCompile Include="SceneMain.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="MinigameBase.h" />
     <ClInclude Include="Pad.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerShot.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneMain.h" />
     <ClInclude Include="SceneManager.h" />

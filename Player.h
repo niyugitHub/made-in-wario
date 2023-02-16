@@ -19,6 +19,11 @@ public:
 	static constexpr int kColumnCharaChipNum = 9;
 
 	static constexpr int kCharaChipNum = kSideCharaChipNum * kColumnCharaChipNum;
+
+	// ノックバック(攻撃を受けたとき)のスピード
+	static constexpr float kKnockBackSpeed = 12.0f;
+	// ノックバック(攻撃を当てたとき)のスピード
+	static constexpr float kHitKnockBackSpeed = 6.0f;
 public:
 	Player();
 	virtual ~Player();
@@ -65,6 +70,9 @@ public:
 	// 敵座標取得
 	void SetEnemyPos(Vec2 EnemyPos) { m_EnemyPos = EnemyPos; };
 
+	// ノックバックスピード取得
+	void SetKnockBackSpeed(float KnockbackSpeed){m_KnockBack = KnockbackSpeed;}
+
 	void Init();
 	void end();
 
@@ -96,16 +104,22 @@ public:
 	void IsKnockBack(Vec2 EnemyPos);
 
 	// 回復処理
-	void IsHeal();
+	void IsActiveGauge();
 
-	// 回復ゲージ
-	void IsHealGauge();
+	// ゲージ
+	void IsGauge();
 
 	// 当たり判定
 	void IsColl();
 	
 	//当たり判定初期化
 	void InitColl();
+
+	//ボタン押してるか確認
+	bool PushButton();
+
+	// プレイヤーが落下したかどうか
+	bool FallPlayer();
 
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
@@ -191,11 +205,14 @@ private:
 	// ノックバックスピード
 	float m_KnockBack;
 
-	// 回復にかかる時間
-	int m_HealFrame;
+	// ボタンを押した時間
+	int m_PushFrame;
 
-	// 回復に必要なゲージ
-	int m_HealGauge;
+	// ゲージ量
+	int m_Gauge;
+
+	// ショットを打てるかどうか
+	bool m_PossibleShot;
 
 	// キャラクターの存在確認
 	bool m_Exist;

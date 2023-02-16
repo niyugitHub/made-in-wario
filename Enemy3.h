@@ -8,7 +8,7 @@ public:
 
 	void update();
 
-	void draw();
+	void draw(Vec2 offset);
 
 private:
 	//// “Š‚°‚½‚à‚Ì‚ÌˆÊ’u
