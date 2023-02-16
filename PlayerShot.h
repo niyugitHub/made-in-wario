@@ -14,6 +14,8 @@ public:
 	void SetExist(bool Exist) { m_Exist = Exist; }
 	bool GetExist() { return m_Exist; }
 
+	void SetPlayerLookLeft(bool LookLeft){m_LookLeft = LookLeft;}
+
 	void Update();
 	void Draw(Vec2 offset);
 
@@ -22,6 +24,9 @@ private:
 	Vec2 m_Pos;
 	// ショット移動量
 	Vec2 m_Vec;
+
+	// プレイヤーの向き(左)
+	bool m_LookLeft;
 
 	// ショット存在
 	bool m_Exist;

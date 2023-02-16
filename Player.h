@@ -4,6 +4,7 @@
 
 class Map;
 class SceneTitle;
+class PlayerShot;
 
 class Player 
 {
@@ -213,11 +214,14 @@ private:
 
 	// ショットを打てるかどうか
 	bool m_PossibleShot;
+	// ショットを打ったかどうか
+//	bool m_Shot;
 
 	// キャラクターの存在確認
 	bool m_Exist;
 	
 	std::shared_ptr<Map> m_Map;
 	SceneTitle* m_SceneTitle;
+	std::shared_ptr<PlayerShot> m_Shot;
 };
 

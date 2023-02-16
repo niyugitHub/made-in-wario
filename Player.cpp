@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "SceneTitle.h"
+#include "PlayerShot.h"
 #include "Map.h"
 #include <DxLib.h>
 #include <cassert>
@@ -70,6 +71,7 @@ m_Gauge(kMaxHealGauge),
 m_PossibleShot(false),
 m_Exist(true),
 m_Map(std::make_shared<Map>()),
+m_Shot(std::make_shared<PlayerShot>()),
 m_SceneTitle(nullptr)
 {
 	for (auto& handle : m_handle)
@@ -118,6 +120,8 @@ void Player::update()
 		{
 			IsKnockBack(m_EnemyPos);
 		}
+
+		m_Shot->Update();
 
 		IsColl();
 
@@ -175,6 +179,8 @@ void Player::draw(Vec2 offset)
 		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
 	}
 
+	m_Shot->Draw(offset);
+
 	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
 	DrawFormatString(0, 500, GetColor(255, 255, 255), "回復ゲージ%d", m_Gauge);
@@ -215,7 +221,7 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		if(m_KnockBack <= 0) m_NextPos.x += m_vec.x * 2;
+		if(m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x += m_vec.x * 2;
 
 		//	if (m_CollRight) m_NextPos.x -= m_vec.x * 2;
 	}
@@ -226,7 +232,7 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		if (m_KnockBack <= 0) m_NextPos.x -= m_vec.x * 2;
+		if (m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x -= m_vec.x * 2;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_RIGHT))
@@ -235,7 +241,7 @@ void Player::CharaMove()
 		
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		if (m_KnockBack <= 0) m_NextPos.x += m_vec.x;
+		if (m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x += m_vec.x;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_LEFT))
@@ -243,12 +249,12 @@ void Player::CharaMove()
 		if (!m_Attack) m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		if (m_KnockBack <= 0) m_NextPos.x -= m_vec.x;
+		if (m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x -= m_vec.x;
 	}
 
 	else
 	{
-		IsMoveStop();
+	//	IsMoveStop();
 		m_CharaGraphY = 0;
 		m_CharaMotion = 2;
 	}
@@ -398,53 +404,53 @@ void Player::NotExist()
 	m_Gauge = 0;
 }
 
-void Player::IsMoveStart()
-{
-	if (m_LookLeft)
-	{
-		if (m_pos.x < kFristPlayerPosX + (kSideSize / 2) + 30)
-		{
-			m_StartMove = kStartMoveSpeed;
-			m_pos.x += m_StartMove;
-		}
+//void Player::IsMoveStart()
+//{
+//	if (m_LookLeft)
+//	{
+//		if (m_pos.x < kFristPlayerPosX + (kSideSize / 2) + 30)
+//		{
+//			m_StartMove = kStartMoveSpeed;
+//			m_pos.x += m_StartMove;
+//		}
+//
+//		else
+//		{
+//			m_StartMove = 0;
+//		}
+//	}
+//
+//	if (!m_LookLeft)
+//	{
+//		if (m_pos.x > kFristPlayerPosX + (kSideSize / 2) - 30)
+//		{
+//			m_StartMove = -kStartMoveSpeed;
+//			m_pos.x += m_StartMove;
+//		}
+//
+//		else
+//		{
+//			m_StartMove = 0;
+//		}
+//	}
+//}
 
-		else
-		{
-			m_StartMove = 0;
-		}
-	}
-
-	if (!m_LookLeft)
-	{
-		if (m_pos.x > kFristPlayerPosX + (kSideSize / 2) - 30)
-		{
-			m_StartMove = -kStartMoveSpeed;
-			m_pos.x += m_StartMove;
-		}
-
-		else
-		{
-			m_StartMove = 0;
-		}
-	}
-}
-
-void Player::IsMoveStop()
-{
-	/*m_StartMove = 0;
-
-	if (m_pos.x > kFristPlayerPosX + (kSideSize / 2) + 10 && m_LookLeft)
-	{
-		m_StartMove = -kStartMoveSpeed;
-		m_pos.x += m_StartMove;
-	}
-
-	if (m_pos.x < kFristPlayerPosX + (kSideSize / 2) - 10 && !m_LookLeft)
-	{
-		m_StartMove = kStartMoveSpeed;
-		m_pos.x += m_StartMove;
-	}*/
-}
+//void Player::IsMoveStop()
+//{
+//	/*m_StartMove = 0;
+//
+//	if (m_pos.x > kFristPlayerPosX + (kSideSize / 2) + 10 && m_LookLeft)
+//	{
+//		m_StartMove = -kStartMoveSpeed;
+//		m_pos.x += m_StartMove;
+//	}
+//
+//	if (m_pos.x < kFristPlayerPosX + (kSideSize / 2) - 10 && !m_LookLeft)
+//	{
+//		m_StartMove = kStartMoveSpeed;
+//		m_pos.x += m_StartMove;
+//	}*/
+//}
 
 void Player::Ondamage()
 {
@@ -487,7 +493,8 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 
 void Player::IsActiveGauge()
 {
-	if (PushButton() && m_Gauge >= 30)
+//	Pad::update();
+	if (Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30)
 	{
 		m_PushFrame++;
 
@@ -495,23 +502,37 @@ void Player::IsActiveGauge()
 		{
 			m_HealGauge--;
 		}*/
-		if (m_PushFrame >= 60 && m_Hp < m_MaxHp)
+		if (m_PushFrame == 90)
 		{
-			m_Hp++;
-			m_PushFrame = 0;
+			if (m_Hp < m_MaxHp)
+			{
+				m_Hp++;
+			}
+			/*m_PushFrame = 0;*/
 			m_Gauge -= 30;
 		}
 	}
-
-	else if(Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30)
+	else if(m_PushFrame > 0 && m_PushFrame <= 30
+		&& m_Gauge >= 30/* && !m_Shot->GetExist()*/)
 	{
+		m_Shot->SetExist(true);
+		if (m_LookLeft)
+		{
+			m_Shot->SetPos({ m_pos.x,m_pos.y + (kColumnSize / 4) });
+		}
+		else if (!m_LookLeft)
+		{
+			m_Shot->SetPos({ m_pos.x + (kSideSize / 2),m_pos.y + (kColumnSize / 4) });
+		}
+		m_Shot->SetPlayerLookLeft(m_LookLeft);
 		m_PushFrame = 0;
+	//	m_Gauge -= 30;
 	}
-
 	else
 	{
 		m_PushFrame = 0;
 	}
+
 
 
 	if (m_Gauge <= 0)

@@ -3,7 +3,7 @@
 
 PlayerShot::PlayerShot() : 
 	m_Pos(0,0),
-	m_Vec(15,0),
+	m_Vec(30,0),
 	m_Exist(false)
 {
 }
@@ -14,7 +14,18 @@ PlayerShot::~PlayerShot()
 
 void PlayerShot::Update()
 {
-	m_Pos += m_Vec;
+	if (m_Exist)
+	{
+		if (m_LookLeft)
+		{
+			m_Pos.x -= m_Vec.x;
+			m_Pos.y -= m_Vec.y;
+		}
+		else if(!m_LookLeft)
+		{
+			m_Pos += m_Vec;
+		}
+	}
 }
 
 void PlayerShot::Draw(Vec2 offset)
