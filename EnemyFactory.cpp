@@ -193,7 +193,7 @@ void EnemyFactory::Stage1Enemy()
 
 	if (m_Frame == 1)
 	{
-		Create(kJump, { 1000,400 });
+		//Create(kJump, { 1000,400 });
 		/*Create(kThrow, { 2050,400 });
 		Create(kThrow, { 4000,800 });
 		Create(kJump, { 4000,600 });
