@@ -2,7 +2,6 @@
 
 #include "Map.h"
 #include "game.h"
-#include"Player.h"
 #include "Pad.h"
 
 namespace
@@ -49,11 +48,9 @@ Map::Map() :
 	m_graphHeight(0),
 	m_LeftNum(0),
 	m_RightNum(0),
-	m_LeftPos(0, 0),
-	m_RightPos(0, 0),
+	m_Pos(0, 0),
 	m_ScrollSpeed(0, 0),
-	m_Vec(0,0),
-	m_player(nullptr)
+	m_Vec(0,0)
 {
 	for (int i = 0; i < kBgNumY; i++)
 	{
@@ -81,59 +78,46 @@ void Map::unload()
 	DeleteGraph(m_handle);
 }
 
-void Map::update()
+void Map::update(Vec2 offset)
 {
-	m_Vec.x = 0;
-	m_Vec.y = 0;
-	m_ScrollSpeed.x = 0;
-	m_ScrollSpeed.y = 0;
-
-	if (m_player->GetExist())
-	{
-		if (m_player->GetKnockBack() == 0)
-		{
-			if (Pad::isPress(PAD_INPUT_RIGHT))
-			{
-				if (!m_CollRight)
-				{
-					m_Vec.x -= 5;
-					if (Pad::isPress(PAD_INPUT_3))
-					{
-						m_Vec.x -= 5;
-					}
-				}
-			}
-
-			if (Pad::isPress(PAD_INPUT_LEFT))
-			{
-				if (!m_CollLeft)
-				{
-					m_Vec.x += 5;
-					if (Pad::isPress(PAD_INPUT_3))
-					{
-						m_Vec.x += 5;
-					}
-				}
-			}
-		}
-
-		/*if (m_player->GetPos().x < Player::kFristPlayerPosX - 30)
-		{
-			m_Vec.x += m_player->GetMove();
-		}*/
-
-	
-	//	m_Vec.x += m_player->GetMove();
-
-		PlayerMove(m_player->GetKnockBack(), m_player->GetMove());
-
-		m_ScrollSpeed = m_Vec;
-
-		m_LeftPos += m_Vec;
-	}
-
-	m_CollLeft = false;
-	m_CollRight = false;
+	m_Pos.x = offset.x;
+	//m_Vec.x = 0;
+	//m_Vec.y = 0;
+	//m_ScrollSpeed.x = 0;
+	//m_ScrollSpeed.y = 0;
+	//
+	//if (m_player->GetExist())
+	//{
+	//	if (Pad::isPress(PAD_INPUT_RIGHT))
+	//	{
+	//		if (!m_CollRight)
+	//		{
+	//			m_Vec.x -= 5;
+	//			if (Pad::isPress(PAD_INPUT_3))
+	//			{
+	//				m_Vec.x -= 5;
+	//			}
+	//		}
+	//	}
+	//
+	//	if (Pad::isPress(PAD_INPUT_LEFT))
+	//	{
+	//		if (!m_CollLeft)
+	//		{
+	//			m_Vec.x += 5;
+	//			if (Pad::isPress(PAD_INPUT_3))
+	//			{
+	//				m_Vec.x += 5;
+	//			}
+	//		}	
+	//	}
+	//	/*m_ScrollSpeed = m_Vec;*/
+	//
+	//	m_Pos += m_Vec;
+	//}
+	//
+	//m_CollLeft = false;
+	//m_CollRight = false;
 }
 
 void Map::draw()
@@ -145,6 +129,16 @@ void Map::PlayerMove(float knockback, float Move)
 {
 	m_Vec.x -= knockback;
 	m_Vec.x += Move;
+}
+
+int Map::getWidth() const
+{
+	return kChipSize * kBgNumX;
+}
+
+int Map::getHeight() const
+{
+	return kChipSize * kBgNumY;
 }
 
 int Map::chipNumX()
@@ -170,11 +164,8 @@ void Map::drawMap()
 		{
 			int ChipNumY = kMapData[y][x] / 25;
 			int ChipNumX = kMapData[y][x] % 25;
-			/*DrawRectGraph(x * kChipSize, y * kChipSize,
-				kChipSize * ChipNumX, kChipSize * ChipNumY,
-				kChipSize, kChipSize, m_handle, true);*/
 
-			DrawRectGraph(m_LeftPos.x + kChipSize * x, m_LeftPos.y + kChipSize * y,
+			DrawRectGraph(m_Pos.x + kChipSize * x, m_Pos.y + kChipSize * y,
 				kChipSize * ChipNumX, kChipSize * ChipNumY,
 				kChipSize, kChipSize, m_handle, true);
 		}

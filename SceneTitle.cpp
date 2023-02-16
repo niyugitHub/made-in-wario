@@ -79,7 +79,7 @@ void SceneTitle::draw()
 	DrawString(150, 200, "個人製作", GetColor(m_Color, m_Color, 0));
 	DrawString(150, 450, "Bを押してスタート", GetColor(m_Color, m_Color, 0));
 
-	m_player->draw();
+//	m_player->draw();
 }
 
 void SceneTitle::FadeinUpdate()

@@ -39,7 +39,7 @@ public:
 	void end();
 
 	void Update();
-	void Draw();
+	void Draw(Vec2 offset);
 
 	std::shared_ptr<EnemyBase> Create(EnemyType type, const Vec2 pos);
 

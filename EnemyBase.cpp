@@ -54,22 +54,25 @@ void EnemyBase::update()
 
 }
 
-void EnemyBase::draw()
+void EnemyBase::draw(Vec2 offset)
 {
 	if(m_Exist)
-	DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50,m_Pos.y + 50,GetColor(255, 0, 0), true);
+	DrawBox(m_Pos.x + offset.x, m_Pos.y,
+		m_Pos.x + 50 + offset.x,m_Pos.y + 50,GetColor(255, 0, 0), true);
 
 #ifdef _DEBUG
-	DrawFormatString(0, 100, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
+//	DrawFormatString(0, 100, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
+	DrawFormatString(0, 100, GetColor(255, 255, 255), "offset.x%f", offset.x);
+	DrawFormatString(0, 200, GetColor(255, 255, 255), "Vec.x%f", m_Vec.x);
+	DrawFormatString(300, 0, GetColor(255, 255, 255), "Pos.x%f", m_Pos.x);
+	DrawFormatString(900, 0, GetColor(255, 255, 255), "PlayerPos.x%f", m_PlayerPos.x);
+	DrawFormatString(600, 100, GetColor(255, 255, 255), "DistancePos.x%f", m_DistancePos.x);
 #endif
 }
 
 void EnemyBase::MoveEnemy()
 {
 	m_Vec.x = -3;
-
-	m_MapVec = m_Map->GetVec();
-
 
 	if (!m_CollBottom)
 	{
@@ -92,7 +95,7 @@ void EnemyBase::MoveEnemy()
 
 	/*m_Vec.x += m_MapVec.x;*/
 
-	m_Vec.x += m_MapVec.x;
+//	m_Vec.x += m_MapVec.x;
 
 //	m_Pos += m_Vec;
 }
@@ -100,7 +103,7 @@ void EnemyBase::MoveEnemy()
 void EnemyBase::BasicMoveEnemy()
 {
 	m_Vec.x = 0;
-	m_MapVec = m_Map->GetVec();
+//	m_MapVec = m_Map->GetVec();
 
 
 	/*if (!m_CollBottom)
@@ -116,7 +119,7 @@ void EnemyBase::BasicMoveEnemy()
 	}
 
 //	m_Vec.x *= m_MoveInverseDirection;
-	m_Vec.x += m_MapVec.x;
+//	m_Vec.x += m_MapVec.x;
 }
 
 void EnemyBase::InitKnockBack()

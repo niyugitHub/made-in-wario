@@ -3,8 +3,6 @@
 #include "Vec2.h"
 #include <memory>
 
-class Player;
-
 class Map
 {
 	public:
@@ -23,12 +21,14 @@ class Map
 		Map();
 		~Map();
 
-		void setPlayer(std::shared_ptr<Player> pPlayer) { m_player = pPlayer; }
+	/*	void setPlayer(std::shared_ptr<Player> pPlayer) { m_player = pPlayer; }*/
 
-		Vec2 GetPos() { return m_LeftPos; }
+		Vec2 GetPos() { return m_Pos; }
 		Vec2 GetVec() { return m_ScrollSpeed; }
 
-		void SetMap(Vec2 Pos) { m_LeftPos = Pos; }
+		int GetPosX() { return m_Pos.x; }
+
+		void SetMap(Vec2 Pos) { m_Pos = Pos; }
 
 		// 当たり判定をセット
 		void SetCollRight(bool Right) { m_CollRight = Right; }
@@ -40,13 +40,17 @@ class Map
 
 		int GetMapData(int Y, int X) { return m_MapData[Y][X]; }
 
-		void update();
+		void update(Vec2 offset);
 
 		// 描画
 		void draw();
 
 		// プレイヤーの向きとノックバックの移動量
 		void PlayerMove(float knockback, float Move);
+
+		// 広さを取得
+		int getWidth() const;
+		int getHeight() const;
 	private:
 		// マップチップの数を取得する
 		int chipNumX();
@@ -78,18 +82,12 @@ class Map
 		int m_RightNum;
 
 		// マップの左端の座標
-		Vec2 m_LeftPos;
-
-		// マップの右端の座標
-		Vec2 m_RightPos;
+		Vec2 m_Pos;
 
 		// スクロールのスピード
 		Vec2 m_ScrollSpeed;
 
 		// ベクトル
 		Vec2 m_Vec;
-
-		// プレイヤー
-		std::shared_ptr<Player> m_player;
 };
 

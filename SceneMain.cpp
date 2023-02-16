@@ -23,6 +23,7 @@ SceneMain::SceneMain() :
 	m_EnemyPos(0, 0),
 	m_MapPos(0, 0),
 	m_ItemPos(500, 500),
+	m_offset(0,0),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
@@ -66,7 +67,7 @@ SceneMain::SceneMain() :
 	m_Item[4]->SetPos({ 4000,700 });
 	m_Item[0]->SetItemType(ItemType::kTwoJump);
 
-	m_Map->setPlayer(m_player);
+	m_player->setMap(m_Map);
 
 	m_Coll->setPlayer(m_player);
 	m_Coll->setMap(m_Map);
@@ -168,31 +169,70 @@ SceneBase* SceneMain::update()
 		}
 	}
 
+	//if (m_Coll->FallPlayer())
+	//{
+	//	m_player->SetExist(false);
+	//}
+	///*m_EnemyFactory->Update();*/
+
+	//
+	//m_PlayerPos = m_player->GetPos();
+	////	IsCollision();
+
+	//m_Coll->Update();
+
+	//// プレイヤーとマップの当たり判定
+	//m_CollTop = m_Coll->IsCollTop();
+	//m_CollBottom = m_Coll->IsCollBottom();
+	//m_CollRight = m_Coll->IsCollRight();
+	//m_CollLeft = m_Coll->IsCollLeft();
+
+	m_Coll->Update();
+
+	m_player->SetCollTop(m_CollTop);
+	m_player->SetCollBottom(m_CollBottom);
+	m_player->SetCollRight(m_CollRight);
+	m_player->SetCollLeft(m_CollLeft);
+
+	m_player->update();
+
+	Vec2 targetOffset{};
+
+	// スクロールの計算 プレイヤーが画面中央に表示されるようスクロールする
+	targetOffset.x = (Game::kScreenWidth / 2) - m_player->GetPos().x;
+	if (targetOffset.x > 0)
+	{
+		targetOffset.x = 0;
+	}
+	if (targetOffset.x < -m_Map->getWidth() + Game::kScreenWidth)
+	{
+		targetOffset.x = -m_Map->getWidth() + Game::kScreenWidth;
+	}
+
+	targetOffset.y = (Game::kScreenHeight / 2) - m_player->GetPos().y;
+	if (targetOffset.y > 0)
+	{
+		targetOffset.y = 0;
+	}
+	if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
+	{
+		targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
+	}
+	m_offset = targetOffset * 0.2f + m_offset * 0.8f;
+
+	m_Map->update(m_offset);
+
 	if (m_Coll->FallPlayer())
 	{
 		m_player->SetExist(false);
 	}
 	/*m_EnemyFactory->Update();*/
 
-	
+
 	m_PlayerPos = m_player->GetPos();
 	//	IsCollision();
 
-	m_Coll->Update();
-
-	// プレイヤーとマップの当たり判定
-	m_CollTop = m_Coll->IsCollTop();
-	m_CollBottom = m_Coll->IsCollBottom();
-	m_CollRight = m_Coll->IsCollRight();
-	m_CollLeft = m_Coll->IsCollLeft();
-
-	m_player->SetCollTop(m_CollTop);
-	m_player->SetCollBottom(m_CollBottom);
-	m_Map->SetCollRight(m_CollRight);
-	m_Map->SetCollLeft(m_CollLeft);
-
-	m_player->update();
-	m_Map->update();
+	/*m_Coll->Update();*/
 	/*m_Item->Update();*/
 
 	/*for (auto& pItem : m_Item)
@@ -283,9 +323,11 @@ SceneBase* SceneMain::update()
 void SceneMain::draw()
 {
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
+//	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
 	m_Map->draw();
-	m_EnemyFactory->Draw();
-	m_player->draw();
+	m_EnemyFactory->Draw(m_offset);
+	m_player->draw(m_offset);
+
 //	m_Item->Draw();
 
 	for (int i = 0; i < kStageItemNum; i++)
@@ -305,6 +347,18 @@ void SceneMain::draw()
 			}
 		}
 #ifdef _DEBUG
+		for (int i = 0; i < Map::kBgNumY; i++)
+		{
+			for (int j = 0; j < Map::kBgNumX; j++)
+			{
+				if (m_Map->GetMapData(i, j) != 0)
+				{
+					DrawBox(Map::kChipSize * j + m_Map->GetPosX(), Map::kChipSize * i,
+						Map::kChipSize * (j + 1) + m_Map->GetPosX(), Map::kChipSize * (i + 1),
+						0xffffff, false);
+				}
+			}
+		}
 #endif
 	}
 

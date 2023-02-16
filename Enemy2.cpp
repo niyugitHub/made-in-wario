@@ -49,10 +49,10 @@ void Enemy2::update()
 	}
 }
 
-void Enemy2::draw()
+void Enemy2::draw(Vec2 offset)
 {
 	if (m_Exist)
-		DrawBox(m_Pos.x, m_Pos.y, m_Pos.x + 50, m_Pos.y + 50, GetColor(0, 255, 0), true);
+		DrawBox(m_Pos.x + offset.x, m_Pos.y, m_Pos.x + 50 + offset.x, m_Pos.y + 50, GetColor(0, 255, 0), true);
 
 //#ifdef _DEBUG
 //	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);

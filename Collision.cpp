@@ -43,7 +43,7 @@ Collision::~Collision()
 
 void Collision::Update()
 {
-	m_PlayerPos = m_player->GetPos();
+	m_PlayerPos = m_player->GetNextPos();
 
 	m_EnemyPos = m_enemy->GetPos();
 
@@ -179,6 +179,8 @@ bool Collision::IsCollItem()
 
 void Collision::IsCollMap()
 {
+	m_PlayerPos = m_player->GetNextPos();
+
 	float PlayerPosX = m_PlayerPos.x / Map::kChipSize;
 	float PlayerPosY = m_PlayerPos.y / Map::kChipSize;
 
@@ -206,8 +208,8 @@ void Collision::IsCollMap()
 			MapInfo(i, j);
 			if (m_Map->GetMapData(i, j) != 0 && !m_MapColl)
 			{
-				float MapPosX = m_MapPos.x + j * Map::kChipSize;
-				float MapPosY = m_MapPos.y / 64 + i * Map::kChipSize;
+				float MapPosX = j * Map::kChipSize;
+				float MapPosY = i * Map::kChipSize;
 
 				if (m_CollSingle && m_PlayerPos.y + 10 < MapPosY + Map::kChipSize - 40 &&
 					m_PlayerPos.y > MapPosY &&
@@ -230,7 +232,9 @@ void Collision::IsCollMap()
 					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
 					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20 && !m_CollSingle)
 				{
+					m_PlayerPos = m_player->GetPos();
 					m_CollRight = true;
+					m_player->SetPos(m_PlayerPos);
 				}
 				//ç∂
 				if (m_PlayerPos.x + 35 < MapPosX + Map::kChipSize &&
@@ -238,7 +242,9 @@ void Collision::IsCollMap()
 					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
 					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20 && !m_CollSingle)
 				{
+					m_PlayerPos = m_player->GetPos();
 					m_CollLeft = true;
+					m_player->SetPos(m_PlayerPos);
 				}
 				//â∫
 				if (m_PlayerPos.y + (Player::kColumnSize) > MapPosY &&

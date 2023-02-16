@@ -32,13 +32,9 @@ void Enemy1::update()
 	m_DistancePos = m_Pos - m_PlayerPos;
 
 	m_NextPos = m_Pos;
+
 	(this->*m_func)();
 
-
-	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
-	{
-		m_func = &Enemy1::UpdateDiscovery;
-	}
 
 	/*if (m_Pos.y > Game::kScreenHeight)
 	{
@@ -51,6 +47,11 @@ void Enemy1::UpdatePatrol()
 	MoveEnemy();
 
 	m_NextPos += m_Vec;
+
+	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
+	{
+		m_func = &Enemy1::UpdateDiscovery;
+	}
 
 	if (!m_CollRight && !m_CollLeft)
 	{
@@ -78,14 +79,14 @@ void Enemy1::UpdateDiscovery()
 		m_Vec.y = 0;
 	}
 
-	if (m_DistancePos.x > -500 + PlayerGraphSize / 2 && m_DistancePos.x < PlayerGraphSize / 2)
+	if (m_DistancePos.x > -500 /*+ PlayerGraphSize / 2*/ && m_DistancePos.x < 0/*PlayerGraphSize / 2*/)
 	{
-		m_Vec.x = m_MapVec.x + 3;
+		m_Vec.x = 3;
 	}
 
-	if (m_DistancePos.x >= PlayerGraphSize / 2 && m_DistancePos.x < 500 + PlayerGraphSize / 2)
+	else if (m_DistancePos.x >= 0/*PlayerGraphSize / 2*/ && m_DistancePos.x < 500/* + PlayerGraphSize / 2*/)
 	{
-		m_Vec.x = m_MapVec.x - 3;
+		m_Vec.x = -3;
 	}
 	else
 	{

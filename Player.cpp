@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "SceneTitle.h"
+#include "Map.h"
 #include <DxLib.h>
 #include <cassert>
 #include"game.h"
@@ -38,7 +39,8 @@ namespace
 
 Player::Player() :
 m_pos(kFristPlayerPosX + (kSideSize / 2), kFristPlayerPosY),
-m_vec(3, 0),
+m_NextPos(m_pos),
+m_vec(5, 0),
 m_StartMove(0),
 m_Jump(14.0f),
 m_CharaGraphX(0),
@@ -63,12 +65,12 @@ m_AttackPower(10),
 m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
-m_KnockBack(kKnockBackSpeed),
+m_KnockBack(0),
 m_PossibleTwoJump(false),
 m_HealFrame(0),
-m_Vel(0,0),
 m_HealGauge(kMaxHealGauge),
 m_Exist(true),
+m_Map(std::make_shared<Map>()),
 m_SceneTitle(nullptr)
 {
 	for (auto& handle : m_handle)
@@ -97,8 +99,6 @@ void Player::update()
 {
 	if (m_Exist)
 	{
-		IsMoveStart();
-
 		if (m_Hp <= 0)
 		{
 			m_Exist = false;
@@ -119,6 +119,8 @@ void Player::update()
 		{
 			IsKnockBack(m_EnemyPos);
 		}
+
+		IsColl();
 
 		CharaMove();
 
@@ -151,10 +153,21 @@ void Player::update()
 			m_CharaGraphX = 7;
 		}
 	}
+
+	IsColl();
+
+	if (!m_CollRight && !m_CollLeft)
+	{
+		m_pos.x = m_NextPos.x;
+	}
+	m_pos.y = m_NextPos.y;
+
+	InitColl();
 }
 
-void Player::draw()
+void Player::draw(Vec2 offset)
 {
+	Vec2 pos = m_pos + offset;
 	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 
 	if (m_PossibleTwoJump)
@@ -166,6 +179,7 @@ void Player::draw()
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "çUåÇóÕ%d", m_AttackPower);
 	DrawFormatString(0, 500, GetColor(255, 255, 255), "âÒïúÉQÅ[ÉW%d", m_HealGauge);
 #ifdef _DEBUG
+	/*DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);*/
 #endif
 
 	if (m_NoDamageFrame > 0)
@@ -178,18 +192,19 @@ void Player::draw()
 
 	if (!m_LookLeft)
 	{
-		DrawGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
+		DrawGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
 	}
 
 	else if (m_LookLeft)
 	{
-		DrawTurnGraph(static_cast<int>(m_pos.x), static_cast<int>(m_pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
+		DrawTurnGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
 	}
 
 }
 
 void Player::CharaMove()
 {
+	m_NextPos = m_pos;
 	Pad::update();
 
 	m_FrameChangeSpeed = 1;
@@ -200,9 +215,9 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		//	m_pos.x += m_vec.x * 2;
+		if(m_KnockBack <= 0) m_NextPos.x += m_vec.x * 2;
 
-		//	if (m_CollRight) m_pos.x -= m_vec.x * 2;
+			if (m_CollRight) m_NextPos.x -= m_vec.x * 2;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_LEFT) && Pad::isPress(PAD_INPUT_3))
@@ -211,9 +226,7 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		//	m_pos.x -= m_vec.x * 2;
-
-		//	if(m_CollLeft) m_pos.x += m_vec.x * 2;
+		if (m_KnockBack <= 0) m_NextPos.x -= m_vec.x * 2;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_RIGHT))
@@ -222,9 +235,7 @@ void Player::CharaMove()
 		
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		//	m_pos.x += m_vec.x;
-
-		//	if (m_CollRight) m_pos.x -= m_vec.x;
+		if (m_KnockBack <= 0) m_NextPos.x += m_vec.x;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_LEFT))
@@ -232,10 +243,7 @@ void Player::CharaMove()
 		if (!m_Attack) m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		//	m_pos.x -= m_vec.x;
-
-		//
-		if (m_CollLeft) m_pos.x += m_vec.x;
+		if (m_KnockBack <= 0) m_NextPos.x -= m_vec.x;
 	}
 
 	else
@@ -276,7 +284,7 @@ void Player::CharaMove()
 
 	if (!m_CollBottom && !m_NowJump)
 	{
-		m_pos.y += m_Gravity;
+		m_NextPos.y += m_Gravity;
 		m_Gravity += kGravity;
 	}
 
@@ -340,7 +348,7 @@ void Player::CharaJump()
 	m_FrameChangeSpeed = 3;
 	m_CharaGraphY = 5;
 	m_CharaMotion = 8;
-	m_pos.y -= m_Jump;
+	m_NextPos.y -= m_Jump;
 
 	if (Pad::isPress(PAD_INPUT_1))
 	{
@@ -367,14 +375,14 @@ void Player::CharaJump()
 
 void Player::LimitMove()
 {
-	if (m_pos.x < 0 - 35)
+	/*if (m_pos.x < 0 - 35)
 	{
 		m_pos.x = -35;
 	}
 	if (m_pos.x > Game::kScreenWidth - kSideSize + 35)
 	{
 		m_pos.x = Game::kScreenWidth - kSideSize + 35;
-	}
+	}*/
 	/*if (m_pos.y > Game::kScreenHeight - kColumnSize)
 	{
 		m_pos.y = Game::kScreenHeight - kColumnSize;
@@ -443,27 +451,29 @@ void Player::Ondamage()
 
 void Player::IsKnockBack(Vec2 EnemyPos)
 {
+	Vec2 Vel = m_NextPos - EnemyPos;
+
+	Vel = Vel.normalize();
+	Vel *= m_KnockBack;
+	m_KnockBack -= kKnockBackSpeedDown;
+
 	if (m_NoDamageFrame <= 0)
 	{
-		m_Vel.x = 0;
-		m_Vel.y = 0;
+		Vel.x = 0;
+		Vel.y = 0;
 		return;
 	}
 
 	if (m_KnockBack <= 0)
 	{
-		m_Vel.x = 0;
-		m_Vel.y = 0;
+		Vel.x = 0;
+		Vel.y = 0;
 		return;
 	}
-	m_Vel = m_pos - EnemyPos;
-
-	m_Vel = m_Vel.normalize();
-	m_Vel *= m_KnockBack;
-	m_KnockBack -= kKnockBackSpeedDown;
 	if (m_KnockBack > 0)
 	{
-		m_pos.y += m_Vel.y;
+	//	m_NextPos += Vel;
+		m_pos += Vel;
 	}
 }
 
@@ -500,6 +510,88 @@ void Player::IsHeal()
 void Player::IsHealGauge()
 {
 	if(m_HealGauge < kMaxHealGauge) m_HealGauge += 10;
+}
+
+void Player::IsColl()
+{
+	
+	//int MapNum[Map::kBgNumY][Map::kBgNumX];
+	/*for (int i = 0; i < Map::kBgNumY; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX; j++)
+		{
+			MapNum[i][j] = 0;
+		}
+	}
+	for (int i = static_cast<int> (PlayerPosY); i < PlayerPosY + 1; i++)
+	{
+		for (int j = static_cast<int>(PlayerPosX); j < PlayerPosX + 1; j++)
+		{
+			MapNum[i][j] = m_Map->GetMapData(i, j);
+		}
+	}
+	*/
+
+	for (int i = 0; i < Map::kBgNumY; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX; j++)
+		{
+			if (m_Map->GetMapData(i, j) != 0)
+			{
+				float MapPosX = j * Map::kChipSize;
+				float MapPosY = i * Map::kChipSize;
+
+				if (m_NextPos.y + 10 < MapPosY + Map::kChipSize - 40 &&
+					m_NextPos.y > MapPosY &&
+					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
+					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+				{
+					m_CollTop = true;
+				}
+				//è„
+				if (m_NextPos.y + 10 < MapPosY + Map::kChipSize &&
+					m_NextPos.y > MapPosY &&
+					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
+					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+				{
+					m_CollTop = true;
+				}
+				//âE
+				if (m_NextPos.x + Player::kSideSize - 35 > MapPosX &&
+					m_NextPos.x + 60 < MapPosX + Map::kChipSize &&
+					m_NextPos.y + 25 < MapPosY + Map::kChipSize &&
+					m_NextPos.y + (Map::kChipSize * 2) > MapPosY + 20)
+				{
+					m_CollRight = true;
+				}
+				//ç∂
+				if (m_NextPos.x + 35 < MapPosX + Map::kChipSize &&
+					m_NextPos.x + Player::kSideSize - 60 > MapPosX &&
+					m_NextPos.y + 25 < MapPosY + Map::kChipSize &&
+					m_NextPos.y + (Map::kChipSize * 2) > MapPosY + 20)
+				{
+					m_CollLeft = true;
+				}
+				//â∫
+				if (m_NextPos.y + (Player::kColumnSize) > MapPosY &&
+					m_NextPos.y + 25 < MapPosY/* + Minigame1::kChipSize*/ &&
+					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
+					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+				{
+					m_NextPos.y = MapPosY - (Player::kColumnSize)+1;
+					m_CollBottom = true;
+				}
+			}
+		}
+	}
+}
+
+void Player::InitColl()
+{
+	m_CollTop = false;
+	m_CollBottom = false;
+	m_CollRight = false;
+	m_CollLeft = false;
 }
 
 

@@ -1,9 +1,9 @@
 #pragma once
 #include "Vec2.h"
+#include<memory>
 
+class Map;
 class SceneTitle;
-
-class Collision;
 
 class Player 
 {
@@ -26,6 +26,7 @@ public:
 	// グラフィックデータ設定
 	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
+	void setMap(std::shared_ptr<Map> pMap) { m_Map = pMap; }
 	void SetTitle(SceneTitle* pTitle) { m_SceneTitle = pTitle; }
 
 	void SetPos(Vec2 pos) { m_pos = pos; }
@@ -42,11 +43,12 @@ public:
 
 	Vec2 GetPos() const { return m_pos; }
 
+	Vec2 GetNextPos()const { return m_NextPos; }
+
 	void SetAttackPower(int AttackPower) { m_AttackPower = AttackPower; }
 	int GetAttackPower() { return m_AttackPower; }
 
 	float GetMove() const { return m_StartMove; }
-	float GetKnockBack() const { return m_Vel.x; }
 
 	// プレイヤーの攻撃判定と向きを返す
 	bool GetAttack() { return m_Attack; }
@@ -67,7 +69,7 @@ public:
 	void end();
 
 	void update();
-	void draw();
+	void draw(Vec2 offset);
 
 	// キャラの動きを決める
 	void CharaMove();
@@ -99,11 +101,21 @@ public:
 	// 回復ゲージ
 	void IsHealGauge();
 
+	// 当たり判定
+	void IsColl();
+	
+	//当たり判定初期化
+	void InitColl();
+
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
 private:
+	// 現在の座標
 	Vec2 m_pos;
+	// 次フレーム時の座標
+	Vec2 m_NextPos;
+
 	Vec2 m_vec;
 
 	// 敵座標取得
@@ -185,11 +197,10 @@ private:
 	// 回復に必要なゲージ
 	int m_HealGauge;
 
-	Vec2 m_Vel; // ノックバックの距離
-
 	// キャラクターの存在確認
 	bool m_Exist;
-
+	
+	std::shared_ptr<Map> m_Map;
 	SceneTitle* m_SceneTitle;
 };
 

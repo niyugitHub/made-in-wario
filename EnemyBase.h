@@ -40,7 +40,7 @@ public:
 	virtual Vec2 GetThrowPos() { return m_ThrowPos; }
 
 	virtual void update();
-	virtual void draw();
+	virtual void draw(Vec2 offset);
 
 	virtual void MoveEnemy();
 

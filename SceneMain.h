@@ -53,6 +53,9 @@ private:
 	// アイテムのポジション
 	Vec2 m_ItemPos;
 
+	// マップの移動量
+	Vec2 m_offset;
+
 	// キャラクターとブロックの衝突判定
 	bool m_CollTop;
 	bool m_CollBottom;

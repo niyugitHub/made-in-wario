@@ -90,6 +90,7 @@ void EnemyFactory::Update()
 				m_Player->Ondamage();
 				m_Player->SetNoDamageFrame(100);
 				m_Player->SetEnemyPos(m_Pos);
+				m_Player->IsKnockBack(m_Pos);
 			}
 
 			// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
@@ -132,13 +133,13 @@ void EnemyFactory::Update()
 	}
 }
 
-void EnemyFactory::Draw()
+void EnemyFactory::Draw(Vec2 offset)
 {
 	for (auto& enemy : m_Enemy)
 	{
 		if (enemy->isExist())
 		{
-			enemy->draw();
+			enemy->draw(offset);
 		}
 	}
 #ifdef _DEBUG
@@ -192,12 +193,12 @@ void EnemyFactory::Stage1Enemy()
 
 	if (m_Frame == 1)
 	{
+		Create(kJump, { 1000,400 });
 		/*Create(kThrow, { 2050,400 });
 		Create(kThrow, { 4000,800 });
 		Create(kJump, { 4000,600 });
 		Create(kThrow, { 5500,800 });
 		Create(kThrow, { 5300,800 });
-		Create(kJump, { 1000,400 });
 		Create(kJump, { 1900,600 });
 		Create(kJump, { 1900,300 });
 		Create(kJump, { 3000,600 });
@@ -208,12 +209,12 @@ void EnemyFactory::Stage1Enemy()
 		Create(kJump, { 6000,600 });
 		Create(kJump, { 6000,200 });*/
 		Create(kNormal, { 1600,600 });
-		Create(kNormal, { 3000,800 });
+		/*Create(kNormal, { 3000,800 });
 		Create(kNormal, { 4000,800 });
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 5500,800 });
 		Create(kNormal, { 6000,800 });
-		Create(kNormal, { 6500,600 });
+		Create(kNormal, { 6500,600 });*/
 	}
 
 	/*if (m_Frame == 2)

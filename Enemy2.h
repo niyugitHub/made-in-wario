@@ -9,7 +9,7 @@ public:
 
 	void update();
 
-	void draw();
+	void draw(Vec2 offset);
 
 private:
 	int m_Frame;
