@@ -17,6 +17,10 @@ class Map
 		static constexpr int kChipNumY = 17;
 		static constexpr int kChipNumX = 30;
 
+		// マップチップ分割数
+		static constexpr int kChipDivisionX = 16;
+		static constexpr int kChipDivisionY = 16;
+
 	public:
 		Map();
 		~Map();

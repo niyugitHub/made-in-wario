@@ -20,7 +20,7 @@ namespace
 Enemy3::Enemy3() :
 	m_FallSpeedX(0),
 	m_FallSpeedY(0),
-	m_RandThrowFrame(0)
+	m_RandThrowFrame(100)
 	
 {
 	m_Hp = 50;

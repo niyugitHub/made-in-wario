@@ -16,13 +16,16 @@ namespace
 {
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
+
+	// プレイヤーの中心を少し左に寄せる
+	constexpr float kPlayerPosCenter = 150.0f;
 }
 
 SceneMain::SceneMain() :
 	m_PlayerPos(0, 0),
 	m_EnemyPos(0, 0),
 	m_MapPos(0, 0),
-	m_ItemPos(500, 500),
+	m_ItemPos(2000, 800),
 	m_offset(0,0),
 	m_CollTop(false),
 	m_CollBottom(false),
@@ -176,7 +179,7 @@ SceneBase* SceneMain::update()
 	Vec2 targetOffset{};
 
 	// スクロールの計算 プレイヤーが画面中央に表示されるようスクロールする
-	targetOffset.x = (Game::kScreenWidth / 2) - m_player->GetPos().x;
+	targetOffset.x = (Game::kScreenWidth / 2 - kPlayerPosCenter) - m_player->GetPos().x;
 	if (targetOffset.x > 0)
 	{
 		targetOffset.x = 0;

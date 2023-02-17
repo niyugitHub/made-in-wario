@@ -508,7 +508,7 @@ void Player::IsActiveGauge()
 			{
 				m_Hp++;
 			}
-			/*m_PushFrame = 0;*/
+			m_PushFrame = 30;
 			m_Gauge -= 30;
 		}
 	}
