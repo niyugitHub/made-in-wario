@@ -19,7 +19,7 @@ void Item::Init()
 
 void Item::Update()
 {
-	m_Pos += m_Map->GetVec();
+	/*m_Pos += m_Map->GetVec();*/
 }
 
 void Item::Draw(Vec2 offset)

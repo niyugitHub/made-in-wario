@@ -13,10 +13,9 @@ namespace
 	constexpr int kFallFrame = 150;
 }
 
-Shot::Shot() : 
-	m_Pos(0,0),
-	m_Vec(0, kFallSpeed),
-	m_Exist(false)
+Shot::Shot(Vec2 Pos) : 
+	m_Pos(Pos),
+	m_Vec(0, kFallSpeed)
 {
 }
 

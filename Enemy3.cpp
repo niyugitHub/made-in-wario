@@ -21,7 +21,6 @@ Enemy3::Enemy3() :
 	m_FallSpeedX(0),
 	m_FallSpeedY(0),
 	m_RandThrowFrame(100)
-	
 {
 	m_Hp = 50;
 	m_func = &Enemy3::UpdatePatrol;
@@ -38,9 +37,16 @@ void Enemy3::update()
 		m_Exist = false;
 	}
 
-	BasicMoveEnemy();
+	if (m_Shot != nullptr)
+	{
+		if (!m_Shot->GetExist())
+		{
+			delete m_Shot;
+			m_Shot = nullptr;
+		}
+	}
 
-	m_Shot->SetMapVec(m_MapVec);
+	BasicMoveEnemy();
 
 	m_NextPos = m_Pos;
 
@@ -70,7 +76,7 @@ void Enemy3::update()
 	m_Pos = m_NextPos;
 
 
-	if (m_Shot->GetExist())
+	if (m_Shot != nullptr)
 	{
 		m_Shot->Update();
 	}
@@ -83,15 +89,17 @@ void Enemy3::draw(Vec2 offset)
 
 	/*DrawBox(m_ThrowPos.x, m_ThrowPos.y, m_ThrowPos.x + 50, m_ThrowPos.y + 50,
 		GetColor(0, 255, 255), true);*/
-
-	m_Shot->Draw(offset);
+	if (m_Shot != nullptr)
+	{
+		m_Shot->Draw(offset);
+	}
 
 //	DrawFormatString(800, 0, GetColor(255, 255, 255), "“G‚ÌÀ•W%f", m_Pos.x);
 }
 
 void Enemy3::UpdatePatrol()
 {
-	if (m_DistancePos.x > -650 && m_DistancePos.x < 650)
+	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
 	{
 		m_func = &Enemy3::UpdateDiscovery;
 	}
@@ -99,20 +107,13 @@ void Enemy3::UpdatePatrol()
 
 void Enemy3::UpdateDiscovery()
 {
-	if (m_DistancePos.x < -800 || m_DistancePos.x > 800)
+	if (m_DistancePos.x < -500 || m_DistancePos.x > 500)
 	{
 		m_func = &Enemy3::UpdatePatrol;
 	}
 
 	if (m_RandThrowFrame <= 0)
 	{
-		m_Shot->SetExist(true);
-
-		/*m_ThrowPos.x = m_Pos.x - (Player::kSideSize / 2);
-		m_ThrowPos.y = m_Pos.y - (Player::kSideSize / 2);*/
-
-		m_Shot->SetPos(m_Pos);
-
 		// “Š‚°‚é•p“xƒ‰ƒ“ƒ_ƒ€
 		int RandFrame = GetRand(50);
 
@@ -120,6 +121,7 @@ void Enemy3::UpdateDiscovery()
 
 		m_FallSpeedX = m_DistancePos.x / 60;
 
+		m_Shot = new Shot(m_Pos);
 		m_Shot->SetVec(m_FallSpeedX);
 	}
 

@@ -103,6 +103,6 @@ protected:
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;
 	std::shared_ptr<Collision> m_Coll;
-	std::shared_ptr<Shot> m_Shot;
+	Shot* m_Shot;
 };
 

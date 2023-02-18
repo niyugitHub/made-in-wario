@@ -19,6 +19,9 @@ public:
 	void Update();
 	void Draw(Vec2 offset);
 
+	// 弾の存在確認
+
+
 private:
 	// ショット座標
 	Vec2 m_Pos;

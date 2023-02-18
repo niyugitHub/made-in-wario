@@ -198,9 +198,9 @@ void EnemyFactory::Stage1Enemy()
 	if (m_Frame == 1)
 	{
 		//Create(kJump, { 1000,400 });
-		Create(kThrow, { 4000,800 });
-		Create(kJump, { 1900,600 });
+		Create(kThrow, { 2000,800 });
 		/*Create(kThrow, { 2050,400 });
+		Create(kJump, { 1900,600 });
 		Create(kJump, { 4000,600 });
 		Create(kThrow, { 5500,800 });
 		Create(kThrow, { 5300,800 });
@@ -212,8 +212,8 @@ void EnemyFactory::Stage1Enemy()
 		Create(kJump, { 5500,400 });
 		Create(kJump, { 6000,600 });
 		Create(kJump, { 6000,200 });*/
-		Create(kNormal, { 1600,600 });
 		/*Create(kNormal, { 3000,800 });
+		Create(kNormal, { 1600,600 });
 		Create(kNormal, { 4000,800 });
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 5500,800 });

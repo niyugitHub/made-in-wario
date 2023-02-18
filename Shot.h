@@ -1,10 +1,11 @@
 #pragma once
 #include "Vec2.h"
+#include "ShotBase.h"
 
-class Shot
+class Shot : ShotBase
 {
 public:
-	Shot();
+	Shot(Vec2 Pos);
 	~Shot();
 
 	void SetPos(Vec2 Pos) { m_Pos = Pos; }

@@ -32,9 +32,9 @@ EnemyBase::EnemyBase() :
 	m_CollRight(false),
 	m_Player(nullptr),
 	m_Map(nullptr),
-	m_Coll(nullptr)
+	m_Coll(nullptr),
+	m_Shot(nullptr)
 {
-	m_Shot = std::make_shared<Shot>();
 }
 
 EnemyBase::~EnemyBase()
@@ -158,7 +158,12 @@ bool EnemyBase::CollThrow()
 	float PlayerPosUp = m_PlayerPos.y + 10;
 	float PlayerPosBottom = m_PlayerPos.y + 118;
 
-	m_ThrowPos = m_Shot->GetPos();
+	if (m_Shot != nullptr)
+	{
+		m_ThrowPos = m_Shot->GetPos();
+	}
+
+	else	return false;
 
 	// エネミーの位置
 	float EnemyPosLeft = m_ThrowPos.x;
