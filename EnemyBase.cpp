@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Collision.h"
+#include "ShotBase.h"
 #include "Shot.h"
 #include <Dxlib.h>
 #include <cassert>

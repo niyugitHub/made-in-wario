@@ -259,12 +259,13 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_1) && m_NowJump && !m_UseTwoJump)
+	if (Pad::isTrigger(PAD_INPUT_1) && !m_CollBottom && !m_UseTwoJump && m_PossibleTwoJump)
 	{
+		m_NowJump = true;
 		m_TwoJump = true;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_1) && !m_NowJump/* && !m_CollBottom && m_PossibleTwoJump*/)
+	if (Pad::isTrigger(PAD_INPUT_1) && !m_NowJump && m_CollBottom/* && m_PossibleTwoJump*/)
 	{
 		m_Jump = 14;
 		m_NowJump = true;
@@ -341,7 +342,7 @@ void Player::CharaMove()
 
 void Player::CharaJump()
 {
-	if (m_TwoJump && m_PossibleTwoJump)
+	if (m_TwoJump)
 	{
 		m_TwoJump = false;
 		m_UseTwoJump = true;
@@ -372,7 +373,7 @@ void Player::CharaJump()
 			m_TwoJump = false;
 			m_NowJump = false;
 			m_UseTwoJump = false;
-			m_Jump = 14;
+		//	m_Jump = 14;
 		//	m_pos.y = Game::kScreenHeight - kColumnSize;
 		}
 	}

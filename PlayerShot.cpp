@@ -4,7 +4,8 @@
 PlayerShot::PlayerShot() : 
 	m_Pos(0,0),
 	m_Vec(30,0),
-	m_Exist(false)
+	m_Exist(false),
+	m_LookLeft(false)
 {
 }
 

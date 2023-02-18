@@ -1,4 +1,5 @@
 #include "Shot.h"
+#include "ShotBase.h"
 #include "game.h"
 #include <Dxlib.h>
 
@@ -13,10 +14,10 @@ namespace
 	constexpr int kFallFrame = 150;
 }
 
-Shot::Shot(Vec2 Pos) : 
-	m_Pos(Pos),
-	m_Vec(0, kFallSpeed)
+Shot::Shot(Vec2 Pos, float VecX)
 {
+	m_Pos = Pos;
+	m_Vec = { VecX,kFallSpeed };
 }
 
 Shot::~Shot()

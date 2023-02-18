@@ -121,8 +121,7 @@ void Enemy3::UpdateDiscovery()
 
 		m_FallSpeedX = m_DistancePos.x / 60;
 
-		m_Shot = new Shot(m_Pos);
-		m_Shot->SetVec(m_FallSpeedX);
+		m_Shot = new Shot(m_Pos,m_FallSpeedX);
 	}
 
 	m_RandThrowFrame--;

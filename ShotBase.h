@@ -8,10 +8,13 @@ public:
 
 	Vec2 GetPos() { return m_Pos; }
 
-	void Update();
-	void Draw(Vec2 offset);
+	void SetExist(bool Exist) { m_Exist = Exist; }
+	bool GetExist() { return m_Exist; }
 
-private:
+	virtual void Update();
+	virtual void Draw(Vec2 offset);
+
+protected:
 	// ショット座標
 	Vec2 m_Pos;
 	// ショット移動量
