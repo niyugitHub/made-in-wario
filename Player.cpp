@@ -15,6 +15,7 @@ namespace
 
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
+	const char* const kPlayerHpFilename = "data/Hp.png";
 
 	// フレームタイム
 	constexpr int kFrameTime = 20;
@@ -79,6 +80,8 @@ m_SceneTitle(nullptr)
 	{
 		handle = -1;
 	}
+	
+	m_Hphandle = LoadGraph(kPlayerHpFilename);
 }
 
 Player::~Player()
@@ -215,6 +218,14 @@ void Player::draw(Vec2 offset)
 	/*DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);*/
 #endif
 
+	for (int i = 0; i < m_MaxHp; i++)
+	{
+		if (m_Hp > i)
+		{
+			DrawGraph(i * 480, 0, m_Hphandle, true);
+		}
+	}
+
 	if (m_NoDamageFrame > 0)
 	{
 		if ((m_NoDamageFrame / 10) % 2 == 0)
@@ -232,7 +243,6 @@ void Player::draw(Vec2 offset)
 	{
 		DrawTurnGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
 	}
-
 }
 
 void Player::CharaMove()
@@ -553,11 +563,11 @@ void Player::IsActiveGauge()
 		{
 			if (m_LookLeft)
 			{
-				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, -20.0f);
+				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, -40.0f);
 			}
 			else if (!m_LookLeft)
 			{
-				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, 20.0f);
+				m_Shot = new PlayerShot({ m_pos.x + (kSideSize / 2),m_pos.y + (kColumnSize / 4) }, 40.0f);
 			}
 		}
 		m_InitAttack = false;

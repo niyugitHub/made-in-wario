@@ -152,6 +152,7 @@ private:
 
 	// グラフの挿入
 	int m_handle[kCharaChipNum];
+	int m_Hphandle;
 
 	// キャラクターのグラフの種類を決める
 	int m_CharaGraphX;
