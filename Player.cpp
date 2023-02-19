@@ -9,7 +9,6 @@
 
 namespace
 {
-	//a
 	//// プレイヤーの初期位置
 	//constexpr float kFristPlayerPosX = 760.0f;
 	//constexpr float kFristPlayerPosY = 500.0f;
@@ -61,7 +60,7 @@ m_CollBottom(false),
 m_CollLeft(false),
 m_CollRight(false),
 m_Attack(false),
-m_InitAttack(false),
+m_InitAttack(true),
 m_AttackPower(10),
 m_Hp(3),
 m_MaxHp(3),
