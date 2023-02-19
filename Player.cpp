@@ -40,6 +40,7 @@ Player::Player() :
 m_pos(kFristPlayerPosX + (kSideSize / 2), kFristPlayerPosY),
 m_NextPos(m_pos),
 m_vec(5, 0),
+m_ShotPos(0,0),
 m_StartMove(0),
 m_Jump(14.0f),
 m_CharaGraphX(0),
@@ -59,7 +60,7 @@ m_CollBottom(false),
 m_CollLeft(false),
 m_CollRight(false),
 m_Attack(false),
-m_HitAttack(false),
+m_InitAttack(false),
 m_AttackPower(10),
 m_Hp(3),
 m_MaxHp(3),
@@ -129,11 +130,13 @@ void Player::update()
 		if (m_Shot != nullptr)
 		{
 			m_Shot->Update();
+			m_ShotPos = m_Shot->GetPos();
 
 			if (!m_Shot->GetExist())
 			{
 				delete m_Shot;
 				m_Shot = nullptr;
+				m_ShotPos = { 50000,50000 }; // ‚Æ‚è‚ ‚¦‚¸â‘Î‚É“–‚½‚ç‚È‚¢ˆÊ’u‚É
 			}
 		}
 
@@ -301,7 +304,7 @@ void Player::CharaMove()
 		CharaJump();
 	}
 
-	IsActiveGauge();
+	/*IsActiveGauge();*/
 
 	if (m_SceneTitle != nullptr)
 	{
@@ -333,7 +336,11 @@ void Player::CharaMove()
 	{
 		m_CharaGraphX = 0;
 		m_Attack = true;
-		m_HitAttack = false;
+		m_InitAttack = false;
+	}
+	else
+	{
+		m_InitAttack = true;
 	}
 
 	if (m_Attack)
@@ -348,6 +355,8 @@ void Player::CharaMove()
 			m_CharaMotion = 2;*/
 		}
 	}
+
+	IsActiveGauge();
 
 	m_FrameChangeChara += m_FrameChangeSpeed;
 
@@ -551,6 +560,8 @@ void Player::IsActiveGauge()
 				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, 20.0f);
 			}
 		}
+		m_InitAttack = false;
+		m_ShotPos = m_Shot->GetPos();
 		m_PushFrame = 0;
 	//	m_Gauge -= 30;
 	}

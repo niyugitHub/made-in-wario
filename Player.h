@@ -51,6 +51,10 @@ public:
 
 	Vec2 GetNextPos()const { return m_NextPos; }
 
+	//ショットの座標
+	void SetShotPos(Vec2 ShotPos) { m_ShotPos = ShotPos; }
+	Vec2 GetShotPos() { return m_ShotPos; }
+
 	void SetAttackPower(int AttackPower) { m_AttackPower = AttackPower; }
 	int GetAttackPower() { return m_AttackPower; }
 
@@ -60,9 +64,9 @@ public:
 	bool GetAttack() { return m_Attack; }
 	bool GetLook() { return m_LookLeft; }
 
-	// 攻撃ヒット確認
-	void SetHitAttack(bool HitAttack) { m_HitAttack = HitAttack; }
-	bool GetHitAttack() { return m_HitAttack; }
+	//// 攻撃ヒット確認 もしm_HitAttackがtrueの場合敵に攻撃が当たらない(連続で敵にヒットするのを防ぐため)
+	//void SetHitAttack(bool HitAttack) { m_HitAttack = HitAttack; }
+	bool GetInitAttack() { return m_InitAttack; }
 
 	// 無敵時間
 	void SetNoDamageFrame(int NoDamage) { m_NoDamageFrame = NoDamage; }
@@ -139,6 +143,9 @@ private:
 	// 敵座標取得
 	Vec2 m_EnemyPos;
 
+	// ショットの座標取得
+	Vec2 m_ShotPos;
+
 	float m_StartMove;
 
 	float m_Jump;
@@ -193,7 +200,7 @@ private:
 	bool m_Attack;
 
 	// 攻撃がヒットしたとき
-	bool m_HitAttack;
+	bool m_InitAttack;
 
 	// プレイヤーの攻撃力　
 	int m_AttackPower;

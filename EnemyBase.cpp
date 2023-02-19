@@ -179,3 +179,23 @@ bool EnemyBase::CollThrow()
 
 	return true;
 }
+
+bool EnemyBase::CollShotPlayer()
+{
+	float ShotPosTop = m_Player->GetShotPos().y;
+	float ShotPosBottom = m_Player->GetShotPos().y + 50;
+	float ShotPosLeft = m_Player->GetShotPos().x;
+	float ShotPosRight = m_Player->GetShotPos().x + 50;
+
+	float EnemyPosLeft = m_Pos.x;
+	float EnemyPosRight = m_Pos.x + 50;
+	float EnemyPosUp = m_Pos.y;
+	float EnemyPosBottom = m_Pos.y + 50;
+
+	if (ShotPosRight > EnemyPosRight) return false;
+	if (ShotPosRight < EnemyPosLeft) return false;
+	if (ShotPosTop > EnemyPosBottom)  return false;
+	if (ShotPosBottom < EnemyPosUp)  return false;
+
+	return true;
+}

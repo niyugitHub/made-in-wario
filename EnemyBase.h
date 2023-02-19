@@ -55,6 +55,9 @@ public:
 
 	virtual bool CollThrow(); // ショットとプレイヤーの当たり判定
 
+	// プレイヤーが放ったショットとエネミーの当たり判定
+	virtual bool CollShotPlayer(); 
+
 	// 存在確認
 	bool isExist() const { return m_Exist; }
 	void setExist(bool isExist) { m_Exist = isExist; }

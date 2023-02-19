@@ -6,6 +6,7 @@ public:
 	ShotBase();
 	~ShotBase();
 
+	void SetPos(Vec2 Pos) { m_Pos = Pos; }
 	Vec2 GetPos() { return m_Pos; }
 
 	void SetExist(bool Exist) { m_Exist = Exist; }

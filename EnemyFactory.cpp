@@ -62,7 +62,7 @@ void EnemyFactory::Update()
 
 	for (auto& enemy : m_Enemy)
 	{
-		if (!m_Player->GetHitAttack())
+		if (!m_Player->GetInitAttack())
 		{
 			enemy->SetHit(false);
 		}
@@ -120,10 +120,18 @@ void EnemyFactory::Update()
 			// プレイヤーの攻撃が敵に当たった時
 			if (m_Coll->IsCollAttackPlayer() && !enemy->GetHit())
 			{
-				m_Player->SetHitAttack(true);
 				m_Player->IsGauge();
 				m_Player->SetEnemyPos(m_Pos);
 				m_Player->SetKnockBackSpeed(Player::kHitKnockBackSpeed);
+				enemy->SetHit(true);
+				enemy->OnDamage(m_Player->GetAttackPower());
+				enemy->InitKnockBack();
+			}
+
+			// プレイヤーのショットが敵に当たった時
+			if (enemy->CollShotPlayer() && !enemy->GetHit())
+			{
+				m_Player->SetEnemyPos(m_Pos);
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
@@ -197,7 +205,7 @@ void EnemyFactory::Stage1Enemy()
 
 	if (m_Frame == 1)
 	{
-		/*Create(kJump, { 1000,400 });
+		Create(kJump, { 1000,400 });
 		Create(kThrow, { 2000,800 });
 		Create(kThrow, { 2050,400 });
 		Create(kJump, { 1900,600 });
@@ -218,7 +226,7 @@ void EnemyFactory::Stage1Enemy()
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 5500,800 });
 		Create(kNormal, { 6000,800 });
-		Create(kNormal, { 6500,600 });*/
+		Create(kNormal, { 6500,600 });
 	}
 
 	/*if (m_Frame == 2)
