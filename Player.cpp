@@ -9,6 +9,7 @@
 
 namespace
 {
+	//a
 	//// プレイヤーの初期位置
 	//constexpr float kFristPlayerPosX = 760.0f;
 	//constexpr float kFristPlayerPosY = 500.0f;
