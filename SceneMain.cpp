@@ -139,11 +139,11 @@ SceneBase* SceneMain::update()
 {
 	if (!m_player->GetExist())
 	{
-		m_player->NotExist();
 
 		Pad::update();
 		if (Pad::isTrigger(PAD_INPUT_2))
 		{
+			m_player->NotExist();
 			m_Map->SetMap(m_MapPos);
 			m_PlayerPos.y = Player::kFristPlayerPosY;
 			m_PlayerPos.x = Player::kFristPlayerPosX;

@@ -259,13 +259,13 @@ void Player::CharaMove()
 		m_CharaMotion = 2;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_1) && !m_CollBottom && !m_UseTwoJump && m_PossibleTwoJump)
+	if (Pad::isTrigger(PAD_INPUT_1) && !m_CollBottom && !m_UseTwoJump && m_PossibleTwoJump && m_PushFrame <= 30)
 	{
 		m_NowJump = true;
 		m_TwoJump = true;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_1) && !m_NowJump && m_CollBottom/* && m_PossibleTwoJump*/)
+	if (Pad::isTrigger(PAD_INPUT_1) && !m_NowJump && m_CollBottom && m_PushFrame <= 30)
 	{
 		m_Jump = 14;
 		m_NowJump = true;
