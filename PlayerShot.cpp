@@ -1,12 +1,10 @@
 #include "PlayerShot.h"
 #include <DxLib.h>
 
-PlayerShot::PlayerShot() : 
-	m_Pos(0,0),
-	m_Vec(30,0),
-	m_Exist(false),
-	m_LookLeft(false)
+PlayerShot::PlayerShot(Vec2 Pos, float VecX)
 {
+	m_Pos = Pos;
+	m_Vec = { VecX,0 };
 }
 
 PlayerShot::~PlayerShot()
@@ -17,15 +15,7 @@ void PlayerShot::Update()
 {
 	if (m_Exist)
 	{
-		if (m_LookLeft)
-		{
-			m_Pos.x -= m_Vec.x;
-			m_Pos.y -= m_Vec.y;
-		}
-		else if(!m_LookLeft)
-		{
-			m_Pos += m_Vec;
-		}
+		m_Pos += m_Vec;
 	}
 }
 

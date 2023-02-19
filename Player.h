@@ -112,6 +112,9 @@ public:
 
 	// “–‚½‚è”»’è
 	void IsColl();
+
+	// ƒVƒ‡ƒbƒg‚Ì“–‚½‚è”»’è
+	bool IsShotColl();
 	
 	//“–‚½‚è”»’è‰Šú‰»
 	void InitColl();
@@ -222,6 +225,6 @@ private:
 	
 	std::shared_ptr<Map> m_Map;
 	SceneTitle* m_SceneTitle;
-	std::shared_ptr<PlayerShot> m_Shot;
+	PlayerShot* m_Shot;
 };
 

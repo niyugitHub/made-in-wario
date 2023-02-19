@@ -71,7 +71,7 @@ m_Gauge(kMaxHealGauge),
 m_PossibleShot(false),
 m_Exist(true),
 m_Map(std::make_shared<Map>()),
-m_Shot(std::make_shared<PlayerShot>()),
+m_Shot(nullptr),
 m_SceneTitle(nullptr)
 {
 	for (auto& handle : m_handle)
@@ -121,7 +121,22 @@ void Player::update()
 			IsKnockBack(m_EnemyPos);
 		}
 
-		m_Shot->Update();
+		if (IsShotColl())
+		{
+			m_Shot->SetExist(false);
+		}
+
+		if (m_Shot != nullptr)
+		{
+			m_Shot->Update();
+
+			if (!m_Shot->GetExist())
+			{
+				delete m_Shot;
+				m_Shot = nullptr;
+			}
+		}
+
 
 		IsColl();
 
@@ -179,7 +194,16 @@ void Player::draw(Vec2 offset)
 		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
 	}
 
-	m_Shot->Draw(offset);
+	if (m_Shot != nullptr)
+	{
+		m_Shot->Draw(offset);
+
+		if (m_Shot->GetPos().x < -offset.x || m_Shot->GetPos().x > -offset.x + Game::kScreenWidth)
+		{
+			m_Shot->SetExist(false);
+		}
+	}
+
 
 	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
@@ -516,16 +540,17 @@ void Player::IsActiveGauge()
 	else if(m_PushFrame > 0 && m_PushFrame <= 30
 		&& m_Gauge >= 30/* && !m_Shot->GetExist()*/)
 	{
-		m_Shot->SetExist(true);
-		if (m_LookLeft)
+		if (m_Shot == nullptr)
 		{
-			m_Shot->SetPos({ m_pos.x,m_pos.y + (kColumnSize / 4) });
+			if (m_LookLeft)
+			{
+				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, -20.0f);
+			}
+			else if (!m_LookLeft)
+			{
+				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, 20.0f);
+			}
 		}
-		else if (!m_LookLeft)
-		{
-			m_Shot->SetPos({ m_pos.x + (kSideSize / 2),m_pos.y + (kColumnSize / 4) });
-		}
-		m_Shot->SetPlayerLookLeft(m_LookLeft);
 		m_PushFrame = 0;
 	//	m_Gauge -= 30;
 	}
@@ -604,6 +629,41 @@ void Player::IsColl()
 			}
 		}
 	}
+}
+
+bool Player::IsShotColl()
+{
+	if (m_Shot == nullptr)
+	{
+		return false;
+	}
+
+	Vec2 ShotPos = m_Shot->GetPos();
+
+	float ShotPosTop = ShotPos.y;
+	float ShotPosBottom = ShotPos.y + 50;
+	float ShotPosLeft = ShotPos.x;
+	float ShotPosRight = ShotPos.x + 50;
+
+	for (int i = 0; i < Map::kBgNumY; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX; j++)
+		{
+			if (m_Map->GetMapData(i, j) != 0)
+			{
+				float MapPosX = j * Map::kChipSize;
+				float MapPosY = i * Map::kChipSize;
+
+				if (ShotPosTop > MapPosY + Map::kChipSize) continue;
+				if (ShotPosBottom < MapPosY) continue;
+				if (ShotPosLeft > MapPosX + +Map::kChipSize) continue;
+				if (ShotPosRight < MapPosX) continue;
+
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void Player::InitColl()
