@@ -15,7 +15,7 @@ namespace
 
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
-	const char* const kPlayerHpFilename = "data/Hp.png";
+	const char* const kPlayerHpFilename = "data/Hp1.png";
 
 	// フレームタイム
 	constexpr int kFrameTime = 20;
@@ -33,6 +33,12 @@ namespace
 
 	// ヒールゲージ最大
 	constexpr int kMaxHealGauge = 90;
+
+	// Hp画像の大きさ
+	constexpr int kHpSize = 64;
+
+	// ショット間隔
+	constexpr int kShotInterval = 30;
 }
 
 //Player::Player(handle) :m_handle = handle 
@@ -71,6 +77,8 @@ m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_PossibleShot(false),
+m_ShotIntervalFrame(0),
+m_StageClear(false),
 m_Exist(true),
 m_Map(std::make_shared<Map>()),
 m_Shot(nullptr),
@@ -102,6 +110,7 @@ void Player::end()
 
 void Player::update()
 {
+	m_StageClear = false;
 	if (m_Exist)
 	{
 		if (m_Hp <= 0)
@@ -220,9 +229,10 @@ void Player::draw(Vec2 offset)
 
 	for (int i = 0; i < m_MaxHp; i++)
 	{
+		DrawRectGraph(i * kHpSize, 0, kHpSize, 0, kHpSize, kHpSize,m_Hphandle, true);
 		if (m_Hp > i)
 		{
-			DrawGraph(i * 480, 0, m_Hphandle, true);
+			DrawRectGraph(i * kHpSize, 0, 0, 0, kHpSize, kHpSize, m_Hphandle, true);
 		}
 	}
 
@@ -248,7 +258,6 @@ void Player::draw(Vec2 offset)
 void Player::CharaMove()
 {
 	m_NextPos = m_pos;
-	Pad::update();
 
 	m_FrameChangeSpeed = 1;
 
@@ -537,7 +546,11 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 
 void Player::IsActiveGauge()
 {
-//	Pad::update();
+	if (m_ShotIntervalFrame > 0)
+	{
+		m_ShotIntervalFrame--;
+	}
+
 	if (Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30)
 	{
 		m_PushFrame++;
@@ -557,7 +570,7 @@ void Player::IsActiveGauge()
 		}
 	}
 	else if(m_PushFrame > 0 && m_PushFrame <= 30
-		&& m_Gauge >= 30/* && !m_Shot->GetExist()*/)
+		&& m_Gauge >= 30 && m_ShotIntervalFrame <= 0)
 	{
 		if (m_Shot == nullptr)
 		{
@@ -573,6 +586,7 @@ void Player::IsActiveGauge()
 		m_InitAttack = false;
 		m_ShotPos = m_Shot->GetPos();
 		m_PushFrame = 0;
+		m_ShotIntervalFrame = kShotInterval;
 	//	m_Gauge -= 30;
 	}
 	else
@@ -597,15 +611,19 @@ void Player::IsColl()
 {
 	float PlayerTop = m_NextPos.y;
 	float PlayerBottom = m_NextPos.y + Player::kSideSize;
+	float PlayerLeft = m_NextPos.x;
+	float PlayerRight = m_NextPos.x + Player::kSideSize;
 
 	for (int i = 0; i < Map::kBgNumY; i++)
 	{
 		for (int j = 0; j < Map::kBgNumX; j++)
 		{
-			if (m_Map->GetMapData(i, j) != 0)
+			float MapPosX = j * Map::kChipSize;
+			float MapPosY = i * Map::kChipSize;
+			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= 50)
 			{
-				float MapPosX = j * Map::kChipSize;
-				float MapPosY = i * Map::kChipSize;
+				/*float MapPosX = j * Map::kChipSize;
+				float MapPosY = i * Map::kChipSize;*/
 
 				if (m_NextPos.y + 10 < MapPosY + Map::kChipSize - 40 &&
 					m_NextPos.y > MapPosY &&
@@ -647,9 +665,26 @@ void Player::IsColl()
 					m_NextPos.y = MapPosY - (Player::kColumnSize)+1;
 					m_CollBottom = true;
 				}
+
+				//ステージクリアの判定
+			}
+
+			if (m_Map->GetMapData(i, j) > 50 && m_Map->GetMapData(i, j) <= 175)
+			{
+
+				if (PlayerTop > MapPosY + Map::kChipSize) continue;
+				if (PlayerBottom < MapPosY) continue;
+				if (PlayerLeft > MapPosX + +Map::kChipSize) continue;
+				if (PlayerRight < MapPosX) continue;
+
+				if ((Pad::isTrigger(PAD_INPUT_UP)))
+				{
+					m_StageClear = true;
+				}
 			}
 		}
 	}
+
 }
 
 bool Player::IsShotColl()

@@ -56,7 +56,7 @@ SceneBase* SceneTitle::update()
 	}
 
 	(this->*m_func)();
-	m_player->update();
+//	m_player->update();
 
 	if (m_Color <= 0)
 	{

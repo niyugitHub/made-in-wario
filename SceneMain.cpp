@@ -137,10 +137,16 @@ void SceneMain::end()
 
 SceneBase* SceneMain::update()
 {
+	if (m_player->GetStageClaer())
+	{
+		m_PlayerPos.y = Player::kFristPlayerPosY;
+		m_PlayerPos.x = Player::kFristPlayerPosX;
+		m_player->SetPos(m_PlayerPos);
+		m_player->SetStageClaer(false);
+		m_Map->SetStage();
+	}
 	if (!m_player->GetExist())
 	{
-
-		Pad::update();
 		if (Pad::isTrigger(PAD_INPUT_2))
 		{
 			m_player->NotExist();

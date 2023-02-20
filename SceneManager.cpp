@@ -3,6 +3,7 @@
 #include"SceneBase.h"
 #include"SceneTitle.h"
 #include"SceneMain.h"
+#include"Pad.h"
 
 
 SceneManager::SceneManager()
@@ -47,6 +48,7 @@ void SceneManager::end()
 
 void SceneManager::update()
 {
+	Pad::update();
 	assert(m_pScene);
 	if (!m_pScene) return;
 

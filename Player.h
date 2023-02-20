@@ -72,6 +72,10 @@ public:
 	void SetNoDamageFrame(int NoDamage) { m_NoDamageFrame = NoDamage; }
 	int GetNoDamageFrame() { return m_NoDamageFrame; }
 
+	// ステージクリア
+	void SetStageClaer(bool StageClaer) { m_StageClear = StageClaer; }
+	bool GetStageClaer() { return m_StageClear; }
+
 	// 敵座標取得
 	void SetEnemyPos(Vec2 EnemyPos) { m_EnemyPos = EnemyPos; };
 
@@ -225,12 +229,17 @@ private:
 
 	// ショットを打てるかどうか
 	bool m_PossibleShot;
+	// ショット間隔
+	int m_ShotIntervalFrame;
 	// ショットを打ったかどうか
 //	bool m_Shot;
 
+	// ステージをクリアしたとき
+	bool m_StageClear;
+
 	// キャラクターの存在確認
 	bool m_Exist;
-	
+
 	std::shared_ptr<Map> m_Map;
 	SceneTitle* m_SceneTitle;
 	PlayerShot* m_Shot;

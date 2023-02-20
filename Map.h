@@ -52,6 +52,9 @@ class Map
 		// プレイヤーの向きとノックバックの移動量
 		void PlayerMove(float knockback, float Move);
 
+		// マップの番号変更
+		void SetStage();
+
 		// 広さを取得
 		int getWidth() const;
 		int getHeight() const;
@@ -74,6 +77,9 @@ class Map
 
 		// グラフィックデータの配列
 		int m_MapData[kBgNumY][kBgNumX];
+
+		// ステージ番号
+		int m_StageNum;
 
 		// グラフィックのデータ
 		int m_graphWidth;
