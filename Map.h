@@ -21,6 +21,9 @@ class Map
 		static constexpr int kChipDivisionX = 16;
 		static constexpr int kChipDivisionY = 16;
 
+		//	Platinumで分けたマップチップの横一列の数
+		static constexpr int kSideMapChipNum = 16;
+
 	public:
 		Map();
 		~Map();

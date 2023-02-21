@@ -12,6 +12,7 @@ public:
 		kTwoJump,
 		kAttackUp,
 		kHpUp,
+		kGaugeUp,
 	};
 public:
 	Item();

@@ -134,7 +134,10 @@ public:
 	bool FallPlayer();
 
 	// MaxHp増加
-	void MapHpUp();
+	void MaxHpUp();
+
+	// MaxGauge増加
+	void MaxGaugeUp();
 
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
@@ -229,6 +232,9 @@ private:
 
 	// ゲージ量
 	int m_Gauge;
+
+	//Maxゲージ
+	int m_MaxGauge;
 
 	// ショットを打てるかどうか
 	bool m_PossibleShot;

@@ -35,8 +35,8 @@ SceneMain::SceneMain() :
 	m_CollBottomEnemy(false),
 	m_CollLeftEnemy(false),
 	m_CollRightEnemy(false),
-	m_ItemNum(25),
-	m_StageItemNum(5),
+	m_ItemNum(15),
+	m_StageItemNum(3),
 	m_AttackPower(10),
 	m_Stage(0),
 	m_Color(0),
@@ -133,6 +133,8 @@ void SceneMain::init()
 	{
 		pItem->Init();
 	}
+
+	m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 }
 
 void SceneMain::end()
@@ -302,7 +304,7 @@ void SceneMain::draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 //	m_Item->Draw();
 
-	for (int i = 0; i < kStageItemNum; i++)
+	for (int i = (m_Map->GetStageNum() - 1) * m_StageItemNum; i < m_Map->GetStageNum() * m_StageItemNum; i++)
 	{
 		m_Item[i]->Draw(m_offset);
 
@@ -321,6 +323,11 @@ void SceneMain::draw()
 			if (m_Item[i]->GetItemType() == Item::ItemType::kHpUp)
 			{
 				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "体力アップ", GetColor(0, 255, 0));
+			}
+
+			if (m_Item[i]->GetItemType() == Item::ItemType::kGaugeUp)
+			{
+				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "ゲージアップ", GetColor(0, 255, 0));
 			}
 		}
 #ifdef _DEBUG
@@ -378,7 +385,6 @@ void SceneMain::IsItemPosition(int StageNum)
 
 void SceneMain::FadeinUpdate()
 {
-	m_player->update();
 	m_Color += 8;
 	if (m_Color >= 255)
 	{
@@ -412,11 +418,6 @@ void SceneMain::NormalUpdate()
 				pItem->SetItemType(ItemType::kAttackUp);
 			}*/
 
-			m_Item[0]->SetPos(m_ItemPos);
-			m_Item[1]->SetPos({ 1300, 900 });
-			m_Item[2]->SetPos({ 2150,600 });
-			m_Item[3]->SetPos({ 3000,700 });
-			m_Item[4]->SetPos({ 4000,700 });
 			/*m_Item[0]->SetItemType(ItemType::kTwoJump);
 			m_Item[0]->SetItemType(ItemType::kTwoJump);*/
 
@@ -465,20 +466,20 @@ void SceneMain::NormalUpdate()
 
 	if (m_player->GetExist())
 	{
-		for (int i = m_Map->GetStageNum() - 1; i < m_Map->GetStageNum() * 5; i++)
+		for (int i = (m_Map->GetStageNum() - 1) * m_StageItemNum; i < m_Map->GetStageNum() * m_StageItemNum; i++)
 		{
 			if (m_Item[i]->GetExist())
 			{
 				m_Item[i]->Update();
 				m_Coll->setItem(m_Item[i]);
-
+				//ジャンプアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kTwoJump)
 				{
 					m_player->SetCollItemTwoJump(true);
 					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
 				}
-
+				//攻撃力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kAttackUp)
 				{
 					m_AttackPower += 10;
@@ -486,10 +487,17 @@ void SceneMain::NormalUpdate()
 					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
 				}
+				//体力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kHpUp)
 				{
 					m_Item[i]->SetExist(false);
-					m_player->MapHpUp();
+					m_player->MaxHpUp();
+				}
+				//ゲージアップアイテムに当たったとき
+				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kGaugeUp)
+				{
+					m_Item[i]->SetExist(false);
+					m_player->MaxGaugeUp();
 				}
 			}
 		}
@@ -510,6 +518,8 @@ void SceneMain::FadeoutUpdate()
 	{
 		m_offset = { 0,0 };
 		m_Map->SetStage();
+		m_EnemyFactory->EnemyDead();
+		m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 		m_Map->update(m_offset);
 		m_PlayerPos.y = Player::kFristPlayerPosY;
 		m_PlayerPos.x = Player::kFristPlayerPosX;

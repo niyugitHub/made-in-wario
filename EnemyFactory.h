@@ -45,7 +45,11 @@ public:
 
 	void AttackDamage();
 
-	void Stage1Enemy();
+	// ステージごとに度のエネミーを出現させるか
+	void StageEnemy(int StageNum);
+
+	// エネミーが死んだときの処理(ステージが変わったとき)
+	void EnemyDead();
 
 private:
 	int m_EnemyName;

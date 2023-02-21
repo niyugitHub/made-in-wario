@@ -258,7 +258,10 @@ void Map::PlayerMove(float knockback, float Move)
 
 void Map::SetStage()
 {
-	m_StageNum++;
+	if (m_StageNum < 5)
+	{
+		m_StageNum++;
+	}
 }
 
 int Map::getWidth() const

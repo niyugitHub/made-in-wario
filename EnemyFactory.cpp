@@ -44,7 +44,7 @@ void EnemyFactory::Update()
 		Create(kJump, { 1500,600 });
 	}*/
 
-	Stage1Enemy();
+//	Stage1Enemy();
 	//Ç¢Ç»Ç≠Ç»Ç¡ÇΩìGÇÕè¡Ç¶ÇƒÇ‡ÇÁÇ§
 	//è¡Ç∑ñΩóﬂÇÃÇ≠ÇπÇ…ÅAé¿ç€Ç…ÇÕåàÇµÇƒÇ»Ç≠ÇƒÅAå„ÇÎÇ…ÇÊÇØÇƒÇÈÇæÇØ
 	auto rmIt = std::remove_if(//èåèÇ…çáívÇµÇΩÇ‡ÇÃÇè¡Ç∑
@@ -199,11 +199,9 @@ void EnemyFactory::AttackDamage()
 {
 }
 
-void EnemyFactory::Stage1Enemy()
+void EnemyFactory::StageEnemy(int StageNum)
 {
-	m_Frame++;
-
-	if (m_Frame == 1)
+	if (StageNum == 1)
 	{
 		Create(kJump, { 1000,400 });
 		Create(kThrow, { 2000,800 });
@@ -228,7 +226,122 @@ void EnemyFactory::Stage1Enemy()
 		Create(kNormal, { 6000,800 });
 		Create(kNormal, { 6500,600 });
 	}
+	
+	if (StageNum == 2)
+	{
+		Create(kJump, { 1000,400 });
+		Create(kJump, { 1100,300 });
+		Create(kJump, { 1200,600 });
+		Create(kJump, { 1300,600 });
+		Create(kJump, { 1400,600 });
+		Create(kJump, { 1500,600 });
+		Create(kJump, { 1600,400 });
+		Create(kJump, { 1700,600 });
+		Create(kJump, { 1800,200 });
+		Create(kJump, { 1900,300 });
+		Create(kJump, { 2000,600 });
+		Create(kJump, { 3500,600 });
+		Create(kJump, { 5000,600 });
+		Create(kJump, { 5500,600 });
+		Create(kJump, { 5500,400 });
+		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,200 });
+		Create(kJump, { 1900,300 });
+		Create(kJump, { 3000,600 });
+		Create(kJump, { 3500,600 });
+		Create(kJump, { 5000,600 });
+		Create(kJump, { 5500,600 });
+		Create(kJump, { 5500,400 });
+		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,200 });
+	}
 
+	if (StageNum == 3)
+	{
+		Create(kThrow, { 1000,400 });
+		Create(kThrow, { 1100,300 });
+		Create(kThrow, { 1200,600 });
+		Create(kThrow, { 1300,600 });
+		Create(kThrow, { 1400,600 });
+		Create(kThrow, { 1500,600 });
+		Create(kThrow, { 1600,400 });
+		Create(kThrow, { 1700,600 });
+		Create(kThrow, { 1800,200 });
+		Create(kThrow, { 1900,300 });
+		Create(kThrow, { 2000,600 });
+		Create(kThrow, { 3500,600 });
+		Create(kThrow, { 5000,600 });
+		Create(kThrow, { 5500,600 });
+		Create(kThrow, { 5500,400 });
+		Create(kThrow, { 6000,600 });
+		Create(kThrow, { 6000,200 });
+		Create(kThrow, { 1900,300 });
+		Create(kThrow, { 3000,600 });
+		Create(kThrow, { 3500,600 });
+		Create(kThrow, { 5000,600 });
+		Create(kThrow, { 5500,600 });
+		Create(kThrow, { 5500,400 });
+		Create(kThrow, { 6000,600 });
+		Create(kThrow, { 6000,200 });
+	}
+
+	if (StageNum == 4)
+	{
+		Create(kJump, { 1000,400 });
+		Create(kJump, { 1100,300 });
+		Create(kJump, { 1200,600 });
+		Create(kJump, { 1300,600 });
+		Create(kJump, { 1400,600 });
+		Create(kJump, { 1500,600 });
+		Create(kJump, { 1600,400 });
+		Create(kJump, { 1700,600 });
+		Create(kJump, { 1800,200 });
+		Create(kJump, { 1900,300 });
+		Create(kJump, { 2000,600 });
+		Create(kJump, { 3500,600 });
+		Create(kJump, { 5000,600 });
+		Create(kJump, { 5500,600 });
+		Create(kJump, { 5500,400 });
+		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,200 });
+		Create(kJump, { 1900,300 });
+		Create(kJump, { 3000,600 });
+		Create(kJump, { 3500,600 });
+		Create(kJump, { 5000,600 });
+		Create(kJump, { 5500,600 });
+		Create(kJump, { 5500,400 });
+		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,200 });
+	}
+
+	if (StageNum == 5)
+	{
+		Create(kJump, { 1000,400 });
+		Create(kJump, { 1100,300 });
+		Create(kJump, { 1200,600 });
+		Create(kJump, { 1300,600 });
+		Create(kJump, { 1400,600 });
+		Create(kJump, { 1500,600 });
+		Create(kJump, { 1600,400 });
+		Create(kJump, { 1700,600 });
+		Create(kJump, { 1800,200 });
+		Create(kJump, { 1900,300 });
+		Create(kJump, { 2000,600 });
+		Create(kJump, { 3500,600 });
+		Create(kJump, { 5000,600 });
+		Create(kJump, { 5500,600 });
+		Create(kJump, { 5500,400 });
+		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,200 });
+		Create(kJump, { 1900,300 });
+		Create(kJump, { 3000,600 });
+		Create(kJump, { 3500,600 });
+		Create(kJump, { 5000,600 });
+		Create(kJump, { 5500,600 });
+		Create(kJump, { 5500,400 });
+		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,200 });
+	}
 	/*if (m_Frame == 2)
 	{
 		Create(kJump, { 1800,600 });
@@ -270,4 +383,10 @@ void EnemyFactory::Stage1Enemy()
 		Create(kNormal, { 1500,600 });
 		Create(kNormal, { 1500,600 });
 	}*/
+}
+
+void EnemyFactory::EnemyDead()
+{
+	//é¿ç€Ç…îÕàÕÇéwíËÇµÇƒè¡Ç∑
+	m_Enemy.erase(m_Enemy.begin(), m_Enemy.end());
 }

@@ -30,45 +30,56 @@ void Item::Init()
 		m_Pos = { 2150,600 };
 		break;
 	case 3:
-		m_ItemType = kAttackUp;
-		m_Pos = { 2000,800 };
+		m_ItemType = kGaugeUp;
+		m_Pos = { 3000,700 };
 		break;
 	case 4:
 		m_ItemType = kAttackUp;
-		m_Pos = { 2000,800 };
+		m_Pos = { 900,700 };
 		break;
 	case 5:
 		m_ItemType = kAttackUp;
+		m_Pos = { 1500,700 };
 		break;
 	case 6:
 		m_ItemType = kHpUp;
+		m_Pos = { 2000,700 };
 		break;
 	case 7:
 		m_ItemType = kAttackUp;
+		m_Pos = { 2300,700 };
 		break;
 	case 8:
-		m_ItemType = kAttackUp;
+		m_ItemType = kGaugeUp;
+		m_Pos = { 1400,500 };
 		break;
 	case 9:
 		m_ItemType = kAttackUp;
+		m_Pos = { 5000,700 };
 		break;
 	case 10:
 		m_ItemType = kAttackUp;
+		m_Pos = { 1300,600 };
 		break;
 	case 11:
 		m_ItemType = kHpUp;
+		m_Pos = { 3000,800 };
 		break;
 	case 12:
 		m_ItemType = kAttackUp;
+		m_Pos = { 2400,700 };
 		break;
 	case 13:
-		m_ItemType = kAttackUp;
+		m_ItemType = kGaugeUp;
+		m_Pos = { 5000,700 };
 		break;
 	case 14:
 		m_ItemType = kAttackUp;
+		m_Pos = { 1300,700 };
 		break;
 	case 15:
 		m_ItemType = kAttackUp;
+		m_Pos = { 3700,700 };
 		break;
 	}
 }

@@ -76,6 +76,7 @@ m_KnockBack(0),
 m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
+m_MaxGauge(kMaxHealGauge),
 m_PossibleShot(false),
 m_ShotIntervalFrame(0),
 m_StageClear(false),
@@ -604,7 +605,7 @@ void Player::IsActiveGauge()
 
 void Player::IsGauge()
 {
-	if(m_Gauge < kMaxHealGauge) m_Gauge += 10;
+	if(m_Gauge < m_MaxGauge) m_Gauge += 10;
 }
 
 void Player::IsColl()
@@ -620,7 +621,7 @@ void Player::IsColl()
 		{
 			float MapPosX = j * Map::kChipSize;
 			float MapPosY = i * Map::kChipSize;
-			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= 50)
+			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
 			{
 				/*float MapPosX = j * Map::kChipSize;
 				float MapPosY = i * Map::kChipSize;*/
@@ -669,7 +670,8 @@ void Player::IsColl()
 				//ステージクリアの判定
 			}
 
-			if (m_Map->GetMapData(i, j) > 50 && m_Map->GetMapData(i, j) <= 175)
+			if (m_Map->GetMapData(i, j) > Map::kSideMapChipNum * 2 
+				&& m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 7)
 			{
 
 				if (PlayerTop > MapPosY + Map::kChipSize) continue;
@@ -754,9 +756,14 @@ bool Player::FallPlayer()
 	return false;
 }
 
-void Player::MapHpUp()
+void Player::MaxHpUp()
 {
 	m_MaxHp++;
+}
+
+void Player::MaxGaugeUp()
+{
+	m_MaxGauge += 30;
 }
 
 
