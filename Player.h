@@ -11,7 +11,7 @@ class Player
 public:
 	// プレイヤーの初期位置
 	static constexpr float kFristPlayerPosX = 760.0f;
-	static constexpr float kFristPlayerPosY = 500.0f;
+	static constexpr float kFristPlayerPosY = 800.0f;
 
 	static constexpr int kSideSize = 128;
 	static constexpr int kColumnSize = 128;
@@ -132,6 +132,9 @@ public:
 
 	// プレイヤーが落下したかどうか
 	bool FallPlayer();
+
+	// MaxHp増加
+	void MapHpUp();
 
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }

@@ -13,12 +13,12 @@ class Item;
 
 class SceneMain : public SceneBase
 {
-public:
-	enum ItemType
-	{
-		kTwoJump,
-		kAttackUp,
-	};
+//public:
+//	enum ItemType
+//	{
+//		kTwoJump,
+//		kAttackUp,
+//	};
 public:
 	static constexpr int kItemNum = 25;
 	static constexpr int kStageItemNum = 5;
@@ -38,6 +38,13 @@ public:
 	void IsItemPosition(int StageNum);
 
 private:
+	void FadeinUpdate();
+	void NormalUpdate();
+	void FadeoutUpdate();
+	void SwitchStage();
+
+private:
+
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];
 
@@ -56,11 +63,11 @@ private:
 	// マップの移動量
 	Vec2 m_offset;
 
-	// キャラクターとブロックの衝突判定
-	bool m_CollTop;
-	bool m_CollBottom;
-	bool m_CollLeft;
-	bool m_CollRight;
+	//// キャラクターとブロックの衝突判定
+	//bool m_CollTop;
+	//bool m_CollBottom;
+	//bool m_CollLeft;
+	//bool m_CollRight;
 
 	// エネミーとブロックの衝突判定
 	bool m_CollTopEnemy;
@@ -84,6 +91,9 @@ private:
 
 	// 今どこのステージをプレイしているか
 	int m_Stage;
+
+	// 背景の明るさ(フェードイン、フェードアウト時に暗くなる)
+	int m_Color;
 	
 	// プレイヤー
 	std::shared_ptr<Player> m_player;
@@ -99,4 +109,7 @@ private:
 
 	// 敵全部
 	std::shared_ptr<EnemyFactory> m_EnemyFactory;
+
+	//update処理メンバ関数ポインタ
+	void (SceneMain::* m_func)();
 };

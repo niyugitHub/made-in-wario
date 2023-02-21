@@ -705,7 +705,7 @@ bool Player::IsShotColl()
 	{
 		for (int j = 0; j < Map::kBgNumX; j++)
 		{
-			if (m_Map->GetMapData(i, j) != 0)
+			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= 50)
 			{
 				float MapPosX = j * Map::kChipSize;
 				float MapPosY = i * Map::kChipSize;
@@ -752,6 +752,11 @@ bool Player::FallPlayer()
 	}
 
 	return false;
+}
+
+void Player::MapHpUp()
+{
+	m_MaxHp++;
 }
 
 

@@ -7,6 +7,13 @@ class Map;
 class Item
 {
 public:
+	enum ItemType
+	{
+		kTwoJump,
+		kAttackUp,
+		kHpUp,
+	};
+public:
 	Item();
 	~Item();
 
@@ -16,7 +23,7 @@ public:
 	void SetExist(bool Exist) { m_Exist = Exist; }
 	bool GetExist() { return m_Exist; }
 
-	void SetItemType(int type) { m_ItemType = type; }
+	void SetItemNum(int Num) { m_ItemNum = Num; }
 	int GetItemType() { return m_ItemType; }
 
 	Vec2 GetPos() { return m_Pos; }
@@ -28,6 +35,9 @@ public:
 	void Draw(Vec2 offset);
 
 private:
+	// アイテムの番号
+	int m_ItemNum;
+	// アイテムのタイプ
 	int m_ItemType;
 	std::shared_ptr<Map> m_Map;
 

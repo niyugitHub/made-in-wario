@@ -34,6 +34,9 @@ class Map
 
 		void SetMap(Vec2 Pos) { m_Pos = Pos; }
 
+		// ステージの番号を取得
+		int GetStageNum() { return m_StageNum; }
+
 		// 当たり判定をセット
 		void SetCollRight(bool Right) { m_CollRight = Right; }
 		void SetCollLeft(bool Left) { m_CollLeft = Left; }

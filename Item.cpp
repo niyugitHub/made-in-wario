@@ -15,6 +15,62 @@ Item::~Item()
 
 void Item::Init()
 {
+	switch (m_ItemNum)
+	{
+	case 0:
+		m_ItemType = kTwoJump;
+		m_Pos = { 2000,800 };
+		break;
+	case 1:
+		m_ItemType = kAttackUp;
+		m_Pos = { 1300,900 };
+		break;
+	case 2:
+		m_ItemType = kHpUp;
+		m_Pos = { 2150,600 };
+		break;
+	case 3:
+		m_ItemType = kAttackUp;
+		m_Pos = { 2000,800 };
+		break;
+	case 4:
+		m_ItemType = kAttackUp;
+		m_Pos = { 2000,800 };
+		break;
+	case 5:
+		m_ItemType = kAttackUp;
+		break;
+	case 6:
+		m_ItemType = kHpUp;
+		break;
+	case 7:
+		m_ItemType = kAttackUp;
+		break;
+	case 8:
+		m_ItemType = kAttackUp;
+		break;
+	case 9:
+		m_ItemType = kAttackUp;
+		break;
+	case 10:
+		m_ItemType = kAttackUp;
+		break;
+	case 11:
+		m_ItemType = kHpUp;
+		break;
+	case 12:
+		m_ItemType = kAttackUp;
+		break;
+	case 13:
+		m_ItemType = kAttackUp;
+		break;
+	case 14:
+		m_ItemType = kAttackUp;
+		break;
+	case 15:
+		m_ItemType = kAttackUp;
+		break;
+	}
 }
 
 void Item::Update()
