@@ -38,7 +38,7 @@ void Item::Init()
 		m_Pos = { 900,700 };
 		break;
 	case 5:
-		m_ItemType = kAttackUp;
+		m_ItemType = kShot;
 		m_Pos = { 1500,700 };
 		break;
 	case 6:
@@ -96,7 +96,33 @@ void Item::Draw(Vec2 offset)
 		DrawBox(m_Pos.x + offset.x, m_Pos.y,
 			m_Pos.x + 50 + offset.x, m_Pos.y + 50,
 			GetColor(255, 255, 255), true);
+
+		if (m_ItemType == ItemType::kTwoJump)
+		{
+			DrawString(m_Pos.x + offset.x, m_Pos.y, "ジャンプ", GetColor(0, 255, 0));
+		}
+
+		if (m_ItemType == ItemType::kAttackUp)
+		{
+			DrawString(m_Pos.x + offset.x, m_Pos.y, "攻撃力アップ", GetColor(0, 255, 0));
+		}
+
+		if (m_ItemType == ItemType::kHpUp)
+		{
+			DrawString(m_Pos.x + offset.x, m_Pos.y, "体力アップ", GetColor(0, 255, 0));
+		}
+
+		if (m_ItemType == ItemType::kGaugeUp)
+		{
+			DrawString(m_Pos.x + offset.x, m_Pos.y, "ゲージアップ", GetColor(0, 255, 0));
+		}
+
+		if (m_ItemType == ItemType::kShot)
+		{
+			DrawString(m_Pos.x + offset.x, m_Pos.y, "ショット", GetColor(0, 255, 0));
+		}
 	}
+
 
 //	if(m_ItemType == kTwoJump)
 }

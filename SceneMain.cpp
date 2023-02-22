@@ -301,35 +301,35 @@ void SceneMain::draw()
 	m_Map->draw();
 	m_EnemyFactory->Draw(m_offset);
 	m_player->draw(m_offset);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-//	m_Item->Draw();
 
 	for (int i = (m_Map->GetStageNum() - 1) * m_StageItemNum; i < m_Map->GetStageNum() * m_StageItemNum; i++)
 	{
 		m_Item[i]->Draw(m_offset);
 
-		if (m_Item[i]->GetExist())
-		{
-			if (m_Item[i]->GetItemType() == Item::ItemType::kTwoJump)
-			{
-				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "ジャンプ", GetColor(0, 255, 0));
-			}
+		//if (m_Item[i]->GetExist())
+		//{
+		//	/*if (m_Item[i]->GetItemType() == Item::ItemType::kTwoJump)
+		//	{
+		//		DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "ジャンプ", GetColor(0, 255, 0));
+		//	}
 
-			if (m_Item[i]->GetItemType() == Item::ItemType::kAttackUp)
-			{
-				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
-			}
+		//	if (m_Item[i]->GetItemType() == Item::ItemType::kAttackUp)
+		//	{
+		//		DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "攻撃力アップ", GetColor(0, 255, 0));
+		//	}
 
-			if (m_Item[i]->GetItemType() == Item::ItemType::kHpUp)
-			{
-				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "体力アップ", GetColor(0, 255, 0));
-			}
+		//	if (m_Item[i]->GetItemType() == Item::ItemType::kHpUp)
+		//	{
+		//		DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "体力アップ", GetColor(0, 255, 0));
+		//	}
 
-			if (m_Item[i]->GetItemType() == Item::ItemType::kGaugeUp)
-			{
-				DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "ゲージアップ", GetColor(0, 255, 0));
-			}
-		}
+		//	if (m_Item[i]->GetItemType() == Item::ItemType::kGaugeUp)
+		//	{
+		//		DrawString(m_Item[i]->GetPos().x + m_offset.x, m_Item[i]->GetPos().y, "ゲージアップ", GetColor(0, 255, 0));
+		//	}*/
+		//}
+	}
+
 #ifdef _DEBUG
 		for (int i = 0; i < Map::kBgNumY; i++)
 		{
@@ -344,7 +344,8 @@ void SceneMain::draw()
 			}
 		}
 #endif
-	}
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	/*for (auto& pItem : m_Item)
 	{
@@ -498,6 +499,12 @@ void SceneMain::NormalUpdate()
 				{
 					m_Item[i]->SetExist(false);
 					m_player->MaxGaugeUp();
+				}
+				//ショットアイテムに当たったとき
+				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kShot)
+				{
+					m_Item[i]->SetExist(false);
+					m_player->SetShot(true);
 				}
 			}
 		}

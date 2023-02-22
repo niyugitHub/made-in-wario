@@ -13,6 +13,7 @@ public:
 		kAttackUp,
 		kHpUp,
 		kGaugeUp,
+		kShot,
 	};
 public:
 	Item();

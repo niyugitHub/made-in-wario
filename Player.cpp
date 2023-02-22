@@ -207,7 +207,12 @@ void Player::draw(Vec2 offset)
 
 	if (m_PossibleTwoJump)
 	{
-		DrawString(0,500, "二段ジャンプ可能", GetColor(0, 255, 0));
+		DrawString(0,600, "二段ジャンプ可能", GetColor(0, 255, 0));
+	}
+
+	if (m_PossibleShot)
+	{
+		DrawString(0, 700, "ショット可能", GetColor(0, 255, 0));
 	}
 
 	if (m_Shot != nullptr)
@@ -571,7 +576,7 @@ void Player::IsActiveGauge()
 		}
 	}
 	else if(m_PushFrame > 0 && m_PushFrame <= 30
-		&& m_Gauge >= 30 && m_ShotIntervalFrame <= 0)
+		&& m_Gauge >= 30 && m_ShotIntervalFrame <= 0 && m_PossibleShot)
 	{
 		if (m_Shot == nullptr)
 		{

@@ -79,6 +79,9 @@ public:
 	// 敵座標取得
 	void SetEnemyPos(Vec2 EnemyPos) { m_EnemyPos = EnemyPos; };
 
+	// ショットアイテムを取得したときショットを打てるように
+	void SetShot(bool PossibleShot) { m_PossibleShot = PossibleShot; }
+
 	// ノックバックスピード取得
 	void SetKnockBackSpeed(float KnockbackSpeed){m_KnockBack = KnockbackSpeed;}
 
