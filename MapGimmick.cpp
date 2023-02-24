@@ -4,13 +4,16 @@
 
 namespace
 {
-	constexpr float m_FallSpeedMax = 20.0f;
+	// ギミックが落ちる最高速度
+	constexpr float kFallSpeedMax = 20.0f;
+	// フレームごとにギミックの落ちるスピード上昇
+	constexpr float kFallSpeedUp = 0.4f;
 }
 
 MapGimmick::MapGimmick(Vec2 Pos) : 
 	m_Pos(Pos),
 	m_FallSpeed(0),
-	Flag(false)
+	m_Flag(false)
 {
 
 }
@@ -23,17 +26,28 @@ void MapGimmick::Init()
 {
 }
 
-void MapGimmick::Update()
+void MapGimmick::Update(Vec2 PlayerPos)
 {
-	if (Flag)
+	Vec2 DistancePos = m_Pos - PlayerPos;
+
+	if (DistancePos.x < 32 && DistancePos.x > -32 && DistancePos.y < 0)
 	{
-		m_Pos.y -= m_FallSpeed;
+		m_Flag = true;
+	}
+
+	if (m_Flag)
+	{
+		m_Pos.y += m_FallSpeed;
+		if (m_FallSpeed <= kFallSpeedMax)
+		{
+			m_FallSpeed += kFallSpeedUp;
+		}
 	}
 }
 
-void MapGimmick::Draw(int handle)
+void MapGimmick::Draw(Vec2 offset, int handle)
 {
-	DrawRectGraph(m_Pos.x + Map::kChipSize, m_Pos.y + Map::kChipSize,
-		Map::kChipSize * 9, 0,
+	DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+		Map::kChipSize * 10, 0,
 		Map::kChipSize, Map::kChipSize, handle, true);
 }

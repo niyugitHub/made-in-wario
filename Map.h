@@ -1,7 +1,7 @@
 #pragma once
 #include "game.h"
 #include "Vec2.h"
-#include<list>
+#include<vector>
 #include <memory>
 
 class MapGimmick;
@@ -10,7 +10,7 @@ class Map
 {
 	public:
 		// マップチップの１つのサイズ
-		static constexpr int kChipSize = 64;
+		static constexpr float kChipSize = 64;
 
 		// チップの数
 		static constexpr int kBgNumY = 17;
@@ -38,6 +38,11 @@ class Map
 
 		int GetPosX() { return m_Pos.x; }
 
+		// ギミックの座標取得
+		Vec2 GetGimmickPos(int i);
+		// ギミックの個数取得
+		int GetGimmickCount() { return m_GimmickCount; }
+
 		void SetMap(Vec2 Pos) { m_Pos = Pos; }
 
 		// ステージの番号を取得
@@ -56,7 +61,7 @@ class Map
 
 		int GetMapData(int Y, int X) { return m_MapData[Y][X]; }
 
-		void update(Vec2 offset);
+		void update();
 
 		// 描画
 		void draw(Vec2 offset);
@@ -70,6 +75,8 @@ class Map
 		// 広さを取得
 		int getWidth() const;
 		int getHeight() const;
+
+		void SetPlayerPos(Vec2 PlayerPos) { m_PlayerPos = PlayerPos; }
 	private:
 		// マップチップの数を取得する
 		int chipNumX();
@@ -83,6 +90,9 @@ class Map
 		// 当たり判定
 		bool m_CollLeft;
 		bool m_CollRight;
+
+		// プレイヤーの座標取得
+		Vec2 m_PlayerPos;
 
 		// グラフィックデータのハンドル
 		int m_handle;
@@ -112,7 +122,10 @@ class Map
 		// ベクトル
 		Vec2 m_Vec;
 
+		// ギミックの個数
+		int m_GimmickCount;
+
 		// ギミック
-		std::list<std::shared_ptr<MapGimmick>> m_Gimmick;
+		std::vector<std::shared_ptr<MapGimmick>> m_Gimmick;
 };
 

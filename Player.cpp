@@ -122,7 +122,7 @@ void Player::update()
 		if (m_NoDamageFrame == 100)
 		{
 			m_Jump = 0;
-		//	m_KnockBack = kKnockBackSpeed;
+			//	m_KnockBack = kKnockBackSpeed;
 		}
 
 		if (m_NoDamageFrame >= 0)
@@ -159,7 +159,10 @@ void Player::update()
 		CharaMove();
 
 		LimitMove();
+
+		CollGimmick();
 	}
+
 	if (!m_Exist)
 	{
 		IsColl();
@@ -196,6 +199,8 @@ void Player::update()
 		m_pos.x = m_NextPos.x;
 	}
 	m_pos.y = m_NextPos.y;
+
+	m_Map->SetPlayerPos(m_pos);
 
 	InitColl();
 }
@@ -461,6 +466,9 @@ void Player::NotExist()
 	m_Jump = 0;
 	m_Hp = m_MaxHp;
 	m_Gauge = 0;
+	m_CharaGraphX = 0;
+	m_CharaGraphY = 0;
+	m_KnockBack = 0;
 }
 
 //void Player::IsMoveStart()
@@ -514,6 +522,7 @@ void Player::NotExist()
 void Player::Ondamage()
 {
 	m_Hp--;
+	m_NoDamageFrame = 100;
 }
 
 void Player::IsKnockBack(Vec2 EnemyPos)
@@ -769,6 +778,39 @@ void Player::MaxHpUp()
 void Player::MaxGaugeUp()
 {
 	m_MaxGauge += 30;
+}
+
+void Player::CollGimmick()
+{
+	float PlayerTop = m_pos.y;
+	float PlayerBottom = m_pos.y + Player::kSideSize;
+	float PlayerLeft = m_pos.x;
+	float PlayerRight = m_pos.x + Player::kSideSize;
+
+	for (int i = 0; i < m_Map->GetGimmickCount(); i++)
+	{
+		Vec2 GimmickPos = m_Map->GetGimmickPos(i);
+
+		float GimmickPosTop = GimmickPos.y;
+		float GimmickPosBottom = GimmickPos.y + Map::kChipSize;
+		float GimmickPosLeft = GimmickPos.x;
+		float GimmickPosRight = GimmickPos.x + Map::kChipSize;
+
+		if (PlayerTop > GimmickPosBottom) continue;
+		if (PlayerBottom < GimmickPosTop) continue;
+		if (PlayerLeft > GimmickPosRight) continue;
+		if (PlayerRight < GimmickPosLeft) continue;
+
+		if (m_NoDamageFrame <= 0)
+		{
+			Ondamage();
+			m_KnockBack = kKnockBackSpeed;
+			m_EnemyPos = GimmickPos;
+		}
+		
+	}
+
+	
 }
 
 

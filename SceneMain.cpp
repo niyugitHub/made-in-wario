@@ -407,33 +407,36 @@ void SceneMain::NormalUpdate()
 	{
 		if (Pad::isTrigger(PAD_INPUT_2))
 		{
-			m_player->NotExist();
-			m_Map->SetMap(m_MapPos);
-			m_PlayerPos.y = Player::kFristPlayerPosY;
-			m_PlayerPos.x = Player::kFristPlayerPosX;
-			m_player->SetPos(m_PlayerPos);
-			m_Exist = true;
-			m_player->SetExist(m_Exist);
+			m_func = &SceneMain::FadeoutUpdate;
+			//m_player->NotExist();
+			//m_Map->SetMap(m_MapPos);
+			//m_PlayerPos.y = Player::kFristPlayerPosY;
+			//m_PlayerPos.x = Player::kFristPlayerPosX;
+			//m_player->SetPos(m_PlayerPos);
+			//m_Exist = true;
+			//m_player->SetExist(m_Exist);
 
-			/*for (auto& pItem : m_Item)
-			{
-				pItem->SetItemType(ItemType::kAttackUp);
-			}*/
+			///*for (auto& pItem : m_Item)
+			//{
+			//	pItem->SetItemType(ItemType::kAttackUp);
+			//}*/
 
-			/*m_Item[0]->SetItemType(ItemType::kTwoJump);
-			m_Item[0]->SetItemType(ItemType::kTwoJump);*/
+			///*m_Item[0]->SetItemType(ItemType::kTwoJump);
+			//m_Item[0]->SetItemType(ItemType::kTwoJump);*/
 
-			m_EnemyFactory = std::make_shared<EnemyFactory>();
-			m_Coll->setEnemy(m_EnemyFactory);
-			m_EnemyFactory->SetPlayer(m_player);
-			m_EnemyFactory->SetMap(m_Map);
-			m_EnemyFactory->SetColl(m_Coll);
+			//m_EnemyFactory = std::make_shared<EnemyFactory>();
+			//m_Coll->setEnemy(m_EnemyFactory);
+			//m_EnemyFactory->SetPlayer(m_player);
+			//m_EnemyFactory->SetMap(m_Map);
+			//m_EnemyFactory->SetColl(m_Coll);
 		}
 	}
 
 	m_Coll->Update();
 
 	m_player->update();
+
+	m_Map->update();
 
 	Vec2 targetOffset{};
 
@@ -458,9 +461,6 @@ void SceneMain::NormalUpdate()
 		targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
 	}
 	m_offset = targetOffset * 0.2f + m_offset * 0.8f;
-
-	////マップのアップデート
-	//m_Map->update(m_offset);
 
 	m_PlayerPos = m_player->GetPos();
 
@@ -512,11 +512,8 @@ void SceneMain::NormalUpdate()
 	}
 
 	m_Coll->InitColl();
-	//}
 
 	m_EnemyFactory->Update();
-
-
 }
 
 void SceneMain::FadeoutUpdate()
@@ -525,14 +522,31 @@ void SceneMain::FadeoutUpdate()
 	if (m_Color <= 0)
 	{
 		m_offset = { 0,0 };
-		m_Map->SetStage();
-		m_EnemyFactory->EnemyDead();
-		m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
-		m_Map->update(m_offset);
 		m_PlayerPos.y = Player::kFristPlayerPosY;
 		m_PlayerPos.x = Player::kFristPlayerPosX;
-		m_player->SetPos(m_PlayerPos);
-		m_Color = 0;
+		if (m_player->GetExist())
+		{
+			m_Map->SetStage();
+			m_EnemyFactory->EnemyDead();
+			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
+			m_Map->Init();
+			m_player->SetPos(m_PlayerPos);
+			m_Color = 0;
+		}
+
+		if (!m_player->GetExist())
+		{
+			m_player->NotExist();
+			m_Map->Init();
+			m_Map->SetMap(m_MapPos);
+			m_player->SetPos(m_PlayerPos);
+			m_Exist = true;
+			m_player->SetExist(m_Exist);
+
+			m_Coll->setEnemy(m_EnemyFactory);
+			m_EnemyFactory->EnemyDead();
+			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
+		}
 		m_func = &SceneMain::FadeinUpdate;
 	}
 }

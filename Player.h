@@ -142,6 +142,9 @@ public:
 	// MaxGauge増加
 	void MaxGaugeUp();
 
+	// ギミックに当たったとき
+	void CollGimmick();
+
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
 
