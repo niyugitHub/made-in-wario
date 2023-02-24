@@ -1,6 +1,7 @@
 #include<Dxlib.h>
 
 #include "Map.h"
+#include "MapGimmick.h"
 #include "game.h"
 #include "Pad.h"
 #include <cassert>
@@ -173,6 +174,17 @@ Map::~Map()
 {
 }
 
+void Map::Init()
+{
+	for (int y = 0; y < kBgNumY; y++)
+	{
+		for (int x = 0; x < kBgNumX; x++)
+		{
+			m_MapData[y][x] = kMapData1[y][x];
+		}
+	}
+}
+
 void Map::load()
 {
 	m_handle = LoadGraph(kFileName);
@@ -186,7 +198,7 @@ void Map::unload()
 
 void Map::update(Vec2 offset)
 {
-	m_Pos.x = offset.x;
+//	m_Pos.x = offset.x;
 
 	//assert(m_StageNum != 3);
 
@@ -245,9 +257,9 @@ void Map::update(Vec2 offset)
 	
 }
 
-void Map::draw()
+void Map::draw(Vec2 offset)
 {
-	drawMap();
+	drawMap(offset);
 }
 
 void Map::PlayerMove(float knockback, float Move)
@@ -289,7 +301,7 @@ int Map::chipNum()
 	return(chipNumX() * chipNumY());
 }
 
-void Map::drawMap()
+void Map::drawMap(Vec2 offset)
 {
 	for (int x = 0; x < kBgNumX; x++)
 	{
@@ -298,7 +310,7 @@ void Map::drawMap()
 			int ChipNumY = m_MapData[y][x] / kChipDivisionY;
 			int ChipNumX = m_MapData[y][x] % kChipDivisionY;
 
-			DrawRectGraph(m_Pos.x + kChipSize * x, m_Pos.y + kChipSize * y,
+			DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y,
 				kChipSize * ChipNumX, kChipSize * ChipNumY,
 				kChipSize, kChipSize, m_handle, true);
 		}

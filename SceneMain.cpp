@@ -128,6 +128,7 @@ void SceneMain::init()
 	}
 	m_player->Init();
 //	m_Enemy->Init();
+	m_Map->Init();
 	m_Map->load();
 	for (auto& pItem : m_Item)
 	{
@@ -298,7 +299,7 @@ void SceneMain::draw()
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
-	m_Map->draw();
+	m_Map->draw(m_offset);
 	m_EnemyFactory->Draw(m_offset);
 	m_player->draw(m_offset);
 
@@ -337,8 +338,8 @@ void SceneMain::draw()
 			{
 				if (m_Map->GetMapData(i, j) != 0)
 				{
-					DrawBox(Map::kChipSize * j + m_Map->GetPosX(), Map::kChipSize * i,
-						Map::kChipSize * (j + 1) + m_Map->GetPosX(), Map::kChipSize * (i + 1),
+					DrawBox(Map::kChipSize * j + m_Map->GetPosX() + m_offset.x, Map::kChipSize * i,
+						Map::kChipSize * (j + 1) + m_Map->GetPosX() + m_offset.x, Map::kChipSize * (i + 1),
 						0xffffff, false);
 				}
 			}
@@ -458,8 +459,8 @@ void SceneMain::NormalUpdate()
 	}
 	m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 
-	//マップのアップデート
-	m_Map->update(m_offset);
+	////マップのアップデート
+	//m_Map->update(m_offset);
 
 	m_PlayerPos = m_player->GetPos();
 

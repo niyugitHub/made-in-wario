@@ -1,7 +1,10 @@
 #pragma once
 #include "game.h"
 #include "Vec2.h"
+#include<list>
 #include <memory>
+
+class MapGimmick;
 
 class Map
 {
@@ -44,6 +47,9 @@ class Map
 		void SetCollRight(bool Right) { m_CollRight = Right; }
 		void SetCollLeft(bool Left) { m_CollLeft = Left; }
 
+		// マップ初期化
+		void Init();
+
 		// グラフィックのロード、アンロード
 		void load();
 		void unload();
@@ -53,7 +59,7 @@ class Map
 		void update(Vec2 offset);
 
 		// 描画
-		void draw();
+		void draw(Vec2 offset);
 
 		// プレイヤーの向きとノックバックの移動量
 		void PlayerMove(float knockback, float Move);
@@ -72,7 +78,7 @@ class Map
 
 	private:
 		// マップの描画
-		void drawMap();
+		void drawMap(Vec2 offset);
 
 		// 当たり判定
 		bool m_CollLeft;
@@ -105,5 +111,8 @@ class Map
 
 		// ベクトル
 		Vec2 m_Vec;
+
+		// ギミック
+		std::list<std::shared_ptr<MapGimmick>> m_Gimmick;
 };
 
