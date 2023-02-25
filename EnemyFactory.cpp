@@ -5,6 +5,7 @@
 #include "Enemy3.h"
 #include "EnemyBase.h"
 #include "Player.h"
+#include "Particle.h"
 #include <DxLib.h>
 #include <cassert>
 
@@ -16,7 +17,8 @@ EnemyFactory::EnemyFactory() :
 	m_CollRight(false),
 	m_CollLeft(false),
 	m_Pos(0,0),
-	m_ThrowPos(0,0)
+	m_ThrowPos(0,0),
+	m_Particle(std::make_shared<Particle>())
 {
 //	m_Coll = std::make_shared<Collision>();
 }
@@ -68,6 +70,8 @@ void EnemyFactory::Update()
 		}
 	}
 	
+	m_Particle->Update();
+
 	for (auto& enemy : m_Enemy)
 	{
 		if (enemy->isExist())
@@ -123,6 +127,8 @@ void EnemyFactory::Update()
 				m_Player->IsGauge();
 				m_Player->SetEnemyPos(m_Pos);
 				m_Player->SetKnockBackSpeed(Player::kHitKnockBackSpeed);
+				m_Particle->SetEnemyPos(m_Pos);
+				m_Particle->SetEnemyParticle();
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
@@ -134,6 +140,8 @@ void EnemyFactory::Update()
 				m_Player->SetEnemyPos(m_Pos);
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
+				m_Particle->SetEnemyPos(m_Pos);
+				m_Particle->SetEnemyParticle();
 				enemy->InitKnockBack();
 			}
 
@@ -154,6 +162,8 @@ void EnemyFactory::Draw(Vec2 offset)
 			enemy->draw(offset);
 		}
 	}
+
+	m_Particle->Draw(offset);
 #ifdef _DEBUG
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "ìGÇÃêî%d", m_Enemy.size());
 

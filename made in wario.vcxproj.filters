@@ -108,6 +108,9 @@
     <ClCompile Include="MapGimmick.cpp">
       <Filter>ソース ファイル\Minigame</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="MapGimmick.h">
       <Filter>ヘッダー ファイル\Minigame</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

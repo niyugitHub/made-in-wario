@@ -8,6 +8,7 @@ class Enemy1;
 class Enemy2;
 class Enemy3;
 class Player;
+class Particle;
 class Map;
 class Collision;
 
@@ -71,5 +72,6 @@ private:
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;
 	std::shared_ptr<Collision> m_Coll;
+	std::shared_ptr<Particle> m_Particle;
 };
 

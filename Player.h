@@ -5,6 +5,7 @@
 class Map;
 class SceneTitle;
 class PlayerShot;
+class Particle;
 
 class Player 
 {
@@ -258,5 +259,6 @@ private:
 	std::shared_ptr<Map> m_Map;
 	SceneTitle* m_SceneTitle;
 	PlayerShot* m_Shot;
+	std::shared_ptr<Particle> m_Particle;
 };
 

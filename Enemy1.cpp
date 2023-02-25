@@ -35,7 +35,6 @@ void Enemy1::update()
 
 	(this->*m_func)();
 
-
 	/*if (m_Pos.y > Game::kScreenHeight)
 	{
 		m_isDead = true;

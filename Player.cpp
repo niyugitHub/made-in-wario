@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "SceneTitle.h"
 #include "PlayerShot.h"
+#include "Particle.h"
 #include "Map.h"
 #include <DxLib.h>
 #include <cassert>
@@ -83,7 +84,8 @@ m_StageClear(false),
 m_Exist(true),
 m_Map(std::make_shared<Map>()),
 m_Shot(nullptr),
-m_SceneTitle(nullptr)
+m_SceneTitle(nullptr),
+m_Particle(std::make_shared<Particle>())
 {
 	for (auto& handle : m_handle)
 	{
@@ -130,6 +132,8 @@ void Player::update()
 			m_NoDamageFrame--;
 		}
 
+		CollGimmick();
+
 		if (m_KnockBack > 0)
 		{
 			IsKnockBack(m_EnemyPos);
@@ -160,7 +164,7 @@ void Player::update()
 
 		LimitMove();
 
-		CollGimmick();
+		m_Particle->Update();
 	}
 
 	if (!m_Exist)
@@ -264,6 +268,8 @@ void Player::draw(Vec2 offset)
 	{
 		DrawTurnGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), m_handle[(m_CharaGraphY * 8) + m_CharaGraphX], true);
 	}
+
+	m_Particle->Draw(offset);
 }
 
 void Player::CharaMove()
@@ -570,6 +576,14 @@ void Player::IsActiveGauge()
 	{
 		m_PushFrame++;
 
+		if (m_PushFrame > 30)
+		{
+			Vec2 CenterPos = { m_pos.x + (kSideSize / 2) ,m_pos.y + kColumnSize - 20 };
+
+			m_Particle->SetPos(CenterPos);
+			m_Particle->SetPlayerParticle();
+		}
+
 		/*if (m_HealFrame > 30)
 		{
 			m_HealGauge--;
@@ -796,6 +810,12 @@ void Player::CollGimmick()
 		float GimmickPosLeft = GimmickPos.x;
 		float GimmickPosRight = GimmickPos.x + Map::kChipSize;
 
+#ifdef _DEBUG
+	/*DrawBox(GimmickPosLeft, GimmickPosTop,
+		GimmickPosRight, GimmickPosBottom,
+			0xffffff, false);*/
+#endif
+
 		if (PlayerTop > GimmickPosBottom) continue;
 		if (PlayerBottom < GimmickPosTop) continue;
 		if (PlayerLeft > GimmickPosRight) continue;
@@ -806,11 +826,11 @@ void Player::CollGimmick()
 			Ondamage();
 			m_KnockBack = kKnockBackSpeed;
 			m_EnemyPos = GimmickPos;
+			return;
 		}
 		
 	}
 
-	
 }
 
 
