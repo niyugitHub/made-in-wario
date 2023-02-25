@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "Player.h"
 #include <Dxlib.h>
 
 namespace
@@ -21,6 +22,7 @@ Particle::Particle() :
 		data[i].m_BColor = 0;
 		data[i].m_Transparency = 0;
 		data[i].m_Exist = false;
+		data[i].m_ParticleSize = { 0,0 };
 	}
 }
 
@@ -35,8 +37,8 @@ void Particle::SetPos(Vec2 Pos)
 	{
 		if (!data[i].m_Exist)
 		{
-			Pos.x += -30 + GetRand(60);
-			Pos.y += -30 + GetRand(60);
+			/*Pos.x += -30 + GetRand(60);
+			Pos.y += -30 + GetRand(60);*/
 			data[i].m_Pos = Pos;
 
 			/*float vecX = -1.5 + GetRand(3.0f);
@@ -70,17 +72,96 @@ void Particle::SetPlayerParticle()
 	{
 		if (!data[i].m_Exist/* && m_Frame % 2 == 0*/)
 		{
+			data[i].m_Pos.x += -30 + GetRand(60);
+			data[i].m_Pos.y += -30 + GetRand(60);
+
 			data[i].m_RColor = 255;
 			data[i].m_GColor = 255;
 			data[i].m_BColor = 255;
 			data[i].m_Transparency = 255;
 			data[i].m_Exist = true;
 
+			float vecX = 0.0f;
 			float vecY =  -2.5f - GetRand(2.5f);
+			m_Gravity = 0.0f;
 
-			data[i].m_Vec.y = vecY;
+			data[i].m_Vec = { vecX,vecY };
+
+			float ParticleSizeX = 3 + GetRand(4.0f);
+			float ParticleSizeY = 7 + GetRand(6.0f);
+			data[i].m_ParticleSize = { ParticleSizeX,ParticleSizeY };
 
 			return;
+		}
+	}
+}
+
+void Particle::SetShotPlayerParticle()
+{
+	int count = 0;
+	for (int i = 0; i < kMaxParticle; i++)
+	{
+		if (!data[i].m_Exist)
+		{
+			/*data[i].m_Pos.x += Player::kSideSize / 2 - 10;
+			data[i].m_Pos.y += Player::kColumnSize / 2 + 10;*/
+
+			count++;
+			data[i].m_RColor = 255;
+			data[i].m_GColor = 255;
+			data[i].m_BColor = 255;
+			data[i].m_Transparency = 255;
+			data[i].m_Exist = true;
+
+			float FloatVec = 0.1 * count - 2.5f;
+
+			float vecX = -5.0f + GetRand(10.0f) + FloatVec;
+			float vecY = -2.5f - GetRand(5.0f) + FloatVec;
+
+			data[i].m_Vec = { vecX, vecY };
+
+			m_Gravity = 0.3f;
+
+			data[i].m_ParticleSize = { 10,10 };
+
+			if (count >= 50) return;
+		}
+	}
+}
+
+void Particle::SetdamagePlayerParticle()
+{
+	int count = 0;
+	for (int i = 0; i < kMaxParticle; i++)
+	{
+		if (!data[i].m_Exist)
+		{
+			data[i].m_Pos.x += Player::kSideSize / 2 - 20;
+			data[i].m_Pos.y += Player::kColumnSize / 2;
+
+			count++;
+			data[i].m_RColor = 20;
+			data[i].m_GColor = 20;
+			data[i].m_BColor = 20;
+			data[i].m_Transparency = 255;
+			data[i].m_Exist = true;
+
+			float FloatVec = 0.1 * count - 2.5f;
+
+			float vecX = -5.0f + GetRand(10.0f) + FloatVec;
+			float vecY = -2.5f - GetRand(5.0f) + FloatVec;
+
+			data[i].m_Vec = { vecX, vecY };
+
+			m_Gravity = 0.3f;
+
+			/*float ParticleSizeX = 8 + GetRand(3.0f);
+			float ParticleSizeY = 8 + GetRand(3.0f);
+			data[i].m_ParticleSize = { ParticleSizeX,ParticleSizeY };*/
+
+			data[i].m_ParticleSize = { 10,10 };
+
+			if (count >= 50) return;
 		}
 	}
 }
@@ -107,6 +188,8 @@ void Particle::SetEnemyParticle()
 			data[i].m_Vec = { vecX, vecY };
 
 			m_Gravity = 0.3f;
+
+			data[i].m_ParticleSize = { 10,10 };
 
 			if(count >= 50) return;
 		}
@@ -143,7 +226,8 @@ void Particle::Draw(Vec2 offset)
 		if (data[i].m_Exist)
 		{
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, data[i].m_Transparency);
-			DrawOval(data[i].m_Pos.x + offset.x, data[i].m_Pos.y,5.0f,10.0f,
+			DrawOval(data[i].m_Pos.x + offset.x, data[i].m_Pos.y,
+				data[i].m_ParticleSize.x, data[i].m_ParticleSize.y,
 				GetColor(data[i].m_RColor,
 					data[i].m_GColor,
 					data[i].m_BColor), true);

@@ -299,6 +299,7 @@ void SceneMain::draw()
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xff00ff, true);
 	m_Map->draw(m_offset);
 	m_EnemyFactory->Draw(m_offset);
 	m_player->draw(m_offset);

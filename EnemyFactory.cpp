@@ -138,10 +138,10 @@ void EnemyFactory::Update()
 			if (enemy->CollShotPlayer() && !enemy->GetHit())
 			{
 				m_Player->SetEnemyPos(m_Pos);
-				enemy->SetHit(true);
-				enemy->OnDamage(m_Player->GetAttackPower());
 				m_Particle->SetEnemyPos(m_Pos);
 				m_Particle->SetEnemyParticle();
+				enemy->SetHit(true);
+				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
 			}
 

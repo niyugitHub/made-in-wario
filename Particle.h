@@ -17,7 +17,13 @@ public:
 
 	void Init();
 
+	// プレイヤー回復時パーティクル
 	void SetPlayerParticle();
+	// プレイヤーがショットを打った時のパーティクル
+	void SetShotPlayerParticle();
+	// プレイヤーが攻撃されたときパーティクル
+	void SetdamagePlayerParticle();
+	// エネミーに攻撃ヒット時パーティクル
 	void SetEnemyParticle();
 
 	void Update();
@@ -39,6 +45,9 @@ private:
 		int m_Transparency = 0;
 		// 存在するかどうか
 		bool m_Exist = false;
+
+		// パーティクルのサイズ
+		Vec2 m_ParticleSize = { 0,0 };
 	};
 
 	int m_Frame;

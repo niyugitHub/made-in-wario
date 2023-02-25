@@ -39,7 +39,7 @@ namespace
 	constexpr int kHpSize = 64;
 
 	// ƒVƒ‡ƒbƒgŠÔŠu
-	constexpr int kShotInterval = 30;
+	constexpr int kShotInterval = 20;
 }
 
 //Player::Player(handle) :m_handle = handle 
@@ -78,7 +78,7 @@ m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
-m_PossibleShot(false),
+m_PossibleShot(true),
 m_ShotIntervalFrame(0),
 m_StageClear(false),
 m_Exist(true),
@@ -164,8 +164,9 @@ void Player::update()
 
 		LimitMove();
 
-		m_Particle->Update();
 	}
+
+	m_Particle->Update();
 
 	if (!m_Exist)
 	{
@@ -274,10 +275,11 @@ void Player::draw(Vec2 offset)
 
 void Player::CharaMove()
 {
+	m_InitAttack = true;
 	m_NextPos = m_pos;
 
 	m_FrameChangeSpeed = 1;
-
+	
 	if (Pad::isPress(PAD_INPUT_RIGHT) && Pad::isPress(PAD_INPUT_3))
 	{
 		if (!m_Attack) m_LookLeft = false;
@@ -376,7 +378,7 @@ void Player::CharaMove()
 	}
 	else
 	{
-		m_InitAttack = true;
+		/*m_InitAttack = true;*/
 	}
 
 	if (m_Attack)
@@ -391,6 +393,7 @@ void Player::CharaMove()
 			m_CharaMotion = 2;*/
 		}
 	}
+	
 
 	IsActiveGauge();
 
@@ -529,6 +532,8 @@ void Player::Ondamage()
 {
 	m_Hp--;
 	m_NoDamageFrame = 100;
+	m_Particle->SetPos(m_pos);
+	m_Particle->SetdamagePlayerParticle();
 }
 
 void Player::IsKnockBack(Vec2 EnemyPos)
@@ -598,7 +603,7 @@ void Player::IsActiveGauge()
 			m_Gauge -= 30;
 		}
 	}
-	else if(m_PushFrame > 0 && m_PushFrame <= 30
+	else if(m_PushFrame > 0 && m_PushFrame <= 30 && !m_Attack
 		&& m_Gauge >= 30 && m_ShotIntervalFrame <= 0 && m_PossibleShot)
 	{
 		if (m_Shot == nullptr)
@@ -606,24 +611,31 @@ void Player::IsActiveGauge()
 			if (m_LookLeft)
 			{
 				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, -40.0f);
+				m_Particle->SetPos({ m_pos.x,m_pos.y + (kColumnSize / 2 + 10) });
 			}
 			else if (!m_LookLeft)
 			{
 				m_Shot = new PlayerShot({ m_pos.x + (kSideSize / 2),m_pos.y + (kColumnSize / 4) }, 40.0f);
+				m_Particle->SetPos({ m_pos.x + kSideSize, m_pos.y + (kColumnSize / 2 + 10) });
 			}
+			m_InitAttack = false;
 		}
-		m_InitAttack = false;
+		else if(m_Shot != nullptr)
+		{
+			m_PushFrame = 0;
+			return;
+		}
 		m_ShotPos = m_Shot->GetPos();
 		m_PushFrame = 0;
 		m_ShotIntervalFrame = kShotInterval;
+		/*m_Particle->SetPos(m_pos);*/
+		m_Particle->SetShotPlayerParticle();
 	//	m_Gauge -= 30;
 	}
 	else
 	{
 		m_PushFrame = 0;
 	}
-
-
 
 	if (m_Gauge <= 0)
 	{
