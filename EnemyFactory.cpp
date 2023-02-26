@@ -4,6 +4,7 @@
 #include "Enemy2.h"
 #include "Enemy3.h"
 #include "Enemy4.h"
+#include "Enemy5.h"
 #include "EnemyBase.h"
 #include "Player.h"
 #include "Particle.h"
@@ -199,6 +200,11 @@ std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
 			std::make_shared<Enemy4>()
 		);
 		break;
+	case EnemyType::kFlyShot:
+		m_Enemy.push_back(
+			std::make_shared<Enemy5>()
+		);
+		break;
 	}
 	/*enemy* penemy = new enemy;
 	penemy->setpos(pos);*/
@@ -219,18 +225,19 @@ void EnemyFactory::StageEnemy(int StageNum)
 {
 	if (StageNum == 1)
 	{
+		Create(kFlyShot, { 1000,800 });
 		Create(kJump, { 1000,800 });
-		/*Create(kJump, { 1900,600 });
+		Create(kJump, { 1900,600 });
 		Create(kJump, { 1900,300 });
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });
 		Create(kJump, { 5000,600 });
-		Create(kJump, { 5500,600 });
-		Create(kJump, { 5500,400 });
+		Create(kFlyShot, { 7000,800 });
+		Create(kFlyShot, { 4000,800 });
 		Create(kJump, { 6000,600 });
 		Create(kJump, { 6000,200 });
-		Create(kJump, { 4000,600 });*/
-		/*Create(kThrow, { 2000,800 });
+		Create(kJump, { 4000,600 });
+		Create(kThrow, { 2000,800 });
 		Create(kThrow, { 2050,400 });
 		Create(kThrow, { 5500,800 });
 		Create(kThrow, { 5300,800 });
@@ -240,7 +247,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 5500,800 });
 		Create(kNormal, { 6000,800 });
-		Create(kNormal, { 6500,600 });*/
+		Create(kNormal, { 6500,600 });
 	}
 	
 	if (StageNum == 2)

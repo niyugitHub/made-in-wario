@@ -3,7 +3,7 @@
 #include "Map.h"
 #include "Collision.h"
 #include "ShotBase.h"
-#include "Shot.h"
+#include "FallShot.h"
 #include <Dxlib.h>
 #include <cassert>
 

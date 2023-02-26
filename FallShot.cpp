@@ -1,4 +1,4 @@
-#include "Shot.h"
+#include "FallShot.h"
 #include "ShotBase.h"
 #include "game.h"
 #include <Dxlib.h>
@@ -14,17 +14,17 @@ namespace
 	constexpr int kFallFrame = 150;
 }
 
-Shot::Shot(Vec2 Pos, float VecX)
+FallShot::FallShot(Vec2 Pos, float VecX)
 {
 	m_Pos = Pos;
 	m_Vec = { VecX,kFallSpeed };
 }
 
-Shot::~Shot()
+FallShot::~FallShot()
 {
 }
 
-void Shot::Update()
+void FallShot::Update()
 {
 	m_Pos.x -= m_Vec.x;
 	m_Pos.y -= m_Vec.y;
@@ -40,7 +40,7 @@ void Shot::Update()
 	}
 }
 
-void Shot::Draw(Vec2 offset)
+void FallShot::Draw(Vec2 offset)
 {
 	if(m_Exist)
 	DrawBox(m_Pos.x + offset.x, m_Pos.y, m_Pos.x + 50 + offset.x, m_Pos.y + 50,

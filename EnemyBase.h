@@ -6,7 +6,8 @@
 class Map;
 class Player;
 class Collision;
-class Shot;
+class FallShot;
+class HomingShot;
 
 class EnemyBase
 {

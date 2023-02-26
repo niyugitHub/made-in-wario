@@ -1,11 +1,11 @@
 #pragma once
 #include "ShotBase.h"
 
-class Shot : public ShotBase
+class FallShot : public ShotBase
 {
 public:
-	Shot(Vec2 Pos,float VecX);
-	~Shot();
+	FallShot(Vec2 Pos,float VecX);
+	~FallShot();
 
 	/*void SetPos(Vec2 Pos) { m_Pos = Pos; }
 	Vec2 GetPos() { return m_Pos; }*/

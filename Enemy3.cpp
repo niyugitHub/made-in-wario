@@ -2,7 +2,7 @@
 #include "EnemyBase.h"
 #include "Player.h"
 #include "Map.h"
-#include "Shot.h"
+#include "FallShot.h"
 #include <Dxlib.h>
 #include <cassert>
 
@@ -121,7 +121,7 @@ void Enemy3::UpdateDiscovery()
 
 		m_FallSpeedX = m_DistancePos.x / 60;
 
-		m_Shot = new Shot(m_Pos,m_FallSpeedX);
+		m_Shot = new FallShot(m_Pos,m_FallSpeedX);
 	}
 
 	m_RandThrowFrame--;

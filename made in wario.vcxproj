@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="HomingShot.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
@@ -173,12 +174,13 @@
     <ClCompile Include="SceneMain.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
-    <ClCompile Include="Shot.cpp" />
+    <ClCompile Include="FallShot.cpp" />
     <ClCompile Include="ShotBase.cpp" />
     <ClCompile Include="vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="HomingShot.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="Enemy2.h" />
@@ -199,7 +201,7 @@
     <ClInclude Include="SceneMain.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneTitle.h" />
-    <ClInclude Include="Shot.h" />
+    <ClInclude Include="FallShot.h" />
     <ClInclude Include="ShotBase.h" />
     <ClInclude Include="vec2.h" />
   </ItemGroup>

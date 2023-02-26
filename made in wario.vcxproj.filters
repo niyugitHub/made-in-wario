@@ -93,7 +93,7 @@
     <ClCompile Include="PlayerShot.cpp">
       <Filter>ソース ファイル\Shot</Filter>
     </ClCompile>
-    <ClCompile Include="Shot.cpp">
+    <ClCompile Include="FallShot.cpp">
       <Filter>ソース ファイル\Shot</Filter>
     </ClCompile>
     <ClCompile Include="ShotBase.cpp">
@@ -110,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="Enemy5.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="HomingShot.cpp">
+      <Filter>ソース ファイル\Shot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,7 +170,7 @@
     <ClInclude Include="PlayerShot.h">
       <Filter>ヘッダー ファイル\Shot</Filter>
     </ClInclude>
-    <ClInclude Include="Shot.h">
+    <ClInclude Include="FallShot.h">
       <Filter>ヘッダー ファイル\Shot</Filter>
     </ClInclude>
     <ClInclude Include="ShotBase.h">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="Enemy5.h">
       <Filter>ヘッダー ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="HomingShot.h">
+      <Filter>ヘッダー ファイル\Shot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
