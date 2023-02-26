@@ -10,11 +10,18 @@ public:
 	int GetHp() { return m_Hp; }*/
 
 	void update();
+	void draw(Vec2 offset);
 
 private:
+	// ジャンプ力
+	float m_JumpPower;
+	// ジャンプ間隔
+	int m_JumpFrame;
+	// スピード
+	int m_Speed;
+
 	void UpdatePatrol();	// 通常時
-	void UpdateDiscovery();		// プレイヤーが近づいたとき
-	void updateAttack();		// プレイヤーに攻撃がヒットしたとき
+	
 	// update処理メンバ関数ポインタ
 	void(Enemy4::* m_func)();
 };

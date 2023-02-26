@@ -7,6 +7,7 @@
 class Enemy1;
 class Enemy2;
 class Enemy3;
+class Enemy4;
 class Player;
 class Particle;
 class Map;
@@ -18,8 +19,9 @@ public:
 	enum EnemyType
 	{
 		kNormal,
-		kJump,
+		kFly,
 		kThrow,
+		kJump,
 	};
 public:
 	EnemyFactory();
