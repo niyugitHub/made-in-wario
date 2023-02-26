@@ -10,6 +10,7 @@
 #include "Particle.h"
 #include <DxLib.h>
 #include <cassert>
+//a
 
 EnemyFactory::EnemyFactory() : 
 	m_EnemyName(kNormal),
