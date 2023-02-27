@@ -18,7 +18,12 @@ private:
 	// ジャンプ間隔
 	int m_JumpFrame;
 	// スピード
-	int m_Speed;
+	float m_Speed;
+	// 画像の種類
+	int m_GraphX;
+	int m_GraphY;
+
+	void UpdateGraph();
 
 	void UpdatePatrol();	// 通常時
 	

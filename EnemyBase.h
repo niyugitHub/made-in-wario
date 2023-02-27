@@ -28,6 +28,9 @@ public:
 
 	virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }
 
+	// グラフをセット
+	virtual void SetHandle(int handle) { m_handle = handle; }
+
 	// 攻撃がヒット
 	void SetHit(bool HitAttack) { m_HitAttack = HitAttack; }
 	bool GetHit() { return m_HitAttack; }
@@ -81,6 +84,9 @@ protected:
 	// プレイヤーとエネミーの座標の差
 	Vec2 m_DistancePos;
 
+	// エネミーの画像ハンドル
+	int m_handle;
+
 	float m_Gravity;
 
 	int m_Hp; // 敵の体力
@@ -98,6 +104,9 @@ protected:
 
 	// 死亡判定
 	bool m_Exist;
+
+	// エネミーの向き(-1:左 1:右)
+	int m_LookEnemy;
 
 	// エネミーとブロックの衝突判定
 	bool m_CollTop;

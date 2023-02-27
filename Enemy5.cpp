@@ -134,7 +134,7 @@ void Enemy5::UpdateDiscovery()
 		BasicMoveEnemy();
 
 		m_Pos += m_Vec;
-		if (m_DistancePos.x > -500 && m_DistancePos.x < 0)
+		if (m_DistancePos.x < kPlayerGraphSize / 2)
 		{
 			//m_Vec.x += 3;
 			if (m_FieldSpeed < kMoveChaseMax)
@@ -143,7 +143,7 @@ void Enemy5::UpdateDiscovery()
 			}
 		}
 
-		if (m_DistancePos.x >= kPlayerGraphSize / 2 && m_DistancePos.x < 500 + kPlayerGraphSize / 2)
+		if (m_DistancePos.x >= kPlayerGraphSize / 2)
 		{
 			//	m_Vec.x -= 3;
 			if (m_FieldSpeed > -kMoveChaseMax)

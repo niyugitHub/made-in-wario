@@ -27,6 +27,7 @@ EnemyBase::EnemyBase() :
 	m_MoveInverseDirection(1),
 	m_MapVec(0,0),
 	m_Exist(true),
+	m_LookEnemy(1),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),

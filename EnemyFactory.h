@@ -60,6 +60,9 @@ private:
 	int m_EnemyName;
 	int m_Frame;
 
+	// エネミーの画像ハンドル
+	int m_handle;
+
 	bool m_CollTop;
 	bool m_CollBottom;
 	bool m_CollRight;
