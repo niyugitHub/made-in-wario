@@ -14,7 +14,11 @@ public:
 
 	 void update();
 
+	 void draw(Vec2 offset);
 private:
+	// フレームごとにグラフを切り替える
+	int m_Frame;
+
 	void UpdatePatrol();	// 通常時
 	void UpdateDiscovery();		// プレイヤーが近づいたとき
 	void updateAttack();		// プレイヤーに攻撃がヒットしたとき

@@ -14,6 +14,9 @@ public:
 private:
 	int m_Frame;
 
+	// フレームごとにグラフを切り替える
+	int m_GraphFrame;
+
 	float m_FlySpeed;
 	float m_FieldSpeed;
 

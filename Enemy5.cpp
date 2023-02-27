@@ -49,12 +49,16 @@ void Enemy5::update()
 	{
 		m_Exist = false;
 	}
-	m_PlayerPos = m_Player->GetPos();
-	m_NextPos = m_Pos;
 
-	(this->*m_func)();
+	if (m_Exist)
+	{
+		m_PlayerPos = m_Player->GetPos();
+		m_NextPos = m_Pos;
 
-	m_DistancePos = m_Pos - m_PlayerPos;
+		m_DistancePos = m_Pos - m_PlayerPos;
+
+		(this->*m_func)();
+	}
 
 	if (m_Shot != nullptr)
 	{

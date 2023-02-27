@@ -8,10 +8,20 @@
 namespace
 {
 	constexpr int PlayerGraphSize = 100;
+
+	// ‰æ‘œ‚ÌƒTƒCƒY
+	constexpr float kGraphSizeX = 64.0f;
+	constexpr float kGraphSizeY = 64.0f;
+
+	// ‰æ‘œ‚Ì’ZŒa•”•ª•\Ž¦
+	constexpr int kRectGraphY = 128;
 }
 
-Enemy1::Enemy1()
+Enemy1::Enemy1() : 
+	m_Frame(0)
 {
+	m_GraphX = 0;
+	m_GraphY = 64;
 	m_Hp = 30;
 	m_func = &Enemy1::UpdatePatrol;
 }
@@ -27,9 +37,31 @@ void Enemy1::update()
 		m_Exist = false;
 	}
 
+	m_Frame++;
+
+	if (m_Frame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX % 4 == 0)
+		{
+			m_GraphX = 0;
+		}
+	}
+
 	m_PlayerPos = m_Player->GetPos();
 
 	m_DistancePos = m_Pos - m_PlayerPos;
+
+	if (m_DistancePos.x < 0)
+	{
+		m_LookEnemy = -1;
+	}
+
+	else
+	{
+		m_LookEnemy = 1;
+	}
 
 	m_NextPos = m_Pos;
 
@@ -39,6 +71,26 @@ void Enemy1::update()
 	{
 		m_isDead = true;
 	}*/
+}
+
+void Enemy1::draw(Vec2 offset)
+{
+	if (m_Exist)
+	{
+		if (m_LookEnemy == 1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x - kGraphSizeX, m_Pos.y,
+				(m_GraphX * 3) * kGraphSizeX, kRectGraphY, 128, 64,
+				m_handle, true, true);
+		}
+
+		if (m_LookEnemy == -1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x - kGraphSizeX, m_Pos.y,
+				(m_GraphX * 3) * kGraphSizeX, kRectGraphY, 128, 64,
+				m_handle, true, false);
+		}
+	}
 }
 
 void Enemy1::UpdatePatrol()

@@ -46,34 +46,37 @@ void Enemy3::update()
 		}
 	}
 
-	BasicMoveEnemy();
-
-	m_NextPos = m_Pos;
-
-	if (!m_CollBottom)
+	if (m_Exist)
 	{
-		m_Gravity += kGravity;
-		m_Vec.y += m_Gravity;
+		BasicMoveEnemy();
+
+		m_NextPos = m_Pos;
+
+		if (!m_CollBottom)
+		{
+			m_Gravity += kGravity;
+			m_Vec.y += m_Gravity;
+		}
+
+		else
+		{
+			m_Gravity = 0;
+			m_Vec.y = 0;
+		}
+
+		m_DistancePos = m_Pos - m_PlayerPos;
+		m_DistancePos.x -= static_cast<float>(Player::kSideSize) / 2;
+
+		(this->*m_func)();
+
+		m_PlayerPos = m_Player->GetPos();
+		m_NextPos += m_Vec;
+
+		if (!m_CollBottom && !m_CollRight && !m_CollLeft)
+		{
+		}
+		m_Pos = m_NextPos;
 	}
-
-	else
-	{
-		m_Gravity = 0;
-		m_Vec.y = 0;
-	}
-
-	m_DistancePos = m_Pos - m_PlayerPos;
-	m_DistancePos.x -= static_cast<float>(Player::kSideSize) / 2;
-
-	(this->*m_func)();
-
-	m_PlayerPos = m_Player->GetPos();
-	m_NextPos += m_Vec;
-
-	if (!m_CollBottom && !m_CollRight && !m_CollLeft)
-	{
-	}
-	m_Pos = m_NextPos;
 
 
 	if (m_Shot != nullptr)
@@ -85,7 +88,9 @@ void Enemy3::update()
 void Enemy3::draw(Vec2 offset)
 {
 	if (m_Exist)
+	{
 		DrawBox(m_Pos.x + offset.x, m_Pos.y , m_Pos.x + 50 + offset.x, m_Pos.y + 50, GetColor(0, 0, 255), true);
+	}
 
 	/*DrawBox(m_ThrowPos.x, m_ThrowPos.y, m_ThrowPos.x + 50, m_ThrowPos.y + 50,
 		GetColor(0, 255, 255), true);*/

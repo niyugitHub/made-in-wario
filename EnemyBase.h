@@ -44,6 +44,9 @@ public:
 	// 敵が投げた物の座標取得
 	virtual Vec2 GetThrowPos() { return m_ThrowPos; }
 
+	// グラフのサイズ取得
+	virtual Vec2 GetGraphSize() { return m_GraphSize; }
+
 	virtual void update();
 	virtual void draw(Vec2 offset);
 
@@ -107,6 +110,13 @@ protected:
 
 	// エネミーの向き(-1:左 1:右)
 	int m_LookEnemy;
+
+	// 画像の種類
+	int m_GraphX;
+	int m_GraphY;
+
+	// 画像のグラフサイズ取得
+	Vec2 m_GraphSize;
 
 	// エネミーとブロックの衝突判定
 	bool m_CollTop;

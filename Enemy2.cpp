@@ -15,13 +15,23 @@ namespace
 
 	// ’ÊíŽž‚Ì‘¬“x
 	constexpr float kMoveFly = 0.05f;
+
+	// ‰æ‘œ‚ÌƒTƒCƒY
+	constexpr float kGraphSizeX = 64.0f;
+	constexpr float kGraphSizeY = 64.0f;
+
+	// ‰æ‘œ‚Ì’ZŒa•”•ª•\Ž¦
+	constexpr int kRectGraphY = 0;
 }
 
 Enemy2::Enemy2() : 
 	m_Frame(35),
+	m_GraphFrame(0),
 	m_FlySpeed(-kMoveFly),
 	m_FieldSpeed(0.0f)
 {
+	m_GraphX = 0;
+	m_GraphY = 0;
 	m_Hp = 50;
 	m_func = &Enemy2::UpdatePatrol;
 }
@@ -36,23 +46,63 @@ void Enemy2::update()
 	{
 		m_Exist = false;
 	}
-	m_PlayerPos = m_Player->GetPos();
-	m_NextPos = m_Pos;
 
-	(this->*m_func)();
-
-	m_DistancePos = m_Pos - m_PlayerPos;
-
-	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
+	if (m_Exist)
 	{
-		m_func = &Enemy2::UpdateDiscovery;
+		m_GraphFrame++;
+
+		if (m_GraphFrame % 5 == 0)
+		{
+			m_GraphX++;
+
+			if (m_GraphX % 4 == 0)
+			{
+				m_GraphX = 0;
+			}
+		}
+
+		if (m_DistancePos.x < 0)
+		{
+			m_LookEnemy = -1;
+		}
+
+		else
+		{
+			m_LookEnemy = 1;
+		}
+
+		m_PlayerPos = m_Player->GetPos();
+		m_NextPos = m_Pos;
+
+		(this->*m_func)();
+
+		m_DistancePos = m_Pos - m_PlayerPos;
+
+		if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
+		{
+			m_func = &Enemy2::UpdateDiscovery;
+		}
 	}
 }
 
 void Enemy2::draw(Vec2 offset)
 {
 	if (m_Exist)
-		DrawBox(m_Pos.x + offset.x, m_Pos.y, m_Pos.x + 50 + offset.x, m_Pos.y + 50, GetColor(0, 255, 0), true);
+	{
+		if (m_LookEnemy == 1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, 64, 64,
+				m_handle, true, true);
+		}
+
+		if (m_LookEnemy == -1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, 64, 64,
+				m_handle, true, false);
+		}
+	}
 
 //#ifdef _DEBUG
 //	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);

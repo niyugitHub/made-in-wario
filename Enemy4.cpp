@@ -19,13 +19,13 @@ namespace
 	constexpr int kJumpFrame = 30;
 }
 
-Enemy4::Enemy4() : 
+Enemy4::Enemy4() :
 	m_JumpPower(0),
 	m_JumpFrame(0),
-	m_Speed(-kSpeed),
-	m_GraphX(0),
-	m_GraphY(1)
+	m_Speed(-kSpeed)
 {
+	m_GraphX = 0;
+	m_GraphY = 1;
 	m_Hp = 50;
 	m_func = &Enemy4::UpdatePatrol;
 }

@@ -577,7 +577,7 @@ void Player::IsActiveGauge()
 		m_ShotIntervalFrame--;
 	}
 
-	if (Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30)
+	if (Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30 && m_Hp < m_MaxHp)
 	{
 		m_PushFrame++;
 
@@ -603,7 +603,7 @@ void Player::IsActiveGauge()
 			m_Gauge -= 30;
 		}
 	}
-	else if(m_PushFrame > 0 && m_PushFrame <= 30 && !m_Attack
+	else if(m_PushFrame > 0 && m_PushFrame < 30 && !m_Attack
 		&& m_Gauge >= 30 && m_ShotIntervalFrame <= 0 && m_PossibleShot)
 	{
 		if (m_Shot == nullptr)

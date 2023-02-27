@@ -58,18 +58,18 @@ void EnemyFactory::Update()
 //	Stage1Enemy();
 	//いなくなった敵は消えてもらう
 	//消す命令のくせに、実際には決してなくて、後ろによけてるだけ
-	auto rmIt = std::remove_if(//条件に合致したものを消す
-		m_Enemy.begin(),	//対象はm_Enemyの最初から
-		m_Enemy.end(),		//最後まで
-		//消えてもらう条件を表すラムダ式
-		//trueだと消える。falseだと消えない
-		[](const std::shared_ptr<EnemyBase>& enemy) {
-			return !enemy->isExist();
-		});
+	//auto rmIt = std::remove_if(//条件に合致したものを消す
+	//	m_Enemy.begin(),	//対象はm_Enemyの最初から
+	//	m_Enemy.end(),		//最後まで
+	//	//消えてもらう条件を表すラムダ式
+	//	//trueだと消える。falseだと消えない
+	//	[](const std::shared_ptr<EnemyBase>& enemy) {
+	//		return !enemy->isExist();
+	//	});
 
-	//実際に範囲を指定して消す
-	m_Enemy.erase(rmIt, m_Enemy.end());
-	//ここまでやらないと実際には消えないので注意
+	////実際に範囲を指定して消す
+	//m_Enemy.erase(rmIt, m_Enemy.end());
+	////ここまでやらないと実際には消えないので注意
 
 	for (auto& enemy : m_Enemy)
 	{
@@ -83,11 +83,11 @@ void EnemyFactory::Update()
 
 	for (auto& enemy : m_Enemy)
 	{
+		enemy->update();
 		if (enemy->isExist())
 		{
 			m_Coll->InitColl();
 
-			enemy->update();
 			
 			/*enemy->update();*/
 
@@ -96,16 +96,16 @@ void EnemyFactory::Update()
 
 			m_Coll->Update();
 
-			// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
-			if (enemy->CollThrow() && m_Player->GetNoDamageFrame() <= 0)
-			{
-			//	DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
-				m_Player->Ondamage();
-				m_Player->SetNoDamageFrame(100);
-				m_Player->SetEnemyPos(m_Pos);
-				m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
-			//	m_Player->IsKnockBack(m_Pos);
-			}
+			//// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
+			//if (enemy->CollThrow() && m_Player->GetNoDamageFrame() <= 0)
+			//{
+			////	DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
+			//	m_Player->Ondamage();
+			//	m_Player->SetNoDamageFrame(100);
+			//	m_Player->SetEnemyPos(m_Pos);
+			//	m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
+			////	m_Player->IsKnockBack(m_Pos);
+			//}
 
 			// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
 			if (m_Coll->IsCollEnemy() && m_Player->GetNoDamageFrame() <= 0)
@@ -159,6 +159,17 @@ void EnemyFactory::Update()
 				enemy->KnockBack();
 			}
 		}
+
+		// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
+		if (enemy->CollThrow() && m_Player->GetNoDamageFrame() <= 0)
+		{
+			//	DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
+			m_Player->Ondamage();
+			m_Player->SetNoDamageFrame(100);
+			m_Player->SetEnemyPos(m_Pos);
+			m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
+			//	m_Player->IsKnockBack(m_Pos);
+		}
 	}
 }
 
@@ -166,10 +177,7 @@ void EnemyFactory::Draw(Vec2 offset)
 {
 	for (auto& enemy : m_Enemy)
 	{
-		if (enemy->isExist())
-		{
-			enemy->draw(offset);
-		}
+		enemy->draw(offset);
 	}
 
 	m_Particle->Draw(offset);
@@ -233,19 +241,19 @@ void EnemyFactory::StageEnemy(int StageNum)
 {
 	if (StageNum == 1)
 	{
-		Create(kJump, { 1000,800 });
-		/*Create(kJump, { 1900,600 });
+	//	Create(kFly, { 1000,800 });
+		Create(kThrow, { 2000,800 });
+		Create(kJump, { 1900,600 });
 		Create(kJump, { 1900,300 });
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });*/
-		/*Create(kFlyShot, { 1000,800 });
+		Create(kJump, { 5000,600 });
+	//	Create(kFlyShot, { 1000,800 });
 		Create(kFlyShot, { 7000,800 });
 		Create(kFlyShot, { 4000,800 });
 		Create(kJump, { 6000,600 });
 		Create(kJump, { 6000,200 });
 		Create(kJump, { 4000,600 });
-		Create(kThrow, { 2000,800 });
 		Create(kThrow, { 2050,400 });
 		Create(kThrow, { 5500,800 });
 		Create(kThrow, { 5300,800 });
@@ -255,7 +263,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 5500,800 });
 		Create(kNormal, { 6000,800 });
-		Create(kNormal, { 6500,600 });*/
+		Create(kNormal, { 6500,600 });
 	}
 	
 	if (StageNum == 2)
