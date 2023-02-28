@@ -17,6 +17,14 @@ namespace
 	constexpr float kSpeed = 5.0f;
 	// ジャンプ間隔
 	constexpr int kJumpFrame = 30;
+
+	// 画像のサイズ
+	constexpr float kGraphSizeX = 64.0f;
+	constexpr float kGraphSizeY = 64.0f;
+
+	// 画像の短径部分表示
+	constexpr int kRectGraphY = 64;
+	constexpr int kRectGraphX = 64;
 }
 
 Enemy4::Enemy4() :
@@ -27,6 +35,7 @@ Enemy4::Enemy4() :
 	m_GraphX = 0;
 	m_GraphY = 1;
 	m_Hp = 50;
+	m_GraphSize = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy4::UpdatePatrol;
 }
 
@@ -60,14 +69,14 @@ void Enemy4::draw(Vec2 offset)
 		if (m_LookEnemy == 1)
 		{
 			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
-				m_GraphX * 64, m_GraphY * 64, 64, 64,
+				m_GraphX * kGraphSizeX, m_GraphY * kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
 			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
-				m_GraphX * 64, m_GraphY * 64, 64, 64,
+				m_GraphX * kGraphSizeX, m_GraphY * kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}
 	}

@@ -17,6 +17,8 @@ namespace
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
 	const char* const kPlayerHpFilename = "data/Hp1.png";
+	const char* const kPlayerGaugeFilename = "data/gauge.png";
+	const char* const kPlayerGauge1Filename = "data/gauge1.png";
 
 	// フレームタイム
 	constexpr int kFrameTime = 20;
@@ -93,6 +95,8 @@ m_Particle(std::make_shared<Particle>())
 	}
 	
 	m_Hphandle = LoadGraph(kPlayerHpFilename);
+	m_Gaugehandle = LoadGraph(kPlayerGaugeFilename);
+	m_Gauge1handle = LoadGraph(kPlayerGauge1Filename);
 }
 
 Player::~Player()
@@ -245,12 +249,14 @@ void Player::draw(Vec2 offset)
 
 	for (int i = 0; i < m_MaxHp; i++)
 	{
-		DrawRectGraph(i * kHpSize, 0, kHpSize, 0, kHpSize, kHpSize,m_Hphandle, true);
+		DrawRectGraph(i * kHpSize + 120, 0, kHpSize, 0, kHpSize, kHpSize,m_Hphandle, true);
 		if (m_Hp > i)
 		{
-			DrawRectGraph(i * kHpSize, 0, 0, 0, kHpSize, kHpSize, m_Hphandle, true);
+			DrawRectGraph(i * kHpSize + 120, 0, 0, 0, kHpSize, kHpSize, m_Hphandle, true);
 		}
 	}
+	DrawGraph(0, 0, m_Gauge1handle, true);
+	DrawRectGraph(0,0,0, 0, 117, 117 - (m_Gauge * 1.3), m_Gaugehandle, true);
 
 	if (m_NoDamageFrame > 0)
 	{
@@ -577,11 +583,15 @@ void Player::IsActiveGauge()
 		m_ShotIntervalFrame--;
 	}
 
-	if (Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30 && m_Hp < m_MaxHp)
+	if (Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30)
 	{
+		if (m_PushFrame >= 30 && m_Hp == m_MaxHp)
+		{
+			m_PushFrame--;
+		}
 		m_PushFrame++;
 
-		if (m_PushFrame > 30)
+		if (m_PushFrame > 30 && m_Hp < m_MaxHp)
 		{
 			Vec2 CenterPos = { m_pos.x + (kSideSize / 2) ,m_pos.y + kColumnSize - 20 };
 
@@ -593,7 +603,7 @@ void Player::IsActiveGauge()
 		{
 			m_HealGauge--;
 		}*/
-		if (m_PushFrame == 90)
+		if (m_PushFrame == 90 && m_Hp < m_MaxHp)
 		{
 			if (m_Hp < m_MaxHp)
 			{

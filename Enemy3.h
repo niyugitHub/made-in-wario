@@ -12,6 +12,9 @@ public:
 	void draw(Vec2 offset);
 
 private:
+	// フレームごとにグラフを切り替える
+	int m_GraphFrame;
+
 	//// 投げたものの位置
 	//Vec2 m_ThrowPos;
 	// 投げたもののスピード

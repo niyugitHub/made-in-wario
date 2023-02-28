@@ -10,6 +10,7 @@ namespace
 {
 	// 入出力ファイル名
 	const char* const kFileName = "data/Assets(64×64).png";
+	const char* const kFileGimmickName = "data/gimmick.png";
 
 	// チップの数
 	static constexpr int kBgNumY = 17;
@@ -246,7 +247,7 @@ void Map::Init()
 			if (m_MapData[y][x] == 10)
 			{
 				Vec2 GimmickPos = { kChipSize * x, kChipSize * y };
-				m_Gimmick.push_back(std::make_shared<MapGimmick>(GimmickPos));
+				m_Gimmick.push_back(std::make_shared<MapGimmick>(GimmickPos, m_GimmickHandle));
 			}
 		}
 	}
@@ -256,6 +257,7 @@ void Map::load()
 {
 	m_handle = LoadGraph(kFileName);
 	GetGraphSize(m_handle, &m_graphWidth, &m_graphHeight);
+	m_GimmickHandle = LoadGraph(kFileGimmickName);
 }
 
 void Map::unload()
@@ -279,7 +281,7 @@ void Map::draw(Vec2 offset)
 
 	for (auto& Gimmick : m_Gimmick)
 	{
-		Gimmick->Draw(offset, m_handle);
+		Gimmick->Draw(offset);
 	}
 }
 

@@ -159,7 +159,7 @@ void Particle::SetdamagePlayerParticle()
 			float ParticleSizeY = 8 + GetRand(3.0f);
 			data[i].m_ParticleSize = { ParticleSizeX,ParticleSizeY };*/
 
-			data[i].m_ParticleSize = { 10,10 };
+			data[i].m_ParticleSize = { 5,5 };
 
 			if (count >= 50) return;
 		}
@@ -189,7 +189,7 @@ void Particle::SetEnemyParticle()
 
 			m_Gravity = 0.3f;
 
-			data[i].m_ParticleSize = { 10,10 };
+			data[i].m_ParticleSize = { 5,5 };
 
 			if(count >= 50) return;
 		}

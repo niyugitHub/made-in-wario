@@ -12,6 +12,14 @@ namespace
 
 	// ìäÇ∞ÇÈïpìx
 	constexpr int kFallFrame = 150;
+
+	// âÊëúÇÃÉTÉCÉY
+	constexpr float kGraphSizeX = 50.0f;
+	constexpr float kGraphSizeY = 50.0f;
+
+	// âÊëúÇÃíZåaïîï™ï\é¶
+	constexpr int kRectGraphY = 50;
+	constexpr int kRectGraphX = 50;
 }
 
 FallShot::FallShot(Vec2 Pos, float VecX)
@@ -26,6 +34,17 @@ FallShot::~FallShot()
 
 void FallShot::Update()
 {
+	m_Frame++;
+	if (m_Frame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX % 6 == 0)
+		{
+			m_GraphX = 0;
+		}
+	}
+
 	m_Pos.x -= m_Vec.x;
 	m_Pos.y -= m_Vec.y;
 
@@ -42,9 +61,22 @@ void FallShot::Update()
 
 void FallShot::Draw(Vec2 offset)
 {
-	if(m_Exist)
-	DrawBox(m_Pos.x + offset.x, m_Pos.y, m_Pos.x + 50 + offset.x, m_Pos.y + 50,
-		GetColor(0, 255, 255), true);
+	if (m_Exist)
+	{
+		if (m_LookShot == 1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
+				m_handle, true, true);
+		}
+
+		if (m_LookShot == -1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
+				m_handle, true, false);
+		}
+	}	
 
 //	DrawFormatString(500, 0, GetColor(255, 255, 255), "ìGÇÃêî%f", m_Pos.y);
 }

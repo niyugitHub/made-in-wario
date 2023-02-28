@@ -10,8 +10,9 @@ namespace
 	constexpr float kFallSpeedUp = 0.4f;
 }
 
-MapGimmick::MapGimmick(Vec2 Pos) : 
+MapGimmick::MapGimmick(Vec2 Pos ,int handle) : 
 	m_Pos(Pos),
+	m_handle(handle),
 	m_FallSpeed(0),
 	m_Flag(false)
 {
@@ -45,9 +46,8 @@ void MapGimmick::Update(Vec2 PlayerPos)
 	}
 }
 
-void MapGimmick::Draw(Vec2 offset, int handle)
+void MapGimmick::Draw(Vec2 offset)
 {
-	DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
-		Map::kChipSize * 10, 0,
-		Map::kChipSize, Map::kChipSize, handle, true);
+	DrawGraph(m_Pos.x + offset.x, m_Pos.y,
+		m_handle, true);
 }

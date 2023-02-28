@@ -96,6 +96,8 @@ class Map
 
 		// グラフィックデータのハンドル
 		int m_handle;
+		// ギミックのハンドル
+		int m_GimmickHandle;
 
 		// グラフィックデータの配列
 		int m_MapData[kBgNumY][kBgNumX];

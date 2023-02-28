@@ -47,6 +47,7 @@ EnemyBase::~EnemyBase()
 
 void EnemyBase::Init()
 {
+
 }
 
 void EnemyBase::end()

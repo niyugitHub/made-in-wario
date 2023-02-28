@@ -15,12 +15,15 @@ namespace
 {
 	// グラフィックファイル名
 	const char* const kEnemyGraphicFilename = "data/Enemy.png";
+	const char* const kShotGraphicFilename = "data/Shot.png";
+
 }
 
 EnemyFactory::EnemyFactory() : 
 	m_EnemyName(kNormal),
 	m_Frame(0),
 	m_handle(-1),
+	m_Shothandle(-1),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollRight(false),
@@ -39,6 +42,7 @@ EnemyFactory::~EnemyFactory()
 void EnemyFactory::Init()
 {
 	m_handle = LoadGraph(kEnemyGraphicFilename);
+	m_Shothandle = LoadGraph(kShotGraphicFilename);
 }
 
 void EnemyFactory::end()
@@ -229,6 +233,7 @@ std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
 	m_Enemy.back()->SetMap(m_Map);
 	m_Enemy.back()->SetColl(m_Coll);
 	m_Enemy.back()->SetHandle(m_handle);
+	m_Enemy.back()->SetShotHandle(m_Shothandle);
 
 	return m_Enemy.back();
 }
@@ -241,15 +246,16 @@ void EnemyFactory::StageEnemy(int StageNum)
 {
 	if (StageNum == 1)
 	{
+		Create(kNormal, { 1500,800 });
 	//	Create(kFly, { 1000,800 });
-		Create(kThrow, { 2000,800 });
+		/*Create(kThrow, { 2000,800 });
 		Create(kJump, { 1900,600 });
 		Create(kJump, { 1900,300 });
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
+		Create(kJump, { 5000,600 });*/
 	//	Create(kFlyShot, { 1000,800 });
-		Create(kFlyShot, { 7000,800 });
+		/*Create(kFlyShot, { 7000,800 });
 		Create(kFlyShot, { 4000,800 });
 		Create(kJump, { 6000,600 });
 		Create(kJump, { 6000,200 });
@@ -263,7 +269,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 5500,800 });
 		Create(kNormal, { 6000,800 });
-		Create(kNormal, { 6500,600 });
+		Create(kNormal, { 6500,600 });*/
 	}
 	
 	if (StageNum == 2)

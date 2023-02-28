@@ -26,16 +26,26 @@ namespace
 
 	// ショットのスピード
 	constexpr float kShotSpeed = 10.0f;
+
+	// 画像のサイズ
+	constexpr float kGraphSizeX = 122.0f;
+	constexpr float kGraphSizeY = 130.0f;
+
+	// 画像の短径部分表示
+	constexpr int kRectGraphY = 192;
+	constexpr int kRectGraphX = 122;
 }
 
 Enemy5::Enemy5() :
 	m_Frame(35),
+	m_GraphFrame(0),
 	m_ShotFrame(0),
 	m_NextShotFrame(kNextShotFrame),
 	m_FlySpeed(-kMoveFly),
 	m_FieldSpeed(0.0f)
 {
 	m_Hp = 50;
+	m_GraphSize = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy5::UpdatePatrol;
 }
 
@@ -48,6 +58,28 @@ void Enemy5::update()
 	if (m_Hp <= 0)
 	{
 		m_Exist = false;
+	}
+
+	m_GraphFrame++;
+
+	/*if (m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX % 4 == 0)
+		{
+			m_GraphX = 0;
+		}
+	}*/
+
+	if (m_DistancePos.x < 0)
+	{
+		m_LookEnemy = -1;
+	}
+
+	else
+	{
+		m_LookEnemy = 1;
 	}
 
 	if (m_Exist)
@@ -82,9 +114,19 @@ void Enemy5::draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
-		DrawBox(m_Pos.x + offset.x,
-			m_Pos.y, m_Pos.x + 50 + offset.x,
-			m_Pos.y + 50, GetColor(0, 255, 0), true);
+		if (m_LookEnemy == 1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
+				m_handle, true, true);
+		}
+
+		if (m_LookEnemy == -1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
+				m_handle, true, false);
+		}
 	}
 
 	if (m_Shot != nullptr)
@@ -97,6 +139,16 @@ void Enemy5::UpdatePatrol()
 {
 	BasicMoveEnemy();
 	m_Pos += m_Vec;
+
+	if (m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX % 8 == 0)
+		{
+			m_GraphX = 0;
+		}
+	}
 
 	if (m_CollBottom)
 	{
@@ -133,6 +185,17 @@ void Enemy5::UpdateDiscovery()
 {
 	m_NextShotFrame++;
 	m_ShotFrame--;
+
+	if (m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX >= 13)
+		{
+			m_GraphX = 9;
+		}
+	}
+
 	if(m_ShotFrame <= 0)
 	{
 		BasicMoveEnemy();
@@ -199,6 +262,16 @@ void Enemy5::UpdateAttackShot()
 {
 	m_ShotFrame++;
 
+	if (m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX >= 8)
+		{
+			m_GraphX = 0;
+		}
+	}
+
 	if (m_ShotFrame >= kShotFrame)
 	{
 		m_NextShotFrame = 0;
@@ -210,6 +283,8 @@ void Enemy5::UpdateAttackShot()
 		vel *= -kShotSpeed;
 
 		m_Shot = new HomingShot(m_Pos, vel);
+		m_Shot->SetHandle(m_Shothandle);
+		m_Shot->SetLookShot(m_LookEnemy);
 		m_func = &Enemy5::UpdateDiscovery;
 	}
 }

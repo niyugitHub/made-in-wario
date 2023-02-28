@@ -15,14 +15,26 @@ namespace
 
 	// “Š‚°‚é•p“x
 	constexpr int kFallFrame = 120;
+
+	// ‰æ‘œ‚ÌƒTƒCƒY
+	constexpr float kGraphSizeX = 125.0f;
+	constexpr float kGraphSizeY = 100.0f;
+
+	// ‰æ‘œ‚Ì’ZŒa•”•ª•\Ž¦
+	constexpr int kRectGraphX = 125;
+	constexpr int kRectGraphY = 422;
 }
 
 Enemy3::Enemy3() :
+	m_GraphFrame(0),
 	m_FallSpeedX(0),
 	m_FallSpeedY(0),
 	m_RandThrowFrame(100)
 {
 	m_Hp = 50;
+	m_GraphX = 0;
+	m_GraphY = 0;
+	m_GraphSize = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy3::UpdatePatrol;
 }
 
@@ -36,6 +48,8 @@ void Enemy3::update()
 	{
 		m_Exist = false;
 	}
+
+	m_GraphFrame++;
 
 	if (m_Shot != nullptr)
 	{
@@ -65,6 +79,17 @@ void Enemy3::update()
 		}
 
 		m_DistancePos = m_Pos - m_PlayerPos;
+
+		if (m_DistancePos.x < 0)
+		{
+			m_LookEnemy = -1;
+		}
+
+		else
+		{
+			m_LookEnemy = 1;
+		}
+
 		m_DistancePos.x -= static_cast<float>(Player::kSideSize) / 2;
 
 		(this->*m_func)();
@@ -89,7 +114,19 @@ void Enemy3::draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
-		DrawBox(m_Pos.x + offset.x, m_Pos.y , m_Pos.x + 50 + offset.x, m_Pos.y + 50, GetColor(0, 0, 255), true);
+		if (m_LookEnemy == 1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
+				m_handle, true, true);
+		}
+
+		if (m_LookEnemy == -1)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
+				m_handle, true, false);
+		}
 	}
 
 	/*DrawBox(m_ThrowPos.x, m_ThrowPos.y, m_ThrowPos.x + 50, m_ThrowPos.y + 50,
@@ -104,6 +141,17 @@ void Enemy3::draw(Vec2 offset)
 
 void Enemy3::UpdatePatrol()
 {
+	m_GraphY = 0;
+	if (m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX >= 9)
+		{
+			m_GraphX = 0;
+		}
+	}
+
 	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
 	{
 		m_func = &Enemy3::UpdateDiscovery;
@@ -117,6 +165,26 @@ void Enemy3::UpdateDiscovery()
 		m_func = &Enemy3::UpdatePatrol;
 	}
 
+	if (m_RandThrowFrame == 50)
+	{
+		m_GraphY = 1;
+		m_GraphX = 0;
+	}
+
+	if (m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX >= 13 && m_GraphY == 1)
+		{
+			m_GraphX = 0;
+		}
+		if (m_GraphX >= 9 && m_GraphY == 0)
+		{
+			m_GraphX = 0;
+		}
+	}
+
 	if (m_RandThrowFrame <= 0)
 	{
 		// “Š‚°‚é•p“xƒ‰ƒ“ƒ_ƒ€
@@ -127,6 +195,11 @@ void Enemy3::UpdateDiscovery()
 		m_FallSpeedX = m_DistancePos.x / 60;
 
 		m_Shot = new FallShot(m_Pos,m_FallSpeedX);
+		m_Shot->SetHandle(m_Shothandle);
+		m_Shot->SetLookShot(m_LookEnemy);
+
+		m_GraphY = 0;
+		m_GraphX = 0;
 	}
 
 	m_RandThrowFrame--;

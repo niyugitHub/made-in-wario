@@ -128,8 +128,8 @@ void SceneMain::init()
 	}
 	m_player->Init();
 //	m_Enemy->Init();
-	m_Map->Init();
 	m_Map->load();
+	m_Map->Init();
 	for (auto& pItem : m_Item)
 	{
 		pItem->Init();
@@ -334,7 +334,7 @@ void SceneMain::draw()
 	}
 
 #ifdef _DEBUG
-		for (int i = 0; i < Map::kBgNumY; i++)
+		/*for (int i = 0; i < Map::kBgNumY; i++)
 		{
 			for (int j = 0; j < Map::kBgNumX; j++)
 			{
@@ -345,7 +345,7 @@ void SceneMain::draw()
 						0xffffff, false);
 				}
 			}
-		}
+		}*/
 #endif
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

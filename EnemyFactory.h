@@ -63,6 +63,9 @@ private:
 	// エネミーの画像ハンドル
 	int m_handle;
 
+	// ショットの画像ハンドル
+	int m_Shothandle;
+
 	bool m_CollTop;
 	bool m_CollBottom;
 	bool m_CollRight;

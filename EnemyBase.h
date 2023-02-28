@@ -31,6 +31,9 @@ public:
 	// グラフをセット
 	virtual void SetHandle(int handle) { m_handle = handle; }
 
+	// ショットのグラフをセット
+	virtual void SetShotHandle(int Shothandle) { m_Shothandle = Shothandle; }
+
 	// 攻撃がヒット
 	void SetHit(bool HitAttack) { m_HitAttack = HitAttack; }
 	bool GetHit() { return m_HitAttack; }
@@ -89,6 +92,8 @@ protected:
 
 	// エネミーの画像ハンドル
 	int m_handle;
+	// ショットの画像ハンドル
+	int m_Shothandle;
 
 	float m_Gravity;
 

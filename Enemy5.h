@@ -14,6 +14,9 @@ public:
 
 private:
 	int m_Frame;
+
+	// フレームごとにグラフを切り替える
+	int m_GraphFrame;
 	
 	// ショットを打つまでのフレーム
 	int m_ShotFrame;

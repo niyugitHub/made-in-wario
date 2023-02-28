@@ -15,6 +15,7 @@ namespace
 
 	// ‰æ‘œ‚Ì’ZŒa•”•ª•\Ž¦
 	constexpr int kRectGraphY = 128;
+	constexpr int kRectGraphX = 64;
 }
 
 Enemy1::Enemy1() : 
@@ -23,6 +24,7 @@ Enemy1::Enemy1() :
 	m_GraphX = 0;
 	m_GraphY = 64;
 	m_Hp = 30;
+	m_GraphSize = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy1::UpdatePatrol;
 }
 
@@ -80,14 +82,14 @@ void Enemy1::draw(Vec2 offset)
 		if (m_LookEnemy == 1)
 		{
 			DrawRectGraph(m_Pos.x + offset.x - kGraphSizeX, m_Pos.y,
-				(m_GraphX * 3) * kGraphSizeX, kRectGraphY, 128, 64,
+				(m_GraphX * 3) * kGraphSizeX, kRectGraphY, kGraphSizeX * 3, 64,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
 			DrawRectGraph(m_Pos.x + offset.x - kGraphSizeX, m_Pos.y,
-				(m_GraphX * 3) * kGraphSizeX, kRectGraphY, 128, 64,
+				(m_GraphX * 3) * kGraphSizeX, kRectGraphY, kGraphSizeX * 3, 64,
 				m_handle, true, false);
 		}
 	}

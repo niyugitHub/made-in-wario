@@ -17,7 +17,7 @@ namespace
 	constexpr float kMoveFly = 0.05f;
 
 	// ‰æ‘œ‚ÌƒTƒCƒY
-	constexpr float kGraphSizeX = 64.0f;
+	constexpr float kGraphSizeX = 71.2f;
 	constexpr float kGraphSizeY = 64.0f;
 
 	// ‰æ‘œ‚Ì’ZŒa•”•ª•\Ž¦
@@ -33,6 +33,7 @@ Enemy2::Enemy2() :
 	m_GraphX = 0;
 	m_GraphY = 0;
 	m_Hp = 50;
+	m_GraphSize = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy2::UpdatePatrol;
 }
 
@@ -92,14 +93,14 @@ void Enemy2::draw(Vec2 offset)
 		if (m_LookEnemy == 1)
 		{
 			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
-				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, 64, 64,
+				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, kGraphSizeX + 10 , kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
 			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
-				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, 64, 64,
+				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, kGraphSizeX + 10, kGraphSizeY,
 				m_handle, true, false);
 		}
 	}

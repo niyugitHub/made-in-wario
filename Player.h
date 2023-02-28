@@ -170,6 +170,8 @@ private:
 	// グラフの挿入
 	int m_handle[kCharaChipNum];
 	int m_Hphandle;
+	int m_Gaugehandle;
+	int m_Gauge1handle;
 
 	// キャラクターのグラフの種類を決める
 	int m_CharaGraphX;
