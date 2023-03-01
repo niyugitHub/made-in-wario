@@ -246,7 +246,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 {
 	if (StageNum == 1)
 	{
-		Create(kNormal, { 1500,800 });
+		Create(kFlyShot, { 1500,800 });
 	//	Create(kFly, { 1000,800 });
 		/*Create(kThrow, { 2000,800 });
 		Create(kJump, { 1900,600 });

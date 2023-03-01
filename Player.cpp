@@ -255,8 +255,16 @@ void Player::draw(Vec2 offset)
 			DrawRectGraph(i * kHpSize + 240, 0, 0, 0, kHpSize, kHpSize, m_Hphandle, true);
 		}
 	}
-	DrawGraph(120, 0, m_Gauge1handle, true);
-	DrawRectGraph(120,0,0, 0, 117, 117 - (m_Gauge * 1.3) - m_MinusGauge, m_Gaugehandle, true);
+
+	DrawRectGraph(120, -(90 * 1.3) + 117, 0,
+		-(90 * 1.3) + 117, 117, m_Gaugehandle,
+		m_Gaugehandle, true);
+
+	DrawRectGraph(120, -(m_Gauge * 1.3) + 117 - m_MinusGauge, 0,
+		-(m_Gauge * 1.3) + 117 - m_MinusGauge, 117, m_Gaugehandle,
+		m_Gauge1handle, true);
+	/*DrawGraph(120, 0, m_Gauge1handle, true);
+	DrawRectGraph(120,0,0, 0, 117, 117 - (m_Gauge * 1.3) - m_MinusGauge, m_Gaugehandle, true);*/
 
 	if (m_MaxGauge > 90)
 	{
@@ -632,7 +640,7 @@ void Player::IsActiveGauge()
 		}
 	}
 	else if(m_PushFrame > 0 && m_PushFrame < 30 && !m_Attack
-		&& m_Gauge >= 30 && m_ShotIntervalFrame <= 0 && m_PossibleShot)
+		&& m_Gauge >= 10 && m_ShotIntervalFrame <= 0 && m_PossibleShot)
 	{
 		if (m_Shot == nullptr)
 		{
@@ -647,8 +655,8 @@ void Player::IsActiveGauge()
 				m_Particle->SetPos({ m_pos.x + kSideSize, m_pos.y + (kColumnSize / 2 + 10) });
 			}
 			m_InitAttack = false;
-			m_Gauge -= 30;
-			m_MinusGauge += 30;
+			m_Gauge -= 10;
+			m_MinusGauge += 10;
 		}
 		else if(m_Shot != nullptr)
 		{
