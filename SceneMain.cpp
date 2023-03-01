@@ -43,6 +43,13 @@ SceneMain::SceneMain() :
 	m_Exist(true),
 	m_Coll(nullptr)
 {
+
+	int sw, sh, bit;
+	GetScreenState(&sw, &sh, &bit);
+	m_tempScreenH = MakeScreen(sw,sh);
+
+	assert(m_tempScreenH >= 0);
+
 	for (auto& handle : m_hPlayerGraphic)
 	{
 		handle = -1;
@@ -114,6 +121,7 @@ SceneMain::~SceneMain()
 
 	delete m_Coll;
 	m_Coll = nullptr;*/
+	DeleteGraph(m_tempScreenH);
 }
 
 void SceneMain::init()
@@ -297,10 +305,13 @@ SceneBase* SceneMain::update()
 
 void SceneMain::draw()
 {
+	// 加工用スクリーンハンドルをセット
+	SetDrawScreen(m_tempScreenH);
+	ClearDrawScreen();
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
-	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xff00ff, true);
+//	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xff00ff, true);
 	m_Map->draw(m_offset);
 	m_EnemyFactory->Draw(m_offset);
 	m_player->draw(m_offset);
@@ -348,6 +359,9 @@ void SceneMain::draw()
 		}*/
 #endif
 
+	SetDrawScreen(DX_SCREEN_BACK);
+	DrawGraph(m_QuakeX, 0, m_tempScreenH, false);
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	/*for (auto& pItem : m_Item)
@@ -380,6 +394,9 @@ void SceneMain::draw()
 	}*/
 
 	//DrawFormatString(0, 0, GetColor(255, 255, 255), "敵の数:%d", m_EnemyFactory->);
+
+	//SetDrawScreen(DX_SCREEN_BACK);
+	//DrawGraph(m_QuakeX, 0, m_tempScreenH, false);
 }
 
 void SceneMain::IsItemPosition(int StageNum)
@@ -399,6 +416,24 @@ void SceneMain::FadeinUpdate()
 
 void SceneMain::NormalUpdate()
 {
+	if (m_player->GetDamage())
+	{
+		m_QuakeFrame = 30;
+		m_QuakeX = 20;
+		m_player->SetDamage(false);
+	}
+
+	if (m_QuakeFrame > 0)
+	{
+		m_QuakeX = -m_QuakeX;
+		m_QuakeX *= 0.95;
+		m_QuakeFrame--;
+
+		if (m_QuakeFrame == 0)
+		{
+			m_QuakeX = 0;
+		}
+	}
 	if (m_player->GetStageClaer())
 	{
 		m_player->SetStageClaer(false);

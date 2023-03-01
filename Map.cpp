@@ -12,6 +12,15 @@ namespace
 	const char* const kFileName = "data/Assets(64Å~64).png";
 	const char* const kFileGimmickName = "data/gimmick.png";
 
+	const char* const kFileBackGroundName[5] =
+	{
+		"data/background1.png",
+		"data/background2.png",
+		"data/background3.png",
+		"data/background4.png",
+		"data/background5.png",
+	};
+
 	// É`ÉbÉvÇÃêî
 	static constexpr int kBgNumY = 17;
 	static constexpr int kBgNumX = 150;
@@ -151,6 +160,7 @@ Map::Map() :
 	m_CollLeft(false),
 	m_CollRight(false),
 	m_PlayerPos(0,0),
+	m_BackGroundPos(0,0),
 	m_handle(-1),
 	m_StageNum(1),
 	m_graphWidth(0),
@@ -258,6 +268,10 @@ void Map::load()
 	m_handle = LoadGraph(kFileName);
 	GetGraphSize(m_handle, &m_graphWidth, &m_graphHeight);
 	m_GimmickHandle = LoadGraph(kFileGimmickName);
+	for (int i = 0; i < 5; i++)
+	{
+		m_BackGroundHandle[i] = LoadGraph(kFileBackGroundName[i]);
+	}
 }
 
 void Map::unload()
@@ -277,6 +291,13 @@ void Map::update()
 
 void Map::draw(Vec2 offset)
 {
+	int offsetX = static_cast<int>(offset.x) % Game::kScreenWidth;
+
+	float BackGraoundPos = m_BackGroundPos.x + offsetX;
+
+	DrawGraph(BackGraoundPos, 0, m_BackGroundHandle[m_StageNum - 1], true);
+	DrawGraph(BackGraoundPos + Game::kScreenWidth, 0, m_BackGroundHandle[m_StageNum - 1], true);
+
 	drawMap(offset);
 
 	for (auto& Gimmick : m_Gimmick)

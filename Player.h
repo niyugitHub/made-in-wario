@@ -48,6 +48,10 @@ public:
 	void SetExist(bool Exist) { m_Exist = Exist; }
 	bool GetExist() { return m_Exist; }
 
+	// ダメージを受けたフラグをセット
+	void SetDamage(bool Damage) { m_Damage = Damage; }
+	bool GetDamage() { return m_Damage; }
+
 	Vec2 GetPos() const { return m_pos; }
 
 	Vec2 GetNextPos()const { return m_NextPos; }
@@ -245,12 +249,18 @@ private:
 	//Maxゲージ
 	int m_MaxGauge;
 
+	// ゲージの減少(見た目をよくするための変数)
+	int m_MinusGauge = 0;
+
 	// ショットを打てるかどうか
 	bool m_PossibleShot;
 	// ショット間隔
 	int m_ShotIntervalFrame;
 	// ショットを打ったかどうか
 //	bool m_Shot;
+
+	// ダメージを食らったフラグ
+	bool m_Damage = false;
 
 	// ステージをクリアしたとき
 	bool m_StageClear;

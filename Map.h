@@ -94,10 +94,15 @@ class Map
 		// プレイヤーの座標取得
 		Vec2 m_PlayerPos;
 
+		// 背景の座標取得
+		Vec2 m_BackGroundPos;
+
 		// グラフィックデータのハンドル
 		int m_handle;
 		// ギミックのハンドル
 		int m_GimmickHandle;
+		// 背景のハンドル
+		int m_BackGroundHandle[5];
 
 		// グラフィックデータの配列
 		int m_MapData[kBgNumY][kBgNumX];

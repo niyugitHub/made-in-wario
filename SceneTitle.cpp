@@ -8,8 +8,9 @@ namespace
 {
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
-	const char* const kBackgroundGraphic1Filename = "data/Background_01.png";
-	const char* const kBackgroundGraphic2Filename = "data/Background_02.png";
+	const char* const kTitleFilename = "data/title.png";
+	const char* const kTitleStringFilename = "data/titleString.png";
+	const char* const kOptionFilename = "data/Option.png";
 }
 
 void SceneTitle::init()
@@ -22,6 +23,7 @@ void SceneTitle::init()
 	m_Color = 0;
 
 	m_func = &SceneTitle::FadeinUpdate;
+	m_Drawfunc = &SceneTitle::NormalDraw;
 
 	LoadDivGraph(kPlayerGraphicFilename, Player::kCharaChipNum,
 		Player::kSideCharaChipNum, Player::kColumnCharaChipNum,
@@ -33,8 +35,9 @@ void SceneTitle::init()
 		m_player->setHandle(i, m_hPlayerGraphic[i]);
 	}
 
-	m_BackgroundHandle1 = LoadGraph(kBackgroundGraphic1Filename);
-	m_BackgroundHandle2 = LoadGraph(kBackgroundGraphic2Filename);
+	m_TitleHandle = LoadGraph(kTitleFilename);
+	m_TitleStringHandle = LoadGraph(kTitleStringFilename);
+	m_OptionHandle = LoadGraph(kOptionFilename);
 
 	m_player->Init();
 	m_player->SetPos(m_Pos);
@@ -42,17 +45,40 @@ void SceneTitle::init()
 
 SceneBase* SceneTitle::update()
 {
-	/*if (CheckHitKey(KEY_INPUT_SPACE))
+	if (Pad::isTrigger(PAD_INPUT_DOWN))
 	{
-		return (new SceneMain);
-	}*/
+		m_SceneNum++;
+		if (m_SceneNum > 1)
+		{
+			m_SceneNum = 0;
+		}
+	}
 
-	m_BackgroundPosX += 3;
-
-	// 画像のサイズより大きくなったら
-	if (m_BackgroundPosX > 1969)
+	if (Pad::isTrigger(PAD_INPUT_UP))
 	{
-		m_BackgroundPosX = 0;
+		m_SceneNum--;
+		if (m_SceneNum < 0)
+		{
+			m_SceneNum = 1;
+		}
+	}
+
+	if (m_SceneNum == 0)
+	{
+		m_Cursor -= 10;
+		if (m_Cursor <= 0)
+		{
+			m_Cursor = 0;
+		}
+	}
+
+	if (m_SceneNum == 1)
+	{
+		m_Cursor += 10;
+		if (m_Cursor >= 100)
+		{
+			m_Cursor = 100;
+		}
 	}
 
 	(this->*m_func)();
@@ -68,18 +94,25 @@ SceneBase* SceneTitle::update()
 
 void SceneTitle::draw()
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
-	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle2, true);
-	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle1, true);
-	DrawGraph(m_BackgroundPosX - 1969, 0, m_BackgroundHandle2, true);
-	DrawGraph(m_BackgroundPosX - 1969, 0, m_BackgroundHandle1, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawGraph(0, 0, m_TitleHandle, true);
+	(this->*m_Drawfunc)();
 
-	SetFontSize(50);
-	DrawString(150, 200, "個人製作", GetColor(m_Color, m_Color, 0));
-	DrawString(150, 450, "Bを押してスタート", GetColor(m_Color, m_Color, 0));
-
-//	m_player->draw();
+	DrawString(800, 700 + m_Cursor, "→",GetColor(255,255,255), true);
+	
+//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+//	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle2, true);
+//	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle1, true);
+//	DrawGraph(m_BackgroundPosX - 1969, 0, m_BackgroundHandle2, true);
+//	DrawGraph(m_BackgroundPosX - 1969, 0, m_BackgroundHandle1, true);
+//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+//
+//	SetFontSize(50);
+//	DrawString(150, 200, "個人製作", GetColor(m_Color, m_Color, 0));
+//	DrawString(150, 450, "Bを押してスタート", GetColor(m_Color, m_Color, 0));
+//
+//	DrawFormatString(600, 450,GetColor(0, 0, 0), "%d",m_SceneNum);
+//
+////	m_player->draw();
 }
 
 void SceneTitle::FadeinUpdate()
@@ -94,15 +127,47 @@ void SceneTitle::FadeinUpdate()
 
 void SceneTitle::TitleSceneUpdate()
 {
-	if (Pad::isTrigger(PAD_INPUT_2))
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
 	{
 		m_IsTitleEnd = true;
 		m_player->SetTitle(this);
 		m_func = &SceneTitle::FadeoutUpdate;
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
+	{
+		m_func = &SceneTitle::OptionUpdate;
+		m_Drawfunc = &SceneTitle::OptionDraw;
 	}
 }
 
 void SceneTitle::FadeoutUpdate()
 {
 	m_Color -= 9;
+}
+
+void SceneTitle::OptionUpdate()
+{
+	if (Pad::isTrigger(PAD_INPUT_1))
+	{
+		m_func = &SceneTitle::FadeinUpdate;
+		m_Drawfunc = &SceneTitle::NormalDraw;
+	}
+}
+
+void SceneTitle::NormalDraw()
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	DrawGraph(0, 0, m_TitleStringHandle, true);
+
+	DrawFormatString(600, 450, GetColor(0, 0, 0), "%d", m_SceneNum);
+
+	//	m_player->draw();
+}
+
+void SceneTitle::OptionDraw()
+{
+	DrawGraph(0, 0, m_OptionHandle, true);
 }

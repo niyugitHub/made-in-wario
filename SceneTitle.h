@@ -31,9 +31,6 @@ public:
 			m_hPlayerGraphic[i] = -1;
 		}
 
-		m_BackgroundHandle1 = -1;
-		m_BackgroundHandle2 = -1;
-
 		m_player = new Player;
 
 	}
@@ -54,6 +51,11 @@ private:
 	void FadeinUpdate();
 	void TitleSceneUpdate();
 	void FadeoutUpdate();
+	void OptionUpdate();
+
+
+	void NormalDraw();
+	void OptionDraw();
 
 private:
 	// プレイヤーの位置
@@ -63,6 +65,9 @@ private:
 	int m_BackgroundPosX;
 	// テキストのサイズ
 	int m_textSize;
+
+	// 何のシーンを選んだか
+	int m_SceneNum = 0;
 
 	// 色の濃さ
 	int m_Color;
@@ -74,13 +79,21 @@ private:
 	// update処理メンバ関数ポインタ
 	void(SceneTitle::* m_func)();
 
+	// Draw処理メンバ関数ポインタ
+	void(SceneTitle::* m_Drawfunc)();
+
 	// プレイヤーのグラフィックハンドル
 	int m_hPlayerGraphic[Player::kCharaChipNum];
 
 	// 背景のハンドル
-	int m_BackgroundHandle1;
-	int m_BackgroundHandle2;
+	int m_TitleHandle = -1;
+	// 背景の文字ハンドル
+	int m_TitleStringHandle = -1;
 
+	// オプションのハンドル
+	int m_OptionHandle = -1;
+
+	int m_Cursor = 0;
 
 	Player* m_player;
 };

@@ -78,6 +78,11 @@ private:
 	// プレイヤーの存在確認
 	bool m_Exist;
 
+	int m_tempScreenH;
+
+	int m_QuakeFrame = 0;
+	float m_QuakeX = 0.0f;
+
 	// アイテムの存在確認
 	bool m_ItemExist[kItemNum];
 

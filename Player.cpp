@@ -249,14 +249,30 @@ void Player::draw(Vec2 offset)
 
 	for (int i = 0; i < m_MaxHp; i++)
 	{
-		DrawRectGraph(i * kHpSize + 120, 0, kHpSize, 0, kHpSize, kHpSize,m_Hphandle, true);
+		DrawRectGraph(i * kHpSize + 240, 0, kHpSize, 0, kHpSize, kHpSize,m_Hphandle, true);
 		if (m_Hp > i)
 		{
-			DrawRectGraph(i * kHpSize + 120, 0, 0, 0, kHpSize, kHpSize, m_Hphandle, true);
+			DrawRectGraph(i * kHpSize + 240, 0, 0, 0, kHpSize, kHpSize, m_Hphandle, true);
 		}
 	}
-	DrawGraph(0, 0, m_Gauge1handle, true);
-	DrawRectGraph(0,0,0, 0, 117, 117 - (m_Gauge * 1.3), m_Gaugehandle, true);
+	DrawGraph(120, 0, m_Gauge1handle, true);
+	DrawRectGraph(120,0,0, 0, 117, 117 - (m_Gauge * 1.3) - m_MinusGauge, m_Gaugehandle, true);
+
+	if (m_MaxGauge > 90)
+	{
+		DrawRectGraph(0,-((m_MaxGauge - 90) * 1.3) + 117, 0,
+			-((m_MaxGauge - 90) * 1.3) + 117, 117, m_Gaugehandle,
+			m_Gaugehandle, true);
+
+		DrawRectGraph(0, -((m_Gauge - 90) * 1.3) + 117 - m_MinusGauge, 0,
+			-((m_Gauge - 90) * 1.3) + 117 - m_MinusGauge,117, m_Gaugehandle,
+			m_Gauge1handle, true);
+	}
+
+	if (m_MinusGauge > 0)
+	{
+		m_MinusGauge--;
+	}
 
 	if (m_NoDamageFrame > 0)
 	{
@@ -540,6 +556,7 @@ void Player::Ondamage()
 	m_NoDamageFrame = 100;
 	m_Particle->SetPos(m_pos);
 	m_Particle->SetdamagePlayerParticle();
+	m_Damage = true;
 }
 
 void Player::IsKnockBack(Vec2 EnemyPos)
@@ -611,6 +628,7 @@ void Player::IsActiveGauge()
 			}
 			m_PushFrame = 30;
 			m_Gauge -= 30;
+			m_MinusGauge += 30;
 		}
 	}
 	else if(m_PushFrame > 0 && m_PushFrame < 30 && !m_Attack
@@ -629,6 +647,8 @@ void Player::IsActiveGauge()
 				m_Particle->SetPos({ m_pos.x + kSideSize, m_pos.y + (kColumnSize / 2 + 10) });
 			}
 			m_InitAttack = false;
+			m_Gauge -= 30;
+			m_MinusGauge += 30;
 		}
 		else if(m_Shot != nullptr)
 		{
