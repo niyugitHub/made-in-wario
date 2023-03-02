@@ -354,8 +354,8 @@ void Map::drawMap(Vec2 offset)
 			int ChipNumY = m_MapData[y][x] / kChipDivisionY;
 			int ChipNumX = m_MapData[y][x] % kChipDivisionY;
 
-			DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y,
-				kChipSize * ChipNumX, kChipSize * ChipNumY,
+			DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y/* + offset.y*/,
+				kChipSize * ChipNumX, kChipSize * ChipNumY/* + offset.y*/,
 				kChipSize, kChipSize, m_handle, true);
 		}
 	}

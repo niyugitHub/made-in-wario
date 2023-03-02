@@ -69,13 +69,14 @@ SceneBase* SceneTitle::update()
 		}
 	}
 
-	(this->*m_func)();
-//	m_player->update();
-
 	if (m_Color <= 0 && m_EndScene)
 	{
 		return (new SceneMain);
 	}
+
+	(this->*m_func)();
+//	m_player->update();
+
 
 	return this;
 }
@@ -83,7 +84,6 @@ SceneBase* SceneTitle::update()
 void SceneTitle::draw()
 {
 	(this->*m_Drawfunc)();
-	m_Particle->TitleDraw();
 	
 //	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 //	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle2, true);
@@ -158,6 +158,7 @@ void SceneTitle::TitleSceneUpdate()
 		m_player->SetTitle(this);
 		m_EndScene = true;
 		m_func = &SceneTitle::FadeoutUpdate;
+		m_Drawfunc = &SceneTitle::EndDraw;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
@@ -170,7 +171,7 @@ void SceneTitle::FadeoutUpdate()
 {
 	m_Color -= 9;
 
-	if (m_Color <= 0)
+	if (m_Color <= 0 && !m_EndScene)
 	{
 		m_func = &SceneTitle::FadeinUpdate;
 	}
@@ -190,6 +191,7 @@ void SceneTitle::FirstDraw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_TitleHandle, true);
 	DrawGraph(0, 0, m_TitleStringHandle, true);
+	m_Particle->TitleDraw();
 	DrawFormatString(600, 450, GetColor(0, 0, 0), "%d", m_SceneNum);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -198,6 +200,7 @@ void SceneTitle::FirstDraw()
 void SceneTitle::NormalDraw()
 {
 	DrawGraph(0, 0, m_TitleHandle, true);
+	m_Particle->TitleDraw();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_TitleStringHandle, true);
@@ -212,6 +215,7 @@ void SceneTitle::NormalDraw()
 void SceneTitle::OptionDraw()
 {
 	DrawGraph(0, 0, m_TitleHandle, true);
+	m_Particle->TitleDraw();
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_OptionHandle, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -221,5 +225,7 @@ void SceneTitle::EndDraw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_TitleHandle, true);
+	DrawGraph(0, 0, m_TitleStringHandle, true);
+	m_Particle->TitleDraw();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

@@ -48,6 +48,6 @@ void MapGimmick::Update(Vec2 PlayerPos)
 
 void MapGimmick::Draw(Vec2 offset)
 {
-	DrawGraph(m_Pos.x + offset.x, m_Pos.y,
+	DrawGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 		m_handle, true);
 }

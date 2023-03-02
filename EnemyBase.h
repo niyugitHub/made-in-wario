@@ -42,6 +42,7 @@ public:
 	virtual void end();
 
 	// “GÀ•Wæ“¾
+	virtual void SetNextPos(Vec2 Pos) { m_NextPos = Pos; }
 	virtual Vec2 GetPos() { return m_NextPos; }
 
 	// “G‚ª“Š‚°‚½•¨‚ÌÀ•Wæ“¾

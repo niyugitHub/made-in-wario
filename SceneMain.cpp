@@ -19,6 +19,9 @@ namespace
 
 	// プレイヤーの中心を少し左に寄せる
 	constexpr float kPlayerPosCenter = 150.0f;
+
+	// フェードのスピード
+	constexpr int kFadeSpeed = 12;
 }
 
 SceneMain::SceneMain() :
@@ -406,7 +409,7 @@ void SceneMain::IsItemPosition(int StageNum)
 
 void SceneMain::FadeinUpdate()
 {
-	m_Color += 8;
+	m_Color += kFadeSpeed;
 	if (m_Color >= 255)
 	{
 		m_Color = 255;

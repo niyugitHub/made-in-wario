@@ -49,12 +49,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		SetMouseDispFlag(1);
 
+		auto fps = GetFPS();// Frame Per Second
+
 		scene.update();
 		scene.draw();
 
 		/*player.update();
 		player.draw();*/
 
+		DrawFormatString(10, 10, 0xffffff,"FPS=%2.2f", fps);
 		// — ‰æ–Ê‚Æ•\‰æ–Ê‚ð“ü‚ê‘Ö‚¦‚é
 		ScreenFlip();
 
