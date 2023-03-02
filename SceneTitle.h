@@ -3,6 +3,9 @@
 #include "Vec2.h"
 #include "game.h"
 #include "Player.h"
+#include<memory>
+
+class Particle;
 
 class SceneTitle : public SceneBase
 {
@@ -48,14 +51,17 @@ public:
 	virtual bool isTitleEnd() { return m_IsTitleEnd; }
 
 private:
+	// Updateメンバ関数
 	void FadeinUpdate();
 	void TitleSceneUpdate();
 	void FadeoutUpdate();
 	void OptionUpdate();
 
-
+	// Drawメンバ関数
+	void FirstDraw();
 	void NormalDraw();
 	void OptionDraw();
+	void EndDraw();
 
 private:
 	// プレイヤーの位置
@@ -93,7 +99,12 @@ private:
 	// オプションのハンドル
 	int m_OptionHandle = -1;
 
+	// カーソルの位置
 	int m_Cursor = 0;
 
+	// Sceneの終了フラグ
+	int m_EndScene = false;
 	Player* m_player;
+
+	std::shared_ptr<Particle> m_Particle;
 };

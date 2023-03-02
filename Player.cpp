@@ -260,9 +260,21 @@ void Player::draw(Vec2 offset)
 		-(90 * 1.3) + 117, 117, m_Gaugehandle,
 		m_Gaugehandle, true);
 
-	DrawRectGraph(120, -(m_Gauge * 1.3) + 117 - m_MinusGauge, 0,
-		-(m_Gauge * 1.3) + 117 - m_MinusGauge, 117, m_Gaugehandle,
-		m_Gauge1handle, true);
+	if (m_Gauge >= 30)
+	{
+		DrawRectGraph(120, -(m_Gauge * 1.3) + 117 - m_MinusGauge, 0,
+			-(m_Gauge * 1.3) + 117 - m_MinusGauge, 117, m_Gaugehandle,
+			m_Gauge1handle, true);
+	}
+
+	else if (m_Gauge < 30)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+		DrawRectGraph(120, -(m_Gauge * 1.3) + 117 - m_MinusGauge, 0,
+			-(m_Gauge * 1.3) + 117 - m_MinusGauge, 117, m_Gaugehandle,
+			m_Gauge1handle, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 	/*DrawGraph(120, 0, m_Gauge1handle, true);
 	DrawRectGraph(120,0,0, 0, 117, 117 - (m_Gauge * 1.3) - m_MinusGauge, m_Gaugehandle, true);*/
 

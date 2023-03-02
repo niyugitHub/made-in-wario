@@ -1,5 +1,6 @@
 #include "Particle.h"
 #include "Player.h"
+#include"game.h"
 #include <Dxlib.h>
 
 namespace
@@ -64,6 +65,39 @@ void Particle::SetEnemyPos(Vec2 EnemyPos)
 
 void Particle::Init()
 {
+}
+
+void Particle::SetTitleParticle()
+{
+	if (m_Frame % 10 == 0)
+	{
+		for (int i = 0; i < kMaxParticle; i++)
+		{
+			if (!data[i].m_Exist)
+			{
+				data[i].m_Pos.x = GetRand(Game::kScreenWidth);
+				data[i].m_Pos.y = Game::kScreenHeight;
+
+				data[i].m_RColor = 255;
+				data[i].m_GColor = 255;
+				data[i].m_BColor = 200;
+				data[i].m_Transparency = 5000;
+				data[i].m_Exist = true;
+
+				float vecX =  -0.5 + GetRand(1.0f);
+				float vecY = -5 - GetRand(5.0f);
+				m_Gravity = 0.0f;
+
+				data[i].m_Vec = { vecX,vecY };
+
+				float RandParticleSize = GetRand(10) + 5;
+
+				data[i].m_ParticleSize = { RandParticleSize,RandParticleSize };
+
+				return;
+			}
+		}
+	}
 }
 
 void Particle::SetPlayerParticle()
@@ -215,8 +249,34 @@ void Particle::Update()
 			{
 				data[i].m_Exist = false;
 			}
+			if (OffScreen(i))
+			{
+				data[i].m_Exist = false;
+			}
 		}
 	}
+}
+
+bool Particle::OffScreen(int i)
+{
+	if (data[i].m_Pos.x < 0)
+	{
+		return true;
+	}
+	if (data[i].m_Pos.x > Game::kScreenWidth)
+	{
+		return true;
+	}
+	if (data[i].m_Pos.y < 0)
+	{
+		return true;
+	}
+	if (data[i].m_Pos.y > Game::kScreenHeight)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Particle::Draw(Vec2 offset)
@@ -232,6 +292,21 @@ void Particle::Draw(Vec2 offset)
 					data[i].m_GColor,
 					data[i].m_BColor), true);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+	}
+}
+
+void Particle::TitleDraw()
+{
+	for (int i = 0; i < kMaxParticle; i++)
+	{
+		if (data[i].m_Exist)
+		{
+			DrawOval(data[i].m_Pos.x, data[i].m_Pos.y,
+				data[i].m_ParticleSize.x, data[i].m_ParticleSize.y,
+				GetColor(data[i].m_RColor,
+					data[i].m_GColor,
+					data[i].m_BColor), true);
 		}
 	}
 }

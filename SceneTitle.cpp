@@ -3,6 +3,8 @@
 #include "SceneMain.h"
 #include"game.h"
 #include"Pad.h"
+#include"Particle.h"
+#include"cassert"
 
 namespace
 {
@@ -23,7 +25,7 @@ void SceneTitle::init()
 	m_Color = 0;
 
 	m_func = &SceneTitle::FadeinUpdate;
-	m_Drawfunc = &SceneTitle::NormalDraw;
+	m_Drawfunc = &SceneTitle::FirstDraw;
 
 	LoadDivGraph(kPlayerGraphicFilename, Player::kCharaChipNum,
 		Player::kSideCharaChipNum, Player::kColumnCharaChipNum,
@@ -41,28 +43,14 @@ void SceneTitle::init()
 
 	m_player->Init();
 	m_player->SetPos(m_Pos);
+
+	m_Particle = std::make_shared<Particle>();
 }
 
 SceneBase* SceneTitle::update()
 {
-	if (Pad::isTrigger(PAD_INPUT_DOWN))
-	{
-		m_SceneNum++;
-		if (m_SceneNum > 1)
-		{
-			m_SceneNum = 0;
-		}
-	}
-
-	if (Pad::isTrigger(PAD_INPUT_UP))
-	{
-		m_SceneNum--;
-		if (m_SceneNum < 0)
-		{
-			m_SceneNum = 1;
-		}
-	}
-
+	m_Particle->SetTitleParticle();
+	m_Particle->Update();
 	if (m_SceneNum == 0)
 	{
 		m_Cursor -= 10;
@@ -84,7 +72,7 @@ SceneBase* SceneTitle::update()
 	(this->*m_func)();
 //	m_player->update();
 
-	if (m_Color <= 0)
+	if (m_Color <= 0 && m_EndScene)
 	{
 		return (new SceneMain);
 	}
@@ -94,10 +82,8 @@ SceneBase* SceneTitle::update()
 
 void SceneTitle::draw()
 {
-	DrawGraph(0, 0, m_TitleHandle, true);
 	(this->*m_Drawfunc)();
-
-	DrawString(800, 700 + m_Cursor, "¨",GetColor(255,255,255), true);
+	m_Particle->TitleDraw();
 	
 //	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 //	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle2, true);
@@ -117,57 +103,123 @@ void SceneTitle::draw()
 
 void SceneTitle::FadeinUpdate()
 {
+	if (m_Color <= 0)
+	{
+		if (m_SceneNum == 0)
+		{
+			m_Drawfunc = &SceneTitle::NormalDraw;
+		}
+
+		if (m_SceneNum == 1)
+		{
+			m_Drawfunc = &SceneTitle::OptionDraw;
+		}
+	}
 	m_Color += 8;
 	if (m_Color >= 255)
 	{
 		m_Color = 255;
+	}
+
+	if (m_Color == 255 && m_SceneNum == 0)
+	{
 		m_func = &SceneTitle::TitleSceneUpdate;
+	}
+
+	if (m_Color == 255 && m_SceneNum == 1)
+	{
+		m_func = &SceneTitle::OptionUpdate;
 	}
 }
 
 void SceneTitle::TitleSceneUpdate()
 {
+	if (Pad::isTrigger(PAD_INPUT_DOWN))
+	{
+		m_SceneNum++;
+		if (m_SceneNum > 1)
+		{
+			m_SceneNum = 0;
+		}
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_UP))
+	{
+		m_SceneNum--;
+		if (m_SceneNum < 0)
+		{
+			m_SceneNum = 1;
+		}
+	}
+
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
 	{
 		m_IsTitleEnd = true;
 		m_player->SetTitle(this);
+		m_EndScene = true;
 		m_func = &SceneTitle::FadeoutUpdate;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
 	{
-		m_func = &SceneTitle::OptionUpdate;
-		m_Drawfunc = &SceneTitle::OptionDraw;
+		m_func = &SceneTitle::FadeoutUpdate;
 	}
 }
 
 void SceneTitle::FadeoutUpdate()
 {
 	m_Color -= 9;
+
+	if (m_Color <= 0)
+	{
+		m_func = &SceneTitle::FadeinUpdate;
+	}
 }
 
 void SceneTitle::OptionUpdate()
 {
 	if (Pad::isTrigger(PAD_INPUT_1))
 	{
-		m_func = &SceneTitle::FadeinUpdate;
-		m_Drawfunc = &SceneTitle::NormalDraw;
+		m_func = &SceneTitle::FadeoutUpdate;
+		m_SceneNum = 0;
 	}
+}
+
+void SceneTitle::FirstDraw()
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+	DrawGraph(0, 0, m_TitleHandle, true);
+	DrawGraph(0, 0, m_TitleStringHandle, true);
+	DrawFormatString(600, 450, GetColor(0, 0, 0), "%d", m_SceneNum);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 }
 
 void SceneTitle::NormalDraw()
 {
+	DrawGraph(0, 0, m_TitleHandle, true);
+
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+	DrawGraph(0, 0, m_TitleStringHandle, true);
+	DrawFormatString(600, 450, GetColor(0, 0, 0), "%d", m_SceneNum);
+	DrawString(800, 700 + m_Cursor, "¨", GetColor(255, 255, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawGraph(0, 0, m_TitleStringHandle, true);
-
-	DrawFormatString(600, 450, GetColor(0, 0, 0), "%d", m_SceneNum);
 
 	//	m_player->draw();
 }
 
 void SceneTitle::OptionDraw()
 {
+	DrawGraph(0, 0, m_TitleHandle, true);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_OptionHandle, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void SceneTitle::EndDraw()
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+	DrawGraph(0, 0, m_TitleHandle, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

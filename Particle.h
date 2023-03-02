@@ -17,6 +17,8 @@ public:
 
 	void Init();
 
+	// タイトルで出すパーティクル
+	void SetTitleParticle();
 	// プレイヤー回復時パーティクル
 	void SetPlayerParticle();
 	// プレイヤーがショットを打った時のパーティクル
@@ -28,7 +30,13 @@ public:
 
 	void Update();
 
+	// パーティクルが画面外に出たとき
+	bool OffScreen(int i);
+
+
 	void Draw(Vec2 offset);
+
+	void TitleDraw();
 
 private:
 	struct Data
