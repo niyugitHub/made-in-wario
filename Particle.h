@@ -31,7 +31,7 @@ public:
 	void Update();
 
 	// パーティクルが画面外に出たとき
-	bool OffScreen(int i);
+	bool OffScreen(int i, Vec2 offset);
 
 
 	void Draw(Vec2 offset);
@@ -64,5 +64,8 @@ private:
 
 	// 重力
 	float m_Gravity;
+
+	// スクロール距離
+	Vec2 m_offset = {0,0};
 };
 

@@ -291,7 +291,7 @@ void Map::update()
 
 void Map::draw(Vec2 offset)
 {
-	int offsetX = static_cast<int>(offset.x) % Game::kScreenWidth;
+	int offsetX = static_cast<int>(offset.x / 3) % Game::kScreenWidth;
 
 	float BackGraoundPos = m_BackGroundPos.x + offsetX;
 

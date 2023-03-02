@@ -156,7 +156,7 @@ void Particle::SetShotPlayerParticle()
 
 			m_Gravity = 0.3f;
 
-			data[i].m_ParticleSize = { 10,10 };
+			data[i].m_ParticleSize = { 5,5 };
 
 			if (count >= 50) return;
 		}
@@ -249,7 +249,7 @@ void Particle::Update()
 			{
 				data[i].m_Exist = false;
 			}
-			if (OffScreen(i))
+			if (OffScreen(i, m_offset))
 			{
 				data[i].m_Exist = false;
 			}
@@ -257,13 +257,13 @@ void Particle::Update()
 	}
 }
 
-bool Particle::OffScreen(int i)
+bool Particle::OffScreen(int i, Vec2 offset)
 {
-	if (data[i].m_Pos.x < 0)
+	if (data[i].m_Pos.x < 0 - offset.x)
 	{
 		return true;
 	}
-	if (data[i].m_Pos.x > Game::kScreenWidth)
+	if (data[i].m_Pos.x > Game::kScreenWidth - offset.x)
 	{
 		return true;
 	}
@@ -281,6 +281,7 @@ bool Particle::OffScreen(int i)
 
 void Particle::Draw(Vec2 offset)
 {
+	m_offset = offset;
 	for (int i = 0; i < kMaxParticle; i++)
 	{
 		if (data[i].m_Exist)
