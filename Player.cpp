@@ -72,7 +72,7 @@ m_CollRight(false),
 m_Attack(false),
 m_InitAttack(true),
 m_AttackPower(10),
-m_Hp(200),
+m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
@@ -651,6 +651,9 @@ void Player::IsActiveGauge()
 
 			m_Particle->SetPos(CenterPos);
 			m_Particle->SetPlayerParticle();
+
+			m_CharaGraphY = 0;
+			m_CharaMotion = 2;
 		}
 
 		/*if (m_HealFrame > 30)
