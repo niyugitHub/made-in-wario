@@ -23,7 +23,7 @@ Enemy1::Enemy1() :
 {
 	m_GraphX = 0;
 	m_GraphY = 64;
-	m_Hp = 30;
+	m_Hp = 100;
 	m_GraphSize = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy1::UpdatePatrol;
 }

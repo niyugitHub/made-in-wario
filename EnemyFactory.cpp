@@ -253,9 +253,9 @@ void EnemyFactory::StageEnemy(int StageNum)
 {
 	if (StageNum == 1)
 	{
-		Create(kBoss, { 2000,800 });
-		/*Create(kNormal, { 2000,800 });
-		Create(kFly, { 2000,800 });
+		Create(kNormal, { 2000,800 });
+		//Create(kBoss, { 2000,800 });
+		/*Create(kFly, { 2000,800 });
 		Create(kThrow, { 2000,800 });
 		Create(kJump, { 2000,800 });
 		Create(kFlyShot, { 2000,800 });*/

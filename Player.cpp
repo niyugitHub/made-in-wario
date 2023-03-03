@@ -52,7 +52,7 @@ m_NextPos(m_pos),
 m_vec(5, 0),
 m_ShotPos(0,0),
 m_StartMove(0),
-m_Jump(14.0f),
+m_Jump(0.0f),
 m_CharaGraphX(0),
 m_CharaGraphY(0),
 m_FrameChangeChara(0),
@@ -72,7 +72,7 @@ m_CollRight(false),
 m_Attack(false),
 m_InitAttack(true),
 m_AttackPower(10),
-m_Hp(3),
+m_Hp(200),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
@@ -161,20 +161,20 @@ void Player::update()
 			}
 		}
 
-
-		IsColl();
-
 		CharaMove();
+
+		InitColl();
 
 		LimitMove();
 
 	}
 
 	m_Particle->Update();
+	IsColl();
 
 	if (!m_Exist)
 	{
-		IsColl();
+		/*IsColl();*/
 		if (!m_CollBottom)
 		{
 			m_NextPos.y += m_Gravity;
@@ -201,17 +201,24 @@ void Player::update()
 		}
 	}
 
-	IsColl();
+	/*if (!m_CollRight && !m_CollLeft)
+	{
+		m_pos.x = m_NextPos.x;
+	}*/
 
-	if (!m_CollRight && !m_CollLeft)
+	if (!m_CollRight && m_pos.x < m_NextPos.x)
 	{
 		m_pos.x = m_NextPos.x;
 	}
+
+	if (!m_CollLeft && m_pos.x > m_NextPos.x)
+	{
+		m_pos.x = m_NextPos.x;
+	}
+
 	m_pos.y = m_NextPos.y;
 
 	m_Map->SetPlayerPos(m_pos);
-
-	InitColl();
 }
 
 void Player::draw(Vec2 offset)
@@ -328,7 +335,7 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		if(m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x += m_vec.x * 2;
+		if(m_KnockBack <= 0 && m_PushFrame <= 30 && !m_CollRight) m_NextPos.x += m_vec.x * 2;
 
 		//	if (m_CollRight) m_NextPos.x -= m_vec.x * 2;
 	}
@@ -339,7 +346,7 @@ void Player::CharaMove()
 		m_NowDash = true;
 		m_CharaGraphY = 3;
 		m_CharaMotion = 8;
-		if (m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x -= m_vec.x * 2;
+		if (m_KnockBack <= 0 && m_PushFrame <= 30 && !m_CollLeft) m_NextPos.x -= m_vec.x * 2;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_RIGHT))
@@ -348,7 +355,7 @@ void Player::CharaMove()
 		
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		if (m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x += m_vec.x;
+		if (m_KnockBack <= 0 && m_PushFrame <= 30 && !m_CollRight) m_NextPos.x += m_vec.x;
 	}
 
 	else if (Pad::isPress(PAD_INPUT_LEFT))
@@ -356,7 +363,7 @@ void Player::CharaMove()
 		if (!m_Attack) m_LookLeft = true;
 		m_CharaGraphY = 2;
 		m_CharaMotion = 4;
-		if (m_KnockBack <= 0 && m_PushFrame <= 30) m_NextPos.x -= m_vec.x;
+		if (m_KnockBack <= 0 && m_PushFrame <= 30 && !m_CollLeft) m_NextPos.x -= m_vec.x;
 	}
 
 	else
@@ -604,12 +611,22 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 	if (m_CollBottom)
 	{
 		//	m_NextPos += Vel;
-		m_pos.x += Vel.x;
+		m_NextPos.x += Vel.x;
 	}
 	else
 	{
 		//	m_NextPos += Vel;
-		m_pos += Vel;
+		m_pos.y += Vel.y;
+	}
+
+	if (!m_CollRight && Vel.x > 0)
+	{
+		m_pos.x = m_NextPos.x;
+	}
+
+	if (!m_CollLeft && Vel.x < 0)
+	{
+		m_pos.x = m_NextPos.x;
 	}
 }
 
@@ -698,76 +715,158 @@ void Player::IsGauge()
 	if(m_Gauge < m_MaxGauge) m_Gauge += 10;
 }
 
+//void Player::IsColl()
+//{
+//	float PlayerTop = m_NextPos.y;
+//	float PlayerBottom = m_NextPos.y + Player::kSideSize;
+//	float PlayerLeft = m_NextPos.x;
+//	float PlayerRight = m_NextPos.x + Player::kSideSize;
+//
+//	for (int i = 0; i < Map::kBgNumY; i++)
+//	{
+//		for (int j = 0; j < Map::kBgNumX; j++)
+//		{
+//			float MapPosX = j * Map::kChipSize;
+//			float MapPosY = i * Map::kChipSize;
+//			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
+//			{
+//				/*float MapPosX = j * Map::kChipSize;
+//				float MapPosY = i * Map::kChipSize;*/
+//
+//				if (m_NextPos.y + 10 < MapPosY + Map::kChipSize - 40 &&
+//					m_NextPos.y > MapPosY &&
+//					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
+//					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+//				{
+//					m_CollTop = true;
+//				}
+//				//上
+//				if (m_NextPos.y + 10 < MapPosY + Map::kChipSize &&
+//					m_NextPos.y > MapPosY &&
+//					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
+//					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+//				{
+//					m_CollTop = true;
+//				}
+//				//右
+//				if (m_NextPos.x + Player::kSideSize - 35 > MapPosX &&
+//					m_NextPos.x + 60 < MapPosX + Map::kChipSize &&
+//					m_NextPos.y + 25 < MapPosY + Map::kChipSize &&
+//					m_NextPos.y + (Map::kChipSize * 2) > MapPosY + 20)
+//				{
+//					m_CollRight = true;
+//				}
+//				//左
+//				if (m_NextPos.x + 35 < MapPosX + Map::kChipSize &&
+//					m_NextPos.x + Player::kSideSize - 60 > MapPosX &&
+//					m_NextPos.y + 25 < MapPosY + Map::kChipSize &&
+//					m_NextPos.y + (Map::kChipSize * 2) > MapPosY + 20)
+//				{
+//					m_CollLeft = true;
+//				}
+//				//下
+//				if (m_NextPos.y + (Player::kColumnSize) > MapPosY &&
+//					m_NextPos.y + 25 < MapPosY/* + Minigame1::kChipSize*/ &&
+//					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
+//					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+//				{
+//					m_NextPos.y = MapPosY - (Player::kColumnSize)+1;
+//					m_CollBottom = true;
+//				}
+//
+//				//ステージクリアの判定
+//			}
+//
+//			if (m_Map->GetMapData(i, j) > Map::kSideMapChipNum * 2 
+//				&& m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 7)
+//			{
+//
+//				if (PlayerTop > MapPosY + Map::kChipSize) continue;
+//				if (PlayerBottom < MapPosY) continue;
+//				if (PlayerLeft > MapPosX + +Map::kChipSize) continue;
+//				if (PlayerRight < MapPosX) continue;
+//
+//				if ((Pad::isTrigger(PAD_INPUT_UP)))
+//				{
+//					m_StageClear = true;
+//				}
+//			}
+//		}
+//	}
+//
+//}
+
 void Player::IsColl()
 {
 	float PlayerTop = m_NextPos.y;
 	float PlayerBottom = m_NextPos.y + Player::kSideSize;
-	float PlayerLeft = m_NextPos.x;
-	float PlayerRight = m_NextPos.x + Player::kSideSize;
+	float PlayerLeft = m_NextPos.x + 40;
+	float PlayerRight = m_NextPos.x + Player::kSideSize - 40;
+
+	// プレイヤーの中心座標: X軸
+	float PlayerCentor = m_NextPos.x + (Player::kSideSize / 2);
 
 	for (int i = 0; i < Map::kBgNumY; i++)
 	{
 		for (int j = 0; j < Map::kBgNumX; j++)
 		{
-			float MapPosX = j * Map::kChipSize;
-			float MapPosY = i * Map::kChipSize;
+			float MapTop = i * Map::kChipSize;
+			float MapBottom = i * Map::kChipSize + Map::kChipSize;
+			float MapRight = j * Map::kChipSize + Map::kChipSize;
+			float MapLeft = j * Map::kChipSize;
 			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
 			{
 				/*float MapPosX = j * Map::kChipSize;
 				float MapPosY = i * Map::kChipSize;*/
-
-				if (m_NextPos.y + 10 < MapPosY + Map::kChipSize - 40 &&
-					m_NextPos.y > MapPosY &&
-					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
-					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+				//下
+				if (PlayerBottom > MapTop &&
+					PlayerTop < MapTop && 
+					PlayerRight > MapLeft + 10 &&
+					PlayerLeft < MapRight - 10 &&
+					m_Jump <= 0)
 				{
-					m_CollTop = true;
+					m_NextPos.y = MapTop - Player::kColumnSize + 10;
+					PlayerBottom = m_NextPos.y + Player::kColumnSize;
+					m_CollBottom = true;
 				}
 				//上
-				if (m_NextPos.y + 10 < MapPosY + Map::kChipSize &&
-					m_NextPos.y > MapPosY &&
-					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
-					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
+				if (PlayerTop < MapBottom &&
+					PlayerRight > MapLeft + 10 &&
+					PlayerLeft < MapRight - 10 &&
+					PlayerBottom > MapTop + 20)
 				{
 					m_CollTop = true;
 				}
 				//右
-				if (m_NextPos.x + Player::kSideSize - 35 > MapPosX &&
-					m_NextPos.x + 60 < MapPosX + Map::kChipSize &&
-					m_NextPos.y + 25 < MapPosY + Map::kChipSize &&
-					m_NextPos.y + (Map::kChipSize * 2) > MapPosY + 20)
+				if (PlayerRight >= MapLeft &&
+					PlayerLeft <= MapRight &&
+					PlayerTop < MapBottom - 20 &&
+					PlayerBottom > MapTop + 30 &&
+					PlayerCentor < MapLeft)
 				{
 					m_CollRight = true;
 				}
 				//左
-				if (m_NextPos.x + 35 < MapPosX + Map::kChipSize &&
-					m_NextPos.x + Player::kSideSize - 60 > MapPosX &&
-					m_NextPos.y + 25 < MapPosY + Map::kChipSize &&
-					m_NextPos.y + (Map::kChipSize * 2) > MapPosY + 20)
+				if (PlayerRight >= MapLeft &&
+					PlayerLeft <= MapRight &&
+					PlayerTop < MapBottom - 20 &&
+					PlayerBottom > MapTop + 30 &&
+					PlayerCentor > MapRight)
 				{
 					m_CollLeft = true;
-				}
-				//下
-				if (m_NextPos.y + (Player::kColumnSize) > MapPosY &&
-					m_NextPos.y + 25 < MapPosY/* + Minigame1::kChipSize*/ &&
-					m_NextPos.x + Player::kSideSize - 50 > MapPosX &&
-					m_NextPos.x + 50 < MapPosX + Map::kChipSize)
-				{
-					m_NextPos.y = MapPosY - (Player::kColumnSize)+1;
-					m_CollBottom = true;
 				}
 
 				//ステージクリアの判定
 			}
 
-			if (m_Map->GetMapData(i, j) > Map::kSideMapChipNum * 2 
+			if (m_Map->GetMapData(i, j) > Map::kSideMapChipNum * 2
 				&& m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 7)
 			{
 
-				if (PlayerTop > MapPosY + Map::kChipSize) continue;
-				if (PlayerBottom < MapPosY) continue;
-				if (PlayerLeft > MapPosX + +Map::kChipSize) continue;
-				if (PlayerRight < MapPosX) continue;
+				if (PlayerTop > MapBottom) continue;
+				if (PlayerBottom < MapTop) continue;
+				if (PlayerLeft > MapRight) continue;
+				if (PlayerRight < MapLeft) continue;
 
 				if ((Pad::isTrigger(PAD_INPUT_UP)))
 				{

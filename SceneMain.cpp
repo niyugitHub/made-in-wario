@@ -146,7 +146,7 @@ void SceneMain::init()
 		pItem->Init();
 	}
 
-	m_EnemyFactory->Init();
+ 	m_EnemyFactory->Init();
 	m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 }
 
