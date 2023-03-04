@@ -35,7 +35,8 @@ Enemy4::Enemy4() :
 	m_GraphX = 0;
 	m_GraphY = 1;
 	m_Hp = 50;
-	m_GraphSize = { kGraphSizeX,kGraphSizeY };
+	m_GraphSize2 = { 0,0 };
+	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy4::UpdatePatrol;
 }
 
@@ -51,13 +52,17 @@ void Enemy4::update()
 	}
 	m_PlayerPos = m_Player->GetPos();
 
-	m_NextPos = m_Pos;
 
 	if (!m_CollLeft && !m_CollRight)
 	{
-		m_Pos = m_NextPos;
+		m_Pos.x = m_NextPos.x;
 	}
 
+	m_Pos.y = m_NextPos.y;
+
+	m_NextPos = m_Pos;
+
+	m_CentorPos = { m_Pos.x + (kGraphSizeX / 2), m_Pos.y + (kGraphSizeY / 2) };
 
 	(this->*m_func)();
 }
@@ -97,13 +102,17 @@ void Enemy4::UpdatePatrol()
 {
 	UpdateGraph();
 
-
 	if (m_CollBottom)
 	{
 		m_GraphX = 0;
 		m_JumpPower = 0;
 		m_JumpFrame++;
 		m_Vec.x = 0;
+	}
+
+	if (m_CollTop)
+	{
+		m_JumpPower = 1;
 	}
 
 	if (m_CollLeft || m_CollRight)

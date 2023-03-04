@@ -13,7 +13,7 @@ namespace
 }
 
 EnemyBase::EnemyBase() : 
-	m_Pos(1600,500),
+	m_Pos(2000,500),
 	m_Vec(3,0),
 	m_NextPos(0,0),
 	m_ThrowPos(0,0),
@@ -28,7 +28,6 @@ EnemyBase::EnemyBase() :
 	m_MapVec(0,0),
 	m_Exist(true),
 	m_LookEnemy(1),
-	m_GraphSize(0,0),
 	m_GraphX(0),
 	m_GraphY(0),
 	m_CollBottom(false),
@@ -139,15 +138,15 @@ void EnemyBase::KnockBack()
 {
 	if (m_KnockBackSpeed > 0)
 	{
-		if (m_Player->GetPos().x < m_Pos.x)
+		if (m_Player->GetPos().x < m_CentorPos.x)
 		{
-			m_Pos.x += m_KnockBackSpeed;
+			m_NextPos.x += m_KnockBackSpeed;
 			m_KnockBackSpeed -= kKnockBackSpeedDown;
 		}
 
-		else if (m_Player->GetPos().x >= m_Pos.x)
+		else if (m_Player->GetPos().x >= m_CentorPos.x)
 		{
-			m_Pos.x -= m_KnockBackSpeed;
+			m_NextPos.x -= m_KnockBackSpeed;
 			m_KnockBackSpeed -= kKnockBackSpeedDown;
 		}
 	}

@@ -24,7 +24,8 @@ Enemy1::Enemy1() :
 	m_GraphX = 0;
 	m_GraphY = 64;
 	m_Hp = 30;
-	m_GraphSize = { kGraphSizeX,kGraphSizeY };
+	m_GraphSize1 = { 10,10 };
+	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy1::UpdatePatrol;
 }
 
@@ -38,6 +39,15 @@ void Enemy1::update()
 	{
 		m_Exist = false;
 	}
+
+	if (!m_CollRight && !m_CollLeft)
+	{
+		m_Pos.x = m_NextPos.x;
+	}
+
+	m_Pos.y = m_NextPos.y;
+
+	m_CentorPos = { m_Pos.x + (kGraphSizeX / 2), m_Pos.y + (kGraphSizeY / 2) };
 
 	m_Frame++;
 
@@ -105,11 +115,6 @@ void Enemy1::UpdatePatrol()
 	{
 		m_func = &Enemy1::UpdateDiscovery;
 	}
-
-	if (!m_CollRight && !m_CollLeft)
-	{
-		m_Pos = m_NextPos;
-	}
 }
 
 void Enemy1::UpdateDiscovery()
@@ -147,11 +152,6 @@ void Enemy1::UpdateDiscovery()
 	}
 
 	m_NextPos += m_Vec;
-
-	if (!m_CollRight && !m_CollLeft)
-	{
-		m_Pos = m_NextPos;
-	}
 }
 
 void Enemy1::updateAttack()

@@ -34,7 +34,8 @@ Enemy3::Enemy3() :
 	m_Hp = 50;
 	m_GraphX = 0;
 	m_GraphY = 0;
-	m_GraphSize = { kGraphSizeX,kGraphSizeY };
+	m_GraphSize1 = { 0,0 };
+	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy3::UpdatePatrol;
 }
 
@@ -48,6 +49,18 @@ void Enemy3::update()
 	{
 		m_Exist = false;
 	}
+
+	if (!m_CollLeft && !m_CollRight)
+	{
+		m_Pos.x = m_NextPos.x;
+	}
+
+	m_Pos.y = m_NextPos.y;
+
+	m_NextPos = m_Pos;
+
+
+	m_CentorPos = { m_Pos.x + (kGraphSizeX / 2), m_Pos.y + (kGraphSizeY / 2) };
 
 	m_GraphFrame++;
 
@@ -64,8 +77,6 @@ void Enemy3::update()
 	{
 		BasicMoveEnemy();
 
-		m_NextPos = m_Pos;
-
 		if (!m_CollBottom)
 		{
 			m_Gravity += kGravity;
@@ -78,7 +89,7 @@ void Enemy3::update()
 			m_Vec.y = 0;
 		}
 
-		m_DistancePos = m_Pos - m_PlayerPos;
+		m_DistancePos = m_CentorPos - m_PlayerPos;
 
 		if (m_DistancePos.x < 0)
 		{
@@ -95,12 +106,6 @@ void Enemy3::update()
 		(this->*m_func)();
 
 		m_PlayerPos = m_Player->GetPos();
-		m_NextPos += m_Vec;
-
-		if (!m_CollBottom && !m_CollRight && !m_CollLeft)
-		{
-		}
-		m_Pos = m_NextPos;
 	}
 
 
@@ -108,6 +113,8 @@ void Enemy3::update()
 	{
 		m_Shot->Update();
 	}
+
+	m_NextPos += m_Vec;
 }
 
 void Enemy3::draw(Vec2 offset)
@@ -163,6 +170,7 @@ void Enemy3::UpdateDiscovery()
 	if (m_DistancePos.x < -500 || m_DistancePos.x > 500)
 	{
 		m_func = &Enemy3::UpdatePatrol;
+		m_RandThrowFrame = 60;
 	}
 
 	if (m_RandThrowFrame == 50)
@@ -194,7 +202,7 @@ void Enemy3::UpdateDiscovery()
 
 		m_FallSpeedX = m_DistancePos.x / 60;
 
-		m_Shot = new FallShot(m_Pos,m_FallSpeedX);
+		m_Shot = new FallShot(m_CentorPos,m_FallSpeedX);
 		m_Shot->SetHandle(m_Shothandle);
 		m_Shot->SetLookShot(m_LookEnemy);
 

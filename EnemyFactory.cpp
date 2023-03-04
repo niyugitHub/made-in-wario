@@ -89,6 +89,12 @@ void EnemyFactory::Update()
 	for (auto& enemy : m_Enemy)
 	{
 		enemy->update();
+
+		if (enemy->GetHit())
+		{
+			enemy->KnockBack();
+		}
+
 		if (enemy->isExist())
 		{
 			m_Coll->InitColl();
@@ -98,6 +104,8 @@ void EnemyFactory::Update()
 
 			m_Pos = enemy->GetPos();
 			m_ThrowPos = enemy->GetThrowPos();
+			m_EnemySize1 = enemy->GetGraphSize1();
+			m_EnemySize2 = enemy->GetGraphSize2();
 
 			m_Coll->Update();
 
@@ -119,7 +127,7 @@ void EnemyFactory::Update()
 				m_Player->Ondamage();
 				m_Player->SetNoDamageFrame(100);
 				m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
-				m_Player->SetEnemyPos(m_Pos);
+				m_Player->SetEnemyPos(enemy->GetCentorPos());
 			}
 
 			// エネミーとマップの当たり判定
@@ -139,9 +147,9 @@ void EnemyFactory::Update()
 			if (m_Coll->IsCollAttackPlayer() && !enemy->GetHit())
 			{
 				m_Player->IsGauge();
-				m_Player->SetEnemyPos(m_Pos);
+				m_Player->SetEnemyPos(enemy->GetCentorPos());
 				m_Player->SetKnockBackSpeed(Player::kHitKnockBackSpeed);
-				m_Particle->SetEnemyPos(m_Pos);
+				m_Particle->SetEnemyPos(enemy->GetCentorPos());
 				m_Particle->SetEnemyParticle();
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
@@ -151,18 +159,18 @@ void EnemyFactory::Update()
 			// プレイヤーのショットが敵に当たった時
 			if (enemy->CollShotPlayer() && !enemy->GetHit())
 			{
-				m_Player->SetEnemyPos(m_Pos);
-				m_Particle->SetEnemyPos(m_Pos);
+				m_Player->SetEnemyPos(enemy->GetCentorPos());
+				m_Particle->SetEnemyPos(enemy->GetCentorPos());
 				m_Particle->SetEnemyParticle();
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
 			}
 
-			if (enemy->GetHit())
+			/*if (enemy->GetHit())
 			{
 				enemy->KnockBack();
-			}
+			}*/
 		}
 
 		// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
@@ -171,7 +179,7 @@ void EnemyFactory::Update()
 			//	DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
 			m_Player->Ondamage();
 			m_Player->SetNoDamageFrame(100);
-			m_Player->SetEnemyPos(m_Pos);
+			m_Player->SetEnemyPos(enemy->GetCentorPos());
 			m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
 			//	m_Player->IsKnockBack(m_Pos);
 		}
@@ -253,21 +261,21 @@ void EnemyFactory::StageEnemy(int StageNum)
 {
 	if (StageNum == 1)
 	{
-		Create(kNormal, { 2000,800 });
-		//Create(kBoss, { 2000,800 });
-		/*Create(kFly, { 2000,800 });
+		Create(kFlyShot, { 2000,500 });
+		Create(kBoss, { 2000,800 });
+		Create(kFly, { 2000,800 });
 		Create(kThrow, { 2000,800 });
 		Create(kJump, { 2000,800 });
-		Create(kFlyShot, { 2000,800 });*/
-	//	Create(kFly, { 1000,800 });
-		/*Create(kThrow, { 2000,800 });
+		Create(kFlyShot, { 2000,800 });
+		Create(kFly, { 1000,800 });
+		Create(kThrow, { 2000,800 });
 		Create(kJump, { 1900,600 });
 		Create(kJump, { 1900,300 });
 		Create(kJump, { 3000,600 });
 		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });*/
-	//	Create(kFlyShot, { 1000,800 });
-		/*Create(kFlyShot, { 7000,800 });
+		Create(kJump, { 5000,600 });
+		Create(kFlyShot, { 1000,800 });
+		Create(kFlyShot, { 7000,800 });
 		Create(kFlyShot, { 4000,800 });
 		Create(kJump, { 6000,600 });
 		Create(kJump, { 6000,200 });
@@ -281,7 +289,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kNormal, { 5000,600 });
 		Create(kNormal, { 5500,800 });
 		Create(kNormal, { 6000,800 });
-		Create(kNormal, { 6500,600 });*/
+		Create(kNormal, { 6500,600 });
 	}
 	
 	if (StageNum == 2)

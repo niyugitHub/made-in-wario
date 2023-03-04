@@ -15,7 +15,7 @@ namespace
 	constexpr float kMoveChaseField = 0.2f;
 
 	// プレイヤーを追いかけるときの最大速度
-	constexpr float kMoveChaseMax= 4.0f;
+	constexpr float kMoveChaseMax= 5.0f;
 
 	// 通常時の速度
 	constexpr float kMoveFly = 0.05f;
@@ -45,7 +45,8 @@ Enemy5::Enemy5() :
 	m_FieldSpeed(0.0f)
 {
 	m_Hp = 50;
-	m_GraphSize = { kGraphSizeX,kGraphSizeY };
+	m_GraphSize2 = { 20,20 };
+	m_GraphSize2 = { kGraphSizeX - 20,kGraphSizeY - 20 };
 	m_func = &Enemy5::UpdatePatrol;
 }
 
@@ -59,6 +60,17 @@ void Enemy5::update()
 	{
 		m_Exist = false;
 	}
+
+	if (!m_CollRight && !m_CollLeft)
+	{
+		m_Pos.x = m_NextPos.x;
+	}
+
+	m_Pos.y = m_NextPos.y;
+
+	m_NextPos = m_Pos;
+
+	m_CentorPos = { m_Pos.x + (kGraphSizeX / 2), m_Pos.y + (kGraphSizeY / 2) };
 
 	m_GraphFrame++;
 
@@ -85,9 +97,8 @@ void Enemy5::update()
 	if (m_Exist)
 	{
 		m_PlayerPos = m_Player->GetPos();
-		m_NextPos = m_Pos;
 
-		m_DistancePos = m_Pos - m_PlayerPos;
+		m_DistancePos = m_CentorPos - m_PlayerPos;
 
 		(this->*m_func)();
 	}
@@ -138,7 +149,6 @@ void Enemy5::draw(Vec2 offset)
 void Enemy5::UpdatePatrol()
 {
 	BasicMoveEnemy();
-	m_Pos += m_Vec;
 
 	if (m_GraphFrame % 5 == 0)
 	{
@@ -172,8 +182,6 @@ void Enemy5::UpdatePatrol()
 
 	m_NextPos += m_Vec;
 
-	m_Pos = m_NextPos;
-
 	if (m_DistancePos.x > -500 && m_DistancePos.x < 500 &&
 		m_DistancePos.y > -500 && m_DistancePos.y < 500)
 	{
@@ -200,10 +208,8 @@ void Enemy5::UpdateDiscovery()
 	{
 		BasicMoveEnemy();
 
-		m_Pos += m_Vec;
 		if (m_DistancePos.x < kPlayerGraphSize / 2)
 		{
-			//m_Vec.x += 3;
 			if (m_FieldSpeed < kMoveChaseMax)
 			{
 				m_FieldSpeed += kMoveChaseField;
@@ -212,7 +218,6 @@ void Enemy5::UpdateDiscovery()
 
 		if (m_DistancePos.x >= kPlayerGraphSize / 2)
 		{
-			//	m_Vec.x -= 3;
 			if (m_FieldSpeed > -kMoveChaseMax)
 			{
 				m_FieldSpeed -= kMoveChaseField;
@@ -227,7 +232,7 @@ void Enemy5::UpdateDiscovery()
 			m_func = &Enemy5::UpdateAttackShot;
 		}
 
-		m_Vec.x += m_FieldSpeed;
+		m_Vec.x = m_FieldSpeed;
 
 		if (m_DistancePos.y > kPlayerGraphSize / 2)
 		{
@@ -243,18 +248,7 @@ void Enemy5::UpdateDiscovery()
 
 		m_Vec.y = m_FlySpeed;
 
-		if (m_CollBottom)
-		{
-			m_FlySpeed = 0;
-			m_Pos.y += 1;
-		}
-
 		m_NextPos += m_Vec;
-
-		if (!m_CollRight && !m_CollLeft)
-		{
-			m_Pos.x = m_NextPos.x;
-		}
 	}
 }
 

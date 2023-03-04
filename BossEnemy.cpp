@@ -31,7 +31,8 @@ BossEnemy::BossEnemy() :
 	m_Hp = 1000;
 	m_GraphX = 0;
 	m_GraphY = 5;
-	m_GraphSize = { kGraphSizeX,kGraphSizeY };
+	m_GraphSize1 = { 180,250 };
+	m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
 	m_func = &BossEnemy::UpdateNotBattle;
 }
 
@@ -46,6 +47,17 @@ void BossEnemy::update()
 		m_Exist = false;
 	}
 
+	if (!m_CollRight && !m_CollLeft)
+	{
+		m_Pos.x = m_NextPos.x;
+	}
+
+	m_Pos.y = m_NextPos.y;
+
+	m_NextPos = m_Pos;
+
+	m_CentorPos = { m_Pos.x + (kGraphSizeX / 2) - 50 , m_Pos.y + kGraphSizeY - 100 };
+
 	m_GraphFrame++;
 
 	if (m_DistancePos.x < 0)
@@ -58,23 +70,27 @@ void BossEnemy::update()
 		m_LookEnemy = 1;
 	}
 
+	if (!m_CollBottom)
+	{
+		m_Gravity += kGravity;
+		m_Vec.y += m_Gravity;
+	}
+
+	else
+	{
+		m_Gravity = 0;
+		m_Vec.y = 0;
+	}
+
 	if (m_Exist)
 	{
 		m_PlayerPos = m_Player->GetPos();
 
-		if (!m_CollLeft && !m_CollRight)
-		{
-			m_Pos.x = m_NextPos.x;
-		}
-
-		m_Pos.y = m_NextPos.y;
-
-		m_NextPos = m_Pos;
-
-		m_DistancePos = m_Pos - m_PlayerPos;
+		m_DistancePos = m_CentorPos - m_PlayerPos;
 
 		(this->*m_func)();
 	}
+	m_NextPos += m_Vec;
 }
 
 void BossEnemy::draw(Vec2 offset)
@@ -83,17 +99,21 @@ void BossEnemy::draw(Vec2 offset)
 	{
 		if (m_LookEnemy == 1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y - kGraphSizeY / 2,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
 				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y - kGraphSizeY / 2,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
 				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}
+
+		DrawBox(m_CentorPos.x + offset.x, m_CentorPos.y,
+			m_CentorPos.x + 50 + offset.x, m_CentorPos.y + 50,
+			0xffffff, true);
 	}
 }
 
@@ -140,8 +160,6 @@ void BossEnemy::UpdateDiscovery()
 
 	ChangeGraph(5);
 
-	m_NextPos += m_Vec;
-
 	if (m_DistancePos.x < 200 && m_DistancePos.x > -200)
 	{
 		int RandAttack = /*GetRand(4)*/0;
@@ -152,6 +170,7 @@ void BossEnemy::UpdateDiscovery()
 			m_GraphFrame = 0;
 			m_GraphX = 0;
 			m_GraphY = 3;
+			m_Vec.x = 0;
 		}
 		if (RandAttack == 1)
 		{

@@ -26,7 +26,8 @@ public:
 	virtual void SetCollRight(bool Right) { m_CollRight = Right; }
 	virtual void SetCollLeft(bool Left) { m_CollLeft = Left; }
 
-	virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }
+	/*virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }*/
+	virtual void SetPos(Vec2 Pos) { m_NextPos = Pos; }
 
 	// グラフをセット
 	virtual void SetHandle(int handle) { m_handle = handle; }
@@ -45,11 +46,15 @@ public:
 	virtual void SetNextPos(Vec2 Pos) { m_NextPos = Pos; }
 	virtual Vec2 GetPos() { return m_NextPos; }
 
+	// 敵の真ん中の座標取得
+	virtual Vec2 GetCentorPos() { return m_CentorPos; }
+
 	// 敵が投げた物の座標取得
 	virtual Vec2 GetThrowPos() { return m_ThrowPos; }
 
 	// グラフのサイズ取得
-	virtual Vec2 GetGraphSize() { return m_GraphSize; }
+	virtual Vec2 GetGraphSize1() { return m_GraphSize1; }
+	virtual Vec2 GetGraphSize2() { return m_GraphSize2; }
 
 	virtual void update();
 	virtual void draw(Vec2 offset);
@@ -81,6 +86,9 @@ protected:
 
 	// 次のフレームのエネミーのポジション
 	Vec2 m_NextPos;
+
+	//エネミーの中心座標
+	Vec2 m_CentorPos = { 0,0 };
 
 	// 投げ物の座標
 	Vec2 m_ThrowPos;
@@ -122,7 +130,8 @@ protected:
 	int m_GraphY;
 
 	// 画像のグラフサイズ取得
-	Vec2 m_GraphSize;
+	Vec2 m_GraphSize1 = {0,0};
+	Vec2 m_GraphSize2 = {0, 0};
 
 	// エネミーとブロックの衝突判定
 	bool m_CollTop;

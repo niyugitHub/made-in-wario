@@ -38,6 +38,10 @@ public:
 
 	Vec2 GetThrowPos() { return m_ThrowPos; }
 
+	// エネミーのサイズ取得
+	Vec2 GetGraphSize1() { return m_EnemySize1; } // 左上座標
+	Vec2 GetGraphSize2() { return m_EnemySize2; }//  右上座標
+
 	void SetPlayer(std::shared_ptr<Player> player) { m_Player = player; }
 	void SetMap(std::shared_ptr<Map> map) { m_Map = map; }
 	void SetColl(std::shared_ptr<Collision> Coll) { m_Coll = Coll; }
@@ -77,6 +81,10 @@ private:
 	//bool m_Exist;
 
 	Vec2 m_Pos;
+
+	// エネミーのサイズ取得
+	Vec2 m_EnemySize1;
+	Vec2 m_EnemySize2;
 
 	Vec2 m_ThrowPos;
 
