@@ -148,6 +148,7 @@ void SceneMain::init()
 
  	m_EnemyFactory->Init();
 	m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
+	m_EnemyFactory->Update();
 }
 
 void SceneMain::end()
@@ -569,6 +570,7 @@ void SceneMain::FadeoutUpdate()
 			m_Map->SetStage();
 			m_EnemyFactory->EnemyDead();
 			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
+			m_EnemyFactory->Update();
 			m_Map->Init();
 			m_player->SetPos(m_PlayerPos);
 			m_Color = 0;
@@ -586,6 +588,7 @@ void SceneMain::FadeoutUpdate()
 			m_Coll->setEnemy(m_EnemyFactory);
 			m_EnemyFactory->EnemyDead();
 			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
+			m_EnemyFactory->Update();
 		}
 		m_func = &SceneMain::FadeinUpdate;
 	}
