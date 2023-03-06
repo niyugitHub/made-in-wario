@@ -66,7 +66,10 @@ void Enemy5::update()
 		m_Pos.x = m_NextPos.x;
 	}
 
-	m_Pos.y = m_NextPos.y;
+	if (!m_CollTop)
+	{
+		m_Pos.y = m_NextPos.y;
+	}
 
 	m_NextPos = m_Pos;
 
@@ -127,14 +130,14 @@ void Enemy5::draw(Vec2 offset)
 	{
 		if (m_LookEnemy == 1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}

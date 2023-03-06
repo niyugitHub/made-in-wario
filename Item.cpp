@@ -93,33 +93,33 @@ void Item::Draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
-		DrawBox(m_Pos.x + offset.x, m_Pos.y,
-			m_Pos.x + 50 + offset.x, m_Pos.y + 50,
+		DrawBox(m_Pos.x + offset.x, m_Pos.y + offset.y,
+			m_Pos.x + 50 + offset.x, m_Pos.y + 50 + offset.y,
 			GetColor(255, 255, 255), true);
 
 		if (m_ItemType == ItemType::kTwoJump)
 		{
-			DrawString(m_Pos.x + offset.x, m_Pos.y, "ジャンプ", GetColor(0, 255, 0));
+			DrawString(m_Pos.x + offset.x, m_Pos.y + offset.y, "ジャンプ", GetColor(0, 255, 0));
 		}
 
 		if (m_ItemType == ItemType::kAttackUp)
 		{
-			DrawString(m_Pos.x + offset.x, m_Pos.y, "攻撃力アップ", GetColor(0, 255, 0));
+			DrawString(m_Pos.x + offset.x, m_Pos.y + offset.y, "攻撃力アップ", GetColor(0, 255, 0));
 		}
 
 		if (m_ItemType == ItemType::kHpUp)
 		{
-			DrawString(m_Pos.x + offset.x, m_Pos.y, "体力アップ", GetColor(0, 255, 0));
+			DrawString(m_Pos.x + offset.x, m_Pos.y + offset.y, "体力アップ", GetColor(0, 255, 0));
 		}
 
 		if (m_ItemType == ItemType::kGaugeUp)
 		{
-			DrawString(m_Pos.x + offset.x, m_Pos.y, "ゲージアップ", GetColor(0, 255, 0));
+			DrawString(m_Pos.x + offset.x, m_Pos.y + offset.y, "ゲージアップ", GetColor(0, 255, 0));
 		}
 
 		if (m_ItemType == ItemType::kShot)
 		{
-			DrawString(m_Pos.x + offset.x, m_Pos.y, "ショット", GetColor(0, 255, 0));
+			DrawString(m_Pos.x + offset.x, m_Pos.y + offset.y, "ショット", GetColor(0, 255, 0));
 		}
 	}
 

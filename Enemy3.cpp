@@ -105,9 +105,9 @@ void Enemy3::update()
 
 		(this->*m_func)();
 
-		m_PlayerPos = m_Player->GetPos();
 	}
 
+	m_PlayerPos = m_Player->GetPos();
 
 	if (m_Shot != nullptr)
 	{
@@ -123,14 +123,14 @@ void Enemy3::draw(Vec2 offset)
 	{
 		if (m_LookEnemy == 1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}

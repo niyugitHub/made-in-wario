@@ -103,14 +103,14 @@ void Enemy2::draw(Vec2 offset)
 	{
 		if (m_LookEnemy == 1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, kGraphSizeX + 10 , kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				(m_GraphX * 4) * kGraphSizeX, kRectGraphY, kGraphSizeX + 10, kGraphSizeY,
 				m_handle, true, false);
 		}

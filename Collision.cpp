@@ -381,6 +381,8 @@ void Collision::IsCollMapEnemy()
 	float EnemyPosUp = m_EnemyPos.y + m_enemy->GetGraphSize1().y;
 	float EnemyPosBottom = m_EnemyPos.y + m_enemy->GetGraphSize2().y;
 
+	Vec2 EnemyPosCentor = m_enemy->GetCentorPos();
+
 	for (int i = 0; i < Map::kBgNumY[m_Map->GetStageNum()]; i++)
 	{
 		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
@@ -414,7 +416,8 @@ void Collision::IsCollMapEnemy()
 				if (EnemyPosRight > MapLeft &&
 					EnemyPosLeft < MapRight &&
 					EnemyPosUp < MapBottom - 20 &&
-					EnemyPosBottom >= MapTop + 30)
+					EnemyPosBottom >= MapTop + 30 &&
+					EnemyPosCentor.x < MapLeft)
 				{
 					m_CollRightEnemy = true;
 				}
@@ -422,7 +425,8 @@ void Collision::IsCollMapEnemy()
 				if (EnemyPosRight > MapLeft &&
 					EnemyPosLeft < MapRight &&
 					EnemyPosUp < MapBottom - 20 &&
-					EnemyPosBottom >= MapTop + 30)
+					EnemyPosBottom >= MapTop + 30 &&
+					EnemyPosCentor.x > MapRight)
 				{
 					m_CollLeftEnemy = true;
 				}

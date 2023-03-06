@@ -271,7 +271,7 @@ bool Particle::OffScreen(int i, Vec2 offset)
 	{
 		return true;
 	}
-	if (data[i].m_Pos.y > Game::kScreenHeight)
+	if (data[i].m_Pos.y > Game::kScreenHeight - offset.y)
 	{
 		return true;
 	}
@@ -287,7 +287,7 @@ void Particle::Draw(Vec2 offset)
 		if (data[i].m_Exist)
 		{
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, data[i].m_Transparency);
-			DrawOval(data[i].m_Pos.x + offset.x, data[i].m_Pos.y,
+			DrawOval(data[i].m_Pos.x + offset.x, data[i].m_Pos.y + offset.y,
 				data[i].m_ParticleSize.x, data[i].m_ParticleSize.y,
 				GetColor(data[i].m_RColor,
 					data[i].m_GColor,

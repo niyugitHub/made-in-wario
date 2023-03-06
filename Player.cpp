@@ -76,7 +76,7 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(false),
+m_PossibleTwoJump(true),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
@@ -940,10 +940,10 @@ bool Player::PushButton()
 
 bool Player::FallPlayer()
 {
-	if (m_pos.y > Game::kScreenHeight)
+	/*if (m_pos.y > Map::kBgNumY[m_Map->GetStageNum() - 1] * Map::kChipSize)
 	{
 		return true;
-	}
+	}*/
 
 	return false;
 }

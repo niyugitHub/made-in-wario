@@ -53,7 +53,12 @@ void Enemy4::update()
 	m_PlayerPos = m_Player->GetPos();
 
 
-	if (!m_CollLeft && !m_CollRight)
+	if (!m_CollLeft && m_Pos.x > m_NextPos.x)
+	{
+		m_Pos.x = m_NextPos.x;
+	}
+
+	if (!m_CollRight && m_Pos.x < m_NextPos.x)
 	{
 		m_Pos.x = m_NextPos.x;
 	}
@@ -73,14 +78,14 @@ void Enemy4::draw(Vec2 offset)
 	{
 		if (m_LookEnemy == 1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, m_GraphY * kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, m_GraphY * kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}
@@ -115,11 +120,18 @@ void Enemy4::UpdatePatrol()
 		m_JumpPower = 1;
 	}
 
-	if (m_CollLeft || m_CollRight)
+	if (m_CollLeft)
 	{
-		m_Speed *= -1;
+		m_Speed = kSpeed;
 		m_Vec.x = m_Speed;
-		m_LookEnemy *= -1;
+		m_LookEnemy = -1;
+	}
+
+	if (m_CollRight)
+	{
+		m_Speed = -kSpeed;
+		m_Vec.x = m_Speed;
+		m_LookEnemy = 1;
 	}
 
 	if (m_JumpFrame >= kJumpFrame)

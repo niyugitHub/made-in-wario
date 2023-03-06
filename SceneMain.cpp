@@ -149,6 +149,8 @@ void SceneMain::init()
  	m_EnemyFactory->Init();
 	m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 	m_EnemyFactory->Update();
+
+	m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
 }
 
 void SceneMain::end()
@@ -320,7 +322,9 @@ void SceneMain::draw()
 	m_EnemyFactory->Draw(m_offset);
 	m_player->draw(m_offset);
 
-	for (int i = (m_Map->GetStageNum() - 1) * m_StageItemNum; i < m_Map->GetStageNum() * m_StageItemNum; i++)
+	printfDx("%f,%f\n", m_player->GetPos().x, m_player->GetPos().y);
+
+	for (int i = (m_Map->GetStageNum()) * m_StageItemNum; i < (m_Map->GetStageNum() + 1) * m_StageItemNum; i++)
 	{
 		m_Item[i]->Draw(m_offset);
 
@@ -509,7 +513,7 @@ void SceneMain::NormalUpdate()
 
 	if (m_player->GetExist())
 	{
-		for (int i = (m_Map->GetStageNum() - 1) * m_StageItemNum; i < m_Map->GetStageNum() * m_StageItemNum; i++)
+		for (int i = (m_Map->GetStageNum()) * m_StageItemNum; i < (m_Map->GetStageNum() + 1) * m_StageItemNum; i++)
 		{
 			if (m_Item[i]->GetExist())
 			{
@@ -573,6 +577,7 @@ void SceneMain::FadeoutUpdate()
 			m_EnemyFactory->Update();
 			m_Map->Init();
 			m_player->SetPos(m_PlayerPos);
+
 			m_Color = 0;
 		}
 
@@ -590,6 +595,8 @@ void SceneMain::FadeoutUpdate()
 			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 			m_EnemyFactory->Update();
 		}
+		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+
 		m_func = &SceneMain::FadeinUpdate;
 	}
 }

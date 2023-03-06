@@ -22,12 +22,15 @@ namespace
 	};
 
 	// チップの数
-	static constexpr int kBgNumY[5] = {17,17,17,17,17};
+	static constexpr int kBgNumY[5] = {20,17,17,17,17};
 	static constexpr int kBgNumX[5] = { 150,150,150,150,150 };
 
 	// マップデータ1
 	constexpr int kMapData1[kBgNumY[0]][kBgNumX[0]] =
 	{
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,10,10,10,10,10,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -162,7 +165,7 @@ Map::Map() :
 	m_PlayerPos(0,0),
 	m_BackGroundPos(0,0),
 	m_handle(-1),
-	m_StageNum(1),
+	m_StageNum(0),
 	m_graphWidth(0),
 	m_graphHeight(0),
 	m_LeftNum(0),
@@ -172,9 +175,9 @@ Map::Map() :
 	m_Vec(0,0),
 	m_GimmickCount(0)
 {
-	for (int i = 0; i < kBgNumY[m_StageNum - 1]; i++)
+	for (int i = 0; i < kBgNumY[m_StageNum]; i++)
 	{
-		for (int j = 0; j < kBgNumX[m_StageNum - 1]; j++)
+		for (int j = 0; j < kBgNumX[m_StageNum]; j++)
 		{
 			m_MapData[i][j] = kMapData1[i][j];
 		}
@@ -207,50 +210,50 @@ void Map::Init()
 
 	switch (m_StageNum)
 	{
-	case 1:
-		for (int y = 0; y < kBgNumY[m_StageNum - 1]; y++)
+	case 0:
+		for (int y = 0; y < kBgNumY[m_StageNum]; y++)
 		{
-			for (int x = 0; x < kBgNumX[m_StageNum - 1]; x++)
+			for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 			{
 				m_MapData[y][x] = kMapData1[y][x];
 			}
 		}
 		break;
 
-	case 2:
-		for (int y = 0; y < kBgNumY[m_StageNum - 1]; y++)
+	case 1:
+		for (int y = 0; y < kBgNumY[m_StageNum]; y++)
 		{
-			for (int x = 0; x < kBgNumX[m_StageNum - 1]; x++)
+			for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 			{
 				m_MapData[y][x] = kMapData2[y][x];
 			}
 		}
 		break;
 
-	case 3:
-		for (int y = 0; y < kBgNumY[m_StageNum - 1]; y++)
+	case 2:
+		for (int y = 0; y < kBgNumY[m_StageNum]; y++)
 		{
-			for (int x = 0; x < kBgNumX[m_StageNum - 1]; x++)
+			for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 			{
 				m_MapData[y][x] = kMapData3[y][x];
 			}
 		}
 		break;
 
-	case 4:
-		for (int y = 0; y < kBgNumY[m_StageNum - 1]; y++)
+	case 3:
+		for (int y = 0; y < kBgNumY[m_StageNum]; y++)
 		{
-			for (int x = 0; x < kBgNumX[m_StageNum - 1]; x++)
+			for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 			{
 				m_MapData[y][x] = kMapData4[y][x];
 			}
 		}
 		break;
 
-	case 5:
-		for (int y = 0; y < kBgNumY[m_StageNum - 1]; y++)
+	case 4:
+		for (int y = 0; y < kBgNumY[m_StageNum]; y++)
 		{
-			for (int x = 0; x < kBgNumX[m_StageNum - 1]; x++)
+			for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 			{
 				m_MapData[y][x] = kMapData5[y][x];
 			}
@@ -258,9 +261,9 @@ void Map::Init()
 		break;
 	}
 
-	for (int y = 0; y < kBgNumY[m_StageNum - 1]; y++)
+	for (int y = 0; y < kBgNumY[m_StageNum]; y++)
 	{
-		for (int x = 0; x < kBgNumX[m_StageNum - 1]; x++)
+		for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 		{
 			if (m_MapData[y][x] == 10)
 			{
@@ -303,8 +306,8 @@ void Map::draw(Vec2 offset)
 
 	float BackGraoundPos = m_BackGroundPos.x + offsetX;
 
-	DrawGraph(BackGraoundPos, 0, m_BackGroundHandle[m_StageNum - 1], true);
-	DrawGraph(BackGraoundPos + Game::kScreenWidth, 0, m_BackGroundHandle[m_StageNum - 1], true);
+	DrawGraph(BackGraoundPos, 0, m_BackGroundHandle[m_StageNum], true);
+	DrawGraph(BackGraoundPos + Game::kScreenWidth, 0, m_BackGroundHandle[m_StageNum], true);
 
 	drawMap(offset);
 
@@ -322,7 +325,7 @@ void Map::PlayerMove(float knockback, float Move)
 
 void Map::SetStage()
 {
-	if (m_StageNum < 5)
+	if (m_StageNum < 4)
 	{
 		m_StageNum++;
 	}
@@ -330,12 +333,12 @@ void Map::SetStage()
 
 int Map::getWidth() const
 {
-	return kChipSize * kBgNumX[m_StageNum - 1];
+	return kChipSize * kBgNumX[m_StageNum];
 }
 
 int Map::getHeight() const
 {
-	return kChipSize * kBgNumY[m_StageNum - 1];
+	return kChipSize * kBgNumY[m_StageNum];
 }
 
 int Map::chipNumX()
@@ -355,15 +358,15 @@ int Map::chipNum()
 
 void Map::drawMap(Vec2 offset)
 {
-	for (int x = 0; x < kBgNumX[m_StageNum - 1]; x++)
+	for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 	{
-		for (int y = 0; y < kBgNumY[m_StageNum - 1]; y++)
+		for (int y = 0; y < kBgNumY[m_StageNum]; y++)
 		{
 			int ChipNumY = m_MapData[y][x] / kChipDivisionY;
 			int ChipNumX = m_MapData[y][x] % kChipDivisionY;
 
-			DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y/* + offset.y*/,
-				kChipSize * ChipNumX, kChipSize * ChipNumY/* + offset.y*/,
+			DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y + offset.y,
+				kChipSize * ChipNumX, kChipSize * ChipNumY,
 				kChipSize, kChipSize, m_handle, true);
 		}
 	}

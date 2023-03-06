@@ -13,7 +13,7 @@ class Map
 		static constexpr float kChipSize = 64;
 
 		// チップの数
-		static constexpr int kBgNumY[5] = { 17,17,17,17,17 };
+		static constexpr int kBgNumY[5] = { 20,17,17,17,17 };
 		static constexpr int kBgNumX[5] = { 150,150,150,150,150 };
 
 		// 一画面に表示できるマップチップの数

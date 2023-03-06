@@ -42,17 +42,17 @@ void HomingShot::Update()
 
 	m_Pos += m_Vec;
 
-	if (m_Pos.y < 0 || m_Pos.y > Game::kScreenHeight ||
+	/*if (m_Pos.y < 0 || m_Pos.y > Game::kScreenHeight ||
 		m_Pos.x < 0 || m_Pos.y > Game::kScreenWidth)
 	{
 		m_Exist = false;
-	}
+	}*/
 }
 
 void HomingShot::Draw(Vec2 offset)
 {
 	if (m_Exist)
-		DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+		DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 			m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
 			m_handle, true, true);
 }

@@ -38,6 +38,8 @@ public:
 
 	Vec2 GetThrowPos() { return m_ThrowPos; }
 
+	Vec2 GetCentorPos() { return m_CentorPos; }
+
 	// エネミーのサイズ取得
 	Vec2 GetGraphSize1() { return m_EnemySize1; } // 左上座標
 	Vec2 GetGraphSize2() { return m_EnemySize2; }//  右上座標
@@ -81,6 +83,9 @@ private:
 	//bool m_Exist;
 
 	Vec2 m_Pos;
+
+	// エネミーの真ん中の座標
+	Vec2 m_CentorPos = { 0,0 };
 
 	// エネミーのサイズ取得
 	Vec2 m_EnemySize1;

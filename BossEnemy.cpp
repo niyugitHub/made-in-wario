@@ -99,21 +99,17 @@ void BossEnemy::draw(Vec2 offset)
 	{
 		if (m_LookEnemy == 1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookEnemy == -1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}
-
-		DrawBox(m_CentorPos.x + offset.x, m_CentorPos.y,
-			m_CentorPos.x + 50 + offset.x, m_CentorPos.y + 50,
-			0xffffff, true);
 	}
 }
 

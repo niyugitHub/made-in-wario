@@ -50,13 +50,11 @@ void FallShot::Update()
 
 	m_Vec.y -= kFallSpeedDown;
 
-	m_Pos += m_MapVec;
-
-	if (m_Pos.y > Game::kScreenHeight)
+	/*if (m_Pos.y > Game::kScreenHeight)
 	{
 		m_Exist = false;
 		m_Vec.y = kFallSpeed;
-	}
+	}*/
 }
 
 void FallShot::Draw(Vec2 offset)
@@ -65,18 +63,22 @@ void FallShot::Draw(Vec2 offset)
 	{
 		if (m_LookShot == 1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, true);
 		}
 
 		if (m_LookShot == -1)
 		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y,
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}
-	}	
+	}
+
+	DrawBox(m_Pos.x + offset.x, m_Pos.y + offset.y,
+		m_Pos.x + offset.x + 50, m_Pos.y + offset.y + 50,
+		0x000000, true);
 
 //	DrawFormatString(500, 0, GetColor(255, 255, 255), "ìGÇÃêî%f", m_Pos.y);
 }

@@ -23,7 +23,7 @@ void PlayerShot::Draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
-		DrawBox(m_Pos.x + offset.x, m_Pos.y,
-			m_Pos.x + 50 + offset.x, m_Pos.y + 50, GetColor(255, 255, 255), true);
+		DrawBox(m_Pos.x + offset.x, m_Pos.y + offset.y,
+			m_Pos.x + 50 + offset.x, m_Pos.y + 50 + offset.y, GetColor(255, 255, 255), true);
 	}
 }

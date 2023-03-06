@@ -90,6 +90,8 @@ void EnemyFactory::Update()
 	{
 		enemy->update();
 
+		m_CentorPos = (enemy->GetCentorPos());
+
 		if (enemy->GetHit())
 		{
 			enemy->KnockBack();
@@ -121,7 +123,7 @@ void EnemyFactory::Update()
 			//}
 
 			// エネミーの攻撃があたった＆プレイヤーの無敵時間が０以下の時
-			if (m_Coll->IsCollEnemy() && m_Player->GetNoDamageFrame() <= 0)
+			if (m_Coll->IsCollEnemy() && enemy->isExist() && m_Player->GetNoDamageFrame() <= 0)
 			{
 			//	DrawString(500, 0, "しんだ", GetColor(100, 255, 100));
 				m_Player->Ondamage();
@@ -259,11 +261,11 @@ void EnemyFactory::AttackDamage()
 
 void EnemyFactory::StageEnemy(int StageNum)
 {
-	if (StageNum == 1)
+	if (StageNum == 0)
 	{
-		Create(kFlyShot, { 2000,500 });
-		Create(kBoss, { 2000,800 });
-		Create(kFly, { 2000,800 });
+		//Create(kFlyShot, { 2000,500 });
+		//Create(kBoss, { 2000,500 });
+		/*Create(kFly, { 2000,800 });
 		Create(kThrow, { 2000,800 });
 		Create(kJump, { 2000,800 });
 		Create(kFlyShot, { 2000,800 });
@@ -277,7 +279,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kFlyShot, { 1000,800 });
 		Create(kFlyShot, { 7000,800 });
 		Create(kFlyShot, { 4000,800 });
-		Create(kJump, { 6000,600 });
+		Create(kJump, { 6000,600 });*/
 		Create(kJump, { 6000,200 });
 		Create(kJump, { 4000,600 });
 		Create(kThrow, { 2050,400 });
@@ -292,18 +294,18 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kNormal, { 6500,600 });
 	}
 	
-	if (StageNum == 2)
+	if (StageNum == 1)
 	{
 		Create(kJump, { 1000,400 });
-		Create(kJump, { 1100,300 });
+		/*Create(kJump, { 1100,300 });
 		Create(kJump, { 1200,600 });
 		Create(kJump, { 1300,600 });
-		Create(kJump, { 1400,600 });
-		Create(kJump, { 1500,600 });
-		Create(kJump, { 1600,400 });
 		Create(kJump, { 1700,600 });
 		Create(kJump, { 1800,200 });
 		Create(kJump, { 1900,300 });
+		Create(kJump, { 1400,600 });*/
+		Create(kJump, { 1500,600 });
+		Create(kJump, { 1600,400 });
 		Create(kJump, { 2000,600 });
 		Create(kJump, { 3500,600 });
 		Create(kJump, { 5000,600 });
@@ -321,7 +323,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kJump, { 6000,200 });
 	}
 
-	if (StageNum == 3)
+	if (StageNum == 2)
 	{
 		Create(kThrow, { 1000,400 });
 		Create(kThrow, { 1100,300 });
@@ -350,7 +352,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kThrow, { 6000,200 });
 	}
 
-	if (StageNum == 4)
+	if (StageNum == 3)
 	{
 		Create(kJump, { 1000,400 });
 		Create(kJump, { 1100,300 });
@@ -379,7 +381,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 		Create(kJump, { 6000,200 });
 	}
 
-	if (StageNum == 5)
+	if (StageNum == 4)
 	{
 		Create(kJump, { 1000,400 });
 		Create(kJump, { 1100,300 });
