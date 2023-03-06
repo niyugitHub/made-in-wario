@@ -508,9 +508,9 @@ void Player::LimitMove()
 		m_NextPos.x = 0;
 	}
 
-	if (m_NextPos.x > Map::kChipSize * Map::kBgNumX - kSideSize)
+	if (m_NextPos.x > Map::kChipSize * Map::kBgNumX[m_Map->GetStageNum()] - kSideSize)
 	{
-		m_NextPos.x = Map::kChipSize * Map::kBgNumX - kSideSize;
+		m_NextPos.x = Map::kChipSize * Map::kBgNumX[m_Map->GetStageNum()] - kSideSize;
 	}
 
 	if (FallPlayer())
@@ -809,9 +809,9 @@ void Player::IsColl()
 	// プレイヤーの中心座標: X軸
 	float PlayerCentor = m_NextPos.x + (Player::kSideSize / 2);
 
-	for (int i = 0; i < Map::kBgNumY; i++)
+	for (int i = 0; i < Map::kBgNumY[m_Map->GetStageNum()]; i++)
 	{
-		for (int j = 0; j < Map::kBgNumX; j++)
+		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
 		{
 			float MapTop = i * Map::kChipSize;
 			float MapBottom = i * Map::kChipSize + Map::kChipSize;
@@ -895,9 +895,9 @@ bool Player::IsShotColl()
 	float ShotPosLeft = ShotPos.x;
 	float ShotPosRight = ShotPos.x + 50;
 
-	for (int i = 0; i < Map::kBgNumY; i++)
+	for (int i = 0; i < Map::kBgNumY[m_Map->GetStageNum()]; i++)
 	{
-		for (int j = 0; j < Map::kBgNumX; j++)
+		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
 		{
 			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= 50)
 			{

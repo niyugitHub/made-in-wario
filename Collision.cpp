@@ -175,89 +175,92 @@ bool Collision::IsCollItem()
 	return true;
 }
 
-void Collision::IsCollMap()
-{
-	m_PlayerPos = m_player->GetNextPos();
-
-	float PlayerPosX = m_PlayerPos.x / Map::kChipSize;
-	float PlayerPosY = m_PlayerPos.y / Map::kChipSize;
-
-	int MapNum[Map::kBgNumY][Map::kBgNumX];
-	for (int i = 0; i < Map::kBgNumY; i++)
-	{
-		for (int j = 0; j < Map::kBgNumX; j++)
-		{
-			MapNum[i][j] = 0;
-		}
-	}
-
-	for (int i = static_cast<int> (PlayerPosY); i < PlayerPosY + 1; i++)
-	{
-		for (int j = static_cast<int>(PlayerPosX); j < PlayerPosX + 1; j++)
-		{
-			MapNum[i][j] = m_Map->GetMapData(i, j);
-		}
-	}
-
-	for (int i = 0; i < Map::kBgNumY; i++)
-	{
-		for (int j = 0; j < Map::kBgNumX; j++)
-		{
-			MapInfo(i, j);
-			if (m_Map->GetMapData(i, j) != 0 && !m_MapColl)
-			{
-				float MapPosX = j * Map::kChipSize;
-				float MapPosY = i * Map::kChipSize;
-
-				if (m_CollSingle && m_PlayerPos.y + 10 < MapPosY + Map::kChipSize - 40 &&
-					m_PlayerPos.y > MapPosY &&
-					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
-					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize)
-				{
-					m_CollTop = true;
-				}
-				//è„
-				if (m_PlayerPos.y + 10 < MapPosY + Map::kChipSize &&
-					m_PlayerPos.y > MapPosY &&
-					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
-					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize && !m_CollSingle)
-				{
-					m_CollTop = true;
-				}
-				//âE
-				if (m_PlayerPos.x + Player::kSideSize - 35 > MapPosX &&
-					m_PlayerPos.x + 60 < MapPosX + Map::kChipSize &&
-					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
-					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20 && !m_CollSingle)
-				{
-					m_PlayerPos = m_player->GetPos();
-					m_CollRight = true;
-					m_player->SetPos(m_PlayerPos);
-				}
-				//ç∂
-				if (m_PlayerPos.x + 35 < MapPosX + Map::kChipSize &&
-					m_PlayerPos.x + Player::kSideSize - 60 > MapPosX &&
-					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
-					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20 && !m_CollSingle)
-				{
-					m_PlayerPos = m_player->GetPos();
-					m_CollLeft = true;
-					m_player->SetPos(m_PlayerPos);
-				}
-				//â∫
-				if (m_PlayerPos.y + (Player::kColumnSize) > MapPosY &&
-					m_PlayerPos.y + 25 < MapPosY/* + Minigame1::kChipSize*/ &&
-					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
-					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize)
-				{
-					m_PlayerPos.y = MapPosY - (Player::kColumnSize) + 1;
-					m_CollBottom = true;
-					m_player->SetPos(m_PlayerPos);
-				}
-			}
-		}
-	}
-}
+//void Collision::IsCollMap()
+//{
+//	m_PlayerPos = m_player->GetNextPos();
+//
+//	float PlayerPosX = m_PlayerPos.x / Map::kChipSize;
+//	float PlayerPosY = m_PlayerPos.y / Map::kChipSize;
+//
+//	int MapChipNumX = Map::kBgNumX[m_Map->GetStageNum()];
+//	int MapChipNumY = Map::kBgNumY[m_Map->GetStageNum()];
+//
+//	int MapNum[MapChipNumY][MapChipNumX];
+//	for (int i = 0; i < Map::kBgNumY; i++)
+//	{
+//		for (int j = 0; j < Map::kBgNumX; j++)
+//		{
+//			MapNum[i][j] = 0;
+//		}
+//	}
+//
+//	for (int i = static_cast<int> (PlayerPosY); i < PlayerPosY + 1; i++)
+//	{
+//		for (int j = static_cast<int>(PlayerPosX); j < PlayerPosX + 1; j++)
+//		{
+//			MapNum[i][j] = m_Map->GetMapData(i, j);
+//		}
+//	}
+//
+//	for (int i = 0; i < Map::kBgNumY; i++)
+//	{
+//		for (int j = 0; j < Map::kBgNumX; j++)
+//		{
+//			MapInfo(i, j);
+//			if (m_Map->GetMapData(i, j) != 0 && !m_MapColl)
+//			{
+//				float MapPosX = j * Map::kChipSize;
+//				float MapPosY = i * Map::kChipSize;
+//
+//				if (m_CollSingle && m_PlayerPos.y + 10 < MapPosY + Map::kChipSize - 40 &&
+//					m_PlayerPos.y > MapPosY &&
+//					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
+//					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize)
+//				{
+//					m_CollTop = true;
+//				}
+//				//è„
+//				if (m_PlayerPos.y + 10 < MapPosY + Map::kChipSize &&
+//					m_PlayerPos.y > MapPosY &&
+//					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
+//					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize && !m_CollSingle)
+//				{
+//					m_CollTop = true;
+//				}
+//				//âE
+//				if (m_PlayerPos.x + Player::kSideSize - 35 > MapPosX &&
+//					m_PlayerPos.x + 60 < MapPosX + Map::kChipSize &&
+//					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
+//					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20 && !m_CollSingle)
+//				{
+//					m_PlayerPos = m_player->GetPos();
+//					m_CollRight = true;
+//					m_player->SetPos(m_PlayerPos);
+//				}
+//				//ç∂
+//				if (m_PlayerPos.x + 35 < MapPosX + Map::kChipSize &&
+//					m_PlayerPos.x + Player::kSideSize - 60 > MapPosX &&
+//					m_PlayerPos.y + 25 < MapPosY + Map::kChipSize &&
+//					m_PlayerPos.y + (Map::kChipSize * 2) > MapPosY + 20 && !m_CollSingle)
+//				{
+//					m_PlayerPos = m_player->GetPos();
+//					m_CollLeft = true;
+//					m_player->SetPos(m_PlayerPos);
+//				}
+//				//â∫
+//				if (m_PlayerPos.y + (Player::kColumnSize) > MapPosY &&
+//					m_PlayerPos.y + 25 < MapPosY/* + Minigame1::kChipSize*/ &&
+//					m_PlayerPos.x + Player::kSideSize - 50 > MapPosX &&
+//					m_PlayerPos.x + 50 < MapPosX + Map::kChipSize)
+//				{
+//					m_PlayerPos.y = MapPosY - (Player::kColumnSize) + 1;
+//					m_CollBottom = true;
+//					m_player->SetPos(m_PlayerPos);
+//				}
+//			}
+//		}
+//	}
+//}
 
 //void Collision::IsCollMapEnemy()
 //{
@@ -378,9 +381,9 @@ void Collision::IsCollMapEnemy()
 	float EnemyPosUp = m_EnemyPos.y + m_enemy->GetGraphSize1().y;
 	float EnemyPosBottom = m_EnemyPos.y + m_enemy->GetGraphSize2().y;
 
-	for (int i = 0; i < Map::kBgNumY; i++)
+	for (int i = 0; i < Map::kBgNumY[m_Map->GetStageNum()]; i++)
 	{
-		for (int j = 0; j < Map::kBgNumX; j++)
+		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
 		{
 			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
 			{

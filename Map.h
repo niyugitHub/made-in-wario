@@ -13,8 +13,8 @@ class Map
 		static constexpr float kChipSize = 64;
 
 		// チップの数
-		static constexpr int kBgNumY = 17;
-		static constexpr int kBgNumX = 150;
+		static constexpr int kBgNumY[5] = { 17,17,17,17,17 };
+		static constexpr int kBgNumX[5] = { 150,150,150,150,150 };
 
 		// 一画面に表示できるマップチップの数
 		static constexpr int kChipNumY = 17;
@@ -105,7 +105,7 @@ class Map
 		int m_BackGroundHandle[5];
 
 		// グラフィックデータの配列
-		int m_MapData[kBgNumY][kBgNumX];
+		int m_MapData[50][500];
 
 		// ステージ番号
 		int m_StageNum;
