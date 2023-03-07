@@ -8,7 +8,15 @@
 
 SceneManager::SceneManager()
 {
-	m_kind = kSceneKindTitle;
+#ifdef _DEBUG
+	{
+		m_kind = kSceneKindMain;
+	}
+#else 
+	{
+		m_kind = kSceneKindTitle;
+	}
+#endif
 	m_pScene = nullptr;
 }
 SceneManager::~SceneManager()

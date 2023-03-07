@@ -322,8 +322,6 @@ void SceneMain::draw()
 	m_EnemyFactory->Draw(m_offset);
 	m_player->draw(m_offset);
 
-	printfDx("%f,%f\n", m_player->GetPos().x, m_player->GetPos().y);
-
 	for (int i = (m_Map->GetStageNum()) * m_StageItemNum; i < (m_Map->GetStageNum() + 1) * m_StageItemNum; i++)
 	{
 		m_Item[i]->Draw(m_offset);

@@ -149,6 +149,8 @@ public:
 
 	// ギミックに当たったとき
 	void CollGimmick();
+	// サウンド
+	void IsSound();
 
 	// グラフィックデータ設定
 //	void setHandle(int index, int handle) { m_handle[index] = handle; }
@@ -176,6 +178,12 @@ private:
 	int m_Hphandle;
 	int m_Gaugehandle;
 	int m_Gauge1handle;
+
+	// 音ハンドルの追加
+	int m_SoundAttack = -1;
+	int m_SoundJump = -1;
+	int m_SoundWalk = -1;
+	int m_SoundDash = -1;
 
 	// キャラクターのグラフの種類を決める
 	int m_CharaGraphX;

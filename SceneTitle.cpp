@@ -13,6 +13,9 @@ namespace
 	const char* const kTitleFilename = "data/title.png";
 	const char* const kTitleStringFilename = "data/titleString.png";
 	const char* const kOptionFilename = "data/Option.png";
+
+	// サウンドファイル名
+	const char* const kSoundTitleFilename = "sound/Title.mp3";
 }
 
 void SceneTitle::init()
@@ -40,6 +43,8 @@ void SceneTitle::init()
 	m_TitleHandle = LoadGraph(kTitleFilename);
 	m_TitleStringHandle = LoadGraph(kTitleStringFilename);
 	m_OptionHandle = LoadGraph(kOptionFilename);
+
+	m_SoundHandle = LoadSoundMem(kSoundTitleFilename);
 
 	m_player->Init();
 	m_player->SetPos(m_Pos);
@@ -71,12 +76,17 @@ SceneBase* SceneTitle::update()
 
 	if (m_Color <= 0 && m_EndScene)
 	{
+		StopSoundMem(m_SoundHandle);
 		return (new SceneMain);
 	}
 
 	(this->*m_func)();
 //	m_player->update();
 
+	if (!CheckSoundMem(m_SoundHandle))
+	{
+		PlaySoundMem(m_SoundHandle, DX_PLAYTYPE_BACK);
+	}
 
 	return this;
 }
@@ -84,6 +94,8 @@ SceneBase* SceneTitle::update()
 void SceneTitle::draw()
 {
 	(this->*m_Drawfunc)();
+
+	ChangeVolumeSoundMem(m_Volum,m_SoundHandle);
 	
 //	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 //	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle2, true);
@@ -116,9 +128,14 @@ void SceneTitle::FadeinUpdate()
 		}
 	}
 	m_Color += 8;
+	m_Volum += 8;
 	if (m_Color >= 255)
 	{
 		m_Color = 255;
+	}
+	if (m_Volum >= 255)
+	{
+		m_Volum = 255;
 	}
 
 	if (m_Color == 255 && m_SceneNum == 0)
@@ -170,6 +187,11 @@ void SceneTitle::TitleSceneUpdate()
 void SceneTitle::FadeoutUpdate()
 {
 	m_Color -= 9;
+
+	if (m_EndScene)
+	{
+		m_Volum -= 9;
+	}
 
 	if (m_Color <= 0 && !m_EndScene)
 	{

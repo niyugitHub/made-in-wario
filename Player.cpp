@@ -20,6 +20,12 @@ namespace
 	const char* const kPlayerGaugeFilename = "data/gauge.png";
 	const char* const kPlayerGauge1Filename = "data/gauge1.png";
 
+	// サウンドファイル名
+	const char* const kPlayerSoundAttackFilename = "sound/Attack.mp3";
+	const char* const kPlayerSoundJumpFilename = "sound/jump.mp3";
+	const char* const kPlayerSoundWalkFilename = "sound/walk.mp3";
+	const char* const kPlayerSoundDashFilename = "sound/dash.mp3";
+
 	// フレームタイム
 	constexpr int kFrameTime = 20;
 
@@ -27,6 +33,9 @@ namespace
 	constexpr float kBigGravity = 1.2f;
 	constexpr float kGravity = 0.8f;
 	constexpr float kSmallGravity = 0.5f;
+
+	// ジャンプ力
+	constexpr float kJump = 14.0f;
 
 	// 動き始めのプレイヤーのスピード
 	constexpr float kStartMoveSpeed = 6.0f;
@@ -76,7 +85,7 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(true),
+m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
@@ -97,6 +106,12 @@ m_Particle(std::make_shared<Particle>())
 	m_Hphandle = LoadGraph(kPlayerHpFilename);
 	m_Gaugehandle = LoadGraph(kPlayerGaugeFilename);
 	m_Gauge1handle = LoadGraph(kPlayerGauge1Filename);
+
+	m_SoundAttack = LoadSoundMem(kPlayerSoundAttackFilename);
+	m_SoundJump = LoadSoundMem(kPlayerSoundJumpFilename);
+	m_SoundWalk = LoadSoundMem(kPlayerSoundWalkFilename);
+	m_SoundDash = LoadSoundMem(kPlayerSoundDashFilename);
+
 }
 
 Player::~Player()
@@ -162,6 +177,8 @@ void Player::update()
 		}
 
 		CharaMove();
+
+		IsSound();
 
 		InitColl();
 
@@ -381,7 +398,7 @@ void Player::CharaMove()
 
 	if (Pad::isTrigger(PAD_INPUT_1) && !m_NowJump && m_CollBottom && m_PushFrame <= 30)
 	{
-		m_Jump = 14;
+		m_Jump = kJump;
 		m_NowJump = true;
 	}
 
@@ -467,7 +484,7 @@ void Player::CharaJump()
 	{
 		m_TwoJump = false;
 		m_UseTwoJump = true;
-		m_Jump = 12;
+		m_Jump = kJump;
 	}
 	if (m_CollTop)
 	{
@@ -940,10 +957,10 @@ bool Player::PushButton()
 
 bool Player::FallPlayer()
 {
-	/*if (m_pos.y > Map::kBgNumY[m_Map->GetStageNum() - 1] * Map::kChipSize)
+	if (m_pos.y > Map::kBgNumY[m_Map->GetStageNum()] * Map::kChipSize)
 	{
 		return true;
-	}*/
+	}
 
 	return false;
 }
@@ -995,6 +1012,62 @@ void Player::CollGimmick()
 		
 	}
 
+}
+
+void Player::IsSound()
+{
+	if (m_CollBottom)
+	{
+		if (/*Pad::isPress(PAD_INPUT_RIGHT) || Pad::isPress(PAD_INPUT_LEFT)*/m_pos.x != m_NextPos.x)
+		{
+			if (Pad::isPress(PAD_INPUT_3) && !CheckSoundMem(m_SoundDash))
+			{
+				PlaySoundMem(m_SoundDash, DX_PLAYTYPE_BACK);
+				StopSoundMem(m_SoundWalk);
+			}
+			else if(!Pad::isPress(PAD_INPUT_3) && !CheckSoundMem(m_SoundWalk))
+			{
+				PlaySoundMem(m_SoundWalk, DX_PLAYTYPE_BACK);
+				StopSoundMem(m_SoundDash);
+			}
+		}
+
+		else
+		{
+			StopSoundMem(m_SoundDash);
+			StopSoundMem(m_SoundWalk);
+		}
+	}
+
+	if(!m_CollBottom)
+	{
+		StopSoundMem(m_SoundDash);
+		StopSoundMem(m_SoundWalk);
+	}
+
+
+	if (m_Attack)
+	{
+		if (!CheckSoundMem(m_SoundAttack))
+		{
+			PlaySoundMem(m_SoundAttack, DX_PLAYTYPE_BACK);
+		}
+	}
+	else
+	{
+		StopSoundMem(m_SoundAttack);
+	}
+
+	if (!CheckSoundMem(m_SoundJump) && Pad::isTrigger(PAD_INPUT_1) && !m_UseTwoJump)
+	{
+		if(m_Jump >= 13.5f)
+		PlaySoundMem(m_SoundJump, DX_PLAYTYPE_BACK);
+	}
+
+	if (m_UseTwoJump && m_Jump >= 13.5f)
+	{
+		PlaySoundMem(m_SoundJump, DX_PLAYTYPE_BACK);
+	}
 }
 
 

@@ -71,6 +71,10 @@ private:
 	// エネミーの画像ハンドル
 	int m_handle;
 
+	// サウンドのハンドル
+	int m_SoundDamage = -1;
+	int m_SoundHitAttack = -1;
+
 	// ショットの画像ハンドル
 	int m_Shothandle;
 

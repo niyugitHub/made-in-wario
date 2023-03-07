@@ -18,6 +18,10 @@ namespace
 	const char* const kEnemyGraphicFilename = "data/Enemy.png";
 	const char* const kShotGraphicFilename = "data/Shot.png";
 
+	// サウンドファイル名
+	const char* const kPlayerSoundDamageFilename = "sound/Damage.mp3";
+	const char* const kPlayerSoundHitAttackFilename = "sound/HitAttack.mp3";
+
 }
 
 EnemyFactory::EnemyFactory() : 
@@ -44,6 +48,9 @@ void EnemyFactory::Init()
 {
 	m_handle = LoadGraph(kEnemyGraphicFilename);
 	m_Shothandle = LoadGraph(kShotGraphicFilename);
+
+	m_SoundDamage = LoadSoundMem(kPlayerSoundDamageFilename);
+	m_SoundHitAttack = LoadSoundMem(kPlayerSoundHitAttackFilename);
 }
 
 void EnemyFactory::end()
@@ -130,6 +137,7 @@ void EnemyFactory::Update()
 				m_Player->SetNoDamageFrame(100);
 				m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
 				m_Player->SetEnemyPos(enemy->GetCentorPos());
+				PlaySoundMem(m_SoundDamage, DX_PLAYTYPE_BACK);
 			}
 
 			// エネミーとマップの当たり判定
@@ -156,6 +164,7 @@ void EnemyFactory::Update()
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
+				PlaySoundMem(m_SoundHitAttack, DX_PLAYTYPE_BACK);
 			}
 
 			// プレイヤーのショットが敵に当たった時
@@ -167,6 +176,7 @@ void EnemyFactory::Update()
 				enemy->SetHit(true);
 				enemy->OnDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
+				PlaySoundMem(m_SoundHitAttack, DX_PLAYTYPE_BACK);
 			}
 
 			/*if (enemy->GetHit())
@@ -183,6 +193,7 @@ void EnemyFactory::Update()
 			m_Player->SetNoDamageFrame(100);
 			m_Player->SetEnemyPos(enemy->GetCentorPos());
 			m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
+			PlaySoundMem(m_SoundDamage, DX_PLAYTYPE_BACK);
 			//	m_Player->IsKnockBack(m_Pos);
 		}
 	}

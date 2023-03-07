@@ -78,6 +78,9 @@ private:
 	// 色の濃さ
 	int m_Color;
 
+	// ボリューム
+	int m_Volum = 0;
+
 	bool m_isEnd;
 
 	bool m_IsTitleEnd;
@@ -95,6 +98,9 @@ private:
 	int m_TitleHandle = -1;
 	// 背景の文字ハンドル
 	int m_TitleStringHandle = -1;
+
+	// サウンドのハンドル
+	int m_SoundHandle = -1;
 
 	// オプションのハンドル
 	int m_OptionHandle = -1;
