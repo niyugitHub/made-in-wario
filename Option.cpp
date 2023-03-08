@@ -9,8 +9,8 @@ namespace
 //	const char* const kOptionFilename = "data/GameOverScene.png";
 
 	// カーソルの初期位置
-	constexpr int kCursorNumX = 550;
-	constexpr int kCursorNumY = 600;
+	constexpr int kCursorNumX = 700;
+	constexpr int kCursorNumY = 560;
 
 	// フェードイン、フェードアウトの速さ
 	constexpr int kFadeSpeed = 8;
@@ -23,7 +23,7 @@ Option::Option() :
 	m_OptionHandle = LoadGraph(kOptionFilename);
 	m_GamepadHandle = LoadGraph(kGamePadFilename);
 	m_StatusHandle = -1;
-	m_func = &Option::FadeinUpdate;
+	m_func = &Option::FirstUpdate;
 	m_drawfunc = &Option::OptionDraw;
 }
 
@@ -37,7 +37,8 @@ void Option::Init()
 	m_CursorMove = 0;
 	m_Color = 0;
 	m_OptionScene = true;
-	m_func = &Option::FadeinUpdate;
+	m_func = &Option::FirstUpdate;
+	m_drawfunc = &Option::OptionDraw;
 }
 
 void Option::Update()
@@ -70,57 +71,47 @@ void Option::CursorMove()
 
 	if (m_SceneNum == 1)
 	{
-		if (m_CursorMove > 100)
+		if (m_CursorMove > 135)
 		{
 			m_CursorMove -= 10;
 
-			if (m_CursorMove <= 100)
+			if (m_CursorMove <= 135)
 			{
-				m_CursorMove = 100;
+				m_CursorMove = 135;
 			}
 		}
 
-		if (m_CursorMove < 100)
+		if (m_CursorMove < 135)
 		{
 			m_CursorMove += 10;
 
-			if (m_CursorMove >= 100)
+			if (m_CursorMove >= 135)
 			{
-				m_CursorMove = 100;
+				m_CursorMove = 135;
 			}
 		}
 	}
 
 	if (m_SceneNum == 2)
 	{
-		if (m_CursorMove < 200)
+		if (m_CursorMove < 270)
 		{
 			m_CursorMove += 10;
 
-			if (m_CursorMove >= 200)
+			if (m_CursorMove >= 270)
 			{
-				m_CursorMove = 200;
+				m_CursorMove = 270;
 			}
 		}
 	}
 }
 
-void Option::FadeinUpdate()
-{
-	m_Color += kFadeSpeed;
-	if (m_Color <= 255)
-	{
-		m_Color = 255;
-		m_func = &Option::NormalUpdate;
-	}
-}
-
-void Option::NormalUpdate()
+void Option::FirstUpdate()
 {
 	if (Pad::isTrigger(PAD_INPUT_DOWN))
 	{
 		m_SceneNum++;
-		
+
 		if (m_SceneNum > 2)
 		{
 			m_SceneNum = 0;
@@ -141,51 +132,117 @@ void Option::NormalUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
 	{
-		m_func = &Option::FadeoutUpdate;
 		m_drawfunc = &Option::GamepadDraw;
+		m_func = &Option::NextUpdate;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
 	{
-		m_func = &Option::FadeoutUpdate;
 		m_drawfunc = &Option::StatusDraw;
+		m_func = &Option::NextUpdate;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_8))
 	{
-		m_func = &Option::FadeoutUpdate;
+		m_OptionScene = false;
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 2)
+	{
+		m_OptionScene = false;
+	}
+}
+
+void Option::NextUpdate()
+{
+	if (Pad::isTrigger(PAD_INPUT_1))
+	{
+		m_func = &Option::FirstUpdate;
 		m_drawfunc = &Option::OptionDraw;
 	}
 }
 
-void Option::FadeoutUpdate()
-{
-	m_Color -= kFadeSpeed;
-
-	if (m_Color < 0)
-	{
-		m_func = &Option::FadeinUpdate;
-
-		if (m_SceneNum = 2)
-		{
-			m_OptionScene = false;
-		}
-	}
-}
+//void Option::FadeinUpdate()
+//{
+//	m_Color += kFadeSpeed;
+//	if (m_Color <= 255)
+//	{
+//		m_Color = 255;
+//		m_func = &Option::NormalUpdate;
+//	}
+//}
+//
+//void Option::NormalUpdate()
+//{
+//	if (Pad::isTrigger(PAD_INPUT_DOWN))
+//	{
+//		m_SceneNum++;
+//		
+//		if (m_SceneNum > 2)
+//		{
+//			m_SceneNum = 0;
+//		}
+//	}
+//
+//	if (Pad::isTrigger(PAD_INPUT_UP))
+//	{
+//		m_SceneNum--;
+//
+//		if (m_SceneNum < 0)
+//		{
+//			m_SceneNum = 2;
+//		}
+//	}
+//
+//	CursorMove();
+//
+//	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
+//	{
+//		m_func = &Option::FadeoutUpdate;
+//		m_drawfunc = &Option::GamepadDraw;
+//	}
+//
+//	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
+//	{
+//		m_func = &Option::FadeoutUpdate;
+//		m_drawfunc = &Option::StatusDraw;
+//	}
+//
+//	if (Pad::isTrigger(PAD_INPUT_8))
+//	{
+//		m_func = &Option::FadeoutUpdate;
+//		m_drawfunc = &Option::OptionDraw;
+//	}
+//}
+//
+//void Option::FadeoutUpdate()
+//{
+//	m_Color -= kFadeSpeed;
+//
+//	if (m_Color < 0)
+//	{
+//		m_func = &Option::FadeinUpdate;
+//
+//		if (m_SceneNum = 2)
+//		{
+//			m_OptionScene = false;
+//		}
+//	}
+//}
 
 void Option::OptionDraw()
 {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(0, 0, m_OptionHandle, true);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawString(kCursorNumX, kCursorNumY + m_CursorMove, "→", 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void Option::GamepadDraw()
 {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(0, 0, m_OptionHandle, true);
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_GamepadHandle, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

@@ -17,9 +17,8 @@ public:
 	void CursorMove();
 
 private:
-	void FadeinUpdate();
-	void NormalUpdate();
-	void FadeoutUpdate();
+	void FirstUpdate();
+	void NextUpdate();
 
 	void OptionDraw();
 	void GamepadDraw();

@@ -487,5 +487,12 @@ void SceneMain::FadeoutUpdate()
 
 void SceneMain::OptionUpdate()
 {
+	m_Color = 230;
 	m_Option->Update();
+
+	if (!m_Option->GetActiveOption())
+	{
+		m_func = &SceneMain::NormalUpdate;
+		m_Color = 255;
+	}
 }
