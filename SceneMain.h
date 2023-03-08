@@ -11,6 +11,7 @@ class Collision;
 class EnemyFactory;
 class Item;
 class GameOverScene;
+class Option;
 class SceneTitle;
 
 class SceneMain : public SceneBase
@@ -43,7 +44,7 @@ private:
 	void FadeinUpdate();
 	void NormalUpdate();
 	void FadeoutUpdate();
-	void GameOverUpdate();
+	void OptionUpdate();
 
 private:
 
@@ -119,6 +120,9 @@ private:
 
 	// ゲームオーバーシーン
 	std::shared_ptr<GameOverScene> m_GameOverScene;
+
+	// オプション画面
+	std::shared_ptr< Option> m_Option;
 
 	// タイトルシーン
 	std::shared_ptr<SceneTitle> m_SceneTitle;

@@ -10,6 +10,7 @@
 #include"Enemy1.h"
 #include"EnemyFactory.h"
 #include"GameOverScene.h"
+#include"Option.h"
 #include"SceneTitle.h"
 #include"Item.h"
 #include "Pad.h"
@@ -65,6 +66,7 @@ SceneMain::SceneMain() :
 	m_EnemyFactory = std::make_shared<EnemyFactory>();
 	m_Coll = std::make_shared<Collision>();
 	m_GameOverScene = std::make_shared<GameOverScene>();
+	m_Option = std::make_shared<Option>();
 
 	for (auto& pItemExist : m_ItemExist)
 	{
@@ -288,6 +290,11 @@ void SceneMain::draw()
 
 	//SetDrawScreen(DX_SCREEN_BACK);
 	//DrawGraph(m_QuakeX, 0, m_tempScreenH, false);
+	if (m_Option->GetActiveOption())
+	{
+		m_Option->Draw();
+	}
+
 	if (m_GameOverScene->GetActiveGameOver())
 	{
 		m_GameOverScene->Draw();
@@ -429,6 +436,12 @@ void SceneMain::NormalUpdate()
 	m_Coll->InitColl();
 
 	m_EnemyFactory->Update();
+
+	if (Pad::isTrigger(PAD_INPUT_8))
+	{
+		m_Option->Init();
+		m_func = &SceneMain::OptionUpdate;
+	}
 }
 
 void SceneMain::FadeoutUpdate()
@@ -472,7 +485,7 @@ void SceneMain::FadeoutUpdate()
 	}
 }
 
-void SceneMain::GameOverUpdate()
+void SceneMain::OptionUpdate()
 {
-	
+	m_Option->Update();
 }

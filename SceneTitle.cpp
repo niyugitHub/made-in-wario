@@ -12,7 +12,7 @@ namespace
 	const char* const kPlayerGraphicFilename = "data/Player.png";
 	const char* const kTitleFilename = "data/title.png";
 	const char* const kTitleStringFilename = "data/titleString.png";
-	const char* const kOptionFilename = "data/Option.png";
+	const char* const kOptionFilename = "data/gamepad.png";
 
 	// サウンドファイル名
 	const char* const kSoundTitleFilename = "sound/Title.mp3";
