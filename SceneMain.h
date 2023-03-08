@@ -10,6 +10,8 @@
 class Collision;
 class EnemyFactory;
 class Item;
+class GameOverScene;
+class SceneTitle;
 
 class SceneMain : public SceneBase
 {
@@ -41,7 +43,7 @@ private:
 	void FadeinUpdate();
 	void NormalUpdate();
 	void FadeoutUpdate();
-	void SwitchStage();
+	void GameOverUpdate();
 
 private:
 
@@ -114,6 +116,12 @@ private:
 
 	// 敵全部
 	std::shared_ptr<EnemyFactory> m_EnemyFactory;
+
+	// ゲームオーバーシーン
+	std::shared_ptr<GameOverScene> m_GameOverScene;
+
+	// タイトルシーン
+	std::shared_ptr<SceneTitle> m_SceneTitle;
 
 	//update処理メンバ関数ポインタ
 	void (SceneMain::* m_func)();

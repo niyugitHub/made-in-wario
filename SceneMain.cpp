@@ -9,6 +9,8 @@
 #include"EnemyBase.h"
 #include"Enemy1.h"
 #include"EnemyFactory.h"
+#include"GameOverScene.h"
+#include"SceneTitle.h"
 #include"Item.h"
 #include "Pad.h"
 
@@ -62,6 +64,7 @@ SceneMain::SceneMain() :
 //	m_Enemy = std::make_shared<Enemy1>();
 	m_EnemyFactory = std::make_shared<EnemyFactory>();
 	m_Coll = std::make_shared<Collision>();
+	m_GameOverScene = std::make_shared<GameOverScene>();
 
 	for (auto& pItemExist : m_ItemExist)
 	{
@@ -166,146 +169,27 @@ void SceneMain::end()
 SceneBase* SceneMain::update()
 {
 	(this->*m_func)();
-	//if (m_player->GetStageClaer())
-	//{
-	//	m_PlayerPos.y = Player::kFristPlayerPosY;
-	//	m_PlayerPos.x = Player::kFristPlayerPosX;
-	//	m_player->SetPos(m_PlayerPos);
-	//	m_player->SetStageClaer(false);
-	//	m_Map->SetStage();
-	//}
-	//if (!m_player->GetExist())
-	//{
-	//	if (Pad::isTrigger(PAD_INPUT_2))
-	//	{
-	//		m_player->NotExist();
-	//		m_Map->SetMap(m_MapPos);
-	//		m_PlayerPos.y = Player::kFristPlayerPosY;
-	//		m_PlayerPos.x = Player::kFristPlayerPosX;
-	//		m_player->SetPos(m_PlayerPos);
-	//		m_Exist = true;
-	//		m_player->SetExist(m_Exist);
 
-	//		for (auto& pItem : m_Item)
-	//		{
-	//			pItem->SetItemType(ItemType::kAttackUp);
-	//		}
-
-	//		m_Item[0]->SetPos(m_ItemPos);
-	//		m_Item[1]->SetPos({ 1300, 900 });
-	//		m_Item[2]->SetPos({ 2150,600 });
-	//		m_Item[3]->SetPos({ 3000,700 });
-	//		m_Item[4]->SetPos({ 4000,700 });
-	//		m_Item[0]->SetItemType(ItemType::kTwoJump);
-	//		m_Item[0]->SetItemType(ItemType::kTwoJump);
-
-	//		m_EnemyFactory = std::make_shared<EnemyFactory>();
-	//		m_Coll->setEnemy(m_EnemyFactory);
-	//		m_EnemyFactory->SetPlayer(m_player);
-	//		m_EnemyFactory->SetMap(m_Map);
-	//		m_EnemyFactory->SetColl(m_Coll);
-	//	}
-	//}
-
-	//m_Coll->Update();
-
-	//m_player->update();
-
-	//Vec2 targetOffset{};
-
-	//// スクロールの計算 プレイヤーが画面中央に表示されるようスクロールする
-	//targetOffset.x = (Game::kScreenWidth / 2 - kPlayerPosCenter) - m_player->GetPos().x;
-	//if (targetOffset.x > 0)
-	//{
-	//	targetOffset.x = 0;
-	//}
-	//if (targetOffset.x < -m_Map->getWidth() + Game::kScreenWidth)
-	//{
-	//	targetOffset.x = -m_Map->getWidth() + Game::kScreenWidth;
-	//}
-
-	//targetOffset.y = (Game::kScreenHeight / 2) - m_player->GetPos().y;
-	//if (targetOffset.y > 0)
-	//{
-	//	targetOffset.y = 0;
-	//}
-	//if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
-	//{
-	//	targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
-	//}
-	//m_offset = targetOffset * 0.2f + m_offset * 0.8f;
-
-	////マップのアップデート
-	//m_Map->update(m_offset);
-
-	//m_PlayerPos = m_player->GetPos();
-	//
-	//IsItemPosition(1);
-
-	//if (m_player->GetExist())
-	//{
-	//	for (int i = m_Stage - 1; i < m_Stage * 5; i++)
-	//	{
-	//		if (m_ItemExist[i])
-	//		{
-	//			m_Item[i]->Update();
-	//			m_Coll->setItem(m_Item[i]);
-
-	//			if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == ItemType::kTwoJump)
-	//			{
-	//				m_player->SetCollItemTwoJump(true);
-	//				m_ItemExist[i] = false;
-	//				m_Item[i]->SetExist(m_ItemExist[i]);
-	//			}
-
-	//			if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == ItemType::kAttackUp)
-	//			{
-	//				m_AttackPower += 10;
-	//				m_player->SetAttackPower(m_AttackPower);
-	//				m_ItemExist[i] = false;
-	//				m_Item[i]->SetExist(m_ItemExist[i]);
-	//			}
-	//		}
-	//	}
-	//}
-
-	//m_Coll->InitColl();
-	////}
-
-	//m_EnemyFactory->Update();
-	
-
-	/*if (m_Coll->IsCollItem())
+	if (m_GameOverScene->GetActiveGameOver())
 	{
-		m_player->SetCollItemTwoJump(true);
-	}*/
+		m_Color -= 3;
 
-	//if (m_Enemy != nullptr)
-	//{
-	//	m_Enemy->update();
-	//	m_EnemyPos = m_Enemy->GetPos();
+		if (m_Color <= 80)
+		{
+			m_Color = 80;
+		}
+		m_GameOverScene->Update();
 
-	//	m_Coll->Update();
-
-	//	// エネミーとマップの当たり判定
-	//	m_CollTopEnemy = m_Coll->IsCollTopEnemy();
-	//	m_CollBottomEnemy = m_Coll->IsCollBottomEnemy();
-	//	m_CollRightEnemy = m_Coll->IsCollRightEnemy();
-	//	m_CollLeftEnemy = m_Coll->IsCollLeftEnemy();
-
-	//	m_Enemy->SetCollTop(m_CollTopEnemy);
-	//	m_Enemy->SetCollBottom(m_CollBottomEnemy);
-	//	m_Enemy->SetCollRight(m_CollRightEnemy);
-	//	m_Enemy->SetCollLeft(m_CollLeftEnemy);
-
-	//	if (m_Coll->IsCollAttackPlayer())
-	//	{
-	//		m_Enemy->setExist(false);
-	//	}
-
-	//	m_Coll->InitColl();
-	//}
-		
+		if (m_GameOverScene->GetPlayAgain())
+		{
+			m_func = &SceneMain::FadeoutUpdate;
+		}
+		if (m_GameOverScene->GetAbort())
+		{
+			return (new SceneTitle);
+		}
+	}
+	
 	return this;
 }
 
@@ -403,6 +287,10 @@ void SceneMain::draw()
 
 	//SetDrawScreen(DX_SCREEN_BACK);
 	//DrawGraph(m_QuakeX, 0, m_tempScreenH, false);
+	if (m_GameOverScene->GetActiveGameOver())
+	{
+		m_GameOverScene->Draw();
+	}
 }
 
 void SceneMain::IsItemPosition(int StageNum)
@@ -448,31 +336,11 @@ void SceneMain::NormalUpdate()
 	}
 	if (!m_player->GetExist())
 	{
-		if (Pad::isTrigger(PAD_INPUT_2))
+		/*if (Pad::isTrigger(PAD_INPUT_2))
 		{
 			m_func = &SceneMain::FadeoutUpdate;
-			//m_player->NotExist();
-			//m_Map->SetMap(m_MapPos);
-			//m_PlayerPos.y = Player::kFristPlayerPosY;
-			//m_PlayerPos.x = Player::kFristPlayerPosX;
-			//m_player->SetPos(m_PlayerPos);
-			//m_Exist = true;
-			//m_player->SetExist(m_Exist);
-
-			///*for (auto& pItem : m_Item)
-			//{
-			//	pItem->SetItemType(ItemType::kAttackUp);
-			//}*/
-
-			///*m_Item[0]->SetItemType(ItemType::kTwoJump);
-			//m_Item[0]->SetItemType(ItemType::kTwoJump);*/
-
-			//m_EnemyFactory = std::make_shared<EnemyFactory>();
-			//m_Coll->setEnemy(m_EnemyFactory);
-			//m_EnemyFactory->SetPlayer(m_player);
-			//m_EnemyFactory->SetMap(m_Map);
-			//m_EnemyFactory->SetColl(m_Coll);
-		}
+		}*/
+		m_GameOverScene->Init();
 	}
 
 	m_Coll->Update();
@@ -581,6 +449,7 @@ void SceneMain::FadeoutUpdate()
 
 		if (!m_player->GetExist())
 		{
+
 			m_player->NotExist();
 			m_Map->Init();
 			m_Map->SetMap(m_MapPos);
@@ -599,7 +468,7 @@ void SceneMain::FadeoutUpdate()
 	}
 }
 
-void SceneMain::SwitchStage()
+void SceneMain::GameOverUpdate()
 {
-
+	
 }
