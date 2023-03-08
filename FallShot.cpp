@@ -76,9 +76,5 @@ void FallShot::Draw(Vec2 offset)
 		}
 	}
 
-	DrawBox(m_Pos.x + offset.x, m_Pos.y + offset.y,
-		m_Pos.x + offset.x + 50, m_Pos.y + offset.y + 50,
-		0x000000, true);
-
 //	DrawFormatString(500, 0, GetColor(255, 255, 255), "ìGÇÃêî%f", m_Pos.y);
 }

@@ -174,15 +174,16 @@ SceneBase* SceneMain::update()
 	{
 		m_Color -= 3;
 
-		if (m_Color <= 80)
+		if (m_Color <= 100)
 		{
-			m_Color = 80;
+			m_Color = 100;
 		}
 		m_GameOverScene->Update();
 
 		if (m_GameOverScene->GetPlayAgain())
 		{
 			m_func = &SceneMain::FadeoutUpdate;
+			m_GameOverScene->SetActivgeGameOver(false);
 		}
 		if (m_GameOverScene->GetAbort())
 		{
@@ -340,7 +341,10 @@ void SceneMain::NormalUpdate()
 		{
 			m_func = &SceneMain::FadeoutUpdate;
 		}*/
-		m_GameOverScene->Init();
+		if (!m_GameOverScene->GetActiveGameOver())
+		{
+			m_GameOverScene->Init();
+		}
 	}
 
 	m_Coll->Update();
