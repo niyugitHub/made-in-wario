@@ -695,7 +695,7 @@ void Player::IsActiveGauge()
 		}
 	}
 	else if(m_PushFrame > 0 && m_PushFrame < 30 && !m_Attack
-		&& m_Gauge >= 10 && m_ShotIntervalFrame <= 0 && m_PossibleShot)
+		&& m_Gauge >= 30 && m_ShotIntervalFrame <= 0 && m_PossibleShot)
 	{
 		if (m_Shot == nullptr)
 		{
@@ -710,8 +710,8 @@ void Player::IsActiveGauge()
 				m_Particle->SetPos({ m_pos.x + kSideSize, m_pos.y + (kColumnSize / 2 + 10) });
 			}
 			m_InitAttack = false;
-			m_Gauge -= 10;
-			m_MinusGauge += 10;
+			m_Gauge -= 30;
+			m_MinusGauge += 30;
 		}
 		else if(m_Shot != nullptr)
 		{
