@@ -82,16 +82,9 @@ SceneMain::SceneMain() :
 	for (int i = 0; i < kItemNum; i++)
 	{
 		m_Item[i] = std::make_shared<Item>();
-		m_Item[i]->SetItemNum(i);
+	//	m_Item[i]->SetItemNum(i);
 	}
 
-
-	m_Item[0]->SetPos(m_ItemPos);
-	m_Item[1]->SetPos({ 1300, 900 });
-	m_Item[2]->SetPos({ 2150,600 });
-	m_Item[3]->SetPos({ 3000,700 });
-	m_Item[4]->SetPos({ 4000,700 });
-	/*m_Item[0]->SetItemType(ItemType::kTwoJump);*/
 
 	m_player->setMap(m_Map);
 
@@ -146,9 +139,12 @@ void SceneMain::init()
 //	m_Enemy->Init();
 	m_Map->load();
 	m_Map->Init();
+
+	int ItemCount = 0;
 	for (auto& pItem : m_Item)
 	{
-		pItem->Init();
+		ItemCount++;
+		pItem->Init(ItemCount);
 	}
 
  	m_EnemyFactory->Init();
@@ -191,6 +187,11 @@ SceneBase* SceneMain::update()
 		{
 			return (new SceneTitle);
 		}
+	}
+
+	if (m_Option->GetGameEnd())
+	{
+		return (new SceneTitle);
 	}
 	
 	return this;
@@ -306,6 +307,15 @@ void SceneMain::IsItemPosition(int StageNum)
 	m_Stage = StageNum;
 }
 
+void SceneMain::InitPlayerPos()
+{
+	if (m_Map->GetStageNum() == 1)
+	{
+		m_PlayerPos = { 0,Map::kChipSize * 56 };
+	}
+	m_player->SetPos(m_PlayerPos);
+}
+
 void SceneMain::FadeinUpdate()
 {
 	m_Color += kFadeSpeed;
@@ -338,7 +348,7 @@ void SceneMain::NormalUpdate()
 	}
 	if (m_player->GetStageClaer())
 	{
-		m_player->SetStageClaer(false);
+		/*m_player->SetStageClaer(false);*/
 		/*m_Map->SetStage();*/
 		m_func = &SceneMain::FadeoutUpdate;
 	}
@@ -450,16 +460,19 @@ void SceneMain::FadeoutUpdate()
 	if (m_Color <= 0)
 	{
 		m_offset = { 0,0 };
-		m_PlayerPos.y = Player::kFristPlayerPosY;
-		m_PlayerPos.x = Player::kFristPlayerPosX;
+		/*m_PlayerPos.y = Player::kFristPlayerPosY;*/
+
+		m_PlayerPos.x = 0;
+
 		if (m_player->GetExist())
 		{
+			m_player->SetStageClaer(false);
 			m_Map->SetStage();
+			m_Map->Init();
 			m_EnemyFactory->EnemyDead();
 			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 			m_EnemyFactory->Update();
-			m_Map->Init();
-			m_player->SetPos(m_PlayerPos);
+			/*m_player->SetPos(m_PlayerPos);*/
 
 			m_Color = 0;
 		}
@@ -480,6 +493,8 @@ void SceneMain::FadeoutUpdate()
 			m_EnemyFactory->Update();
 		}
 		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+
+		InitPlayerPos();
 
 		m_func = &SceneMain::FadeinUpdate;
 	}

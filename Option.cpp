@@ -5,8 +5,9 @@
 namespace
 {
 	const char* const kOptionFilename = "data/option.png";
+	const char* const kOptionStringFilename = "data/optionString.png";
 	const char* const kGamePadFilename = "data/gamepad.png";
-//	const char* const kOptionFilename = "data/GameOverScene.png";
+	const char* const kGameEndFilename = "data/GameEnd.png";
 
 	// カーソルの初期位置
 	constexpr int kCursorNumX = 700;
@@ -21,8 +22,9 @@ Option::Option() :
 	m_OptionScene(false)
 {
 	m_OptionHandle = LoadGraph(kOptionFilename);
+	m_StringHandle = LoadGraph(kOptionStringFilename);
 	m_GamepadHandle = LoadGraph(kGamePadFilename);
-	m_StatusHandle = -1;
+	m_GameEndHandle = LoadGraph(kGameEndFilename);
 	m_func = &Option::FirstUpdate;
 	m_drawfunc = &Option::OptionDraw;
 }
@@ -136,10 +138,11 @@ void Option::FirstUpdate()
 		m_func = &Option::NextUpdate;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 2)
 	{
-		m_drawfunc = &Option::StatusDraw;
+		m_drawfunc = &Option::GameEndDraw;
 		m_func = &Option::NextUpdate;
+		m_GameCount = 0;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_8))
@@ -147,7 +150,7 @@ void Option::FirstUpdate()
 		m_OptionScene = false;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 2)
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
 	{
 		m_OptionScene = false;
 	}
@@ -234,6 +237,7 @@ void Option::OptionDraw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(0, 0, m_OptionHandle, true);
+	DrawGraph(0, 0, m_StringHandle, true);
 	DrawString(kCursorNumX, kCursorNumY + m_CursorMove, "→", 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
@@ -247,11 +251,17 @@ void Option::GamepadDraw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-void Option::StatusDraw()
+void Option::GameEndDraw()
 {
-	/*DrawGraph(0, 0, m_OptionHandle, true);
+	m_GameCount++;
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
-	DrawString(kCursorNumX, kCursorNumY + m_CursorMove, "→", 0xffffff, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawGraph(0, 0, m_OptionHandle, true);
+	DrawGraph(0, 0, m_GameEndHandle, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30)
+	{
+		m_GameEnd = true;
+	}
 }

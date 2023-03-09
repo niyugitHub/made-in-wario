@@ -389,7 +389,7 @@ void Collision::IsCollMapEnemy()
 		{
 			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
 			{
-				float MapTop = i * Map::kChipSize;
+				float MapTop = i * Map::kChipSize + 5;
 				float MapBottom = i * Map::kChipSize + Map::kChipSize;
 				float MapRight = j * Map::kChipSize + Map::kChipSize;
 				float MapLeft = j * Map::kChipSize;
@@ -400,7 +400,7 @@ void Collision::IsCollMapEnemy()
 					EnemyPosRight > MapLeft + 10 &&
 					EnemyPosLeft < MapRight - 10)
 				{
-					m_EnemyPos.y = MapTop - m_enemy->GetGraphSize2().y + 5;
+					m_EnemyPos.y = MapTop - m_enemy->GetGraphSize2().y;
 					m_CollBottomEnemy = true;
 					m_enemy->SetPos(m_EnemyPos);
 				}

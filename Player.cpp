@@ -81,8 +81,8 @@ m_CollRight(false),
 m_Attack(false),
 m_InitAttack(true),
 m_AttackPower(10),
-m_Hp(1),
-m_MaxHp(1),
+m_Hp(3),
+m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
 m_PossibleTwoJump(false),
@@ -223,17 +223,23 @@ void Player::update()
 		m_pos.x = m_NextPos.x;
 	}*/
 
-	if (!m_CollRight && m_pos.x < m_NextPos.x)
+	if (!m_StageClear)
 	{
-		m_pos.x = m_NextPos.x;
-	}
+		if (!m_CollRight && m_pos.x < m_NextPos.x)
+		{
+			m_pos.x = m_NextPos.x;
+		}
 
-	if (!m_CollLeft && m_pos.x > m_NextPos.x)
-	{
-		m_pos.x = m_NextPos.x;
-	}
+		if (!m_CollLeft && m_pos.x > m_NextPos.x)
+		{
+			m_pos.x = m_NextPos.x;
+		}
 
-	m_pos.y = m_NextPos.y;
+		if (m_pos.x < Map::kBgNumX[m_Map->GetStageNum()] * Map::kChipSize)
+		{
+			m_pos.y = m_NextPos.y;
+		}
+	}
 
 	m_Map->SetPlayerPos(m_pos);
 }
@@ -525,15 +531,15 @@ void Player::LimitMove()
 		m_NextPos.x = 0;
 	}
 
-	if (m_NextPos.x > Map::kChipSize * Map::kBgNumX[m_Map->GetStageNum()] - kSideSize)
+	/*if (m_NextPos.x > Map::kChipSize * Map::kBgNumX[m_Map->GetStageNum()] - kSideSize)
 	{
 		m_NextPos.x = Map::kChipSize * Map::kBgNumX[m_Map->GetStageNum()] - kSideSize;
-	}
+	}*/
 
-	if (FallPlayer())
+	/*if (FallPlayer())
 	{
 		m_Exist = false;
-	}
+	}*/
 }
 
 void Player::NotExist()
@@ -840,7 +846,7 @@ void Player::IsColl()
 				float MapPosY = i * Map::kChipSize;*/
 				//下
 				if (PlayerBottom > MapTop &&
-					PlayerTop < MapTop && 
+					PlayerTop < MapTop &&
 					PlayerRight > MapLeft + 10 &&
 					PlayerLeft < MapRight - 10 &&
 					m_Jump <= 0)
@@ -879,19 +885,20 @@ void Player::IsColl()
 				//ステージクリアの判定
 			}
 
-			if (m_Map->GetMapData(i, j) > Map::kSideMapChipNum * 2
-				&& m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 7)
+			/*if (m_Map->GetMapData(i, j) > Map::kSideMapChipNum * 2
+				&& m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 7)*/
+			if (m_NextPos.x >= Map::kBgNumX[m_Map->GetStageNum()] * Map::kChipSize)
 			{
+				m_StageClear = true;
 
-				if (PlayerTop > MapBottom) continue;
+				/*if (PlayerTop > MapBottom) continue;
 				if (PlayerBottom < MapTop) continue;
 				if (PlayerLeft > MapRight) continue;
 				if (PlayerRight < MapLeft) continue;
 
 				if ((Pad::isTrigger(PAD_INPUT_UP)))
 				{
-					m_StageClear = true;
-				}
+				}*/
 			}
 		}
 	}

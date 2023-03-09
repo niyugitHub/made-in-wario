@@ -49,12 +49,25 @@ void Enemy2::update()
 		m_Exist = false;
 	}
 
-	if (!m_CollRight && !m_CollLeft)
+	/*if (!m_CollRight && !m_CollLeft)
+	{
+		m_Pos.x = m_NextPos.x;
+	}*/
+
+	if (!m_CollRight && m_Pos.x < m_NextPos.x)
 	{
 		m_Pos.x = m_NextPos.x;
 	}
 
-	m_Pos.y = m_NextPos.y;
+	if (!m_CollLeft && m_Pos.x > m_NextPos.x)
+	{
+		m_Pos.x = m_NextPos.x;
+	}
+
+	if (!m_CollTop)
+	{
+		m_Pos.y = m_NextPos.y;
+	}
 
 	m_NextPos = m_Pos;
 
@@ -128,6 +141,7 @@ void Enemy2::UpdatePatrol()
 	if (m_CollBottom)
 	{
 		m_FlySpeed *= -1;
+		m_Frame = 0;
 	}
 
 	m_Frame++;

@@ -23,7 +23,7 @@ class SceneMain : public SceneBase
 //		kAttackUp,
 //	};
 public:
-	static constexpr int kItemNum = 25;
+	static constexpr int kItemNum = 15;
 	static constexpr int kStageItemNum = 5;
 public:
 	SceneMain();
@@ -39,6 +39,8 @@ public:
 
 	// アイテムの位置の調整
 	void IsItemPosition(int StageNum);
+
+	void InitPlayerPos();
 
 private:
 	void FadeinUpdate();

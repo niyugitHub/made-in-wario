@@ -13,9 +13,9 @@ Item::~Item()
 {
 }
 
-void Item::Init()
+void Item::Init(int count)
 {
-	switch (m_ItemNum)
+	/*switch (m_ItemNum)
 	{
 	case 0:
 		m_ItemType = kTwoJump;
@@ -81,6 +81,302 @@ void Item::Init()
 		m_ItemType = kAttackUp;
 		m_Pos = { 3700,700 };
 		break;
+	}*/
+	m_ItemNum = 0;
+
+	for (int i = 0; i < Map::kBgNumY[0]; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX[0]; j++)
+		{
+			Vec2 Pos = { j * Map::kChipSize,i * Map::kChipSize };
+
+			if (Map::kMapData1[i][j] == 246)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kTwoJump;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData1[i][j] == 247)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kShot;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData1[i][j] == 248)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kAttackUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData1[i][j] == 249)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kGaugeUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData1[i][j] == 250)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kHpUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+		}
+	}
+	
+	for (int i = 0; i < Map::kBgNumY[1]; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX[1]; j++)
+		{
+			Vec2 Pos = { j * Map::kChipSize,i * Map::kChipSize };
+
+			if (Map::kMapData2[i][j] == 246)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kTwoJump;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData2[i][j] == 247)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kShot;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData2[i][j] == 248)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kAttackUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData2[i][j] == 249)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kGaugeUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData2[i][j] == 250)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kHpUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < Map::kBgNumY[2]; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX[2]; j++)
+		{
+			Vec2 Pos = { j * Map::kChipSize,i * Map::kChipSize };
+
+			if (Map::kMapData3[i][j] == 246)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kTwoJump;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData3[i][j] == 247)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kShot;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData3[i][j] == 248)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kAttackUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData3[i][j] == 249)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kGaugeUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData3[i][j] == 250)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kHpUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < Map::kBgNumY[3]; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX[3]; j++)
+		{
+			Vec2 Pos = { j * Map::kChipSize,i * Map::kChipSize };
+
+			if (Map::kMapData4[i][j] == 246)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kTwoJump;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData4[i][j] == 247)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kShot;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData4[i][j] == 248)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kAttackUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData4[i][j] == 249)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kGaugeUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData4[i][j] == 250)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kHpUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < Map::kBgNumY[4]; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX[4]; j++)
+		{
+			Vec2 Pos = { j * Map::kChipSize,i * Map::kChipSize };
+
+			if (Map::kMapData5[i][j] == 246)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kTwoJump;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData5[i][j] == 247)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kShot;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData5[i][j] == 248)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kAttackUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData5[i][j] == 249)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kGaugeUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+			if (Map::kMapData5[i][j] == 250)
+			{
+				m_ItemNum++;
+				if (m_ItemNum == count)
+				{
+					m_ItemType = kHpUp;
+					m_Pos = { Pos };
+					return;
+				}
+			}
+		}
 	}
 }
 

@@ -8,6 +8,7 @@
 #include "BossEnemy.h"
 #include "EnemyBase.h"
 #include "Player.h"
+#include "Map.h"
 #include "Particle.h"
 #include <DxLib.h>
 #include <cassert>
@@ -272,195 +273,183 @@ void EnemyFactory::AttackDamage()
 
 void EnemyFactory::StageEnemy(int StageNum)
 {
-	if (StageNum == 0)
-	{
-		//Create(kFlyShot, { 2000,500 });
-		//Create(kBoss, { 2000,500 });
-		/*Create(kFly, { 2000,800 });
-		Create(kThrow, { 2000,800 });
-		Create(kJump, { 2000,800 });
-		Create(kFlyShot, { 2000,800 });
-		Create(kFly, { 1000,800 });
-		Create(kThrow, { 2000,800 });
-		Create(kJump, { 1900,600 });
-		Create(kJump, { 1900,300 });
-		Create(kJump, { 3000,600 });
-		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
-		Create(kFlyShot, { 1000,800 });
-		Create(kFlyShot, { 7000,800 });
-		Create(kFlyShot, { 4000,800 });
-		Create(kJump, { 6000,600 });*/
-		Create(kJump, { 6000,200 });
-		Create(kJump, { 4000,600 });
-		Create(kThrow, { 2050,400 });
-		Create(kThrow, { 5500,800 });
-		Create(kThrow, { 5300,800 });
-		Create(kNormal, { 3000,800 });
-		Create(kNormal, { 1600,600 });
-		Create(kNormal, { 4000,800 });
-		Create(kNormal, { 5000,600 });
-		Create(kNormal, { 5500,800 });
-		Create(kNormal, { 6000,800 });
-		Create(kNormal, { 6500,600 });
-	}
-	
-	if (StageNum == 1)
-	{
-		Create(kJump, { 1000,400 });
-		/*Create(kJump, { 1100,300 });
-		Create(kJump, { 1200,600 });
-		Create(kJump, { 1300,600 });
-		Create(kJump, { 1700,600 });
-		Create(kJump, { 1800,200 });
-		Create(kJump, { 1900,300 });
-		Create(kJump, { 1400,600 });*/
-		Create(kJump, { 1500,600 });
-		Create(kJump, { 1600,400 });
-		Create(kJump, { 2000,600 });
-		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
-		Create(kJump, { 5500,600 });
-		Create(kJump, { 5500,400 });
-		Create(kJump, { 6000,600 });
-		Create(kJump, { 6000,200 });
-		Create(kJump, { 1900,300 });
-		Create(kJump, { 3000,600 });
-		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
-		Create(kJump, { 5500,600 });
-		Create(kJump, { 5500,400 });
-		Create(kJump, { 6000,600 });
-		Create(kJump, { 6000,200 });
-	}
+	//if (StageNum == 0)
+	//{
+	//	//Create(kFlyShot, { 2000,500 });
+	//	//Create(kBoss, { 2000,500 });
+	//	/*Create(kFly, { 2000,800 });
+	//	Create(kThrow, { 2000,800 });
+	//	Create(kJump, { 2000,800 });
+	//	Create(kFlyShot, { 2000,800 });
+	//	Create(kFly, { 1000,800 });
+	//	Create(kThrow, { 2000,800 });
+	//	Create(kJump, { 1900,600 });
+	//	Create(kJump, { 1900,300 });
+	//	Create(kJump, { 3000,600 });
+	//	Create(kJump, { 3500,600 });
+	//	Create(kJump, { 5000,600 });
+	//	Create(kFlyShot, { 1000,800 });
+	//	Create(kFlyShot, { 7000,800 });
+	//	Create(kFlyShot, { 4000,800 });
+	//	Create(kJump, { 6000,600 });*/
+	//	Create(kJump, { 6000,200 });
+	//	Create(kJump, { 4000,600 });
+	//	Create(kThrow, { 2050,400 });
+	//	Create(kThrow, { 5500,800 });
+	//	Create(kThrow, { 5300,800 });
+	//	Create(kNormal, { 3000,800 });
+	//	Create(kNormal, { 1600,600 });
+	//	Create(kNormal, { 4000,800 });
+	//	Create(kNormal, { 5000,600 });
+	//	Create(kNormal, { 5500,800 });
+	//	Create(kNormal, { 6000,800 });
+	//	Create(kNormal, { 6500,600 });
+	//}
+	//
+	//if (StageNum == 1)
+	//{
+	//	Create(kJump, { 1000,400 });
+	//	/*Create(kJump, { 1100,300 });
+	//	Create(kJump, { 1200,600 });
+	//	Create(kJump, { 1300,600 });
+	//	Create(kJump, { 1700,600 });
+	//	Create(kJump, { 1800,200 });
+	//	Create(kJump, { 1900,300 });
+	//	Create(kJump, { 1400,600 });*/
+	//	Create(kJump, { 1500,600 });
+	//	Create(kJump, { 1600,400 });
+	//	Create(kJump, { 2000,600 });
+	//	Create(kJump, { 3500,600 });
+	//	Create(kJump, { 5000,600 });
+	//	Create(kJump, { 5500,600 });
+	//	Create(kJump, { 5500,400 });
+	//	Create(kJump, { 6000,600 });
+	//	Create(kJump, { 6000,200 });
+	//	Create(kJump, { 1900,300 });
+	//	Create(kJump, { 3000,600 });
+	//	Create(kJump, { 3500,600 });
+	//	Create(kJump, { 5000,600 });
+	//	Create(kJump, { 5500,600 });
+	//	Create(kJump, { 5500,400 });
+	//	Create(kJump, { 6000,600 });
+	//	Create(kJump, { 6000,200 });
+	//}
 
-	if (StageNum == 2)
-	{
-		Create(kThrow, { 1000,400 });
-		Create(kThrow, { 1100,300 });
-		Create(kThrow, { 1200,600 });
-		Create(kThrow, { 1300,600 });
-		Create(kThrow, { 1400,600 });
-		Create(kThrow, { 1500,600 });
-		Create(kThrow, { 1600,400 });
-		Create(kThrow, { 1700,600 });
-		Create(kThrow, { 1800,200 });
-		Create(kThrow, { 1900,300 });
-		Create(kThrow, { 2000,600 });
-		Create(kThrow, { 3500,600 });
-		Create(kThrow, { 5000,600 });
-		Create(kThrow, { 5500,600 });
-		Create(kThrow, { 5500,400 });
-		Create(kThrow, { 6000,600 });
-		Create(kThrow, { 6000,200 });
-		Create(kThrow, { 1900,300 });
-		Create(kThrow, { 3000,600 });
-		Create(kThrow, { 3500,600 });
-		Create(kThrow, { 5000,600 });
-		Create(kThrow, { 5500,600 });
-		Create(kThrow, { 5500,400 });
-		Create(kThrow, { 6000,600 });
-		Create(kThrow, { 6000,200 });
-	}
+	//if (StageNum == 2)
+	//{
+	//	Create(kThrow, { 1000,400 });
+	//	Create(kThrow, { 1100,300 });
+	//	Create(kThrow, { 1200,600 });
+	//	Create(kThrow, { 1300,600 });
+	//	Create(kThrow, { 1400,600 });
+	//	Create(kThrow, { 1500,600 });
+	//	Create(kThrow, { 1600,400 });
+	//	Create(kThrow, { 1700,600 });
+	//	Create(kThrow, { 1800,200 });
+	//	Create(kThrow, { 1900,300 });
+	//	Create(kThrow, { 2000,600 });
+	//	Create(kThrow, { 3500,600 });
+	//	Create(kThrow, { 5000,600 });
+	//	Create(kThrow, { 5500,600 });
+	//	Create(kThrow, { 5500,400 });
+	//	Create(kThrow, { 6000,600 });
+	//	Create(kThrow, { 6000,200 });
+	//	Create(kThrow, { 1900,300 });
+	//	Create(kThrow, { 3000,600 });
+	//	Create(kThrow, { 3500,600 });
+	//	Create(kThrow, { 5000,600 });
+	//	Create(kThrow, { 5500,600 });
+	//	Create(kThrow, { 5500,400 });
+	//	Create(kThrow, { 6000,600 });
+	//	Create(kThrow, { 6000,200 });
+	//}
 
-	if (StageNum == 3)
-	{
-		Create(kJump, { 1000,400 });
-		Create(kJump, { 1100,300 });
-		Create(kJump, { 1200,600 });
-		Create(kJump, { 1300,600 });
-		Create(kJump, { 1400,600 });
-		Create(kJump, { 1500,600 });
-		Create(kJump, { 1600,400 });
-		Create(kJump, { 1700,600 });
-		Create(kJump, { 1800,200 });
-		Create(kJump, { 1900,300 });
-		Create(kJump, { 2000,600 });
-		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
-		Create(kJump, { 5500,600 });
-		Create(kJump, { 5500,400 });
-		Create(kJump, { 6000,600 });
-		Create(kJump, { 6000,200 });
-		Create(kJump, { 1900,300 });
-		Create(kJump, { 3000,600 });
-		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
-		Create(kJump, { 5500,600 });
-		Create(kJump, { 5500,400 });
-		Create(kJump, { 6000,600 });
-		Create(kJump, { 6000,200 });
-	}
+	//if (StageNum == 3)
+	//{
+	//	Create(kJump, { 1000,400 });
+	//	Create(kJump, { 1100,300 });
+	//	Create(kJump, { 1200,600 });
+	//	Create(kJump, { 1300,600 });
+	//	Create(kJump, { 1400,600 });
+	//	Create(kJump, { 1500,600 });
+	//	Create(kJump, { 1600,400 });
+	//	Create(kJump, { 1700,600 });
+	//	Create(kJump, { 1800,200 });
+	//	Create(kJump, { 1900,300 });
+	//	Create(kJump, { 2000,600 });
+	//	Create(kJump, { 3500,600 });
+	//	Create(kJump, { 5000,600 });
+	//	Create(kJump, { 5500,600 });
+	//	Create(kJump, { 5500,400 });
+	//	Create(kJump, { 6000,600 });
+	//	Create(kJump, { 6000,200 });
+	//	Create(kJump, { 1900,300 });
+	//	Create(kJump, { 3000,600 });
+	//	Create(kJump, { 3500,600 });
+	//	Create(kJump, { 5000,600 });
+	//	Create(kJump, { 5500,600 });
+	//	Create(kJump, { 5500,400 });
+	//	Create(kJump, { 6000,600 });
+	//	Create(kJump, { 6000,200 });
+	//}
 
-	if (StageNum == 4)
-	{
-		Create(kJump, { 1000,400 });
-		Create(kJump, { 1100,300 });
-		Create(kJump, { 1200,600 });
-		Create(kJump, { 1300,600 });
-		Create(kJump, { 1400,600 });
-		Create(kJump, { 1500,600 });
-		Create(kJump, { 1600,400 });
-		Create(kJump, { 1700,600 });
-		Create(kJump, { 1800,200 });
-		Create(kJump, { 1900,300 });
-		Create(kJump, { 2000,600 });
-		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
-		Create(kJump, { 5500,600 });
-		Create(kJump, { 5500,400 });
-		Create(kJump, { 6000,600 });
-		Create(kJump, { 6000,200 });
-		Create(kJump, { 1900,300 });
-		Create(kJump, { 3000,600 });
-		Create(kJump, { 3500,600 });
-		Create(kJump, { 5000,600 });
-		Create(kJump, { 5500,600 });
-		Create(kJump, { 5500,400 });
-		Create(kJump, { 6000,600 });
-		Create(kJump, { 6000,200 });
-	}
-	/*if (m_Frame == 2)
-	{
-		Create(kJump, { 1800,600 });
-		Create(kJump, { 1900,600 });
-	}
+	//if (StageNum == 4)
+	//{
+	//	Create(kJump, { 1000,400 });
+	//	Create(kJump, { 1100,300 });
+	//	Create(kJump, { 1200,600 });
+	//	Create(kJump, { 1300,600 });
+	//	Create(kJump, { 1400,600 });
+	//	Create(kJump, { 1500,600 });
+	//	Create(kJump, { 1600,400 });
+	//	Create(kJump, { 1700,600 });
+	//	Create(kJump, { 1800,200 });
+	//	Create(kJump, { 1900,300 });
+	//	Create(kJump, { 2000,600 });
+	//	Create(kJump, { 3500,600 });
+	//	Create(kJump, { 5000,600 });
+	//	Create(kJump, { 5500,600 });
+	//	Create(kJump, { 5500,400 });
+	//	Create(kJump, { 6000,600 });
+	//	Create(kJump, { 6000,200 });
+	//	Create(kJump, { 1900,300 });
+	//	Create(kJump, { 3000,600 });
+	//	Create(kJump, { 3500,600 });
+	//	Create(kJump, { 5000,600 });
+	//	Create(kJump, { 5500,600 });
+	//	Create(kJump, { 5500,400 });
+	//	Create(kJump, { 6000,600 });
+	//	Create(kJump, { 6000,200 });
+	//}
 
-	if (m_Frame == 3)
+	for (int i = 0; i < Map::kBgNumY[m_Map->GetStageNum()]; i++)
 	{
-		Create(kJump, { 2000,600 });
-		Create(kJump, { 300,600 });
-	}
+		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
+		{
+			Vec2 Pos = { j * Map::kChipSize,i * Map::kChipSize };
 
-	if (m_Frame == 4)
-	{
-		Create(kJump, { 3000,600 });
-		Create(kJump, { 3500,600 });
+			if (m_Map->GetMapData(i, j) == 240)
+			{
+				Create(kNormal, { Pos });
+			}
+			if (m_Map->GetMapData(i, j) == 241)
+			{
+				Create(kFly, { Pos });
+			}
+			if (m_Map->GetMapData(i, j) == 242)
+			{
+				Create(kThrow, { Pos });
+			}
+			if (m_Map->GetMapData(i, j) == 243)
+			{
+				Create(kJump, { Pos });
+			}
+			if (m_Map->GetMapData(i, j) == 244)
+			{
+				Create(kFlyShot, { Pos });
+			}
+		}
 	}
-
-	if (m_Frame == 5)
-	{
-		Create(kJump, { 4000,600 });
-		Create(kJump, { 1500,600 });
-	}
-
-	if (m_Frame == 6)
-	{
-		Create(kNormal, { 1000,600 });
-		Create(kNormal, { 3000,800 });
-	}
-
-	if (m_Frame == 7)
-	{
-		Create(kNormal, { 4000,800 });
-		Create(kNormal, { 5000,600 });
-	}
-
-	if (m_Frame == 8)
-	{
-		Create(kNormal, { 1500,600 });
-		Create(kNormal, { 1500,600 });
-	}*/
 }
 
 void EnemyFactory::EnemyDead()

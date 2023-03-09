@@ -30,7 +30,7 @@ public:
 
 	Vec2 GetPos() { return m_Pos; }
 
-	void Init();
+	void Init(int count);
 
 	void Update();
 
