@@ -30,6 +30,7 @@ EnemyBase::EnemyBase() :
 	m_LookEnemy(1),
 	m_GraphX(0),
 	m_GraphY(0),
+	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
 	m_CollRight(false),
