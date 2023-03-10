@@ -68,8 +68,8 @@ void Enemy5::update()
 
 	if (!m_CollTop)
 	{
-		m_Pos.y = m_NextPos.y;
 	}
+	m_Pos.y = m_NextPos.y;
 
 	m_NextPos = m_Pos;
 

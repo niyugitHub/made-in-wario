@@ -9,6 +9,9 @@ public:
 	void SetActivgeOption(bool OptionScene) { m_OptionScene = OptionScene; }
 	bool GetActiveOption() { return m_OptionScene; }
 
+	// ‰æ‘œ‚ðƒZƒbƒg
+	void SetHandle(int handle) { m_OptionHandle = handle; }
+
 	bool GetGameEnd() { return m_GameEnd; }
 
 	void Init();

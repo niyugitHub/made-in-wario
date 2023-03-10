@@ -13,6 +13,7 @@ class Item;
 class GameOverScene;
 class Option;
 class SceneTitle;
+class Tutorial;
 
 class SceneMain : public SceneBase
 {
@@ -40,13 +41,18 @@ public:
 	// アイテムの位置の調整
 	void IsItemPosition(int StageNum);
 
+	// プレイヤーの位置調整
 	void InitPlayerPos();
+
+	// チュートリアルシーンに移動するか
+	bool SceneTutorial();
 
 private:
 	void FadeinUpdate();
 	void NormalUpdate();
 	void FadeoutUpdate();
 	void OptionUpdate();
+	void TutorialUpdate();
 
 private:
 
@@ -125,6 +131,9 @@ private:
 
 	// オプション画面
 	std::shared_ptr< Option> m_Option;
+
+	// チュートリアル
+	std::shared_ptr<Tutorial> m_Tutorial;
 
 	// タイトルシーン
 	std::shared_ptr<SceneTitle> m_SceneTitle;

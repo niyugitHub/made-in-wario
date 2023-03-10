@@ -4,7 +4,7 @@
 
 namespace
 {
-	const char* const kOptionFilename = "data/option.png";
+	
 	const char* const kOptionStringFilename = "data/optionString.png";
 	const char* const kGamePadFilename = "data/gamepad.png";
 	const char* const kGameEndFilename = "data/GameEnd.png";
@@ -21,7 +21,6 @@ Option::Option() :
 	m_SceneNum(0),
 	m_OptionScene(false)
 {
-	m_OptionHandle = LoadGraph(kOptionFilename);
 	m_StringHandle = LoadGraph(kOptionStringFilename);
 	m_GamepadHandle = LoadGraph(kGamePadFilename);
 	m_GameEndHandle = LoadGraph(kGameEndFilename);

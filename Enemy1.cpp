@@ -114,6 +114,7 @@ void Enemy1::UpdatePatrol()
 	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
 	{
 		m_func = &Enemy1::UpdateDiscovery;
+		m_TutorialFlag = true;
 	}
 }
 

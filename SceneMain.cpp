@@ -12,6 +12,7 @@
 #include"GameOverScene.h"
 #include"Option.h"
 #include"SceneTitle.h"
+#include "Tutorial.h"
 #include"Item.h"
 #include "Pad.h"
 
@@ -24,6 +25,7 @@ namespace
 	const char* const kPlayerShotFilename = "data/PlayerShot.png";
 	const char* const kHeartFilename = "data/heart.png";
 	const char* const kAttackUpFilename = "data/sword.png";
+	const char* const kOptionFilename = "data/option.png";
 
 	// プレイヤーの中心を少し左に寄せる
 	constexpr float kPlayerPosCenter = 150.0f;
@@ -67,11 +69,11 @@ SceneMain::SceneMain() :
 	}
 	m_player = std::make_shared<Player>();
 	m_Map = std::make_shared<Map>();
-//	m_Enemy = std::make_shared<Enemy1>();
 	m_EnemyFactory = std::make_shared<EnemyFactory>();
 	m_Coll = std::make_shared<Collision>();
 	m_GameOverScene = std::make_shared<GameOverScene>();
 	m_Option = std::make_shared<Option>();
+	m_Tutorial = std::make_shared<Tutorial>();
 
 	for (auto& pItemExist : m_ItemExist)
 	{
@@ -135,6 +137,9 @@ void SceneMain::init()
 	LoadDivGraph(kPlayerGraphicFilename, Player::kCharaChipNum,
 		Player::kSideCharaChipNum, Player::kColumnCharaChipNum,
 		Player::kSideSize, Player::kColumnSize, m_hPlayerGraphic);
+
+	int OptionHandle = LoadGraph(kOptionFilename);
+	m_Option->SetHandle(OptionHandle);
 
 	for (int i = 0; i < Player::kCharaChipNum; i++)
 	{
@@ -326,6 +331,10 @@ void SceneMain::draw()
 
 	//SetDrawScreen(DX_SCREEN_BACK);
 	//DrawGraph(m_QuakeX, 0, m_tempScreenH, false);
+	if (SceneTutorial())
+	{
+		m_Tutorial->Draw();
+	}
 	if (m_Option->GetActiveOption())
 	{
 		m_Option->Draw();
@@ -349,6 +358,51 @@ void SceneMain::InitPlayerPos()
 		m_PlayerPos = { 0,Map::kChipSize * 56 };
 	}
 	m_player->SetPos(m_PlayerPos);
+}
+
+bool SceneMain::SceneTutorial()
+{
+	if (m_Tutorial->GetJumpFlag() && !m_Tutorial->GetPastJumpFlag())
+	{
+		return true;
+	}
+
+	if (m_Tutorial->GetAttackFlag() && !m_Tutorial->GetPastAttackFlag())
+	{
+		return true;
+	}
+
+	if (m_Tutorial->GetDashFlag() && !m_Tutorial->GetPastDashJFlag())
+	{
+		return true;
+	}
+
+	if (m_Tutorial->GetTwoJumpFlag() && !m_Tutorial->GetPastTwoJumpFlag())
+	{
+		return true;
+	}
+
+	if (m_Tutorial->GetShotFlag() && !m_Tutorial->GetPastShotFlag())
+	{
+		return true;
+	}
+
+	if (m_Tutorial->GetAttackUpFlag() && !m_Tutorial->GetPastAttackUpFlag())
+	{
+		return true;
+	}
+
+	if (m_Tutorial->GetHpUpFlag() && !m_Tutorial->GetPastHpUpFlag())
+	{
+		return true;
+	}
+
+	if (m_Tutorial->GetGaugeUpFlag() && !m_Tutorial->GetPastGaugeUpFlag())
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void SceneMain::FadeinUpdate()
@@ -447,6 +501,7 @@ void SceneMain::NormalUpdate()
 					m_player->SetCollItemTwoJump(true);
 					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
+					m_Tutorial->SetFlag(true, Tutorial::kJumpFlag);
 				}
 				//攻撃力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kAttackUp)
@@ -455,24 +510,28 @@ void SceneMain::NormalUpdate()
 					m_player->SetAttackPower(m_AttackPower);
 					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
+					m_Tutorial->SetFlag(true, Tutorial::kAttackUpFlag);
 				}
 				//体力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kHpUp)
 				{
 					m_Item[i]->SetExist(false);
 					m_player->MaxHpUp();
+					m_Tutorial->SetFlag(true, Tutorial::kHpUpFlag);
 				}
 				//ゲージアップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kGaugeUp)
 				{
 					m_Item[i]->SetExist(false);
 					m_player->MaxGaugeUp();
+					m_Tutorial->SetFlag(true, Tutorial::kGaugeUpFlag);
 				}
 				//ショットアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kShot)
 				{
 					m_Item[i]->SetExist(false);
 					m_player->SetShot(true);
+					m_Tutorial->SetFlag(true, Tutorial::kShotFlag);
 				}
 			}
 		}
@@ -481,6 +540,16 @@ void SceneMain::NormalUpdate()
 	m_Coll->InitColl();
 
 	m_EnemyFactory->Update();
+
+	if (m_EnemyFactory->GetAttackTutorialFlag())
+	{
+		m_Tutorial->SetFlag(true, Tutorial::kAttackFlag);
+	}
+
+	if (SceneTutorial())
+	{
+		m_func = &SceneMain::TutorialUpdate;
+	}
 
 	if (Pad::isTrigger(PAD_INPUT_8))
 	{
@@ -544,5 +613,15 @@ void SceneMain::OptionUpdate()
 	{
 		m_func = &SceneMain::NormalUpdate;
 		m_Color = 255;
+	}
+}
+
+void SceneMain::TutorialUpdate()
+{
+	m_Tutorial->Update();
+
+	if (!SceneTutorial())
+	{
+		m_func = &SceneMain::NormalUpdate;
 	}
 }

@@ -34,6 +34,7 @@ EnemyBase::EnemyBase() :
 	m_CollBottom(false),
 	m_CollLeft(false),
 	m_CollRight(false),
+	m_TutorialFlag(false),
 	m_Player(nullptr),
 	m_Map(nullptr),
 	m_Coll(nullptr),

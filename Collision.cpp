@@ -410,7 +410,9 @@ void Collision::IsCollMapEnemy()
 					EnemyPosLeft < MapRight - 10 &&
 					EnemyPosBottom > MapTop + 20)
 				{
+					m_EnemyPos.y = MapBottom;
 					m_CollTopEnemy = true;
+					m_enemy->SetPos(m_EnemyPos);
 				}
 				//‰E
 				if (EnemyPosRight > MapLeft &&

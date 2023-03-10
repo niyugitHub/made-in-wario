@@ -179,6 +179,7 @@
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="FallShot.cpp" />
     <ClCompile Include="ShotBase.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +210,7 @@
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="FallShot.h" />
     <ClInclude Include="ShotBase.h" />
+    <ClInclude Include="Tutorial.h" />
     <ClInclude Include="vec2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -26,6 +26,10 @@ public:
 	virtual void SetCollRight(bool Right) { m_CollRight = Right; }
 	virtual void SetCollLeft(bool Left) { m_CollLeft = Left; }
 
+//	virtual void SetTutorialFlag(bool Flag) { m_TutorialFlag = Flag; }
+	// チュートリアルフラグ
+	virtual bool GetTutorialFlag() { return m_TutorialFlag; }
+
 	/*virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }*/
 	virtual void SetPos(Vec2 Pos) { m_NextPos = Pos; }
 
@@ -138,6 +142,9 @@ protected:
 	bool m_CollBottom;
 	bool m_CollLeft;
 	bool m_CollRight;
+
+	// チュートリアルのフラグ
+	bool m_TutorialFlag = false;
 
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;

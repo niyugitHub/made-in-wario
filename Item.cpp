@@ -8,7 +8,9 @@ namespace
 	constexpr float kAcceleration = 0.05f;
 }
 
-Item::Item() :
+Item::Item() : 
+	m_ItemNum(0),
+	m_handle(-1),
 	m_ItemType(0),
 	m_Pos(1000,700),
 	m_Move(0.0f),

@@ -457,3 +457,16 @@ void EnemyFactory::EnemyDead()
 	//ŽÀÛ‚É”ÍˆÍ‚ðŽw’è‚µ‚ÄÁ‚·
 	m_Enemy.erase(m_Enemy.begin(), m_Enemy.end());
 }
+
+bool EnemyFactory::GetAttackTutorialFlag()
+{
+	for (auto& enemy : m_Enemy)
+	{
+		if(enemy->GetTutorialFlag())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

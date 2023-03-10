@@ -64,6 +64,9 @@ public:
 	// エネミーが死んだときの処理(ステージが変わったとき)
 	void EnemyDead();
 
+	// チュートリアルのフラグ
+	bool GetAttackTutorialFlag();
+
 private:
 	int m_EnemyName;
 	int m_Frame;
