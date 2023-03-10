@@ -19,6 +19,11 @@ namespace
 {
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
+	const char* const kItemJumpFilename = "data/TwoJump.png";
+	const char* const kGaugeFilename = "data/gaugeItem.png";
+	const char* const kPlayerShotFilename = "data/PlayerShot.png";
+	const char* const kHeartFilename = "data/heart.png";
+	const char* const kAttackUpFilename = "data/sword.png";
 
 	// プレイヤーの中心を少し左に寄せる
 	constexpr float kPlayerPosCenter = 150.0f;
@@ -145,6 +150,36 @@ void SceneMain::init()
 	{
 		ItemCount++;
 		pItem->Init(ItemCount);
+
+		if (pItem->GetItemType() == Item::ItemType::kTwoJump)
+		{
+			int handle = LoadGraph(kItemJumpFilename);
+			pItem->SetHandle(handle);
+		}
+		//攻撃力アップアイテムに当たったとき
+		if (pItem->GetItemType() == Item::ItemType::kAttackUp)
+		{
+			int handle = LoadGraph(kAttackUpFilename);
+			pItem->SetHandle(handle);
+		}
+		//体力アップアイテムに当たったとき
+		if (pItem->GetItemType() == Item::ItemType::kHpUp)
+		{
+			int handle = LoadGraph(kHeartFilename);
+			pItem->SetHandle(handle);
+		}
+		//ゲージアップアイテムに当たったとき
+		if (pItem->GetItemType() == Item::ItemType::kGaugeUp)
+		{
+			int handle = LoadGraph(kGaugeFilename);
+			pItem->SetHandle(handle);
+		}
+		//ショットアイテムに当たったとき
+		if (pItem->GetItemType() == Item::ItemType::kShot)
+		{
+			int handle = LoadGraph(kPlayerShotFilename);
+			pItem->SetHandle(handle);
+		}
 	}
 
  	m_EnemyFactory->Init();

@@ -2,9 +2,17 @@
 #include "Map.h"
 #include<DxLib.h>
 
+namespace
+{
+	constexpr float kMove = 1.0f;
+	constexpr float kAcceleration = 0.05f;
+}
+
 Item::Item() :
 	m_ItemType(0),
 	m_Pos(1000,700),
+	m_Move(0.0f),
+	m_Acceleration(kAcceleration),
 	m_Exist(true)
 {
 }
@@ -382,16 +390,31 @@ void Item::Init(int count)
 
 void Item::Update()
 {
-	/*m_Pos += m_Map->GetVec();*/
+	m_Pos.y += m_Move;
+
+	m_Move -= m_Acceleration;
+
+	if (m_Move < kMove)
+	{
+		m_Acceleration *= -1;
+	}
+
+	if (m_Move > -kMove)
+	{
+		m_Acceleration *= -1;
+	}
 }
 
 void Item::Draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
-		DrawBox(m_Pos.x + offset.x, m_Pos.y + offset.y,
+		/*DrawBox(m_Pos.x + offset.x, m_Pos.y + offset.y,
 			m_Pos.x + 50 + offset.x, m_Pos.y + 50 + offset.y,
-			GetColor(255, 255, 255), true);
+			GetColor(255, 255, 255), true);*/
+
+		DrawGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
+			m_handle, true);
 
 		if (m_ItemType == ItemType::kTwoJump)
 		{

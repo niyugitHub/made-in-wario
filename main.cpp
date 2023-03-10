@@ -28,6 +28,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetMainWindowText("ゲーム名");
 	// 画面サイズの設定
 	SetGraphMode(kScreenWidth, kScreenHeight, 32);
+
+	SetWindowText("HELLO KNIGHT");
+
+	//ChangeWindowModeとSetWindowTextは、例外的にDxLib_Init()の前に書いてますが
+	//基本的にDxLibの関数はDxLib_Init()実行後に書いてください
 	if (DxLib_Init() == -1)	// DXライブラリ初期化処理
 	{
 		return -1;		// エラーが起きたら直ちに終了
@@ -38,9 +43,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SceneManager scene;
 	scene.init();
-	/*Player player;
-	player.Init();*/
-
+	
+	// フルスクリーンとウィンドウモードを切り替える
+	/*bool isWindowMode = kWindouwMode;
+	bool isTriggerEnter = false;*/
 	while (ProcessMessage() == 0)
 	{
 		LONGLONG time = GetNowHiPerformanceCount();
@@ -51,11 +57,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		auto fps = GetFPS();// Frame Per Second
 
+		// フルスクリーンとウィンドウモードを切り替える
+		/*if (DxLib::CheckHitKey(KEY_INPUT_LALT))
+		{
+			if (DxLib::CheckHitKey(KEY_INPUT_RETURN))
+			{
+				if (!isTriggerEnter)
+				{
+					isWindowMode = !isWindowMode;
+					ChangeWindowMode(isWindowMode);
+				}
+					isTriggerEnter = true;
+			}
+			else
+			{
+				isTriggerEnter = false;
+			}
+		}*/
+
 		scene.update();
 		scene.draw();
-
-		/*player.update();
-		player.draw();*/
 
 		DrawFormatString(10, 10, 0xffffff,"FPS=%2.2f", fps);
 		// 裏画面と表画面を入れ替える
