@@ -31,7 +31,8 @@ void MapGimmick::Update(Vec2 PlayerPos)
 {
 	Vec2 DistancePos = m_Pos - PlayerPos;
 
-	if (DistancePos.x < 32 && DistancePos.x > -32 && DistancePos.y < 0)
+	if (DistancePos.x < 96 && DistancePos.x > -32 && 
+		DistancePos.y < 0 && DistancePos.y > -Game::kScreenHeight)
 	{
 		m_Flag = true;
 	}

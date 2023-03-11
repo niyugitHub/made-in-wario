@@ -303,7 +303,7 @@ void Map::Init()
 	{
 		for (int x = 0; x < kBgNumX[m_StageNum]; x++)
 		{
-			if (m_MapData[y][x] == 10)
+			if (m_MapData[y][x] == 255)
 			{
 				Vec2 GimmickPos = { kChipSize * x, kChipSize * y };
 				m_Gimmick.push_back(std::make_shared<MapGimmick>(GimmickPos, m_GimmickHandle));

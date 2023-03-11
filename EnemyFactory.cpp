@@ -438,6 +438,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 			}
 			if (m_Map->GetMapData(i, j) == 242)
 			{
+				Pos.y -= 30;
 				Create(kThrow, { Pos });
 			}
 			if (m_Map->GetMapData(i, j) == 243)

@@ -986,15 +986,15 @@ void Player::CollGimmick()
 {
 	float PlayerTop = m_pos.y;
 	float PlayerBottom = m_pos.y + Player::kSideSize;
-	float PlayerLeft = m_pos.x;
-	float PlayerRight = m_pos.x + Player::kSideSize;
+	float PlayerLeft = m_pos.x + 40;
+	float PlayerRight = m_pos.x + Player::kSideSize - 40;
 
 	for (int i = 0; i < m_Map->GetGimmickCount(); i++)
 	{
 		Vec2 GimmickPos = m_Map->GetGimmickPos(i);
 
 		float GimmickPosTop = GimmickPos.y;
-		float GimmickPosBottom = GimmickPos.y + Map::kChipSize;
+		float GimmickPosBottom = GimmickPos.y + Map::kChipSize - 20;
 		float GimmickPosLeft = GimmickPos.x;
 		float GimmickPosRight = GimmickPos.x + Map::kChipSize;
 
