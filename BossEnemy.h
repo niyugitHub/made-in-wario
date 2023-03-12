@@ -20,6 +20,8 @@ private:
 	// 次の攻撃に移るまでの時間(攻撃頻度)
 	int m_Frame;
 
+	bool m_NowAttack;
+
 	// フレームごとにグラフを切り替える
 	int m_GraphFrame;
 

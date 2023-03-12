@@ -26,7 +26,8 @@ namespace
 
 BossEnemy::BossEnemy() :
 	m_Frame(200),
-	m_GraphFrame(0)
+	m_GraphFrame(0),
+	m_NowAttack(false)
 {
 	m_Hp = 1000;
 	m_GraphX = 0;
@@ -60,12 +61,12 @@ void BossEnemy::update()
 
 	m_GraphFrame++;
 
-	if (m_DistancePos.x < 0)
+	if (m_DistancePos.x < 0 && !m_NowAttack)
 	{
 		m_LookEnemy = -1;
 	}
 
-	else
+	else if(!m_NowAttack)
 	{
 		m_LookEnemy = 1;
 	}
@@ -128,6 +129,7 @@ void BossEnemy::ChangeGraph(int i)
 void BossEnemy::UpdateNotBattle()
 {
 	ChangeGraph(6);
+	m_Vec.x = 0;
 
 	if (m_DistancePos.x < 500 && m_DistancePos.x > -500)
 	{
@@ -143,6 +145,9 @@ void BossEnemy::UpdateNotBattle()
 void BossEnemy::UpdateDiscovery()
 {
 	m_GraphY = 2;
+
+	m_GraphSize1 = { 180,250 };
+	m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
 
 	if (m_DistancePos.x < 0)
 	{
@@ -167,6 +172,7 @@ void BossEnemy::UpdateDiscovery()
 			m_GraphX = 0;
 			m_GraphY = 3;
 			m_Vec.x = 0;
+			m_NowAttack = true;
 		}
 		if (RandAttack == 1)
 		{
@@ -187,6 +193,24 @@ void BossEnemy::UpdateAttack1()
 {
 	if (m_GraphFrame >= 60 && m_GraphFrame % 5 == 0)
 	{
+		if (m_LookEnemy == -1 && m_GraphFrame <= 70)
+		{
+			m_GraphSize1 = { 180,250 };
+			m_GraphSize2 = { kGraphSizeX - 30,kGraphSizeY - 50 };
+		}
+
+		else if (m_LookEnemy == 1 && m_GraphFrame <= 70)
+		{
+			m_GraphSize1 = { 50,250 };
+			m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
+		}
+
+		else
+		{
+			m_GraphSize1 = { 180,250 };
+			m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
+		}
+
 		m_GraphX++;
 		if (m_GraphX >= 9)
 		{
@@ -197,6 +221,7 @@ void BossEnemy::UpdateAttack1()
 	if (m_GraphFrame >= 60 && m_GraphX == 0)
 	{
 		m_func = &BossEnemy::UpdateDiscovery;
+		m_NowAttack = false;
 	}
 }
 

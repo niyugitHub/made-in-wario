@@ -449,6 +449,11 @@ void EnemyFactory::StageEnemy(int StageNum)
 			{
 				Create(kFlyShot, { Pos });
 			}
+			if (m_Map->GetMapData(i, j) == 245)
+			{
+				Pos.y -= 400;
+				Create(kBoss, { Pos });
+			}
 		}
 	}
 }
