@@ -48,6 +48,7 @@ void BossEnemy::update()
 		m_Exist = false;
 		m_GraphY = 9;
 		m_GraphX = 0;
+		m_GraphFrame = 0;
 		m_func = &BossEnemy::UpdateDead;
 	}
 
@@ -248,8 +249,11 @@ void BossEnemy::UpdateDead()
 		m_GraphX++;
 		if (m_GraphX >= 5)
 		{
-			m_BossBattle = false;
 			m_GraphX = 5;
+		}
+		if (m_GraphFrame >= 100)
+		{
+			m_BossBattle = false;
 		}
 	}
 }

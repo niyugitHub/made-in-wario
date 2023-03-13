@@ -49,6 +49,9 @@ public:
 	// チュートリアルシーンに移動するか
 	bool SceneTutorial();
 
+	// サウンド
+	void Sound();
+
 private:
 	void FadeinUpdate();
 	void NormalUpdate();
@@ -112,6 +115,11 @@ private:
 
 	// 背景の明るさ(フェードイン、フェードアウト時に暗くなる)
 	int m_Color;
+
+	// サウンド
+	int m_NormalSoundHandle;
+	int m_BossSoundHandle;
+	int m_GameOverSoundHandle;
 	
 	// プレイヤー
 	std::shared_ptr<Player> m_player;

@@ -27,6 +27,10 @@ namespace
 	const char* const kAttackUpFilename = "data/sword.png";
 	const char* const kOptionFilename = "data/option.png";
 
+	// サウンドファイル名
+	const char* const kMainbgmFilename = "sound/MainBGM.mp3";
+	const char* const kBossBattleFilename = "sound/BossBattle.mp3";
+
 	// プレイヤーの中心を少し左に寄せる
 	constexpr float kPlayerPosCenter = 150.0f;
 
@@ -53,6 +57,9 @@ SceneMain::SceneMain() :
 	m_AttackPower(10),
 	m_Stage(0),
 	m_Color(0),
+	m_NormalSoundHandle(-1),
+	m_BossSoundHandle(-1),
+	m_GameOverSoundHandle(-1),
 	m_Exist(true),
 	m_Coll(nullptr)
 {
@@ -141,6 +148,9 @@ void SceneMain::init()
 	int OptionHandle = LoadGraph(kOptionFilename);
 	m_Option->SetHandle(OptionHandle);
 
+	m_NormalSoundHandle = LoadSoundMem(kMainbgmFilename);
+	m_BossSoundHandle = LoadSoundMem(kBossBattleFilename);
+
 	for (int i = 0; i < Player::kCharaChipNum; i++)
 	{
 		m_player->setHandle(i, m_hPlayerGraphic[i]);
@@ -207,6 +217,8 @@ void SceneMain::end()
 SceneBase* SceneMain::update()
 {
 	(this->*m_func)();
+
+	Sound();
 
 	if (m_GameOverScene->GetActiveGameOver())
 	{
@@ -411,6 +423,11 @@ void SceneMain::InitPlayerPos()
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 56 };
 	}
+
+	if (m_Map->GetStageNum() == 2)
+	{
+		m_PlayerPos = { 0,Map::kChipSize * 13 };
+	}
 	m_player->SetPos(m_PlayerPos);
 }
 
@@ -457,6 +474,21 @@ bool SceneMain::SceneTutorial()
 	}
 
 	return false;
+}
+
+void SceneMain::Sound()
+{
+	if (!CheckSoundMem(m_NormalSoundHandle) && !m_EnemyFactory->GetBossBattle())
+	{
+		StopSoundMem(m_BossSoundHandle);
+		PlaySoundMem(m_NormalSoundHandle, DX_PLAYTYPE_BACK);
+	}
+
+	if (!CheckSoundMem(m_BossSoundHandle) && m_EnemyFactory->GetBossBattle())
+	{
+		StopSoundMem(m_NormalSoundHandle);
+		PlaySoundMem(m_BossSoundHandle, DX_PLAYTYPE_BACK);
+	}
 }
 
 void SceneMain::FadeinUpdate()
@@ -619,8 +651,9 @@ void SceneMain::FadeoutUpdate()
 	if (m_Color <= 0)
 	{
 		m_offset = { 0,0 };
-		/*m_PlayerPos.y = Player::kFristPlayerPosY;*/
-
+		InitPlayerPos();
+		m_player->SetPos(m_PlayerPos);
+		
 		m_PlayerPos.x = 0;
 
 		if (m_player->GetExist())
@@ -642,7 +675,6 @@ void SceneMain::FadeoutUpdate()
 			m_player->NotExist();
 			m_Map->Init();
 			m_Map->SetMap(m_MapPos);
-			m_player->SetPos(m_PlayerPos);
 			m_Exist = true;
 			m_player->SetExist(m_Exist);
 
@@ -652,8 +684,6 @@ void SceneMain::FadeoutUpdate()
 			m_EnemyFactory->Update();
 		}
 		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
-
-		InitPlayerPos();
 
 		m_func = &SceneMain::FadeinUpdate;
 	}

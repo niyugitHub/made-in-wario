@@ -184,6 +184,10 @@ void Player::update()
 
 		LimitMove();
 
+		if (FallPlayer())
+		{
+			m_Exist = false;
+		}
 	}
 
 	m_Particle->Update();
