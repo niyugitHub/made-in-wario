@@ -67,6 +67,9 @@ public:
 	// チュートリアルのフラグ
 	bool GetAttackTutorialFlag();
 
+	// ボス戦かどうか
+	bool GetBossBattle();
+
 private:
 	int m_EnemyName;
 	int m_Frame;

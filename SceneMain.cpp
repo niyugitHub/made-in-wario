@@ -346,6 +346,60 @@ void SceneMain::draw()
 	}
 }
 
+void SceneMain::Scroll()
+{
+	Vec2 targetOffset{};
+
+	// スクロールの計算 プレイヤーが画面中央に表示されるようスクロールする
+	targetOffset.x = (Game::kScreenWidth / 2 - kPlayerPosCenter) - m_player->GetPos().x;
+	targetOffset.y = (Game::kScreenHeight / 2) - m_player->GetPos().y;
+	if (!m_EnemyFactory->GetBossBattle())
+	{
+		if (targetOffset.x > 0)
+		{
+			targetOffset.x = 0;
+		}
+		if (targetOffset.x < -m_Map->getWidth() + Game::kScreenWidth)
+		{
+			targetOffset.x = -m_Map->getWidth() + Game::kScreenWidth;
+		}
+
+		if (targetOffset.y > 0)
+		{
+			targetOffset.y = 0;
+		}
+		if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
+		{
+			targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
+		}
+		
+		m_offset = targetOffset * 0.2f + m_offset * 0.8f;
+	}
+
+	if (m_EnemyFactory->GetBossBattle())
+	{
+		if (targetOffset.x > -2660)
+		{
+			targetOffset.x = -2660;
+		}
+		if (targetOffset.x < -2240 + 1500)
+		{
+			targetOffset.x = -740;
+		}
+
+		if (targetOffset.y > 0)
+		{
+			targetOffset.y = 0;
+		}
+		if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
+		{
+			targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
+		}
+
+		m_offset = targetOffset * 0.2f + m_offset * 0.8f;
+	}
+}
+
 void SceneMain::IsItemPosition(int StageNum)
 {
 	m_Stage = StageNum;
@@ -459,29 +513,30 @@ void SceneMain::NormalUpdate()
 
 	m_Map->update();
 
-	Vec2 targetOffset{};
-
-	// スクロールの計算 プレイヤーが画面中央に表示されるようスクロールする
-	targetOffset.x = (Game::kScreenWidth / 2 - kPlayerPosCenter) - m_player->GetPos().x;
-	if (targetOffset.x > 0)
-	{
-		targetOffset.x = 0;
-	}
-	if (targetOffset.x < -m_Map->getWidth() + Game::kScreenWidth)
-	{
-		targetOffset.x = -m_Map->getWidth() + Game::kScreenWidth;
-	}
-
-	targetOffset.y = (Game::kScreenHeight / 2) - m_player->GetPos().y;
-	if (targetOffset.y > 0)
-	{
-		targetOffset.y = 0;
-	}
-	if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
-	{
-		targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
-	}
-	m_offset = targetOffset * 0.2f + m_offset * 0.8f;
+	//Vec2 targetOffset{};
+	//
+	//// スクロールの計算 プレイヤーが画面中央に表示されるようスクロールする
+	//targetOffset.x = (Game::kScreenWidth / 2 - kPlayerPosCenter) - m_player->GetPos().x;
+	//if (targetOffset.x > 0)
+	//{
+	//	targetOffset.x = 0;
+	//}
+	//if (targetOffset.x < -m_Map->getWidth() + Game::kScreenWidth)
+	//{
+	//	targetOffset.x = -m_Map->getWidth() + Game::kScreenWidth;
+	//}
+	//
+	//targetOffset.y = (Game::kScreenHeight / 2) - m_player->GetPos().y;
+	//if (targetOffset.y > 0)
+	//{
+	//	targetOffset.y = 0;
+	//}
+	//if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
+	//{
+	//	targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
+	//}
+	//m_offset = targetOffset * 0.2f + m_offset * 0.8f;
+	Scroll();
 
 	m_PlayerPos = m_player->GetPos();
 

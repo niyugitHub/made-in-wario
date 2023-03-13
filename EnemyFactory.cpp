@@ -476,3 +476,16 @@ bool EnemyFactory::GetAttackTutorialFlag()
 
 	return false;
 }
+
+bool EnemyFactory::GetBossBattle()
+{
+	for (auto& enemy : m_Enemy)
+	{
+		if (enemy->GetBossBattle())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

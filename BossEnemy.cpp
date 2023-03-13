@@ -29,7 +29,7 @@ BossEnemy::BossEnemy() :
 	m_GraphFrame(0),
 	m_NowAttack(false)
 {
-	m_Hp = 1000;
+	m_Hp = 10;
 	m_GraphX = 0;
 	m_GraphY = 5;
 	m_GraphSize1 = { 180,250 };
@@ -46,6 +46,7 @@ void BossEnemy::update()
 	if (m_Hp <= 0)
 	{
 		m_Exist = false;
+		m_BossBattle = false;
 	}
 
 	if (!m_CollRight && !m_CollLeft)
@@ -139,6 +140,7 @@ void BossEnemy::UpdateNotBattle()
 	if (m_StartBattle)
 	{
 		m_func = &BossEnemy::UpdateDiscovery;
+		m_BossBattle = true;
 	}
 }
 

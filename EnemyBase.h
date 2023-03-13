@@ -30,6 +30,9 @@ public:
 	// チュートリアルフラグ
 	virtual bool GetTutorialFlag() { return m_TutorialFlag; }
 
+	// ボス戦が始まったかどうか
+	virtual bool GetBossBattle() { return m_BossBattle; }
+
 	/*virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }*/
 	virtual void SetPos(Vec2 Pos) { m_NextPos = Pos; }
 
@@ -145,6 +148,9 @@ protected:
 
 	// チュートリアルのフラグ
 	bool m_TutorialFlag = false;
+
+	// ボス戦のフラグ
+	bool m_BossBattle = false;
 
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;

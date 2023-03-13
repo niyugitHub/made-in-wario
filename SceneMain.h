@@ -38,6 +38,8 @@ public:
 	virtual SceneBase* update();
 	virtual void draw();
 
+	void Scroll();
+
 	// アイテムの位置の調整
 	void IsItemPosition(int StageNum);
 
