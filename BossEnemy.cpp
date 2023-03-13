@@ -43,10 +43,12 @@ BossEnemy::~BossEnemy()
 
 void BossEnemy::update()
 {
-	if (m_Hp <= 0)
+	if (m_Hp <= 0 && m_func != &BossEnemy::UpdateDead)
 	{
 		m_Exist = false;
-		m_BossBattle = false;
+		m_GraphY = 9;
+		m_GraphX = 0;
+		m_func = &BossEnemy::UpdateDead;
 	}
 
 	if (!m_CollRight && !m_CollLeft)
@@ -90,8 +92,9 @@ void BossEnemy::update()
 
 		m_DistancePos = m_CentorPos - m_PlayerPos;
 
-		(this->*m_func)();
 	}
+	(this->*m_func)();
+
 	m_NextPos += m_Vec;
 }
 
@@ -99,6 +102,7 @@ void BossEnemy::draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
+	}
 		if (m_LookEnemy == 1)
 		{
 			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
@@ -112,7 +116,6 @@ void BossEnemy::draw(Vec2 offset)
 				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 				m_handle, true, false);
 		}
-	}
 }
 
 void BossEnemy::ChangeGraph(int i)
@@ -134,13 +137,12 @@ void BossEnemy::UpdateNotBattle()
 
 	if (m_DistancePos.x < 500 && m_DistancePos.x > -500)
 	{
-		m_StartBattle = true;
+		m_BossBattle = true;
 	}
 
-	if (m_StartBattle)
+	if (m_BossBattle)
 	{
 		m_func = &BossEnemy::UpdateDiscovery;
-		m_BossBattle = true;
 	}
 }
 
@@ -237,4 +239,17 @@ void BossEnemy::UpdateAttack3()
 
 void BossEnemy::UpdateAttack4()
 {
+}
+
+void BossEnemy::UpdateDead()
+{
+	if (m_GraphFrame % 8 == 0)
+	{
+		m_GraphX++;
+		if (m_GraphX >= 5)
+		{
+			m_BossBattle = false;
+			m_GraphX = 5;
+		}
+	}
 }

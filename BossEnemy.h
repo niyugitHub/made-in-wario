@@ -14,9 +14,6 @@ public:
 	void ChangeGraph(int i);
 
 private:
-	// 戦闘開始
-	bool m_StartBattle = false;
-
 	// 次の攻撃に移るまでの時間(攻撃頻度)
 	int m_Frame;
 
@@ -31,6 +28,8 @@ private:
 	void UpdateAttack2();		// プレイヤーに攻撃
 	void UpdateAttack3();		// プレイヤーに攻撃
 	void UpdateAttack4();		// プレイヤーに攻撃
+	void UpdateDead();			// ボス死亡時
+
 	// update処理メンバ関数ポインタ
 	void(BossEnemy::* m_func)();
 };
