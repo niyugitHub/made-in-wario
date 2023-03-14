@@ -402,10 +402,24 @@ void Map::drawMap(Vec2 offset)
 		{
 			int ChipNumY = m_MapData[y][x] / kChipDivisionY;
 			int ChipNumX = m_MapData[y][x] % kChipDivisionY;
+			if (m_MapData[y][x] != 11 && m_MapData[y][x] != 12 &&
+				m_MapData[y][x] != 27 && m_MapData[y][x] != 28)
+			{
+				DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y + offset.y,
+					kChipSize * ChipNumX, kChipSize * ChipNumY,
+					kChipSize, kChipSize, m_handle, true);
+			}
 
-			DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y + offset.y,
-				kChipSize * ChipNumX, kChipSize * ChipNumY,
-				kChipSize, kChipSize, m_handle, true);
+			if (m_MapData[y][x] == 11 || m_MapData[y][x] == 12 || 
+				m_MapData[y][x] == 27 || m_MapData[y][x] == 28)
+			{
+				if (m_BossBattle)
+				{
+					DrawRectGraph(m_Pos.x + kChipSize * x + offset.x, m_Pos.y + kChipSize * y + offset.y,
+						kChipSize * ChipNumX, kChipSize * ChipNumY,
+						kChipSize, kChipSize, m_handle, true);
+				}
+			}
 		}
 	}
 }

@@ -183,11 +183,6 @@ void Player::update()
 		InitColl();
 
 		LimitMove();
-
-		if (FallPlayer())
-		{
-			m_Exist = false;
-		}
 	}
 
 	m_Particle->Update();
@@ -540,10 +535,10 @@ void Player::LimitMove()
 		m_NextPos.x = Map::kChipSize * Map::kBgNumX[m_Map->GetStageNum()] - kSideSize;
 	}*/
 
-	/*if (FallPlayer())
+	if (FallPlayer())
 	{
 		m_Exist = false;
-	}*/
+	}
 }
 
 void Player::NotExist()
@@ -846,46 +841,92 @@ void Player::IsColl()
 			float MapLeft = j * Map::kChipSize;
 			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
 			{
-				/*float MapPosX = j * Map::kChipSize;
-				float MapPosY = i * Map::kChipSize;*/
-				//下
-				if (PlayerBottom > MapTop &&
-					PlayerTop < MapTop &&
-					PlayerRight > MapLeft + 10 &&
-					PlayerLeft < MapRight - 10 &&
-					m_Jump <= 0)
+				if (m_Map->GetMapData(i, j) != 11 && m_Map->GetMapData(i, j) != 12 &&
+					m_Map->GetMapData(i, j) != 27 && m_Map->GetMapData(i, j) != 28)
 				{
-					m_NextPos.y = MapTop - Player::kColumnSize + 10;
-					PlayerBottom = m_NextPos.y + Player::kColumnSize;
-					m_CollBottom = true;
-				}
-				//上
-				if (PlayerTop < MapBottom &&
-					PlayerRight > MapLeft + 10 &&
-					PlayerLeft < MapRight - 10 &&
-					PlayerBottom > MapTop + 20)
-				{
-					m_CollTop = true;
-				}
-				//右
-				if (PlayerRight >= MapLeft &&
-					PlayerLeft <= MapRight &&
-					PlayerTop < MapBottom - 20 &&
-					PlayerBottom > MapTop + 30 &&
-					PlayerCentor < MapLeft)
-				{
-					m_CollRight = true;
-				}
-				//左
-				if (PlayerRight >= MapLeft &&
-					PlayerLeft <= MapRight &&
-					PlayerTop < MapBottom - 20 &&
-					PlayerBottom > MapTop + 30 &&
-					PlayerCentor > MapRight)
-				{
-					m_CollLeft = true;
+					//下
+					if (PlayerBottom > MapTop &&
+						PlayerTop < MapTop &&
+						PlayerRight > MapLeft + 10 &&
+						PlayerLeft < MapRight - 10 &&
+						m_Jump <= 0)
+					{
+						m_NextPos.y = MapTop - Player::kColumnSize + 10;
+						PlayerBottom = m_NextPos.y + Player::kColumnSize;
+						m_CollBottom = true;
+					}
+					//上
+					if (PlayerTop < MapBottom &&
+						PlayerRight > MapLeft + 10 &&
+						PlayerLeft < MapRight - 10 &&
+						PlayerBottom > MapTop + 20)
+					{
+						m_CollTop = true;
+					}
+					//右
+					if (PlayerRight >= MapLeft &&
+						PlayerLeft <= MapRight &&
+						PlayerTop < MapBottom - 20 &&
+						PlayerBottom > MapTop + 30 &&
+						PlayerCentor < MapLeft)
+					{
+						m_CollRight = true;
+					}
+					//左
+					if (PlayerRight >= MapLeft &&
+						PlayerLeft <= MapRight &&
+						PlayerTop < MapBottom - 20 &&
+						PlayerBottom > MapTop + 30 &&
+						PlayerCentor > MapRight)
+					{
+						m_CollLeft = true;
+					}
 				}
 
+				if (m_Map->GetMapData(i, j) == 11 || m_Map->GetMapData(i, j) == 12 ||
+					m_Map->GetMapData(i, j) == 27 || m_Map->GetMapData(i, j) == 28)
+				{
+					if (m_Map->GetBossBattle())
+					{
+						//下
+						if (PlayerBottom > MapTop &&
+							PlayerTop < MapTop &&
+							PlayerRight > MapLeft + 10 &&
+							PlayerLeft < MapRight - 10 &&
+							m_Jump <= 0)
+						{
+							m_NextPos.y = MapTop - Player::kColumnSize + 10;
+							PlayerBottom = m_NextPos.y + Player::kColumnSize;
+							m_CollBottom = true;
+						}
+						//上
+						if (PlayerTop < MapBottom &&
+							PlayerRight > MapLeft + 10 &&
+							PlayerLeft < MapRight - 10 &&
+							PlayerBottom > MapTop + 20)
+						{
+							m_CollTop = true;
+						}
+						//右
+						if (PlayerRight >= MapLeft &&
+							PlayerLeft <= MapRight &&
+							PlayerTop < MapBottom - 20 &&
+							PlayerBottom > MapTop + 30 &&
+							PlayerCentor < MapLeft)
+						{
+							m_CollRight = true;
+						}
+						//左
+						if (PlayerRight >= MapLeft &&
+							PlayerLeft <= MapRight &&
+							PlayerTop < MapBottom - 20 &&
+							PlayerBottom > MapTop + 30 &&
+							PlayerCentor > MapRight)
+						{
+							m_CollLeft = true;
+						}
+					}
+				}
 				//ステージクリアの判定
 			}
 

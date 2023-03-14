@@ -367,6 +367,7 @@ void SceneMain::Scroll()
 	targetOffset.y = (Game::kScreenHeight / 2) - m_player->GetPos().y;
 	if (!m_EnemyFactory->GetBossBattle())
 	{
+		m_Map->SetBossBattle(false);
 		if (targetOffset.x > 0)
 		{
 			targetOffset.x = 0;
@@ -390,13 +391,14 @@ void SceneMain::Scroll()
 
 	if (m_EnemyFactory->GetBossBattle())
 	{
-		if (targetOffset.x > -2660)
+		m_Map->SetBossBattle(true);
+		if (targetOffset.x > -4672)
 		{
-			targetOffset.x = -2660;
+			targetOffset.x = -4672;
 		}
-		if (targetOffset.x < -2240 + 1500)
+		if (targetOffset.x < -3136)
 		{
-			targetOffset.x = -740;
+			targetOffset.x = -3136;
 		}
 
 		if (targetOffset.y > 0)
@@ -661,6 +663,8 @@ void SceneMain::FadeoutUpdate()
 			m_player->SetStageClaer(false);
 			m_Map->SetStage();
 			m_Map->Init();
+			InitPlayerPos();
+			m_player->SetPos(m_PlayerPos);
 			m_EnemyFactory->EnemyDead();
 			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 			m_EnemyFactory->Update();
