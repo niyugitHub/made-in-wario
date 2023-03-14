@@ -37,7 +37,7 @@ Enemy4::Enemy4() :
 	m_Hp = 50;
 	m_GraphSize2 = { 0,0 };
 	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
-	m_func = &Enemy4::UpdatePatrol;
+	m_func = &Enemy4::NotUpdate;
 }
 
 Enemy4::~Enemy4()
@@ -101,6 +101,14 @@ void Enemy4::UpdateGraph()
 	else if (m_JumpPower < 15)	m_GraphX = 5;
 	else if (m_JumpPower < 25)	m_GraphX = 6;
 	else if (m_JumpPower < 30)	m_GraphX = 7;
+}
+
+void Enemy4::NotUpdate()
+{
+	if (StartUpdate())
+	{
+		m_func = &Enemy4::UpdatePatrol;
+	}
 }
 
 void Enemy4::UpdatePatrol()

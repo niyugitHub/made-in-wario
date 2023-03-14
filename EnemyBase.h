@@ -70,6 +70,8 @@ public:
 
 	virtual void BasicMoveEnemy();
 
+	virtual bool StartUpdate();
+
 	virtual void InitKnockBack(); // ノックバックのスピードを初期化
 
 	virtual void KnockBack(); // ノックバック処理
@@ -156,5 +158,7 @@ protected:
 	std::shared_ptr<Map> m_Map;
 	std::shared_ptr<Collision> m_Coll;
 	ShotBase* m_Shot;
+
+
 };
 

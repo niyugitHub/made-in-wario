@@ -26,7 +26,7 @@ Enemy1::Enemy1() :
 	m_Hp = 30;
 	m_GraphSize1 = { 10,10 };
 	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
-	m_func = &Enemy1::UpdatePatrol;
+	m_func = &Enemy1::NotUpdate;
 }
 
 Enemy1::~Enemy1()
@@ -102,6 +102,14 @@ void Enemy1::draw(Vec2 offset)
 				(m_GraphX * 3) * kGraphSizeX, kRectGraphY, kGraphSizeX * 3, 64,
 				m_handle, true, false);
 		}
+	}
+}
+
+void Enemy1::NotUpdate()
+{
+	if (StartUpdate())
+	{
+		m_func = &Enemy1::UpdatePatrol;
 	}
 }
 

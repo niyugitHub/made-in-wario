@@ -35,7 +35,7 @@ Enemy2::Enemy2() :
 	m_Hp = 50;
 	m_GraphSize1 = { 0,0 };
 	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
-	m_func = &Enemy2::UpdatePatrol;
+	m_func = &Enemy2::NotUpdate;
 }
 
 Enemy2::~Enemy2()
@@ -129,6 +129,14 @@ void Enemy2::draw(Vec2 offset)
 //#ifdef _DEBUG
 //	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
 //#endif
+}
+
+void Enemy2::NotUpdate()
+{
+	if (StartUpdate())
+	{
+		m_func = &Enemy2::UpdatePatrol;
+	}
 }
 
 void Enemy2::UpdatePatrol()

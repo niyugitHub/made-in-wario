@@ -400,16 +400,9 @@ void SceneMain::Scroll()
 		{
 			targetOffset.x = -3136;
 		}
-
-		if (targetOffset.y > 0)
-		{
-			targetOffset.y = 0;
-		}
-		if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
-		{
-			targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
-		}
-
+		
+			targetOffset.y = -1792;
+		
 		m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 	}
 }

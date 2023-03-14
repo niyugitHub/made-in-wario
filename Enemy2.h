@@ -20,6 +20,7 @@ private:
 	float m_FlySpeed;
 	float m_FieldSpeed;
 
+	void NotUpdate();		// 敵が画面外にいるとき
 	void UpdatePatrol();	// 通常時
 	void UpdateDiscovery();		// プレイヤーが近づいたとき
 	void updateAttack();		// プレイヤーに攻撃がヒットしたとき

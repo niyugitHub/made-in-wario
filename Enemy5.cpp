@@ -47,7 +47,7 @@ Enemy5::Enemy5() :
 	m_Hp = 50;
 	m_GraphSize2 = { 20,20 };
 	m_GraphSize2 = { kGraphSizeX - 20,kGraphSizeY - 20 };
-	m_func = &Enemy5::UpdatePatrol;
+	m_func = &Enemy5::NotUpdate;
 }
 
 Enemy5::~Enemy5()
@@ -146,6 +146,14 @@ void Enemy5::draw(Vec2 offset)
 	if (m_Shot != nullptr)
 	{
 		m_Shot->Draw(offset);
+	}
+}
+
+void Enemy5::NotUpdate()
+{
+	if (StartUpdate())
+	{
+		m_func = &Enemy5::UpdatePatrol;
 	}
 }
 

@@ -25,6 +25,7 @@ private:
 
 	void UpdateGraph();
 
+	void NotUpdate();		// 敵が画面外にいるとき
 	void UpdatePatrol();	// 通常時
 	
 	// update処理メンバ関数ポインタ

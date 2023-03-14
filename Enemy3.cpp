@@ -36,7 +36,7 @@ Enemy3::Enemy3() :
 	m_GraphY = 0;
 	m_GraphSize1 = { 0,0 };
 	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
-	m_func = &Enemy3::UpdatePatrol;
+	m_func = &Enemy3::NotUpdate;
 }
 
 Enemy3::~Enemy3()
@@ -144,6 +144,14 @@ void Enemy3::draw(Vec2 offset)
 	}
 
 //	DrawFormatString(800, 0, GetColor(255, 255, 255), "ìGÇÃç¿ïW%f", m_Pos.x);
+}
+
+void Enemy3::NotUpdate()
+{
+	if (StartUpdate())
+	{
+		m_func = &Enemy3::UpdatePatrol;
+	}
 }
 
 void Enemy3::UpdatePatrol()

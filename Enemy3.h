@@ -24,6 +24,7 @@ private:
 	// 投げる頻度
 	int m_RandThrowFrame;
 
+	void NotUpdate();		// 敵が画面外にいるとき
 	void UpdatePatrol();	// 通常時
 	void UpdateDiscovery();		// プレイヤーが近づいたとき
 	void updateAttack();		// プレイヤーに攻撃がヒットしたとき

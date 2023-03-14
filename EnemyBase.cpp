@@ -132,6 +132,16 @@ void EnemyBase::BasicMoveEnemy()
 //	m_Vec.x += m_MapVec.x;
 }
 
+bool EnemyBase::StartUpdate()
+{
+	if (m_DistancePos.x < Game::kScreenWidth && m_DistancePos.x > -Game::kScreenWidth &&
+		m_DistancePos.y < Game::kScreenHeight && m_DistancePos.y > -Game::kScreenHeight)
+	{
+		return true;
+	}
+	return false;
+}
+
 void EnemyBase::InitKnockBack()
 {
 	m_KnockBackSpeed = m_MaxKnockBackSpeed;

@@ -19,6 +19,7 @@ private:
 	// フレームごとにグラフを切り替える
 	int m_Frame;
 
+	void NotUpdate();		// 敵が画面外にいるとき
 	void UpdatePatrol();	// 通常時
 	void UpdateDiscovery();		// プレイヤーが近づいたとき
 	void updateAttack();		// プレイヤーに攻撃がヒットしたとき
