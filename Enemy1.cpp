@@ -40,7 +40,12 @@ void Enemy1::update()
 		m_Exist = false;
 	}
 
-	if (!m_CollRight && !m_CollLeft)
+	if (!m_CollRight && m_Pos.x < m_NextPos.x)
+	{
+		m_Pos.x = m_NextPos.x;
+	}
+
+	if (!m_CollLeft && m_Pos.x > m_NextPos.x)
 	{
 		m_Pos.x = m_NextPos.x;
 	}

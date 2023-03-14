@@ -630,16 +630,16 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 		return;
 	}
 
-	if (m_CollBottom)
-	{
-		//	m_NextPos += Vel;
-		m_NextPos.x += Vel.x;
-	}
-	else
-	{
-		//	m_NextPos += Vel;
-		m_pos.y += Vel.y;
-	}
+	m_NextPos.x += Vel.x;
+	//if (m_CollBottom)
+	//{
+	//	//	m_NextPos += Vel;
+	//}
+	//else
+	//{
+	//	//	m_NextPos += Vel;
+	//	m_pos.y += Vel.y;
+	//}
 
 	if (!m_CollRight && Vel.x > 0)
 	{

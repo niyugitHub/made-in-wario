@@ -64,7 +64,10 @@ void Enemy2::update()
 		m_Pos.x = m_NextPos.x;
 	}
 
-	m_Pos.y = m_NextPos.y;
+	if (!m_CollTop)
+	{
+		m_Pos.y = m_NextPos.y;
+	}
 
 	m_NextPos = m_Pos;
 
