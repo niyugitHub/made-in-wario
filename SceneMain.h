@@ -49,6 +49,11 @@ public:
 	// チュートリアルシーンに移動するか
 	bool SceneTutorial();
 
+	// チュートリアルシーンの表示
+	void DrawTutorial();
+
+	void TutorialFlag();
+
 	// サウンド
 	void Sound();
 
@@ -116,10 +121,21 @@ private:
 	// 背景の明るさ(フェードイン、フェードアウト時に暗くなる)
 	int m_Color;
 
+	// 画像
+	int m_OptionHandle = -1;
+	int m_TwoJumpTutorialHandle = -1;
+	int m_ShotTutorialHandle = -1;
+	int m_DamageTutorialHandle = -1;
 	// サウンド
 	int m_NormalSoundHandle;
 	int m_BossSoundHandle;
 	int m_GameOverSoundHandle;
+
+	// フォントデータ
+	int m_FontHandle = -1;
+
+	//文字の透過度
+	int m_StringColor = 0;
 	
 	// プレイヤー
 	std::shared_ptr<Player> m_player;

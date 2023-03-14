@@ -44,6 +44,9 @@ public:
 	Vec2 GetGraphSize1() { return m_EnemySize1; } // 左上座標
 	Vec2 GetGraphSize2() { return m_EnemySize2; }//  右上座標
 
+	// ダメージを受けた時フラグ取得
+	bool GetDamageFlag() { return m_DamageFlag; }
+
 	void SetPlayer(std::shared_ptr<Player> player) { m_Player = player; }
 	void SetMap(std::shared_ptr<Map> map) { m_Map = map; }
 	void SetColl(std::shared_ptr<Collision> Coll) { m_Coll = Coll; }
@@ -88,6 +91,9 @@ private:
 	bool m_CollBottom;
 	bool m_CollRight;
 	bool m_CollLeft;
+
+	// ダメージを受けた時のチュートリアル
+	bool m_DamageFlag = false;
 
 	//// 存在確認
 	//bool m_Exist;

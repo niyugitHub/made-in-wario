@@ -63,6 +63,9 @@ public:
 	virtual Vec2 GetGraphSize1() { return m_GraphSize1; }
 	virtual Vec2 GetGraphSize2() { return m_GraphSize2; }
 
+	// 敵の重量取得
+	virtual float GetWeight() { return m_Weight; }
+
 	virtual void update();
 	virtual void draw(Vec2 offset);
 
@@ -108,6 +111,9 @@ protected:
 	// プレイヤーとエネミーの座標の差
 	Vec2 m_DistancePos;
 
+	// スクロール量
+	Vec2 m_offset;
+
 	// エネミーの画像ハンドル
 	int m_handle;
 	// ショットの画像ハンドル
@@ -137,6 +143,9 @@ protected:
 	// 画像の種類
 	int m_GraphX;
 	int m_GraphY;
+	
+	// 敵の重量
+	float m_Weight;
 
 	// 画像のグラフサイズ取得
 	Vec2 m_GraphSize1 = {0,0};

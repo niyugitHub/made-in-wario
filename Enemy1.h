@@ -25,6 +25,5 @@ private:
 	void updateAttack();		// プレイヤーに攻撃がヒットしたとき
 	// update処理メンバ関数ポインタ
 	void(Enemy1::* m_func)();
-
 };
 

@@ -47,6 +47,10 @@ void Tutorial::SetFlag(bool Flag, int Type)
 	{
 		m_GaugeUpFlag = Flag;
 	}
+	if (Type == kDamageFlag)
+	{
+		m_DamageFlag = Flag;
+	}
 
 	m_Count = 0;
 }
@@ -54,7 +58,7 @@ void Tutorial::SetFlag(bool Flag, int Type)
 void Tutorial::Update()
 {
 	m_Count++;
-	if (Pad::isTrigger(PAD_INPUT_2) && m_JumpFlag && m_Count >= 25)
+	/*if (Pad::isTrigger(PAD_INPUT_2) && m_JumpFlag && m_Count >= 25)
 	{
 		m_PastJumpFlag = true;
 	}
@@ -67,7 +71,7 @@ void Tutorial::Update()
 	if (Pad::isTrigger(PAD_INPUT_2) && m_DashFlag && m_Count >= 25)
 	{
 		m_PastDashFlag = true;
-	}
+	}*/
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_TwoJumpFlag && m_Count >= 25)
 	{
@@ -79,7 +83,12 @@ void Tutorial::Update()
 		m_PastShotFlag = true;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_2) && m_AttackUpFlag && m_Count >= 25)
+	if (Pad::isTrigger(PAD_INPUT_2) && m_DamageFlag && m_Count >= 25)
+	{
+		m_PastDamageFlag = true;
+	}
+
+	/*if (Pad::isTrigger(PAD_INPUT_2) && m_AttackUpFlag && m_Count >= 25)
 	{
 		m_PastAttackUpFlag = true;
 	}
@@ -92,7 +101,7 @@ void Tutorial::Update()
 	if (Pad::isTrigger(PAD_INPUT_2) && m_GaugeUpFlag && m_Count >= 25)
 	{
 		m_PastGaugeUpFlag = true;
-	}
+	}*/
 }
 
 void Tutorial::Draw()

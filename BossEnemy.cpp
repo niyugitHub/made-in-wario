@@ -25,13 +25,14 @@ namespace
 }
 
 BossEnemy::BossEnemy() :
-	m_Frame(200),
+	m_Frame(80),
 	m_GraphFrame(0),
 	m_NowAttack(false)
 {
-	m_Hp = 10;
+	m_Hp = 1000;
 	m_GraphX = 0;
 	m_GraphY = 5;
+	m_Weight = 100.0f;
 	m_GraphSize1 = { 180,250 };
 	m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
 	m_func = &BossEnemy::UpdateNotBattle;
@@ -48,6 +49,7 @@ void BossEnemy::update()
 		m_Exist = false;
 		m_GraphY = 9;
 		m_GraphX = 0;
+		m_Vec.x = 0;
 		m_GraphFrame = 0;
 		m_func = &BossEnemy::UpdateDead;
 	}
@@ -149,6 +151,7 @@ void BossEnemy::UpdateNotBattle()
 
 void BossEnemy::UpdateDiscovery()
 {
+	m_Frame--;
 	m_GraphY = 2;
 
 	m_GraphSize1 = { 180,250 };
@@ -166,9 +169,10 @@ void BossEnemy::UpdateDiscovery()
 
 	ChangeGraph(5);
 
-	if (m_DistancePos.x < 200 && m_DistancePos.x > -200)
+	if (m_DistancePos.x < 200 && m_DistancePos.x > -200 && m_Frame <= 0)
 	{
-		int RandAttack = /*GetRand(4)*/0;
+		m_Frame = 50 + GetRand(50);
+		int RandAttack = GetRand(3);
 
 		if (RandAttack == 0)
 		{
@@ -182,29 +186,35 @@ void BossEnemy::UpdateDiscovery()
 		if (RandAttack == 1)
 		{
 			m_func = &BossEnemy::UpdateAttack2;
+			m_GraphFrame = 0;
+			m_GraphX = 0;
+			m_GraphY = 6;
+			m_Vec.x = 0;
+			m_NowAttack = true;
 		}
 		if (RandAttack == 2)
 		{
 			m_func = &BossEnemy::UpdateAttack3;
-		}
-		if (RandAttack == 3)
-		{
-			m_func = &BossEnemy::UpdateAttack4;
+			m_GraphFrame = 0;
+			m_GraphX = 0;
+			m_GraphY = 1;
+			m_Vec.x = 0;
+			m_NowAttack = true;
 		}
 	}
 }
 
 void BossEnemy::UpdateAttack1()
 {
-	if (m_GraphFrame >= 60 && m_GraphFrame % 5 == 0)
+	if (m_GraphFrame >= 40 && m_GraphFrame % 5 == 0)
 	{
-		if (m_LookEnemy == -1 && m_GraphFrame <= 70)
+		if (m_LookEnemy == -1 && m_GraphFrame <= 50)
 		{
 			m_GraphSize1 = { 180,250 };
 			m_GraphSize2 = { kGraphSizeX - 30,kGraphSizeY - 50 };
 		}
 
-		else if (m_LookEnemy == 1 && m_GraphFrame <= 70)
+		else if (m_LookEnemy == 1 && m_GraphFrame <= 50)
 		{
 			m_GraphSize1 = { 50,250 };
 			m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
@@ -232,10 +242,59 @@ void BossEnemy::UpdateAttack1()
 
 void BossEnemy::UpdateAttack2()
 {
+	if (m_GraphFrame >= 40 && m_GraphFrame % 5 == 0)
+	{
+		m_GraphSize1 = { 50,400 };
+		m_GraphSize2 = { kGraphSizeX - 30,kGraphSizeY - 50 };
+
+		m_GraphX++;
+		if (m_GraphX >= 9)
+		{
+			m_GraphX = 0;
+		}
+	}
+
+	if (m_GraphFrame >= 60 && m_GraphX == 0)
+	{
+		m_func = &BossEnemy::UpdateDiscovery;
+		m_NowAttack = false;
+	}
 }
 
 void BossEnemy::UpdateAttack3()
 {
+	if (m_GraphFrame >= 60 && m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX >= 8)
+		{
+			m_GraphX = 0;
+		}
+
+		if (m_LookEnemy == -1)
+		{
+			m_Vec.x = kSpeed * 3.0f;
+		}
+
+		if (m_LookEnemy == 1)
+		{
+			m_Vec.x = -kSpeed * 3.0f;
+		}
+	}
+
+
+	if (m_GraphFrame >= 180)
+	{
+		m_func = &BossEnemy::UpdateDiscovery;
+		m_NowAttack = false;
+	}
+
+	if (m_CollLeft || m_CollRight)
+	{
+		m_func = &BossEnemy::UpdateDiscovery;
+		m_NowAttack = false;
+	}
 }
 
 void BossEnemy::UpdateAttack4()

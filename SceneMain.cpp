@@ -26,6 +26,9 @@ namespace
 	const char* const kHeartFilename = "data/heart.png";
 	const char* const kAttackUpFilename = "data/sword.png";
 	const char* const kOptionFilename = "data/option.png";
+	const char* const kTwoJumpTutorialFilename = "data/TwoJumpTutorial.png";
+	const char* const kShotTutorialFilename = "data/ShotTutorial.png";
+	const char* const kDamageTutorialFilename = "data/DamageTutorial.png";
 
 	// サウンドファイル名
 	const char* const kMainbgmFilename = "sound/MainBGM.mp3";
@@ -123,6 +126,7 @@ SceneMain::SceneMain() :
 		pItem->SetMap(m_Map);
 	}
 
+	SetFontSize(50);
 	m_func = &SceneMain::FadeinUpdate;
 }
 
@@ -145,11 +149,16 @@ void SceneMain::init()
 		Player::kSideCharaChipNum, Player::kColumnCharaChipNum,
 		Player::kSideSize, Player::kColumnSize, m_hPlayerGraphic);
 
-	int OptionHandle = LoadGraph(kOptionFilename);
-	m_Option->SetHandle(OptionHandle);
+	m_OptionHandle = LoadGraph(kOptionFilename);
+	m_Option->SetHandle(m_OptionHandle);
+	m_TwoJumpTutorialHandle = LoadGraph(kTwoJumpTutorialFilename);
+	m_ShotTutorialHandle = LoadGraph(kShotTutorialFilename);
+	m_DamageTutorialHandle = LoadGraph(kDamageTutorialFilename);
 
 	m_NormalSoundHandle = LoadSoundMem(kMainbgmFilename);
 	m_BossSoundHandle = LoadSoundMem(kBossBattleFilename);
+
+	ChangeFont("游明朝 Light");
 
 	for (int i = 0; i < Player::kCharaChipNum; i++)
 	{
@@ -305,6 +314,8 @@ void SceneMain::draw()
 		}*/
 #endif
 
+	DrawTutorial();
+
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawGraph(m_QuakeX, 0, m_tempScreenH, false);
 
@@ -417,18 +428,21 @@ void SceneMain::InitPlayerPos()
 	if (m_Map->GetStageNum() == 1)
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 56 };
+		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
 	}
 
 	if (m_Map->GetStageNum() == 2)
 	{
-		m_PlayerPos = { 0,Map::kChipSize * 13 };
+		m_PlayerPos = { 0,Map::kChipSize * 6 };
+		m_offset = { 0,0};
 	}
+
 	m_player->SetPos(m_PlayerPos);
 }
 
 bool SceneMain::SceneTutorial()
 {
-	if (m_Tutorial->GetJumpFlag() && !m_Tutorial->GetPastJumpFlag())
+	/*if (m_Tutorial->GetJumpFlag() && !m_Tutorial->GetPastJumpFlag())
 	{
 		return true;
 	}
@@ -441,7 +455,7 @@ bool SceneMain::SceneTutorial()
 	if (m_Tutorial->GetDashFlag() && !m_Tutorial->GetPastDashJFlag())
 	{
 		return true;
-	}
+	}*/
 
 	if (m_Tutorial->GetTwoJumpFlag() && !m_Tutorial->GetPastTwoJumpFlag())
 	{
@@ -452,8 +466,12 @@ bool SceneMain::SceneTutorial()
 	{
 		return true;
 	}
+	if (m_Tutorial->GetDamageFlag() && !m_Tutorial->GetPastDamageFlag())
+	{
+		return true;
+	}
 
-	if (m_Tutorial->GetAttackUpFlag() && !m_Tutorial->GetPastAttackUpFlag())
+	/*if (m_Tutorial->GetAttackUpFlag() && !m_Tutorial->GetPastAttackUpFlag())
 	{
 		return true;
 	}
@@ -466,9 +484,102 @@ bool SceneMain::SceneTutorial()
 	if (m_Tutorial->GetGaugeUpFlag() && !m_Tutorial->GetPastGaugeUpFlag())
 	{
 		return true;
-	}
+	}*/
 
 	return false;
+}
+
+void SceneMain::DrawTutorial()
+{
+	if (m_Tutorial->GetJumpFlag() && !m_Tutorial->GetPastJumpFlag())
+	{
+		DrawString(Game::kScreenWidth / 2, 400,"A:ジャンプ", 0x00ff00);
+	}
+
+	if (m_Tutorial->GetAttackFlag() && !m_Tutorial->GetPastAttackFlag())
+	{
+		DrawString(Game::kScreenWidth / 2, 400, "RB,LB:攻撃", 0x00ff00);
+	}
+	if (m_Tutorial->GetDashFlag() && !m_Tutorial->GetPastDashFlag())
+	{
+		DrawString(Game::kScreenWidth / 2, 400, "A:ジャンプ\nXダッシュ", 0x00ff00);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_StringColor);
+	if (m_Tutorial->GetAttackUpFlag() && m_StringColor > 0)
+	{
+		DrawString(m_PlayerPos.x + m_offset.x, m_PlayerPos.y + m_offset.y - 50 + (m_StringColor / 2), "攻撃力Up", 0x00ff00);
+	}
+
+	if (m_Tutorial->GetHpUpFlag() && m_StringColor > 0)
+	{
+		DrawString(m_PlayerPos.x + m_offset.x, m_PlayerPos.y + m_offset.y - 50 + (m_StringColor / 2), "体力UP", 0x00ff00);
+	}
+
+	if (m_Tutorial->GetGaugeUpFlag() && m_StringColor > 0)
+	{
+		DrawString(m_PlayerPos.x + m_offset.x, m_PlayerPos.y + m_offset.y- 50 + (m_StringColor / 2), "ゲージUP", 0x00ff00);
+	}
+
+	m_StringColor -= 5;
+
+	if (m_StringColor <= 0)
+	{
+		m_Tutorial->SetAttackUpFlag(false);
+		m_Tutorial->SetHpUpFlag(false);
+		m_Tutorial->SetGaugeUpFlag(false);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+	if (m_Tutorial->GetTwoJumpFlag() && !m_Tutorial->GetPastTwoJumpFlag())
+	{
+		DrawGraph(0, 0, m_OptionHandle, true);
+		DrawGraph(0, 0, m_TwoJumpTutorialHandle, true);
+	}
+
+	if (m_Tutorial->GetShotFlag() && !m_Tutorial->GetPastShotFlag())
+	{
+		DrawGraph(0, 0, m_OptionHandle, true);
+		DrawGraph(0, 0, m_ShotTutorialHandle, true);
+	}
+
+	if (m_Tutorial->GetDamageFlag() && !m_Tutorial->GetPastDamageFlag())
+	{
+		DrawGraph(0, 0, m_OptionHandle, true);
+		DrawGraph(0, 0, m_DamageTutorialHandle, true);
+	}
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void SceneMain::TutorialFlag()
+{
+	if (m_Map->GetStageNum() == 0 && m_PlayerPos.x >= 1600 && !m_Tutorial->GetPastJumpFlag())
+	{
+		m_Tutorial->SetFlag(true,Tutorial::kJumpFlag);
+	}
+	if (m_PlayerPos.x >= 2000)
+	{
+		m_Tutorial->SetPastJumpFlag(true);
+	}
+
+	if (m_Map->GetStageNum() == 0 && m_PlayerPos.x >= 2700 && !m_Tutorial->GetPastDashFlag())
+	{
+		m_Tutorial->SetFlag(true, Tutorial::kDashFlag);
+	}
+
+	if (m_PlayerPos.x >= 3100)
+	{
+		m_Tutorial->SetPastDashFlag(true);
+	}
+
+	if (m_Tutorial->GetAttackFlag())
+	{
+		if (Pad::isTrigger(PAD_INPUT_5) || Pad::isTrigger(PAD_INPUT_6))
+		{
+			m_Tutorial->SetPastAttackFlag(true);
+		}
+	}
 }
 
 void SceneMain::Sound()
@@ -565,6 +676,8 @@ void SceneMain::NormalUpdate()
 	//m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 	Scroll();
 
+	TutorialFlag();
+
 	m_PlayerPos = m_player->GetPos();
 
 	IsItemPosition(1);
@@ -583,7 +696,7 @@ void SceneMain::NormalUpdate()
 					m_player->SetCollItemTwoJump(true);
 					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
-					m_Tutorial->SetFlag(true, Tutorial::kJumpFlag);
+					m_Tutorial->SetFlag(true, Tutorial::kTwoJumpFlag);
 				}
 				//攻撃力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kAttackUp)
@@ -593,6 +706,7 @@ void SceneMain::NormalUpdate()
 					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
 					m_Tutorial->SetFlag(true, Tutorial::kAttackUpFlag);
+					m_StringColor = 255;
 				}
 				//体力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kHpUp)
@@ -600,6 +714,7 @@ void SceneMain::NormalUpdate()
 					m_Item[i]->SetExist(false);
 					m_player->MaxHpUp();
 					m_Tutorial->SetFlag(true, Tutorial::kHpUpFlag);
+					m_StringColor = 255;
 				}
 				//ゲージアップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kGaugeUp)
@@ -607,6 +722,7 @@ void SceneMain::NormalUpdate()
 					m_Item[i]->SetExist(false);
 					m_player->MaxGaugeUp();
 					m_Tutorial->SetFlag(true, Tutorial::kGaugeUpFlag);
+					m_StringColor = 255;
 				}
 				//ショットアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kShot)
@@ -626,6 +742,11 @@ void SceneMain::NormalUpdate()
 	if (m_EnemyFactory->GetAttackTutorialFlag())
 	{
 		m_Tutorial->SetFlag(true, Tutorial::kAttackFlag);
+	}
+
+	if (m_EnemyFactory->GetDamageFlag())
+	{
+		m_Tutorial->SetFlag(true, Tutorial::kDamageFlag);
 	}
 
 	if (SceneTutorial())
@@ -680,7 +801,7 @@ void SceneMain::FadeoutUpdate()
 			m_EnemyFactory->StageEnemy(m_Map->GetStageNum());
 			m_EnemyFactory->Update();
 		}
-		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+		/*m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };*/
 
 		m_func = &SceneMain::FadeinUpdate;
 	}

@@ -19,6 +19,7 @@ EnemyBase::EnemyBase() :
 	m_ThrowPos(0,0),
 	m_PlayerPos(0,0),
 	m_DistancePos(0,0),
+	m_offset(0,0),
 	m_Gravity(0),
 	m_Hp(30),
 	m_HitAttack(false),
@@ -30,6 +31,7 @@ EnemyBase::EnemyBase() :
 	m_LookEnemy(1),
 	m_GraphX(0),
 	m_GraphY(0),
+	m_Weight(1.0f),
 	m_CollTop(false),
 	m_CollBottom(false),
 	m_CollLeft(false),
@@ -69,6 +71,7 @@ void EnemyBase::draw(Vec2 offset)
 			m_Pos.x + 50 + offset.x,m_Pos.y + 50,GetColor(255, 0, 0), true);
 	}
 
+	m_offset = offset;
 
 #ifdef _DEBUG
 //	DrawFormatString(0, 100, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
@@ -134,8 +137,19 @@ void EnemyBase::BasicMoveEnemy()
 
 bool EnemyBase::StartUpdate()
 {
-	if (m_DistancePos.x < Game::kScreenWidth && m_DistancePos.x > -Game::kScreenWidth &&
-		m_DistancePos.y < Game::kScreenHeight && m_DistancePos.y > -Game::kScreenHeight)
+	m_DistancePos = m_CentorPos - m_PlayerPos;
+
+	if (m_offset.x < -Game::kScreenWidth / 2)
+	{
+		m_offset.x = -Game::kScreenWidth / 2;
+	}
+
+	if (m_offset.y < -Game::kScreenHeight / 2)
+	{
+		m_offset.y = -Game::kScreenHeight / 2;
+	}
+	if (m_DistancePos.x < Game::kScreenWidth - m_offset.x && m_DistancePos.x > -Game::kScreenWidth + m_offset.x &&
+		m_DistancePos.y < Game::kScreenHeight - m_offset.y && m_DistancePos.y > -Game::kScreenHeight + m_offset.y)
 	{
 		return true;
 	}
@@ -153,13 +167,13 @@ void EnemyBase::KnockBack()
 	{
 		if (m_Player->GetPos().x < m_CentorPos.x)
 		{
-			m_NextPos.x += m_KnockBackSpeed;
+			m_NextPos.x += m_KnockBackSpeed / GetWeight();
 			m_KnockBackSpeed -= kKnockBackSpeedDown;
 		}
 
 		else if (m_Player->GetPos().x >= m_CentorPos.x)
 		{
-			m_NextPos.x -= m_KnockBackSpeed;
+			m_NextPos.x -= m_KnockBackSpeed / GetWeight();
 			m_KnockBackSpeed -= kKnockBackSpeedDown;
 		}
 	}
@@ -206,10 +220,10 @@ bool EnemyBase::CollShotPlayer()
 	float ShotPosLeft = m_Player->GetShotPos().x;
 	float ShotPosRight = m_Player->GetShotPos().x + 50;
 
-	float EnemyPosLeft = m_Pos.x;
-	float EnemyPosRight = m_Pos.x + 50;
-	float EnemyPosUp = m_Pos.y;
-	float EnemyPosBottom = m_Pos.y + 50;
+	float EnemyPosLeft = m_Pos.x + GetGraphSize1().x;
+	float EnemyPosRight = m_Pos.x + GetGraphSize2().x;
+	float EnemyPosUp = m_Pos.y + GetGraphSize1().y;
+	float EnemyPosBottom = m_Pos.y + GetGraphSize2().y;
 
 	if (ShotPosRight > EnemyPosRight) return false;
 	if (ShotPosRight < EnemyPosLeft) return false;

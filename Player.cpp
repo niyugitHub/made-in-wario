@@ -56,7 +56,7 @@ namespace
 //Player::Player(handle) :m_handle = handle 
 
 Player::Player() :
-m_pos(kFristPlayerPosX + (kSideSize / 2), kFristPlayerPosY),
+m_pos(200, 900),
 m_NextPos(m_pos),
 m_vec(5, 0),
 m_ShotPos(0,0),
@@ -85,7 +85,7 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(true),
+m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
@@ -248,7 +248,7 @@ void Player::draw(Vec2 offset)
 	Vec2 pos = m_pos + offset;
 	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 
-	if (m_PossibleTwoJump)
+	/*if (m_PossibleTwoJump)
 	{
 		DrawString(0,600, "二段ジャンプ可能", GetColor(0, 255, 0));
 	}
@@ -256,7 +256,7 @@ void Player::draw(Vec2 offset)
 	if (m_PossibleShot)
 	{
 		DrawString(0, 700, "ショット可能", GetColor(0, 255, 0));
-	}
+	}*/
 
 	if (m_Shot != nullptr)
 	{
@@ -269,9 +269,9 @@ void Player::draw(Vec2 offset)
 	}
 
 
-	DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
+	/*DrawFormatString(0, 300, GetColor(255, 255, 255), "プレイヤー体力%d", m_Hp);
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "攻撃力%d", m_AttackPower);
-	DrawFormatString(0, 500, GetColor(255, 255, 255), "回復ゲージ%d", m_Gauge);
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "回復ゲージ%d", m_Gauge);*/
 #ifdef _DEBUG
 	/*DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);*/
 #endif

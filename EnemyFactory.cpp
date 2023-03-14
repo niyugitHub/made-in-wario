@@ -134,6 +134,7 @@ void EnemyFactory::Update()
 			if (m_Coll->IsCollEnemy() && enemy->isExist() && m_Player->GetNoDamageFrame() <= 0)
 			{
 			//	DrawString(500, 0, "‚µ‚ñ‚¾", GetColor(100, 255, 100));
+				m_DamageFlag = true;
 				m_Player->Ondamage();
 				m_Player->SetNoDamageFrame(100);
 				m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
@@ -157,6 +158,7 @@ void EnemyFactory::Update()
 			// ƒvƒŒƒCƒ„[‚ÌUŒ‚‚ª“G‚É“–‚½‚Á‚½Žž
 			if (m_Coll->IsCollAttackPlayer() && !enemy->GetHit())
 			{
+				
 				m_Player->IsGauge();
 				m_Player->SetEnemyPos(enemy->GetCentorPos());
 				m_Player->SetKnockBackSpeed(Player::kHitKnockBackSpeed);
@@ -189,7 +191,7 @@ void EnemyFactory::Update()
 		// ƒGƒlƒ~[‚ÌUŒ‚‚ª‚ ‚½‚Á‚½•ƒvƒŒƒCƒ„[‚Ì–³“GŽžŠÔ‚ª‚OˆÈ‰º‚ÌŽž
 		if (enemy->CollThrow() && m_Player->GetNoDamageFrame() <= 0)
 		{
-			//	DrawString(500, 0, "‚µ‚ñ‚¾", GetColor(100, 255, 100));
+			m_DamageFlag = true;
 			m_Player->Ondamage();
 			m_Player->SetNoDamageFrame(100);
 			m_Player->SetEnemyPos(enemy->GetCentorPos());
