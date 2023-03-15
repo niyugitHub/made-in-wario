@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Shot">
       <UniqueIdentifier>{6b79230d-49b7-4009-b208-de42dddab118}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Gimmick">
+      <UniqueIdentifier>{9cf6e600-e95c-4ec9-910f-4e6cc52bb792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Gimmick">
+      <UniqueIdentifier>{3378fb1f-0e2e-4503-91aa-dd6c466995ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -102,9 +108,6 @@
     <ClCompile Include="Enemy4.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="MapGimmick.cpp">
-      <Filter>ソース ファイル\Minigame</Filter>
-    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -125,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="Tutorial.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MapGimmick.cpp">
+      <Filter>ソース ファイル\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="GimmickBase.cpp">
+      <Filter>ソース ファイル\Gimmick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +200,6 @@
     <ClInclude Include="Enemy4.h">
       <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="MapGimmick.h">
-      <Filter>ヘッダー ファイル\Minigame</Filter>
-    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -214,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="Tutorial.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGimmick.h">
+      <Filter>ヘッダー ファイル\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="GimmickBase.h">
+      <Filter>ヘッダー ファイル\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

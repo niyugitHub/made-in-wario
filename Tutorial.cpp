@@ -30,10 +30,12 @@ void Tutorial::SetFlag(bool Flag, int Type)
 	if (Type == kTwoJumpFlag)
 	{
 		m_TwoJumpFlag = Flag;
+		m_Count = 0;
 	}
 	if (Type == kShotFlag)
 	{
 		m_ShotFlag = Flag;
+		m_Count = 0;
 	}
 	if (Type == kAttackUpFlag)
 	{
@@ -50,9 +52,8 @@ void Tutorial::SetFlag(bool Flag, int Type)
 	if (Type == kDamageFlag)
 	{
 		m_DamageFlag = Flag;
+		m_Count = 0;
 	}
-
-	m_Count = 0;
 }
 
 void Tutorial::Update()

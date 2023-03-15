@@ -39,6 +39,9 @@ namespace
 
 	// フェードのスピード
 	constexpr int kFadeSpeed = 12;
+
+	// チュートリアルの時間
+	constexpr int kTutorialTimer = 90;
 }
 
 SceneMain::SceneMain() :
@@ -225,7 +228,21 @@ void SceneMain::end()
 
 SceneBase* SceneMain::update()
 {
-	(this->*m_func)();
+	if (m_TutorialCount == 0 || m_TutorialCount >= kTutorialTimer)
+	{
+		(this->*m_func)();
+	}
+
+	TutorialFlag();
+
+	if (m_TutorialCount > 0 && m_TutorialCount < kTutorialTimer)
+	{
+		m_Color = 200;
+	}
+	else if(m_func == &SceneMain::NormalUpdate)
+	{
+		m_Color = 255;
+	}
 
 	Sound();
 
@@ -241,6 +258,7 @@ SceneBase* SceneMain::update()
 
 		if (m_GameOverScene->GetPlayAgain())
 		{
+			m_GameOverCount = 0;
 			m_func = &SceneMain::FadeoutUpdate;
 			m_GameOverScene->SetActivgeGameOver(false);
 		}
@@ -265,6 +283,7 @@ void SceneMain::draw()
 	ClearDrawScreen();
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, GetColor(255, 255, 255), true);
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
+	
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 //	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xff00ff, true);
 	m_Map->draw(m_offset);
@@ -425,6 +444,12 @@ void SceneMain::IsItemPosition(int StageNum)
 
 void SceneMain::InitPlayerPos()
 {
+	if (m_Map->GetStageNum() == 0)
+	{
+		m_PlayerPos = { 200, 1000 };
+		m_offset = { 0,-192};
+	}
+
 	if (m_Map->GetStageNum() == 1)
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 56 };
@@ -534,22 +559,34 @@ void SceneMain::DrawTutorial()
 	if (m_Tutorial->GetTwoJumpFlag() && !m_Tutorial->GetPastTwoJumpFlag())
 	{
 		DrawGraph(0, 0, m_OptionHandle, true);
-		DrawGraph(0, 0, m_TwoJumpTutorialHandle, true);
 	}
 
 	if (m_Tutorial->GetShotFlag() && !m_Tutorial->GetPastShotFlag())
 	{
 		DrawGraph(0, 0, m_OptionHandle, true);
-		DrawGraph(0, 0, m_ShotTutorialHandle, true);
 	}
 
 	if (m_Tutorial->GetDamageFlag() && !m_Tutorial->GetPastDamageFlag())
 	{
 		DrawGraph(0, 0, m_OptionHandle, true);
-		DrawGraph(0, 0, m_DamageTutorialHandle, true);
 	}
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	if (m_Tutorial->GetTwoJumpFlag() && !m_Tutorial->GetPastTwoJumpFlag())
+	{
+		DrawGraph(0, 0, m_TwoJumpTutorialHandle, true);
+	}
+
+	if (m_Tutorial->GetShotFlag() && !m_Tutorial->GetPastShotFlag())
+	{
+		DrawGraph(0, 0, m_ShotTutorialHandle, true);
+	}
+
+	if (m_Tutorial->GetDamageFlag() && !m_Tutorial->GetPastDamageFlag())
+	{
+		DrawGraph(0, 0, m_DamageTutorialHandle, true);
+	}
 }
 
 void SceneMain::TutorialFlag()
@@ -557,27 +594,33 @@ void SceneMain::TutorialFlag()
 	if (m_Map->GetStageNum() == 0 && m_PlayerPos.x >= 1600 && !m_Tutorial->GetPastJumpFlag())
 	{
 		m_Tutorial->SetFlag(true,Tutorial::kJumpFlag);
+		m_TutorialCount++;
 	}
-	if (m_PlayerPos.x >= 2000)
+	if (m_PlayerPos.x >= 2000 && !m_Tutorial->GetPastJumpFlag())
 	{
 		m_Tutorial->SetPastJumpFlag(true);
+		m_TutorialCount = 0;
 	}
 
 	if (m_Map->GetStageNum() == 0 && m_PlayerPos.x >= 2700 && !m_Tutorial->GetPastDashFlag())
 	{
 		m_Tutorial->SetFlag(true, Tutorial::kDashFlag);
+		m_TutorialCount++;
 	}
 
-	if (m_PlayerPos.x >= 3100)
+	if (m_PlayerPos.x >= 3200 && !m_Tutorial->GetPastDashFlag())
 	{
 		m_Tutorial->SetPastDashFlag(true);
+		m_TutorialCount = 0;
 	}
 
-	if (m_Tutorial->GetAttackFlag())
+	if (m_Tutorial->GetAttackFlag() && !m_Tutorial->GetPastAttackFlag())
 	{
+		m_TutorialCount++;
 		if (Pad::isTrigger(PAD_INPUT_5) || Pad::isTrigger(PAD_INPUT_6))
 		{
 			m_Tutorial->SetPastAttackFlag(true);
+			m_TutorialCount = 0;
 		}
 	}
 }
@@ -641,15 +684,21 @@ void SceneMain::NormalUpdate()
 		}*/
 		if (!m_GameOverScene->GetActiveGameOver())
 		{
+			m_GameOverCount++;
+		}
+
+		if (m_GameOverCount >= 70 && !m_GameOverScene->GetActiveGameOver())
+		{
 			m_GameOverScene->Init();
 		}
 	}
 
 	m_Coll->Update();
 
+	m_Map->update();
+
 	m_player->update();
 
-	m_Map->update();
 
 	//Vec2 targetOffset{};
 	//
@@ -675,8 +724,6 @@ void SceneMain::NormalUpdate()
 	//}
 	//m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 	Scroll();
-
-	TutorialFlag();
 
 	m_PlayerPos = m_player->GetPos();
 

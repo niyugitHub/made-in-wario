@@ -44,6 +44,7 @@ Enemy5::Enemy5() :
 	m_FlySpeed(-kMoveFly),
 	m_FieldSpeed(0.0f)
 {
+	m_Weight = 1.5f;
 	m_Hp = 50;
 	m_GraphSize2 = { 20,20 };
 	m_GraphSize2 = { kGraphSizeX - 20,kGraphSizeY - 20 };

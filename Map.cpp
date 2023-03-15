@@ -2,6 +2,7 @@
 
 #include "Map.h"
 #include "MapGimmick.h"
+#include "GimmickBase.h"
 #include "game.h"
 #include "Pad.h"
 #include <cassert>
@@ -203,7 +204,7 @@ Map::Map() :
 	m_PlayerPos(0,0),
 	m_BackGroundPos(0,0),
 	m_handle(-1),
-	m_StageNum(2),
+	m_StageNum(0),
 	m_graphWidth(0),
 	m_graphHeight(0),
 	m_LeftNum(0),
@@ -245,6 +246,8 @@ void Map::Init()
 			m_MapData[y][x] = 0;
 		}
 	}
+
+	m_Gimmick.erase(m_Gimmick.begin(), m_Gimmick.end());
 
 	switch (m_StageNum)
 	{

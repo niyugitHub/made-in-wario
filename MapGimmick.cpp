@@ -1,4 +1,5 @@
 #include "MapGimmick.h"
+#include "GimmickBase.h"
 #include "Map.h"
 #include<Dxlib.h>
 
@@ -10,13 +11,11 @@ namespace
 	constexpr float kFallSpeedUp = 0.4f;
 }
 
-MapGimmick::MapGimmick(Vec2 Pos ,int handle) : 
-	m_Pos(Pos),
-	m_handle(handle),
-	m_FallSpeed(0),
-	m_Flag(false)
+MapGimmick::MapGimmick(Vec2 Pos ,int handle) :
+	m_FallSpeed(0)
 {
-
+	m_Pos = Pos;
+	m_handle = handle;
 }
 
 MapGimmick::~MapGimmick()
@@ -31,8 +30,24 @@ void MapGimmick::Update(Vec2 PlayerPos)
 {
 	Vec2 DistancePos = m_Pos - PlayerPos;
 
+	if (m_offset.x < -Game::kScreenWidth / 2)
+	{
+		m_offset.x = -Game::kScreenWidth / 2;
+	}
+
+	if (m_offset.y < -Game::kScreenHeight / 2)
+	{
+		m_offset.y = -Game::kScreenHeight / 2;
+	}
+	/*if (m_DistancePos.x < Game::kScreenWidth + m_offset.x + 200 && m_DistancePos.x > -Game::kScreenWidth + m_offset.x - 200 &&
+		m_DistancePos.y < Game::kScreenHeight + m_offset.y + 200 && m_DistancePos.y > -Game::kScreenHeight + m_offset.y - 200)
+	{
+		return true;
+	}
+	return false;*/
+
 	if (DistancePos.x < 96 && DistancePos.x > -32 && 
-		DistancePos.y < 0 && DistancePos.y > -Game::kScreenHeight)
+		DistancePos.y < 0 && DistancePos.y > -Game::kScreenHeight - m_offset.y)
 	{
 		m_Flag = true;
 	}
@@ -49,6 +64,7 @@ void MapGimmick::Update(Vec2 PlayerPos)
 
 void MapGimmick::Draw(Vec2 offset)
 {
+	m_offset = offset;
 	DrawGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 		m_handle, true);
 }

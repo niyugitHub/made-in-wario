@@ -4,6 +4,7 @@
 #include "game.h"
 #include "Player.h"
 #include<memory>
+#include<DxLib.h>
 
 class Particle;
 
@@ -23,6 +24,7 @@ public:
 		m_func = &SceneTitle::FadeinUpdate;
 		m_textSize = 0;
 		m_Color = 0;
+		InitSoundMem();
 
 		for (auto& handle : m_hPlayerGraphic)
 		{

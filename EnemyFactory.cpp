@@ -199,6 +199,14 @@ void EnemyFactory::Update()
 			PlaySoundMem(m_SoundDamage, DX_PLAYTYPE_BACK);
 			//	m_Player->IsKnockBack(m_Pos);
 		}
+
+		// トゲがプレイヤーに当たった＆プレイヤーの無敵時間が０以下の時
+		if (m_Player->CollNeedle() && m_Player->GetNoDamageFrame() <= 0)
+		{
+			m_DamageFlag = true;
+			m_Player->Ondamage();
+			PlaySoundMem(m_SoundDamage, DX_PLAYTYPE_BACK);
+		}
 	}
 }
 

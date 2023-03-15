@@ -149,6 +149,9 @@ public:
 
 	// ギミックに当たったとき
 	void CollGimmick();
+
+	// トゲに当たったとき
+	bool CollNeedle();
 	// サウンド
 	void IsSound();
 
@@ -184,6 +187,7 @@ private:
 	int m_SoundJump = -1;
 	int m_SoundWalk = -1;
 	int m_SoundDash = -1;
+	int m_SoundDamage = -1;
 
 	// キャラクターのグラフの種類を決める
 	int m_CharaGraphX;

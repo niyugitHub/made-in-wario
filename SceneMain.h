@@ -136,7 +136,12 @@ private:
 
 	//文字の透過度
 	int m_StringColor = 0;
+
+	// ゲームオーバーシーンが表示されるまでの時間
+	int m_GameOverCount = 0;
 	
+	// チュートリアル時に処理を止める時間
+	int m_TutorialCount = 0;
 	// プレイヤー
 	std::shared_ptr<Player> m_player;
 

@@ -25,6 +25,7 @@ namespace
 	const char* const kPlayerSoundJumpFilename = "sound/jump.mp3";
 	const char* const kPlayerSoundWalkFilename = "sound/walk.mp3";
 	const char* const kPlayerSoundDashFilename = "sound/dash.mp3";
+	const char* const kPlayerSoundDamageFilename = "sound/Damage.mp3";
 
 	// フレームタイム
 	constexpr int kFrameTime = 20;
@@ -56,7 +57,7 @@ namespace
 //Player::Player(handle) :m_handle = handle 
 
 Player::Player() :
-m_pos(200, 900),
+m_pos(200, 1000),
 m_NextPos(m_pos),
 m_vec(5, 0),
 m_ShotPos(0,0),
@@ -85,7 +86,7 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(true),
+m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
@@ -111,7 +112,7 @@ m_Particle(std::make_shared<Particle>())
 	m_SoundJump = LoadSoundMem(kPlayerSoundJumpFilename);
 	m_SoundWalk = LoadSoundMem(kPlayerSoundWalkFilename);
 	m_SoundDash = LoadSoundMem(kPlayerSoundDashFilename);
-
+	m_SoundDamage = LoadSoundMem(kPlayerSoundDamageFilename);
 }
 
 Player::~Player()
@@ -132,7 +133,7 @@ void Player::end()
 
 void Player::update()
 {
-	m_StageClear = false;
+//	m_StageClear = false;
 	if (m_Exist)
 	{
 		if (m_Hp <= 0)
@@ -833,6 +834,13 @@ void Player::IsColl()
 			float MapBottom = i * Map::kChipSize + Map::kChipSize;
 			float MapRight = j * Map::kChipSize + Map::kChipSize;
 			float MapLeft = j * Map::kChipSize;
+
+			if (m_Map->GetMapData(i, j) == 10)
+			{
+				MapRight -= 20;
+				MapLeft += 20;
+			}
+
 			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
 			{
 				if (m_Map->GetMapData(i, j) != 11 && m_Map->GetMapData(i, j) != 12 &&
@@ -1051,6 +1059,7 @@ void Player::CollGimmick()
 		if (m_NoDamageFrame <= 0)
 		{
 			Ondamage();
+			PlaySoundMem(m_SoundDamage, DX_PLAYTYPE_BACK);
 			m_KnockBack = kKnockBackSpeed;
 			m_EnemyPos = GimmickPos;
 			return;
@@ -1058,6 +1067,36 @@ void Player::CollGimmick()
 		
 	}
 
+}
+
+bool Player::CollNeedle()
+{
+	float PlayerTop = m_pos.y;
+	float PlayerBottom = m_pos.y + Player::kSideSize;
+	float PlayerLeft = m_pos.x + 40;
+	float PlayerRight = m_pos.x + Player::kSideSize - 40;
+
+	for (int i = 0; i < Map::kBgNumY[m_Map->GetStageNum()]; i++)
+	{
+		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
+		{
+			if (m_Map->GetMapData(i, j) == 10)
+			{
+				float MapTop = i * Map::kChipSize;
+				float MapBottom = i * Map::kChipSize + Map::kChipSize;
+				float MapRight = j * Map::kChipSize + Map::kChipSize - 12;
+				float MapLeft = j * Map::kChipSize + 12;
+
+				if (PlayerLeft > MapRight) continue;
+				if (PlayerRight < MapLeft) continue;
+				if (PlayerTop > MapBottom) continue;
+				if (PlayerBottom < MapTop) continue;
+
+				return true;
+			}				
+		}
+	}
+	return false;
 }
 
 void Player::IsSound()

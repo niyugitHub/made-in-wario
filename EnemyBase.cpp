@@ -137,8 +137,6 @@ bool EnemyBase::StartUpdate()
 {
 	m_DistancePos = m_CentorPos - m_PlayerPos;
 
-	
-
 	if (m_offset.x < -Game::kScreenWidth / 2)
 	{
 		m_offset.x = -Game::kScreenWidth / 2;
@@ -148,8 +146,8 @@ bool EnemyBase::StartUpdate()
 	{
 		m_offset.y = -Game::kScreenHeight / 2;
 	}
-	if (m_DistancePos.x < Game::kScreenWidth + m_offset.x && m_DistancePos.x > -Game::kScreenWidth + m_offset.x &&
-		m_DistancePos.y < Game::kScreenHeight + m_offset.y && m_DistancePos.y > -Game::kScreenHeight + m_offset.y)
+	if (m_DistancePos.x < Game::kScreenWidth + m_offset.x + 200 && m_DistancePos.x > -Game::kScreenWidth + m_offset.x - 200 &&
+		m_DistancePos.y < Game::kScreenHeight + m_offset.y + 200 && m_DistancePos.y > -Game::kScreenHeight + m_offset.y - 200)
 	{
 		return true;
 	}

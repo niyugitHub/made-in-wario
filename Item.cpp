@@ -418,7 +418,7 @@ void Item::Draw(Vec2 offset)
 		DrawGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 			m_handle, true);
 
-		if (m_ItemType == ItemType::kTwoJump)
+		/*if (m_ItemType == ItemType::kTwoJump)
 		{
 			DrawString(m_Pos.x + offset.x, m_Pos.y + offset.y, "ジャンプ", GetColor(0, 255, 0));
 		}
@@ -441,7 +441,7 @@ void Item::Draw(Vec2 offset)
 		if (m_ItemType == ItemType::kShot)
 		{
 			DrawString(m_Pos.x + offset.x, m_Pos.y + offset.y, "ショット", GetColor(0, 255, 0));
-		}
+		}*/
 	}
 
 

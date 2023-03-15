@@ -1,6 +1,7 @@
 #pragma once
 #include "game.h"
 #include "Vec2.h"
+#include "GimmickBase.h"
 #include<vector>
 #include <memory>
 
@@ -373,6 +374,6 @@ class Map
 		int m_GimmickCount;
 
 		// ÉMÉ~ÉbÉN
-		std::vector<std::shared_ptr<MapGimmick>> m_Gimmick;
+		std::vector<std::shared_ptr<GimmickBase>> m_Gimmick;
 };
 

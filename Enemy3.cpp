@@ -34,6 +34,7 @@ Enemy3::Enemy3() :
 	m_Hp = 50;
 	m_GraphX = 0;
 	m_GraphY = 0;
+	m_Weight = 10.0f;
 	m_GraphSize1 = { 0,0 };
 	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy3::NotUpdate;
@@ -168,7 +169,8 @@ void Enemy3::UpdatePatrol()
 		}
 	}
 
-	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
+	if (m_DistancePos.x > -500 && m_DistancePos.x < 500 && 
+		m_DistancePos.y > -500 && m_DistancePos.y < 500)
 	{
 		m_func = &Enemy3::UpdateDiscovery;
 	}
@@ -176,13 +178,14 @@ void Enemy3::UpdatePatrol()
 
 void Enemy3::UpdateDiscovery()
 {
-	if (m_DistancePos.x < -500 || m_DistancePos.x > 500)
+	if (m_DistancePos.x < -500 || m_DistancePos.x > 500 ||
+		m_DistancePos.y < -500 || m_DistancePos.y > 500)
 	{
 		m_func = &Enemy3::UpdatePatrol;
 		m_RandThrowFrame = 60;
 	}
 
-	if (m_RandThrowFrame == 50)
+	if (m_RandThrowFrame <= 60)
 	{
 		m_GraphY = 1;
 		m_GraphX = 0;
