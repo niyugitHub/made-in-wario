@@ -239,7 +239,7 @@ SceneBase* SceneMain::update()
 	{
 		m_Color = 200;
 	}
-	else if(m_func == &SceneMain::NormalUpdate)
+	else if(m_func == &SceneMain::NormalUpdate && !m_GameOverScene->GetActiveGameOver())
 	{
 		m_Color = 255;
 	}

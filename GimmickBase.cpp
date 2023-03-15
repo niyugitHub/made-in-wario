@@ -7,7 +7,8 @@ GimmickBase::GimmickBase() :
 	m_GraphX(0),
 	m_GraphY(0),
 	m_offset(0,0),
-	m_GraphSize(0,0),
+	m_GraphSize1(0,0),
+	m_GraphSize2(0, 0),
 	m_Flag(false)
 {
 }
@@ -26,7 +27,7 @@ void GimmickBase::Update(Vec2 PlayerPos)
 
 void GimmickBase::Draw(Vec2 offset)
 {
-	DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
+	/*DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 		m_GraphX * m_GraphSize.x, m_GraphY, m_GraphSize.y,
-		m_handle, true, true);
+		m_handle, true, true);*/
 }

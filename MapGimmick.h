@@ -13,5 +13,6 @@ public:
 private:
 
 	float m_FallSpeed;
+	bool m_GimmickMove;
 };
 

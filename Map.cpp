@@ -2,6 +2,7 @@
 
 #include "Map.h"
 #include "MapGimmick.h"
+#include "MapGimmick2.h"
 #include "GimmickBase.h"
 #include "game.h"
 #include "Pad.h"
@@ -12,6 +13,7 @@ namespace
 	// 入出力ファイル名
 	const char* const kFileName = "data/Assets(64×64).png";
 	const char* const kFileGimmickName = "data/gimmick.png";
+	const char* const kFileGimmick2Name = "data/Fire.png";
 
 	const char* const kFileBackGroundName[5] =
 	{
@@ -232,9 +234,24 @@ Map::~Map()
 {
 }
 
+bool Map::GetGimmickFlag(int i)
+{
+	return m_Gimmick[i]->GetFlag();
+}
+
 Vec2 Map::GetGimmickPos(int i)
 {
 	return m_Gimmick[i]->GetPos();
+}
+
+Vec2 Map::GetGimmickSize1(int i)
+{
+	return m_Gimmick[i]->GetGraphSize1();
+}
+
+Vec2 Map::GetGimmickSize2(int i)
+{
+	return m_Gimmick[i]->GetGraphSize2();
 }
 
 void Map::Init()
@@ -311,6 +328,12 @@ void Map::Init()
 				Vec2 GimmickPos = { kChipSize * x, kChipSize * y };
 				m_Gimmick.push_back(std::make_shared<MapGimmick>(GimmickPos, m_GimmickHandle));
 			}
+
+			if (m_MapData[y][x] == 15)
+			{
+				Vec2 GimmickPos = { kChipSize * x, kChipSize * y - (kChipSize * 4)};
+				m_Gimmick.push_back(std::make_shared<MapGimmick2>(GimmickPos, m_GimmickHandle2));
+			}
 		}
 	}
 }
@@ -319,7 +342,10 @@ void Map::load()
 {
 	m_handle = LoadGraph(kFileName);
 	GetGraphSize(m_handle, &m_graphWidth, &m_graphHeight);
+
 	m_GimmickHandle = LoadGraph(kFileGimmickName);
+	m_GimmickHandle2 = LoadGraph(kFileGimmick2Name);
+
 	for (int i = 0; i < 5; i++)
 	{
 		m_BackGroundHandle[i] = LoadGraph(kFileBackGroundName[i]);

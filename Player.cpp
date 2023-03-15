@@ -86,7 +86,7 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(false),
+m_PossibleTwoJump(true),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
@@ -143,7 +143,7 @@ void Player::update()
 
 		if (m_NoDamageFrame == 100)
 		{
-			m_Jump = 0;
+			m_Jump = 0.0f;
 			//	m_KnockBack = kKnockBackSpeed;
 		}
 
@@ -494,7 +494,7 @@ void Player::CharaJump()
 	}
 	if (m_CollTop)
 	{
-		if(m_Jump > 0) m_Jump = 0;
+		if(m_Jump > 0.0f) m_Jump = 0.0f;
 	}
 	m_FrameChangeSpeed = 3;
 	m_CharaGraphY = 5;
@@ -515,7 +515,7 @@ void Player::CharaJump()
 
 	if (/*m_pos.y >= Game::kScreenHeight - kColumnSize ||*/ m_CollBottom)
 	{
-		if (m_Jump <= 0)
+		if (m_Jump <= 0.0f)
 		{
 			m_TwoJump = false;
 			m_NowJump = false;
@@ -861,7 +861,7 @@ void Player::IsColl()
 					if (PlayerTop < MapBottom &&
 						PlayerRight > MapLeft + 10 &&
 						PlayerLeft < MapRight - 10 &&
-						PlayerBottom > MapTop + 20)
+						PlayerTop >= MapTop)
 					{
 						m_CollTop = true;
 					}
@@ -895,7 +895,7 @@ void Player::IsColl()
 							PlayerTop < MapTop &&
 							PlayerRight > MapLeft + 10 &&
 							PlayerLeft < MapRight - 10 &&
-							m_Jump <= 0)
+							m_Jump <= 0.0f)
 						{
 							m_NextPos.y = MapTop - Player::kColumnSize + 10;
 							PlayerBottom = m_NextPos.y + Player::kColumnSize;
@@ -905,7 +905,7 @@ void Player::IsColl()
 						if (PlayerTop < MapBottom &&
 							PlayerRight > MapLeft + 10 &&
 							PlayerLeft < MapRight - 10 &&
-							PlayerBottom > MapTop + 20)
+							PlayerTop >= MapTop)
 						{
 							m_CollTop = true;
 						}
@@ -1038,12 +1038,18 @@ void Player::CollGimmick()
 
 	for (int i = 0; i < m_Map->GetGimmickCount(); i++)
 	{
+		if (!m_Map->GetGimmickFlag(i))
+		{
+			continue;
+		}
 		Vec2 GimmickPos = m_Map->GetGimmickPos(i);
+		Vec2 GimmickGraphSize1 = m_Map->GetGimmickSize1(i);
+		Vec2 GimmickGraphSize2 = m_Map->GetGimmickSize2(i);
 
-		float GimmickPosTop = GimmickPos.y;
-		float GimmickPosBottom = GimmickPos.y + Map::kChipSize - 20;
-		float GimmickPosLeft = GimmickPos.x;
-		float GimmickPosRight = GimmickPos.x + Map::kChipSize;
+		float GimmickPosTop = GimmickPos.y + GimmickGraphSize1.y;
+		float GimmickPosBottom = GimmickPos.y + GimmickGraphSize2.y;
+		float GimmickPosLeft = GimmickPos.x + GimmickGraphSize1.x;
+		float GimmickPosRight = GimmickPos.x + GimmickGraphSize2.x;
 
 #ifdef _DEBUG
 	/*DrawBox(GimmickPosLeft, GimmickPosTop,

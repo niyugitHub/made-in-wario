@@ -169,7 +169,8 @@ void Enemy2::UpdatePatrol()
 
 	m_NextPos += m_Vec;
 
-	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
+	if (m_DistancePos.x > -500 && m_DistancePos.x < 500 &&
+		m_DistancePos.y > -500 && m_DistancePos.y < 500)
 	{
 		m_func = &Enemy2::UpdateDiscovery;
 	}
@@ -179,7 +180,7 @@ void Enemy2::UpdateDiscovery()
 {
 	BasicMoveEnemy();
 
-	if (m_DistancePos.x > -500 && m_DistancePos.x < 0)
+	if (m_DistancePos.x > -1000 && m_DistancePos.x < 0)
 	{
 		//m_Vec.x += 3;
 		if (m_FieldSpeed < 3)
@@ -197,7 +198,8 @@ void Enemy2::UpdateDiscovery()
 		}
 	}
 	
-	if(m_DistancePos.x < -500 || m_DistancePos.x > 500 + kPlayerGraphSize / 2)
+	if(m_DistancePos.x < -1000 || m_DistancePos.x > 1000 ||
+		m_DistancePos.y < -1000 || m_DistancePos.y > 1000)
 	{
 		m_FlySpeed = -kMoveFly;
 		m_Frame = 35;

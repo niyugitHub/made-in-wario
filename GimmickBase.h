@@ -9,8 +9,11 @@ public:
 	// ギミック座標取得
 	virtual Vec2 GetPos() { return m_Pos; }
 
-	// グラフサイズ取得
-	virtual Vec2 GetGraphSize() { return m_GraphSize; }
+	// ギミックが作動中かどうか
+	virtual bool GetFlag() { return m_Flag; }
+	// グラフのサイズ取得
+	virtual Vec2 GetGraphSize1() { return m_GraphSize1; }
+	virtual Vec2 GetGraphSize2() { return m_GraphSize2; }
 	
 	virtual void Init();
 	virtual void Update(Vec2 PlayerPos);
@@ -28,7 +31,8 @@ protected:
 	Vec2 m_offset;
 
 	// グラフサイズ
-	Vec2 m_GraphSize;
+	Vec2 m_GraphSize1;
+	Vec2 m_GraphSize2;
 
 	// 仕掛けのフラグが反応した場合
 	bool m_Flag;

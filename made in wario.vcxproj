@@ -157,6 +157,7 @@
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GimmickBase.cpp" />
     <ClCompile Include="HomingShot.cpp" />
+    <ClCompile Include="MapGimmick2.cpp" />
     <ClCompile Include="Option.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Enemy1.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GimmickBase.h" />
     <ClInclude Include="HomingShot.h" />
+    <ClInclude Include="MapGimmick2.h" />
     <ClInclude Include="Option.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Enemy1.h" />

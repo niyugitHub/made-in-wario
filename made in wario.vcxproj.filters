@@ -135,6 +135,9 @@
     <ClCompile Include="GimmickBase.cpp">
       <Filter>ソース ファイル\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="MapGimmick2.cpp">
+      <Filter>ソース ファイル\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -225,6 +228,9 @@
       <Filter>ヘッダー ファイル\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="GimmickBase.h">
+      <Filter>ヘッダー ファイル\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGimmick2.h">
       <Filter>ヘッダー ファイル\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>

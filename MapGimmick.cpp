@@ -12,10 +12,14 @@ namespace
 }
 
 MapGimmick::MapGimmick(Vec2 Pos ,int handle) :
-	m_FallSpeed(0)
+	m_FallSpeed(0),
+	m_GimmickMove(false)
 {
+	m_GraphSize1 = { 10,20 };
+	m_GraphSize2 = { 55,80 };
 	m_Pos = Pos;
 	m_handle = handle;
+	m_Flag = true;
 }
 
 MapGimmick::~MapGimmick()
@@ -49,10 +53,10 @@ void MapGimmick::Update(Vec2 PlayerPos)
 	if (DistancePos.x < 96 && DistancePos.x > -32 && 
 		DistancePos.y < 0 && DistancePos.y > -Game::kScreenHeight - m_offset.y)
 	{
-		m_Flag = true;
+		m_GimmickMove = true;
 	}
 
-	if (m_Flag)
+	if (m_GimmickMove)
 	{
 		m_Pos.y += m_FallSpeed;
 		if (m_FallSpeed <= kFallSpeedMax)
