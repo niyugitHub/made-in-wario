@@ -90,6 +90,7 @@ void Enemy4::draw(Vec2 offset)
 				m_handle, true, false);
 		}
 	}
+	m_offset = offset;
 }
 
 void Enemy4::UpdateGraph()

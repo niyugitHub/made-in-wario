@@ -143,6 +143,7 @@ void Enemy3::draw(Vec2 offset)
 		m_Shot->Draw(offset);
 	}
 
+	m_offset = offset;
 //	DrawFormatString(800, 0, GetColor(255, 255, 255), "“G‚ÌÀ•W%f", m_Pos.x);
 }
 

@@ -85,7 +85,7 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(false),
+m_PossibleTwoJump(true),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
@@ -500,13 +500,16 @@ void Player::CharaJump()
 	m_CharaMotion = 8;
 	m_NextPos.y -= m_Jump;
 
-	if (Pad::isPress(PAD_INPUT_1))
+	if (m_Jump >= -25.0f)
 	{
-		m_Jump -= kSmallGravity;
-	}
-	else
-	{
-		m_Jump -= kBigGravity;
+		if (Pad::isPress(PAD_INPUT_1))
+		{
+			m_Jump -= kSmallGravity;
+		}
+		else
+		{
+			m_Jump -= kBigGravity;
+		}
 	}
 
 	if (/*m_pos.y >= Game::kScreenHeight - kColumnSize ||*/ m_CollBottom)
@@ -840,7 +843,7 @@ void Player::IsColl()
 						PlayerTop < MapTop &&
 						PlayerRight > MapLeft + 10 &&
 						PlayerLeft < MapRight - 10 &&
-						m_Jump <= 0)
+						m_Jump <= 0.0f)
 					{
 						m_NextPos.y = MapTop - Player::kColumnSize + 10;
 						PlayerBottom = m_NextPos.y + Player::kColumnSize;

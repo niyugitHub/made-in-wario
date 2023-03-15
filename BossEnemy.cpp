@@ -106,19 +106,22 @@ void BossEnemy::draw(Vec2 offset)
 	if (m_Exist)
 	{
 	}
-		if (m_LookEnemy == 1)
-		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
-				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
-				m_handle, true, true);
-		}
 
-		if (m_LookEnemy == -1)
-		{
-			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
-				m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
-				m_handle, true, false);
-		}
+	if (m_LookEnemy == 1)
+	{
+		DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
+			m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
+			m_handle, true, true);
+	}
+
+	if (m_LookEnemy == -1)
+	{
+		DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
+			m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
+			m_handle, true, false);
+	}
+
+	m_offset = offset;
 }
 
 void BossEnemy::ChangeGraph(int i)

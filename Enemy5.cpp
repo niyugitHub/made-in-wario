@@ -147,6 +147,8 @@ void Enemy5::draw(Vec2 offset)
 	{
 		m_Shot->Draw(offset);
 	}
+
+	m_offset = offset;
 }
 
 void Enemy5::NotUpdate()

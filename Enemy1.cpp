@@ -108,6 +108,7 @@ void Enemy1::draw(Vec2 offset)
 				m_handle, true, false);
 		}
 	}
+	m_offset = offset;
 }
 
 void Enemy1::NotUpdate()

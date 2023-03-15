@@ -71,8 +71,6 @@ void EnemyBase::draw(Vec2 offset)
 			m_Pos.x + 50 + offset.x,m_Pos.y + 50,GetColor(255, 0, 0), true);
 	}
 
-	m_offset = offset;
-
 #ifdef _DEBUG
 //	DrawFormatString(0, 100, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
 //	DrawFormatString(0, 100, GetColor(255, 255, 255), "offset.x%f", offset.x);
@@ -139,6 +137,8 @@ bool EnemyBase::StartUpdate()
 {
 	m_DistancePos = m_CentorPos - m_PlayerPos;
 
+	
+
 	if (m_offset.x < -Game::kScreenWidth / 2)
 	{
 		m_offset.x = -Game::kScreenWidth / 2;
@@ -148,8 +148,8 @@ bool EnemyBase::StartUpdate()
 	{
 		m_offset.y = -Game::kScreenHeight / 2;
 	}
-	if (m_DistancePos.x < Game::kScreenWidth - m_offset.x && m_DistancePos.x > -Game::kScreenWidth + m_offset.x &&
-		m_DistancePos.y < Game::kScreenHeight - m_offset.y && m_DistancePos.y > -Game::kScreenHeight + m_offset.y)
+	if (m_DistancePos.x < Game::kScreenWidth + m_offset.x && m_DistancePos.x > -Game::kScreenWidth + m_offset.x &&
+		m_DistancePos.y < Game::kScreenHeight + m_offset.y && m_DistancePos.y > -Game::kScreenHeight + m_offset.y)
 	{
 		return true;
 	}

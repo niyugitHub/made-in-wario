@@ -68,6 +68,10 @@ void Enemy2::update()
 	{
 		m_Pos.y = m_NextPos.y;
 	}
+	if (m_CollTop)
+	{
+		m_Pos.y += 1;
+	}
 
 	m_NextPos = m_Pos;
 
@@ -99,14 +103,9 @@ void Enemy2::update()
 
 		m_PlayerPos = m_Player->GetPos();
 
-		(this->*m_func)();
-
 		m_DistancePos = m_CentorPos - m_PlayerPos;
-
-		if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
-		{
-			m_func = &Enemy2::UpdateDiscovery;
-		}
+		
+		(this->*m_func)();
 	}
 }
 
@@ -129,6 +128,7 @@ void Enemy2::draw(Vec2 offset)
 		}
 	}
 
+	m_offset = offset;
 //#ifdef _DEBUG
 //	DrawFormatString(0, 0, GetColor(255, 255, 255), "“G‚Ì‘Ì—Í%d", m_Hp);
 //#endif
@@ -168,6 +168,11 @@ void Enemy2::UpdatePatrol()
 		m_Vec.y = -3;
 
 	m_NextPos += m_Vec;
+
+	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
+	{
+		m_func = &Enemy2::UpdateDiscovery;
+	}
 }
 
 void Enemy2::UpdateDiscovery()
