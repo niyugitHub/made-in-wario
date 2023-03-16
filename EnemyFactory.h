@@ -75,6 +75,9 @@ public:
 	// ボス戦かどうか
 	bool GetBossBattle();
 
+	// ゲームをクリアしたかどうか
+	bool GetGameClear();
+
 private:
 	int m_EnemyName;
 	int m_Frame;

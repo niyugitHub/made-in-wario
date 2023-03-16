@@ -33,6 +33,9 @@ public:
 	// ボス戦が始まったかどうか
 	virtual bool GetBossBattle() { return m_BossBattle; }
 
+	// ゲームをクリアしたかどうか
+	virtual bool GetGameClear() { return m_GameClear; }
+
 	/*virtual void SetPos(Vec2 Pos) { m_Pos = Pos; }*/
 	virtual void SetPos(Vec2 Pos) { m_NextPos = Pos; }
 
@@ -148,7 +151,7 @@ protected:
 	float m_Weight;
 
 	// 画像のグラフサイズ取得
-	Vec2 m_GraphSize1 = {0,0};
+	Vec2 m_GraphSize1 = {0, 0};
 	Vec2 m_GraphSize2 = {0, 0};
 
 	// エネミーとブロックの衝突判定
@@ -162,6 +165,9 @@ protected:
 
 	// ボス戦のフラグ
 	bool m_BossBattle = false;
+
+	// ゲームクリアフラグ
+	bool m_GameClear = false;
 
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;

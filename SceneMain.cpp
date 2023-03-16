@@ -15,6 +15,7 @@
 #include "Tutorial.h"
 #include"Item.h"
 #include "Pad.h"
+#include "GameClearScene.h"
 
 namespace
 {
@@ -87,6 +88,9 @@ SceneMain::SceneMain() :
 	m_GameOverScene = std::make_shared<GameOverScene>();
 	m_Option = std::make_shared<Option>();
 	m_Tutorial = std::make_shared<Tutorial>();
+
+	int GameClearHandle = -1;
+	m_GameClearScene = std::make_shared<GameClearScene>(GameClearHandle);
 
 	for (auto& pItemExist : m_ItemExist)
 	{
@@ -385,6 +389,12 @@ void SceneMain::draw()
 	if (m_GameOverScene->GetActiveGameOver())
 	{
 		m_GameOverScene->Draw();
+	}
+
+	// ゲームクリア時
+	if (m_EnemyFactory->GetGameClear())
+	{
+		m_GameClearScene->Draw();
 	}
 }
 
@@ -699,30 +709,6 @@ void SceneMain::NormalUpdate()
 
 	m_player->update();
 
-
-	//Vec2 targetOffset{};
-	//
-	//// スクロールの計算 プレイヤーが画面中央に表示されるようスクロールする
-	//targetOffset.x = (Game::kScreenWidth / 2 - kPlayerPosCenter) - m_player->GetPos().x;
-	//if (targetOffset.x > 0)
-	//{
-	//	targetOffset.x = 0;
-	//}
-	//if (targetOffset.x < -m_Map->getWidth() + Game::kScreenWidth)
-	//{
-	//	targetOffset.x = -m_Map->getWidth() + Game::kScreenWidth;
-	//}
-	//
-	//targetOffset.y = (Game::kScreenHeight / 2) - m_player->GetPos().y;
-	//if (targetOffset.y > 0)
-	//{
-	//	targetOffset.y = 0;
-	//}
-	//if (targetOffset.y < -m_Map->getHeight() + Game::kScreenHeight)
-	//{
-	//	targetOffset.y = -m_Map->getHeight() + Game::kScreenHeight;
-	//}
-	//m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 	Scroll();
 
 	m_PlayerPos = m_player->GetPos();
@@ -805,6 +791,13 @@ void SceneMain::NormalUpdate()
 	{
 		m_Option->Init();
 		m_func = &SceneMain::OptionUpdate;
+	}
+
+	// ゲームクリア時
+	if (m_EnemyFactory->GetGameClear())
+	{
+		m_GameClearScene->Update();
+		m_Color = 200;
 	}
 }
 

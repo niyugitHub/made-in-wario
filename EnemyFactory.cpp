@@ -509,3 +509,16 @@ bool EnemyFactory::GetBossBattle()
 
 	return false;
 }
+
+bool EnemyFactory::GetGameClear()
+{
+	for (auto& enemy : m_Enemy)
+	{
+		if (enemy->GetGameClear())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

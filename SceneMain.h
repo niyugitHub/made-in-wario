@@ -11,6 +11,7 @@ class Collision;
 class EnemyFactory;
 class Item;
 class GameOverScene;
+class GameClearScene;
 class Option;
 class SceneTitle;
 class Tutorial;
@@ -159,6 +160,9 @@ private:
 
 	// ゲームオーバーシーン
 	std::shared_ptr<GameOverScene> m_GameOverScene;
+
+	// ゲームクリアシーン
+	std::shared_ptr<GameClearScene> m_GameClearScene;
 
 	// オプション画面
 	std::shared_ptr< Option> m_Option;
