@@ -9,6 +9,7 @@ class Enemy2;
 class Enemy3;
 class Enemy4;
 class Enemy5;
+class Enemy6;
 class BossEnemy;
 class Player;
 class Particle;
@@ -25,6 +26,7 @@ public:
 		kThrow,
 		kJump,
 		kFlyShot,
+		kKnight,
 		kBoss,
 	};
 public:

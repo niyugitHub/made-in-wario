@@ -5,6 +5,7 @@
 #include "Enemy3.h"
 #include "Enemy4.h"
 #include "Enemy5.h"
+#include "Enemy6.h"
 #include "BossEnemy.h"
 #include "EnemyBase.h"
 #include "Player.h"
@@ -257,6 +258,11 @@ std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
 			std::make_shared<Enemy5>()
 		);
 		break;
+	case EnemyType::kKnight:
+		m_Enemy.push_back(
+			std::make_shared<Enemy6>()
+		);
+		break;
 	case EnemyType::kBoss:
 		m_Enemy.push_back(
 			std::make_shared<BossEnemy>()
@@ -458,6 +464,10 @@ void EnemyFactory::StageEnemy(int StageNum)
 			if (m_Map->GetMapData(i, j) == 244)
 			{
 				Create(kFlyShot, { Pos });
+			}
+			if (m_Map->GetMapData(i, j) == 224)
+			{
+				Create(kKnight, { Pos });
 			}
 			if (m_Map->GetMapData(i, j) == 245)
 			{

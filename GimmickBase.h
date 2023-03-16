@@ -21,6 +21,7 @@ public:
 
 protected:
 	Vec2 m_Pos;
+	Vec2 m_Vec;
 
 	int m_handle;
 
