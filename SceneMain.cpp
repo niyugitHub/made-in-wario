@@ -30,6 +30,7 @@ namespace
 	const char* const kTwoJumpTutorialFilename = "data/TwoJumpTutorial.png";
 	const char* const kShotTutorialFilename = "data/ShotTutorial.png";
 	const char* const kDamageTutorialFilename = "data/DamageTutorial.png";
+	const char* const kGameClearFilename = "data/GameClear.png";
 
 	// サウンドファイル名
 	const char* const kMainbgmFilename = "sound/MainBGM.mp3";
@@ -89,7 +90,7 @@ SceneMain::SceneMain() :
 	m_Option = std::make_shared<Option>();
 	m_Tutorial = std::make_shared<Tutorial>();
 
-	int GameClearHandle = -1;
+	int GameClearHandle = LoadGraph(kGameClearFilename);
 	m_GameClearScene = std::make_shared<GameClearScene>(GameClearHandle);
 
 	for (auto& pItemExist : m_ItemExist)
@@ -164,8 +165,6 @@ void SceneMain::init()
 
 	m_NormalSoundHandle = LoadSoundMem(kMainbgmFilename);
 	m_BossSoundHandle = LoadSoundMem(kBossBattleFilename);
-
-	ChangeFont("游明朝 Light");
 
 	for (int i = 0; i < Player::kCharaChipNum; i++)
 	{
@@ -275,6 +274,23 @@ SceneBase* SceneMain::update()
 	if (m_Option->GetGameEnd())
 	{
 		return (new SceneTitle);
+	}
+
+	// ゲームクリア時
+	if (m_EnemyFactory->GetGameClear() && m_func == &SceneMain::NormalUpdate)
+	{
+		m_GameClearScene->Update();
+		m_Color = 200;
+
+		if (m_GameClearScene->GetPlayAgain())
+		{
+			return (new SceneMain);
+		}
+
+		if (m_GameClearScene->GetAbort())
+		{
+			return (new SceneTitle);
+		}
 	}
 	
 	return this;
@@ -791,13 +807,6 @@ void SceneMain::NormalUpdate()
 	{
 		m_Option->Init();
 		m_func = &SceneMain::OptionUpdate;
-	}
-
-	// ゲームクリア時
-	if (m_EnemyFactory->GetGameClear())
-	{
-		m_GameClearScene->Update();
-		m_Color = 200;
 	}
 }
 

@@ -11,7 +11,8 @@ namespace
 
 Particle::Particle() :
 	m_Frame(0),
-	m_Gravity(0)
+	m_Gravity(0),
+	m_DownTransparency(true)
 {
 
 	for (int i = 0; i < kMaxParticle; i++)
@@ -69,6 +70,7 @@ void Particle::Init()
 
 void Particle::SetTitleParticle()
 {
+	m_DownTransparency = false;
 	if (m_Frame % 10 == 0)
 	{
 		for (int i = 0; i < kMaxParticle; i++)
@@ -81,7 +83,7 @@ void Particle::SetTitleParticle()
 				data[i].m_RColor = 255;
 				data[i].m_GColor = 255;
 				data[i].m_BColor = 200;
-				data[i].m_Transparency = 5000;
+				data[i].m_Transparency = 220;
 				data[i].m_Exist = true;
 
 				float vecX =  -0.5 + GetRand(1.0f);
@@ -230,6 +232,43 @@ void Particle::SetEnemyParticle()
 	}
 }
 
+void Particle::SetGameClearParticle()
+{
+	m_DownTransparency = false;
+	m_Gravity = 0.8f;
+	int count = 0;
+	
+	for (int i = 0; i < kMaxParticle; i++)
+	{
+		if (!data[i].m_Exist)
+		{
+			count++;
+			data[i].m_Pos.x = (Game::kScreenWidth / 2 - 300) + GetRand(600);
+			data[i].m_Pos.y = -20;
+
+			data[i].m_RColor = 255;
+			data[i].m_GColor = 255;
+			data[i].m_BColor = 200;
+			data[i].m_Transparency = 120;
+			data[i].m_Exist = true;
+
+			float vecX = -15.0f + GetRand(30.0f);
+			float vecY = 0.0f;
+
+			data[i].m_Vec = { vecX,vecY };
+
+			float RandParticleSize = GetRand(10) + 7;
+
+			data[i].m_ParticleSize = { RandParticleSize,RandParticleSize };
+
+			if (count >= 10)
+			{
+				return;
+			}
+		}
+	}
+}
+
 void Particle::Update()
 {
 	m_Frame++;
@@ -238,7 +277,10 @@ void Particle::Update()
 		if (data[i].m_Exist)
 		{
 			//ブレンドをマイフレーム下げる
-			data[i].m_Transparency -= 5;
+			if (m_DownTransparency)
+			{
+				data[i].m_Transparency -= 5;
+			}
 
 			data[i].m_Pos.x += data[i].m_Vec.x;
 			data[i].m_Pos.y += data[i].m_Vec.y;
@@ -267,7 +309,7 @@ bool Particle::OffScreen(int i, Vec2 offset)
 	{
 		return true;
 	}
-	if (data[i].m_Pos.y < 0)
+	if (data[i].m_Pos.y < -50)
 	{
 		return true;
 	}

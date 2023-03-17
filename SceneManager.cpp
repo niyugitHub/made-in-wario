@@ -26,6 +26,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::init(SceneKind kind)
 {
+	ChangeFont("Ÿà–¾’© Light");
 	m_kind = kind;
 	switch (m_kind)
 	{

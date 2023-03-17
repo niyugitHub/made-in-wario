@@ -1,5 +1,6 @@
 #include "GameClearScene.h"
 #include "Pad.h"
+#include "Particle.h"
 #include <DxLib.h>
 
 namespace
@@ -7,8 +8,8 @@ namespace
 	const char* const kGameOverSceneGraphicFilename = "data/GameOverScene.png";
 
 	// カーソルの初期位置
-	constexpr int kCursorNumX = 550;
-	constexpr int kCursorNumY = 600;
+	constexpr int kCursorNumX = 500;
+	constexpr int kCursorNumY = 470;
 
 	// フェードイン、フェードアウトの速さ
 	constexpr int kFadeSpeed = 8;
@@ -20,7 +21,8 @@ GameClearScene::GameClearScene(int handle) :
 	m_CursorMove(0),
 	m_PlayAgain(false),
 	m_Abort(false),
-	m_Color(0)
+	m_Color(0),
+	m_Particle(std::make_shared<Particle>())
 {
 	m_func = &GameClearScene::FadeinUpdate;
 }
@@ -36,10 +38,20 @@ void GameClearScene::Init()
 void GameClearScene::Update()
 {
 	(this->*m_func)();
+
+	m_Particle->Update();
+	m_Particle->SetGameClearParticle();
 }
 
 void GameClearScene::Draw()
 {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+
+	m_Particle->Draw({0,0});
+	DrawGraph(0, 0, m_handle, true);
+	DrawString(kCursorNumX, kCursorNumY + m_CursorMove, "→", 0xffffff, true);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void GameClearScene::FadeinUpdate()
@@ -72,7 +84,7 @@ void GameClearScene::NormalUpdate()
 
 	if (m_Cursor == 0)
 	{
-		m_CursorMove -= 10;
+		m_CursorMove -= 15;
 		if (m_CursorMove <= 0)
 		{
 			m_CursorMove = 0;
@@ -81,10 +93,10 @@ void GameClearScene::NormalUpdate()
 
 	if (m_Cursor == 1)
 	{
-		m_CursorMove += 10;
-		if (m_CursorMove >= 150)
+		m_CursorMove += 15;
+		if (m_CursorMove >= 210)
 		{
-			m_CursorMove = 150;
+			m_CursorMove = 210;
 		}
 	}
 

@@ -1,4 +1,8 @@
 #pragma once
+#include<memory>
+
+class Particle;
+
 class GameClearScene
 {
 public:
@@ -34,5 +38,8 @@ private:
 
 	//update処理メンバ関数ポインタ
 	void (GameClearScene::* m_func)();
+
+	// パーティクル
+	std::shared_ptr<Particle> m_Particle;
 };
 

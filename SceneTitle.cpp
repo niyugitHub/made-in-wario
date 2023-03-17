@@ -213,7 +213,7 @@ void SceneTitle::FirstDraw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_TitleHandle, true);
 	DrawGraph(0, 0, m_TitleStringHandle, true);
-	m_Particle->TitleDraw();
+	m_Particle->Draw({ 0,0 });
 	DrawFormatString(600, 450, GetColor(0, 0, 0), "%d", m_SceneNum);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -222,7 +222,7 @@ void SceneTitle::FirstDraw()
 void SceneTitle::NormalDraw()
 {
 	DrawGraph(0, 0, m_TitleHandle, true);
-	m_Particle->TitleDraw();
+	m_Particle->Draw({0,0});
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_TitleStringHandle, true);
@@ -237,7 +237,7 @@ void SceneTitle::NormalDraw()
 void SceneTitle::OptionDraw()
 {
 	DrawGraph(0, 0, m_TitleHandle, true);
-	m_Particle->TitleDraw();
+	m_Particle->Draw({ 0,0 });
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_OptionHandle, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

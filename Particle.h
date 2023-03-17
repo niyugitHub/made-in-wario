@@ -27,6 +27,8 @@ public:
 	void SetdamagePlayerParticle();
 	// エネミーに攻撃ヒット時パーティクル
 	void SetEnemyParticle();
+	// クリア時に出すパーティクル
+	void SetGameClearParticle();
 
 	void Update();
 
@@ -64,6 +66,9 @@ private:
 
 	// 重力
 	float m_Gravity;
+
+	// 透明度を下げるかどうか
+	bool m_DownTransparency;
 
 	// スクロール距離
 	Vec2 m_offset = {0,0};
