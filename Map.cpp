@@ -166,7 +166,7 @@ void Map::Init()
 				m_Gimmick.push_back(std::make_shared<MapGimmick2>(GimmickPos, m_GimmickHandle2));
 			}
 
-			if (m_MapData[y][x] == 16)
+			if (m_MapData[y][x] == 16 || m_MapData[y][x] == 17)
 			{
 				Vec2 GimmickPos = { kChipSize * x, kChipSize * y };
 				m_Gimmick.push_back(std::make_shared<MapGimmick3>(GimmickPos, m_GimmickHandle3));

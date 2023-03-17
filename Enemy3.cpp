@@ -31,7 +31,7 @@ Enemy3::Enemy3() :
 	m_FallSpeedY(0),
 	m_RandThrowFrame(100)
 {
-	m_Hp = 50;
+	m_Hp = 70;
 	m_GraphX = 0;
 	m_GraphY = 0;
 	m_Weight = 10.0f;

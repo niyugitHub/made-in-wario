@@ -16,6 +16,10 @@ namespace
 
 	// サウンドファイル名
 	const char* const kSoundTitleFilename = "sound/Title.mp3";
+
+	// カーソルの初期位置
+	constexpr int kCorsolNumX = 720;
+	constexpr int kCorsolNumY = 680;
 }
 
 void SceneTitle::init()
@@ -26,7 +30,6 @@ void SceneTitle::init()
 	m_isEnd = false;
 	m_textSize = 50;
 	m_Color = 0;
-
 	m_func = &SceneTitle::FadeinUpdate;
 	m_Drawfunc = &SceneTitle::FirstDraw;
 
@@ -226,8 +229,7 @@ void SceneTitle::NormalDraw()
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
 	DrawGraph(0, 0, m_TitleStringHandle, true);
-	DrawFormatString(600, 450, GetColor(0, 0, 0), "%d", m_SceneNum);
-	DrawString(800, 700 + m_Cursor, "→", GetColor(255, 255, 255), true);
+	DrawString(kCorsolNumX, kCorsolNumY + m_Cursor, "→", GetColor(255, 255, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 

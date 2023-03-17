@@ -934,7 +934,7 @@ void Player::IsColl()
 
 			/*if (m_Map->GetMapData(i, j) > Map::kSideMapChipNum * 2
 				&& m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 7)*/
-			if (m_NextPos.x >= Map::kBgNumX[m_Map->GetStageNum()] * Map::kChipSize)
+			if (m_NextPos.x >= Map::kBgNumX[m_Map->GetStageNum()] * Map::kChipSize - 60)
 			{
 				m_StageClear = true;
 
@@ -1090,8 +1090,8 @@ bool Player::CollNeedle()
 			{
 				float MapTop = i * Map::kChipSize;
 				float MapBottom = i * Map::kChipSize + Map::kChipSize;
-				float MapRight = j * Map::kChipSize + Map::kChipSize - 12;
-				float MapLeft = j * Map::kChipSize + 12;
+				float MapRight = j * Map::kChipSize + Map::kChipSize - 10;
+				float MapLeft = j * Map::kChipSize + 10;
 
 				if (PlayerLeft > MapRight) continue;
 				if (PlayerRight < MapLeft) continue;

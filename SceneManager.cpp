@@ -4,6 +4,7 @@
 #include"SceneTitle.h"
 #include"SceneMain.h"
 #include"Pad.h"
+#include <DxLib.h>
 
 
 SceneManager::SceneManager()
@@ -17,6 +18,8 @@ SceneManager::SceneManager()
 		m_kind = kSceneKindTitle;
 	}
 #endif
+	SetFontSize(50);
+	ChangeFont("Ÿà–¾’© Light");
 	m_pScene = nullptr;
 }
 SceneManager::~SceneManager()
@@ -26,7 +29,6 @@ SceneManager::~SceneManager()
 
 void SceneManager::init(SceneKind kind)
 {
-	ChangeFont("Ÿà–¾’© Light");
 	m_kind = kind;
 	switch (m_kind)
 	{

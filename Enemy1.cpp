@@ -16,6 +16,8 @@ namespace
 	// ‰æ‘œ‚Ì’ZŒa•”•ª•\Ž¦
 	constexpr int kRectGraphY = 128;
 	constexpr int kRectGraphX = 64;
+
+	constexpr float kAcceleration = 0.1f;
 }
 
 Enemy1::Enemy1() : 
@@ -138,7 +140,11 @@ void Enemy1::UpdateDiscovery()
 	/*m_Vec.x = 0;
 	m_MapVec = m_Map->GetVec();*/
 
-	BasicMoveEnemy();
+	if (m_CollBottom)
+	{
+		m_Gravity = 0;
+		m_Vec.y = 0;
+	}
 
 	if (!m_CollBottom)
 	{
@@ -154,12 +160,18 @@ void Enemy1::UpdateDiscovery()
 
 	if (m_DistancePos.x > -500 /*+ PlayerGraphSize / 2*/ && m_DistancePos.x < 0/*PlayerGraphSize / 2*/)
 	{
-		m_Vec.x = 3;
+		if (m_Vec.x <= 3)
+		{
+			m_Vec.x += kAcceleration;
+		}
 	}
 
 	else if (m_DistancePos.x >= 0/*PlayerGraphSize / 2*/ && m_DistancePos.x < 500/* + PlayerGraphSize / 2*/)
 	{
-		m_Vec.x = -3;
+		if (m_Vec.x >= -3)
+		{
+			m_Vec.x += -kAcceleration;
+		}
 	}
 	else
 	{

@@ -31,7 +31,7 @@ Enemy6::Enemy6() :
 {
 	m_GraphX = 0;
 	m_GraphY = 0;
-	m_Hp = 100;
+	m_Hp = 180;
 	m_GraphSize1 = { 105,170 };
 	m_GraphSize2 = { 215,kGraphSizeY - 70 };
 	m_func = &Enemy6::NotUpdate;

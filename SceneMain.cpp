@@ -71,7 +71,7 @@ SceneMain::SceneMain() :
 	m_Exist(true),
 	m_Coll(nullptr)
 {
-
+	InitSoundMem();
 	int sw, sh, bit;
 	GetScreenState(&sw, &sh, &bit);
 	m_tempScreenH = MakeScreen(sw,sh);
@@ -134,7 +134,6 @@ SceneMain::SceneMain() :
 		pItem->SetMap(m_Map);
 	}
 
-	SetFontSize(50);
 	m_func = &SceneMain::FadeinUpdate;
 }
 
@@ -486,6 +485,12 @@ void SceneMain::InitPlayerPos()
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 6 };
 		m_offset = { 0,0};
+	}
+
+	if (m_Map->GetStageNum() == 3)
+	{
+		m_PlayerPos = { 0,Map::kChipSize * 18 };
+		m_offset = { 0,0 };
 	}
 
 	m_player->SetPos(m_PlayerPos);

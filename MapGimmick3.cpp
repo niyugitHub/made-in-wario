@@ -4,7 +4,7 @@
 namespace
 {
 	// 回転の速度
-	constexpr float kRotaSpeed = 0.03f;
+	constexpr float kRotaSpeed = 0.06f;
 
 	// 画像のサイズ
 	constexpr float kGraphSizeX = 100;
@@ -37,7 +37,7 @@ void MapGimmick3::Update(Vec2 PlayerPos)
 {
 	m_Pos = { m_BloakPos.x,m_BloakPos.y };
 
-	m_Rota += kRotaSpeed;
+	m_Rota -= kRotaSpeed;
 
 	m_Vec.x = cos(m_Rota) * kRotaSize;
 	m_Vec.y = sin(m_Rota) * kRotaSize;
@@ -79,7 +79,7 @@ void MapGimmick3::Draw(Vec2 offset)
 
 		Pos += {-32, -32};
 
-		DrawRectGraph(m_BloakPos.x - Pos.x + offset.x, m_BloakPos.x - Pos.y + offset.y,
+		DrawRectGraph(m_BloakPos.x - Pos.x + offset.x, m_BloakPos.y - Pos.y + offset.y,
 			0, 0, 50, 50,
 			m_handle, true, true);
 	}
