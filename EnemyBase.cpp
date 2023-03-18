@@ -40,8 +40,8 @@ EnemyBase::EnemyBase() :
 	m_BossBattle(false),
 	m_Player(nullptr),
 	m_Map(nullptr),
-	m_Coll(nullptr),
-	m_Shot(nullptr)
+	m_Coll(nullptr)
+	/*m_Shot(nullptr)*/
 {
 }
 
@@ -190,25 +190,33 @@ bool EnemyBase::CollThrow()
 	float PlayerPosUp = m_PlayerPos.y + 10;
 	float PlayerPosBottom = m_PlayerPos.y + 118;
 
-	if (m_Shot != nullptr)
+	for (auto& Shot : m_Shot)
 	{
-		m_ThrowPos = m_Shot->GetPos();
+		if (Shot != nullptr)
+		{
+			m_ThrowPos = Shot->GetPos();
+		}
+
+		else
+		{
+			continue;
+		}
+
+		// エネミーの位置
+		float EnemyPosLeft = m_ThrowPos.x;
+		float EnemyPosRight = m_ThrowPos.x + 50;
+		float EnemyPosUp = m_ThrowPos.y;
+		float EnemyPosBottom = m_ThrowPos.y + 50;
+
+		if (PlayerPosLeft > EnemyPosRight) continue;
+		if (PlayerPosRight < EnemyPosLeft) continue;
+		if (PlayerPosUp > EnemyPosBottom)  continue;
+		if (PlayerPosBottom < EnemyPosUp)  continue;
+
+		return true;
 	}
 
-	else	return false;
-
-	// エネミーの位置
-	float EnemyPosLeft = m_ThrowPos.x;
-	float EnemyPosRight = m_ThrowPos.x + 50;
-	float EnemyPosUp = m_ThrowPos.y;
-	float EnemyPosBottom = m_ThrowPos.y + 50;
-
-	if (PlayerPosLeft > EnemyPosRight) return false;
-	if (PlayerPosRight < EnemyPosLeft) return false;
-	if (PlayerPosUp > EnemyPosBottom)  return false;
-	if (PlayerPosBottom < EnemyPosUp)  return false;
-
-	return true;
+	return false;
 }
 
 bool EnemyBase::CollShotPlayer()

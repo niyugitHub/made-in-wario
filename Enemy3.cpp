@@ -65,14 +65,41 @@ void Enemy3::update()
 
 	m_GraphFrame++;
 
-	if (m_Shot != nullptr)
+	for (auto& Shot : m_Shot)
 	{
-		if (!m_Shot->GetExist())
+		if (Shot != nullptr)
 		{
-			delete m_Shot;
-			m_Shot = nullptr;
+			Shot->Update(m_PlayerPos);
 		}
 	}
+
+//	std::vector<ShotBase*>::iterator it = m_Shot.begin();
+
+	auto rmIt = std::remove_if(// 条件に合致したものを消す
+		m_Shot.begin(), // 対象はm_Shotの最初から
+		m_Shot.end(),// 最後まで
+
+		// 消えてもらう条件を表すラムダ式
+		// trueだと消える。falseだと消えない。
+		[](const std::shared_ptr<ShotBase>& shot) {
+			return !shot->GetExist();
+		});
+
+	m_Shot.erase(rmIt, m_Shot.end());
+
+	/*for (auto& Shot : m_Shot)
+	{
+
+		if (!Shot->GetExist())
+		{
+			delete Shot;
+			Shot = nullptr;
+
+			it = m_Shot.erase(it);
+			continue;
+		}
+		it++;
+	}*/
 
 	if (m_Exist)
 	{
@@ -110,11 +137,6 @@ void Enemy3::update()
 
 	m_PlayerPos = m_Player->GetPos();
 
-	if (m_Shot != nullptr)
-	{
-		m_Shot->Update();
-	}
-
 	m_NextPos += m_Vec;
 }
 
@@ -139,9 +161,12 @@ void Enemy3::draw(Vec2 offset)
 
 	/*DrawBox(m_ThrowPos.x, m_ThrowPos.y, m_ThrowPos.x + 50, m_ThrowPos.y + 50,
 		GetColor(0, 255, 255), true);*/
-	if (m_Shot != nullptr)
+	for (auto& Shot : m_Shot)
 	{
-		m_Shot->Draw(offset);
+		if (Shot != nullptr)
+		{
+			Shot->Draw(offset);
+		}
 	}
 
 	m_offset = offset;
@@ -173,32 +198,42 @@ void Enemy3::UpdatePatrol()
 		m_DistancePos.y > -500 && m_DistancePos.y < 500)
 	{
 		m_func = &Enemy3::UpdateDiscovery;
+		m_GraphX = 0;
 	}
 }
 
 void Enemy3::UpdateDiscovery()
 {
-	if (m_DistancePos.x < -500 || m_DistancePos.x > 500 ||
-		m_DistancePos.y < -500 || m_DistancePos.y > 500)
+	if (m_DistancePos.x < -800 || m_DistancePos.x > 800 ||
+		m_DistancePos.y < -800 || m_DistancePos.y > 800)
 	{
 		m_func = &Enemy3::UpdatePatrol;
-		m_RandThrowFrame = 60;
+		m_GraphY = 0;
+		m_GraphX = 0;
+		m_RandThrowFrame = 100;
 	}
 
-	if (m_RandThrowFrame <= 60)
+	if (m_RandThrowFrame > 70)
+	{
+		m_GraphY = 0;
+	}
+
+	if (m_RandThrowFrame == 70)
 	{
 		m_GraphY = 1;
 		m_GraphX = 0;
+		m_GraphFrame = 1;
 	}
 
-	if (m_GraphFrame % 5 == 0)
+	if (m_GraphFrame % 7 == 0)
 	{
 		m_GraphX++;
 
-		if (m_GraphX >= 13 && m_GraphY == 1)
+		if (m_GraphX >= 14 && m_GraphY == 1)
 		{
 			m_GraphX = 0;
 		}
+
 		if (m_GraphX >= 9 && m_GraphY == 0)
 		{
 			m_GraphX = 0;
@@ -208,18 +243,29 @@ void Enemy3::UpdateDiscovery()
 	if (m_RandThrowFrame <= 0)
 	{
 		// 投げる頻度ランダム
-		int RandFrame = GetRand(50);
+		int RandFrame = GetRand(80);
 
-		m_RandThrowFrame = kFallFrame + GetRand(RandFrame);
+	//	m_RandThrowFrame = kFallFrame + RandFrame;
 
 		m_FallSpeedX = m_DistancePos.x / 60;
 
-		m_Shot = new FallShot(m_CentorPos,m_FallSpeedX);
-		m_Shot->SetHandle(m_Shothandle);
-		m_Shot->SetLookShot(m_LookEnemy);
+//		std::vector<ShotBase*>::iterator it = m_Shot.end();
 
+	
+		m_Shot.push_back(std::make_shared<FallShot>(m_CentorPos, m_FallSpeedX));
+		m_Shot.back()->SetHandle(m_Shothandle);
+		m_Shot.back()->SetLookShot(m_LookEnemy);
+		m_Shot.back()->SetExist(true);
+		
+	//	m_Shot.push_back(Shot);
+
+	//	m_RandThrowFrame += 5;
+
+	//	m_func = &Enemy3::UpdatePatrol;
 		m_GraphY = 0;
 		m_GraphX = 0;
+
+		return;	
 	}
 
 	m_RandThrowFrame--;

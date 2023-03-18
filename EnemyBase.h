@@ -1,6 +1,7 @@
 #pragma once
 #include"Vec2.h"
 #include<memory>
+#include<vector>
 #include "ShotBase.h"
 
 class Map;
@@ -172,7 +173,7 @@ protected:
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Map> m_Map;
 	std::shared_ptr<Collision> m_Coll;
-	ShotBase* m_Shot;
+	std::vector<std::shared_ptr<ShotBase>> m_Shot;
 
 
 };

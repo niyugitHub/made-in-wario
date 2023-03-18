@@ -32,7 +32,7 @@ FallShot::~FallShot()
 {
 }
 
-void FallShot::Update()
+void FallShot::Update(Vec2 PlayerPos)
 {
 	m_Frame++;
 	if (m_Frame % 5 == 0)
@@ -50,11 +50,14 @@ void FallShot::Update()
 
 	m_Vec.y -= kFallSpeedDown;
 
-	/*if (m_Pos.y > Game::kScreenHeight)
+	if (m_Pos.y > PlayerPos.y + Game::kScreenHeight ||
+		m_Pos.y < PlayerPos.y - Game::kScreenHeight || 
+		m_Pos.x > PlayerPos.x + Game::kScreenWidth || 
+		m_Pos.x < PlayerPos.x - Game::kScreenWidth)
 	{
 		m_Exist = false;
 		m_Vec.y = kFallSpeed;
-	}*/
+	}
 }
 
 void FallShot::Draw(Vec2 offset)

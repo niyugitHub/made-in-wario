@@ -18,7 +18,7 @@ public:
 	void SetExist(bool Exist) { m_Exist = Exist; }
 	bool GetExist() { return m_Exist; }
 
-	virtual void Update();
+	virtual void Update(Vec2 PlayerPos);
 	virtual void Draw(Vec2 offset);
 
 protected:

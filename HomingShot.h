@@ -16,7 +16,7 @@ public:
 		/*void SetExist(bool Exist) { m_Exist = Exist; }
 		bool GetExist() { return m_Exist; }*/
 
-	void Update();
+	void Update(Vec2 PlayerPos);
 	void Draw(Vec2 offset);
 
 private:

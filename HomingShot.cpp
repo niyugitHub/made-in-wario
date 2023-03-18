@@ -27,7 +27,7 @@ HomingShot::~HomingShot()
 {
 }
 
-void HomingShot::Update()
+void HomingShot::Update(Vec2 PlayerPos)
 {
 	m_Frame++;
 	if (m_Frame % 5 == 0)
@@ -42,11 +42,13 @@ void HomingShot::Update()
 
 	m_Pos += m_Vec;
 
-	/*if (m_Pos.y < 0 || m_Pos.y > Game::kScreenHeight ||
-		m_Pos.x < 0 || m_Pos.y > Game::kScreenWidth)
+	if (m_Pos.y > PlayerPos.y + Game::kScreenHeight ||
+		m_Pos.y < PlayerPos.y - Game::kScreenHeight ||
+		m_Pos.x > PlayerPos.x + Game::kScreenWidth ||
+		m_Pos.x < PlayerPos.x - Game::kScreenWidth)
 	{
 		m_Exist = false;
-	}*/
+	}
 }
 
 void HomingShot::Draw(Vec2 offset)

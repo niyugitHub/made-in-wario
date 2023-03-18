@@ -78,15 +78,30 @@ void Enemy5::update()
 
 	m_GraphFrame++;
 
-	/*if (m_GraphFrame % 5 == 0)
-	{
-		m_GraphX++;
+	auto rmIt = std::remove_if(// 条件に合致したものを消す
+		m_Shot.begin(), // 対象はm_Shotの最初から
+		m_Shot.end(),// 最後まで
 
-		if (m_GraphX % 4 == 0)
-		{
-			m_GraphX = 0;
-		}
-	}*/
+		// 消えてもらう条件を表すラムダ式
+		// trueだと消える。falseだと消えない。
+		[](const std::shared_ptr<ShotBase>& shot) {
+			return !shot->GetExist();
+		});
+
+	m_Shot.erase(rmIt, m_Shot.end());
+
+	//for (auto& Shot : m_Shot)
+	//{
+	//	if (!Shot->GetExist())
+	//	{
+	//		/*delete Shot;
+	//		Shot = nullptr;*/
+
+	//		m_Shot.erase(it,it);
+	//		continue;
+	//	}
+	//	it++;
+	//}
 
 	if (m_DistancePos.x < 0)
 	{
@@ -107,13 +122,11 @@ void Enemy5::update()
 		(this->*m_func)();
 	}
 
-	if (m_Shot != nullptr)
+	for (auto& Shot : m_Shot)
 	{
-		m_Shot->Update();
-		if (!m_Shot->GetExist())
+		if (Shot != nullptr)
 		{
-			delete m_Shot;
-			m_Shot = nullptr;
+			Shot->Update(m_PlayerPos);
 		}
 	}
 
@@ -144,9 +157,12 @@ void Enemy5::draw(Vec2 offset)
 		}
 	}
 
-	if (m_Shot != nullptr)
+	for (auto& Shot : m_Shot)
 	{
-		m_Shot->Draw(offset);
+		if (Shot != nullptr)
+		{
+			Shot->Draw(offset);
+		}
 	}
 
 	m_offset = offset;
@@ -290,9 +306,18 @@ void Enemy5::UpdateAttackShot()
 		vel = vel.normalize();
 		vel *= -kShotSpeed;
 
-		m_Shot = new HomingShot(m_Pos, vel);
-		m_Shot->SetHandle(m_Shothandle);
-		m_Shot->SetLookShot(m_LookEnemy);
-		m_func = &Enemy5::UpdateDiscovery;
+		
+		m_Shot.push_back(std::make_shared<HomingShot>(m_Pos, vel));
+		m_Shot.back()->SetHandle(m_Shothandle);
+		m_Shot.back()->SetLookShot(m_LookEnemy);
+		m_Shot.back()->SetExist(true);
+
+		m_ShotFrame -= 5;
+		
+		//m_func = &Enemy5::UpdateDiscovery;
+
+		
+
+	//	return;	
 	}
 }
