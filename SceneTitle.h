@@ -7,6 +7,7 @@
 #include<DxLib.h>
 
 class Particle;
+class Option;
 
 class SceneTitle : public SceneBase
 {
@@ -115,4 +116,5 @@ private:
 	Player* m_player;
 
 	std::shared_ptr<Particle> m_Particle;
+	std::shared_ptr<Option> m_Option;
 };

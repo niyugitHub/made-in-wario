@@ -245,7 +245,7 @@ void Enemy3::UpdateDiscovery()
 		// “Š‚°‚é•p“xƒ‰ƒ“ƒ_ƒ€
 		int RandFrame = GetRand(80);
 
-	//	m_RandThrowFrame = kFallFrame + RandFrame;
+		m_RandThrowFrame = kFallFrame + RandFrame;
 
 		m_FallSpeedX = m_DistancePos.x / 60;
 
@@ -259,9 +259,7 @@ void Enemy3::UpdateDiscovery()
 		
 	//	m_Shot.push_back(Shot);
 
-	//	m_RandThrowFrame += 5;
-
-	//	m_func = &Enemy3::UpdatePatrol;
+		m_func = &Enemy3::UpdatePatrol;
 		m_GraphY = 0;
 		m_GraphX = 0;
 

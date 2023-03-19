@@ -4,6 +4,7 @@
 #include"game.h"
 #include"Pad.h"
 #include"Particle.h"
+#include"Option.h"
 #include"cassert"
 
 namespace
@@ -53,6 +54,7 @@ void SceneTitle::init()
 	m_player->SetPos(m_Pos);
 
 	m_Particle = std::make_shared<Particle>();
+	m_Option = std::make_shared<Option>();
 }
 
 SceneBase* SceneTitle::update()
@@ -98,38 +100,21 @@ void SceneTitle::draw()
 {
 	(this->*m_Drawfunc)();
 
+	if (m_Option->GetActiveOption())
+	{
+		m_Option->Draw();
+	}
+
 	ChangeVolumeSoundMem(m_Volum,m_SoundHandle);
-	
-//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
-//	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle2, true);
-//	DrawGraph(m_BackgroundPosX, 0, m_BackgroundHandle1, true);
-//	DrawGraph(m_BackgroundPosX - 1969, 0, m_BackgroundHandle2, true);
-//	DrawGraph(m_BackgroundPosX - 1969, 0, m_BackgroundHandle1, true);
-//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-//
-//	SetFontSize(50);
-//	DrawString(150, 200, "個人製作", GetColor(m_Color, m_Color, 0));
-//	DrawString(150, 450, "Bを押してスタート", GetColor(m_Color, m_Color, 0));
-//
-//	DrawFormatString(600, 450,GetColor(0, 0, 0), "%d",m_SceneNum);
-//
-////	m_player->draw();
 }
 
 void SceneTitle::FadeinUpdate()
 {
 	if (m_Color <= 0)
 	{
-		if (m_SceneNum == 0)
-		{
-			m_Drawfunc = &SceneTitle::NormalDraw;
-		}
-
-		if (m_SceneNum == 1)
-		{
-			m_Drawfunc = &SceneTitle::OptionDraw;
-		}
+		m_Drawfunc = &SceneTitle::NormalDraw;
 	}
+
 	m_Color += 8;
 	m_Volum += 8;
 	if (m_Color >= 255)
@@ -183,7 +168,9 @@ void SceneTitle::TitleSceneUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
 	{
-		m_func = &SceneTitle::FadeoutUpdate;
+		m_Option->Init();
+		m_Option->SetTitleOption(true);
+		m_func = &SceneTitle::OptionUpdate;
 	}
 }
 
@@ -204,11 +191,13 @@ void SceneTitle::FadeoutUpdate()
 
 void SceneTitle::OptionUpdate()
 {
-	if (Pad::isTrigger(PAD_INPUT_1))
+	if (!m_Option->GetActiveOption())
 	{
-		m_func = &SceneTitle::FadeoutUpdate;
+		m_func = &SceneTitle::TitleSceneUpdate;
 		m_SceneNum = 0;
 	}
+
+	m_Option->Update();
 }
 
 void SceneTitle::FirstDraw()
@@ -227,10 +216,13 @@ void SceneTitle::NormalDraw()
 	DrawGraph(0, 0, m_TitleHandle, true);
 	m_Particle->Draw({0,0});
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
-	DrawGraph(0, 0, m_TitleStringHandle, true);
-	DrawString(kCorsolNumX, kCorsolNumY + m_Cursor, "→", GetColor(255, 255, 255), true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
+	if (!m_Option->GetActiveOption())
+	{
+		DrawGraph(0, 0, m_TitleStringHandle, true);
+		DrawString(kCorsolNumX, kCorsolNumY + m_Cursor, "→", GetColor(255, 255, 255), true);
+	}
+//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 
 	//	m_player->draw();
@@ -241,7 +233,8 @@ void SceneTitle::OptionDraw()
 	DrawGraph(0, 0, m_TitleHandle, true);
 	m_Particle->Draw({ 0,0 });
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_Color);
-	DrawGraph(0, 0, m_OptionHandle, true);
+	/*DrawGraph(0, 0, m_OptionHandle, true);*/
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 

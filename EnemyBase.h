@@ -174,7 +174,5 @@ protected:
 	std::shared_ptr<Map> m_Map;
 	std::shared_ptr<Collision> m_Coll;
 	std::vector<std::shared_ptr<ShotBase>> m_Shot;
-
-
 };
 

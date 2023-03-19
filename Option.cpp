@@ -38,6 +38,7 @@ void Option::Init()
 	m_CursorMove = 0;
 	m_Color = 0;
 	m_OptionScene = true;
+	m_TitleScene = false;
 	m_func = &Option::FirstUpdate;
 	m_drawfunc = &Option::OptionDraw;
 }
@@ -262,5 +263,10 @@ void Option::GameEndDraw()
 	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30)
 	{
 		m_GameEnd = true;
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30 && m_TitleScene)
+	{
+		DxLib_End();
 	}
 }

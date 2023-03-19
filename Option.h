@@ -9,6 +9,9 @@ public:
 	void SetActivgeOption(bool OptionScene) { m_OptionScene = OptionScene; }
 	bool GetActiveOption() { return m_OptionScene; }
 
+	// タイトル画面のオプションかどうか
+	void SetTitleOption(bool TitleScene) { m_TitleScene = TitleScene; }
+
 	// 画像をセット
 	void SetHandle(int handle) { m_OptionHandle = handle; }
 
@@ -49,6 +52,8 @@ private:
 
 	// ゲーム終了フラグ
 	bool m_GameEnd = false;
+
+	bool m_TitleScene = false;
 
 	// いきなりゲーム終了にならないように
 	int m_GameCount = 0;
