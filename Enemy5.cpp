@@ -311,10 +311,8 @@ void Enemy5::UpdateAttackShot()
 		m_Shot.back()->SetHandle(m_Shothandle);
 		m_Shot.back()->SetLookShot(m_LookEnemy);
 		m_Shot.back()->SetExist(true);
-
-		m_ShotFrame -= 5;
 		
-		//m_func = &Enemy5::UpdateDiscovery;
+		m_func = &Enemy5::UpdateDiscovery;
 
 		
 
