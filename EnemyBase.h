@@ -85,6 +85,8 @@ public:
 
 	virtual void OnDamage(int damage); // ダメージを受けた時の処理
 
+	virtual void OnShotDamage(int damage); // ダメージを受けた時の処理
+
 	virtual bool CollThrow(); // ショットとプレイヤーの当たり判定
 
 	// プレイヤーが放ったショットとエネミーの当たり判定

@@ -15,7 +15,8 @@ public:
 //	constexpr int kMouseSize = 134;
 
 public:
-	SceneTitle()
+	SceneTitle(std::shared_ptr<Option> Option) :
+		m_Option(Option)
 	{
 		m_Pos.x = 0;
 		m_Pos.y = 0;

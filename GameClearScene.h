@@ -9,6 +9,8 @@ public:
 	GameClearScene(int handle);
 	~GameClearScene();
 
+	void SetHandle(int i, int PlayerHandle) { m_PlayerHandle[i] = PlayerHandle; }
+
 	bool GetPlayAgain() { return m_PlayAgain; }
 
 	bool GetAbort() { return m_Abort; }
@@ -23,6 +25,13 @@ private:
 	void FadeoutUpdate();
 private:
 	int m_handle = -1;
+
+	int m_PlayerHandle[72];
+
+	// グラフの種類
+	int m_Graph;
+	// グラフの切り替えフレーム
+	int m_GraphFrame;
 	// カーソルの場所
 	int m_Cursor;
 	// カーソル移動時になめらかにカーソルを動かす

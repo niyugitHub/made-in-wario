@@ -31,6 +31,8 @@ namespace
 	const char* const kShotTutorialFilename = "data/ShotTutorial.png";
 	const char* const kDamageTutorialFilename = "data/DamageTutorial.png";
 	const char* const kGameClearFilename = "data/GameClear.png";
+	const char* const kGuideFilename = "data/gaido.png";
+	const char* const kGuideStringFilename = "data/gaidoString.png";
 
 	// サウンドファイル名
 	const char* const kMainbgmFilename = "sound/MainBGM.mp3";
@@ -46,7 +48,7 @@ namespace
 	constexpr int kTutorialTimer = 90;
 }
 
-SceneMain::SceneMain() :
+SceneMain::SceneMain(std::shared_ptr<Option> Option) :
 	m_PlayerPos(0, 0),
 	m_EnemyPos(0, 0),
 	m_MapPos(0, 0),
@@ -69,7 +71,8 @@ SceneMain::SceneMain() :
 	m_BossSoundHandle(-1),
 	m_GameOverSoundHandle(-1),
 	m_Exist(true),
-	m_Coll(nullptr)
+	m_Coll(nullptr),
+	m_Option(Option)
 {
 	InitSoundMem();
 	int sw, sh, bit;
@@ -87,7 +90,10 @@ SceneMain::SceneMain() :
 	m_EnemyFactory = std::make_shared<EnemyFactory>();
 	m_Coll = std::make_shared<Collision>();
 	m_GameOverScene = std::make_shared<GameOverScene>();
-	m_Option = std::make_shared<Option>();
+
+	int GuideHandle = LoadGraph(kGuideFilename);
+	int GuideStringHandle = LoadGraph(kGuideStringFilename);
+	
 	m_Tutorial = std::make_shared<Tutorial>();
 
 	int GameClearHandle = LoadGraph(kGameClearFilename);
@@ -168,6 +174,7 @@ void SceneMain::init()
 	for (int i = 0; i < Player::kCharaChipNum; i++)
 	{
 		m_player->setHandle(i, m_hPlayerGraphic[i]);
+		m_GameClearScene->SetHandle(i, m_hPlayerGraphic[i]);
 	}
 	m_player->Init();
 //	m_Enemy->Init();
@@ -266,13 +273,15 @@ SceneBase* SceneMain::update()
 		}
 		if (m_GameOverScene->GetAbort())
 		{
-			return (new SceneTitle);
+			m_Option->SetActivgeOption(false);
+			return (new SceneTitle(m_Option));
 		}
 	}
 
 	if (m_Option->GetGameEnd())
 	{
-		return (new SceneTitle);
+		m_Option->SetActivgeOption(false);
+		return (new SceneTitle(m_Option));
 	}
 
 	// ゲームクリア時
@@ -283,12 +292,14 @@ SceneBase* SceneMain::update()
 
 		if (m_GameClearScene->GetPlayAgain())
 		{
-			return (new SceneMain);
+			m_Option->SetActivgeOption(false);
+			return (new SceneMain(m_Option));
 		}
 
 		if (m_GameClearScene->GetAbort())
 		{
-			return (new SceneTitle);
+			m_Option->SetActivgeOption(false);
+			return (new SceneTitle(m_Option));
 		}
 	}
 	

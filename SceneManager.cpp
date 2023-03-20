@@ -4,7 +4,14 @@
 #include"SceneTitle.h"
 #include"SceneMain.h"
 #include"Pad.h"
+#include"Option.h"
 #include <DxLib.h>
+
+namespace
+{
+	const char* const kGuideFilename = "data/gaido.png";
+	const char* const kGuideStringFilename = "data/gaidoString.png";
+}
 
 
 SceneManager::SceneManager()
@@ -21,6 +28,10 @@ SceneManager::SceneManager()
 	SetFontSize(50);
 	ChangeFont("Ÿà–¾’© Light");
 	m_pScene = nullptr;
+
+	m_GuideHandle = LoadGraph(kGuideFilename);
+	m_GuideStringHandle = LoadGraph(kGuideStringFilename);
+	m_Option = std::make_shared<Option>(m_GuideHandle, m_GuideStringHandle);
 }
 SceneManager::~SceneManager()
 {
@@ -33,11 +44,13 @@ void SceneManager::init(SceneKind kind)
 	switch (m_kind)
 	{
 	case SceneManager::kSceneKindTitle:
-		m_pScene = new SceneTitle;
+		m_Option->SetActivgeOption(false);
+		m_pScene = new SceneTitle(m_Option);
 		m_pScene->init();
 		break;
 	case SceneManager::kSceneKindMain:
-		m_pScene = new SceneMain;
+		m_Option->SetActivgeOption(false);
+		m_pScene = new SceneMain(m_Option);
 		m_pScene->init();
 		break;
 
@@ -81,4 +94,12 @@ void SceneManager::draw()
 	if (!m_pScene) return;
 
 	m_pScene->draw();
+
+	if (m_Option->GetGuide())
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		DrawGraph(0, 0, m_GuideHandle, true);
+		DrawGraph(0, 0, m_GuideStringHandle, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 }

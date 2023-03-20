@@ -28,7 +28,7 @@ public:
 	static constexpr int kItemNum = 15;
 	static constexpr int kStageItemNum = 5;
 public:
-	SceneMain();
+	SceneMain(std::shared_ptr<Option> Option );
 	virtual ~SceneMain();
 
 	// ‰Šú‰»

@@ -82,11 +82,11 @@ m_CollRight(false),
 m_Attack(false),
 m_InitAttack(true),
 m_AttackPower(10),
-m_Hp(1000),
+m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(true),
+m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
@@ -696,11 +696,13 @@ void Player::IsActiveGauge()
 			if (m_LookLeft)
 			{
 				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, -40.0f);
+				m_Shot->SetExist(true);
 				m_Particle->SetPos({ m_pos.x,m_pos.y + (kColumnSize / 2 + 10) });
 			}
 			else if (!m_LookLeft)
 			{
 				m_Shot = new PlayerShot({ m_pos.x + (kSideSize / 2),m_pos.y + (kColumnSize / 4) }, 40.0f);
+				m_Shot->SetExist(true);
 				m_Particle->SetPos({ m_pos.x + kSideSize, m_pos.y + (kColumnSize / 2 + 10) });
 			}
 			m_InitAttack = false;
@@ -835,13 +837,13 @@ void Player::IsColl()
 			float MapRight = j * Map::kChipSize + Map::kChipSize;
 			float MapLeft = j * Map::kChipSize;
 
-			if (m_Map->GetMapData(i, j) == 10)
+			/*if (m_Map->GetMapData(i, j) == 10)
 			{
 				MapRight -= 20;
 				MapLeft += 20;
-			}
+			}*/
 
-			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
+			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2 && m_Map->GetMapData(i, j) != 10)
 			{
 				if (m_Map->GetMapData(i, j) != 11 && m_Map->GetMapData(i, j) != 12 &&
 					m_Map->GetMapData(i, j) != 27 && m_Map->GetMapData(i, j) != 28)

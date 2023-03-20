@@ -38,6 +38,7 @@ EnemyBase::EnemyBase() :
 	m_CollRight(false),
 	m_TutorialFlag(false),
 	m_BossBattle(false),
+	m_GameClear(false),
 	m_Player(nullptr),
 	m_Map(nullptr),
 	m_Coll(nullptr)
@@ -180,6 +181,11 @@ void EnemyBase::KnockBack()
 void EnemyBase::OnDamage(int damage)
 {
 	m_Hp -= damage;
+}
+
+void EnemyBase::OnShotDamage(int damage)
+{
+	m_Hp -= damage * 2;
 }
 
 bool EnemyBase::CollThrow()

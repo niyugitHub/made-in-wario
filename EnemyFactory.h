@@ -11,6 +11,7 @@ class Enemy4;
 class Enemy5;
 class Enemy6;
 class BossEnemy;
+class BossEnemy2;
 class Player;
 class Particle;
 class Map;
@@ -28,6 +29,7 @@ public:
 		kFlyShot,
 		kKnight,
 		kBoss,
+		kBoss2,
 	};
 public:
 	EnemyFactory();

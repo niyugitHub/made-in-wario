@@ -7,6 +7,7 @@
 #include "Enemy5.h"
 #include "Enemy6.h"
 #include "BossEnemy.h"
+#include "BossEnemy2.h"
 #include "EnemyBase.h"
 #include "Player.h"
 #include "Map.h"
@@ -178,7 +179,7 @@ void EnemyFactory::Update()
 				m_Particle->SetEnemyPos(enemy->GetCentorPos());
 				m_Particle->SetEnemyParticle();
 				enemy->SetHit(true);
-				enemy->OnDamage(m_Player->GetAttackPower());
+				enemy->OnShotDamage(m_Player->GetAttackPower());
 				enemy->InitKnockBack();
 				PlaySoundMem(m_SoundHitAttack, DX_PLAYTYPE_BACK);
 			}
@@ -266,6 +267,11 @@ std::shared_ptr<EnemyBase> EnemyFactory::Create(EnemyType type, const Vec2 pos)
 	case EnemyType::kBoss:
 		m_Enemy.push_back(
 			std::make_shared<BossEnemy>()
+		);
+		break;
+	case EnemyType::kBoss2:
+		m_Enemy.push_back(
+			std::make_shared<BossEnemy2>()
 		);
 		break;
 	}
@@ -473,6 +479,11 @@ void EnemyFactory::StageEnemy(int StageNum)
 			{
 				Pos.y -= 400;
 				Create(kBoss, { Pos });
+			}
+			if (m_Map->GetMapData(i, j) == 225)
+			{
+				Pos.y -= 400;
+				Create(kBoss2, { Pos });
 			}
 		}
 	}

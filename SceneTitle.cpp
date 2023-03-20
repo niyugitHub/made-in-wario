@@ -14,6 +14,9 @@ namespace
 	const char* const kTitleFilename = "data/title.png";
 	const char* const kTitleStringFilename = "data/titleString.png";
 	const char* const kOptionFilename = "data/gamepad.png";
+	const char* const kGuideFilename = "data/gaido.png";
+	const char* const kGuideStringFilename = "data/gaidoString.png";
+
 
 	// サウンドファイル名
 	const char* const kSoundTitleFilename = "sound/Title.mp3";
@@ -54,7 +57,6 @@ void SceneTitle::init()
 	m_player->SetPos(m_Pos);
 
 	m_Particle = std::make_shared<Particle>();
-	m_Option = std::make_shared<Option>();
 }
 
 SceneBase* SceneTitle::update()
@@ -82,7 +84,8 @@ SceneBase* SceneTitle::update()
 	if (m_Color <= 0 && m_EndScene)
 	{
 		StopSoundMem(m_SoundHandle);
-		return (new SceneMain);
+		m_Option->SetActivgeOption(false);
+		return (new SceneMain(m_Option));
 	}
 
 	(this->*m_func)();

@@ -17,9 +17,12 @@ namespace
 	constexpr int kFadeSpeed = 8;
 }
 
-Option::Option() : 
+Option::Option(int GuideHandle, int GuideStringHandle) :
+	m_GuideHandle(GuideHandle),
+	m_GuideStringHandle(GuideStringHandle),
 	m_SceneNum(0),
-	m_OptionScene(false)
+	m_OptionScene(false),
+	m_Guide(false)
 {
 	m_StringHandle = LoadGraph(kOptionStringFilename);
 	m_GamepadHandle = LoadGraph(kGamePadFilename);
@@ -54,6 +57,14 @@ void Option::Draw()
 
 	DrawFormatString(500, 500, 0xffffff, "%d", m_CursorMove);
 	DrawFormatString(500, 600, 0xffffff, "%d", m_SceneNum);
+
+	if (m_Guide)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+		DrawGraph(0, 0, m_GuideHandle, true);
+		DrawGraph(0, 0, m_GuideStringHandle, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 }
 
 void Option::CursorMove()
@@ -135,13 +146,13 @@ void Option::FirstUpdate()
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
 	{
 		m_drawfunc = &Option::GamepadDraw;
-		m_func = &Option::NextUpdate;
+		m_func = &Option::GamePadUpdate;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 2)
 	{
 		m_drawfunc = &Option::GameEndDraw;
-		m_func = &Option::NextUpdate;
+		m_func = &Option::EndUpdate;
 		m_GameCount = 0;
 	}
 
@@ -156,7 +167,103 @@ void Option::FirstUpdate()
 	}
 }
 
-void Option::NextUpdate()
+void Option::GamePadUpdate()
+{
+	if (Pad::isTrigger(PAD_INPUT_DOWN))
+	{
+		m_SceneNum++;
+
+		if (m_SceneNum > 2)
+		{
+			m_SceneNum = 0;
+		}
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_UP))
+	{
+		m_SceneNum--;
+
+		if (m_SceneNum < 0)
+		{
+			m_SceneNum = 2;
+		}
+	}
+
+	if (m_SceneNum == 0)
+	{
+		if (m_CursorMove > 0)
+		{
+			m_CursorMove -= 10;
+
+			if (m_CursorMove <= 0)
+			{
+				m_CursorMove = 0;
+			}
+		}
+	}
+
+	if (m_SceneNum == 1)
+	{
+		if (m_CursorMove > 100)
+		{
+			m_CursorMove -= 10;
+
+			if (m_CursorMove <= 100)
+			{
+				m_CursorMove = 100;
+			}
+		}
+
+		if (m_CursorMove < 100)
+		{
+			m_CursorMove += 10;
+
+			if (m_CursorMove >= 100)
+			{
+				m_CursorMove = 100;
+			}
+		}
+	}
+
+	if (m_SceneNum == 2)
+	{
+		if (m_CursorMove < 200)
+		{
+			m_CursorMove += 10;
+
+			if (m_CursorMove >= 200)
+			{
+				m_CursorMove = 200;
+			}
+		}
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
+	{
+		m_Guide = true;
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
+	{
+		m_Guide = false;
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 2)
+	{
+		m_func = &Option::FirstUpdate;
+		m_drawfunc = &Option::OptionDraw;
+		m_SceneNum = 0;
+		m_CursorMove = 0;
+	}
+
+	if (Pad::isTrigger(PAD_INPUT_1))
+	{
+		m_func = &Option::FirstUpdate;
+		m_drawfunc = &Option::OptionDraw;
+	}
+}
+
+void Option::EndUpdate()
 {
 	if (Pad::isTrigger(PAD_INPUT_1))
 	{
@@ -164,6 +271,15 @@ void Option::NextUpdate()
 		m_drawfunc = &Option::OptionDraw;
 	}
 }
+
+//void Option::NextUpdate()
+//{
+//	if (Pad::isTrigger(PAD_INPUT_1))
+//	{
+//		m_func = &Option::FirstUpdate;
+//		m_drawfunc = &Option::OptionDraw;
+//	}
+//}
 
 //void Option::FadeinUpdate()
 //{
