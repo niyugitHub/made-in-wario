@@ -387,7 +387,7 @@ void Collision::IsCollMapEnemy()
 	{
 		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
 		{
-			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2)
+			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2 && m_Map->GetMapData(i, j) != 10)
 			{
 				float MapTop = i * Map::kChipSize + 5;
 				float MapBottom = i * Map::kChipSize + Map::kChipSize;
