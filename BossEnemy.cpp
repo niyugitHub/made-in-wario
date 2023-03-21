@@ -22,14 +22,21 @@ namespace
 
 	// 移動速度(ダッシュ時)
 	constexpr float kDashSpeed = 6.0f;
+
+	// HPバーの長さ
+	constexpr int kHpBar = 1320;
+
+	// 最大HP 
+	constexpr int kHpMax = 800;
 }
 
 BossEnemy::BossEnemy() :
 	m_Frame(80),
 	m_GraphFrame(0),
-	m_NowAttack(false)
+	m_NowAttack(false),
+	m_HpBar(kHpBar)
 {
-	m_Hp = 1000;
+	m_Hp = kHpMax;
 	m_GraphX = 0;
 	m_GraphY = 5;
 	m_Weight = 100.0f;
@@ -119,6 +126,22 @@ void BossEnemy::draw(Vec2 offset)
 		DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 			m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 			m_handle, true, false);
+	}
+
+	float HpPercent = static_cast<float>(m_Hp) / static_cast<float>(kHpMax);
+
+	if (HpPercent <= 0)
+	{
+		HpPercent = 0;
+	}
+
+	if (m_BossBattle)
+	{
+		DrawBox(300, 150, 300 + kHpBar, 200,
+			0x000000, true);
+
+		DrawBox(300, 150, 300 + m_HpBar * HpPercent, 200,
+			0xff0000, true);
 	}
 
 	m_offset = offset;
@@ -316,7 +339,7 @@ void BossEnemy::UpdateDead()
 		if (m_GraphFrame >= 100)
 		{
 			m_BossBattle = false;
-			//m_GameClear = true;
+			m_GameClear = true;
 		}
 	}
 }

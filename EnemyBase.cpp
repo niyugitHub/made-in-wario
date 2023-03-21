@@ -208,11 +208,14 @@ bool EnemyBase::CollThrow()
 			continue;
 		}
 
+		Vec2 ShotSize1 = Shot->GetShotSize1();
+		Vec2 ShotSize2 = Shot->GetShotSize2();
+
 		// エネミーの位置
-		float EnemyPosLeft = m_ThrowPos.x;
-		float EnemyPosRight = m_ThrowPos.x + 50;
-		float EnemyPosUp = m_ThrowPos.y;
-		float EnemyPosBottom = m_ThrowPos.y + 50;
+		float EnemyPosLeft = m_ThrowPos.x + ShotSize1.x;
+		float EnemyPosRight = m_ThrowPos.x + ShotSize2.x;
+		float EnemyPosUp = m_ThrowPos.y + ShotSize1.y;
+		float EnemyPosBottom = m_ThrowPos.y + ShotSize2.y;
 
 		if (PlayerPosLeft > EnemyPosRight) continue;
 		if (PlayerPosRight < EnemyPosLeft) continue;

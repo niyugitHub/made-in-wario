@@ -19,6 +19,7 @@ public:
 	// ‰æ‘œ‚ðƒZƒbƒg
 	void SetHandle(int handle) { m_OptionHandle = handle; }
 
+	void SetGameEnd(bool GameEnd) { m_GameEnd = GameEnd; }
 	bool GetGameEnd() { return m_GameEnd; }
 
 	void Init();

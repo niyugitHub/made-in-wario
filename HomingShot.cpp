@@ -54,7 +54,19 @@ void HomingShot::Update(Vec2 PlayerPos)
 void HomingShot::Draw(Vec2 offset)
 {
 	if (m_Exist)
-		DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
-			m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
-			m_handle, true, true);
+	{
+		if (m_ShotSize2.x == 50)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
+				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
+				m_handle, true, true);
+		}
+
+		else
+		{
+			DrawRectRotaGraph(m_Pos.x + offset.x + 50, m_Pos.y + offset.y + 50,
+				m_GraphX * kGraphSizeX, kRectGraphY, kGraphSizeX, kGraphSizeY,
+				2.0f,0.0f,m_handle, true, true);
+		}
+	}
 }

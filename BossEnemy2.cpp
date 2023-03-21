@@ -2,6 +2,7 @@
 #include "EnemyBase.h"
 #include "Player.h"
 #include "Map.h"
+#include "HomingShot.h"
 #include <Dxlib.h>
 #include <cassert>
 
@@ -22,14 +23,28 @@ namespace
 
 	// 移動速度(ダッシュ時)
 	constexpr float kDashSpeed = 7.0f;
+
+	constexpr float kJump = -23.0f;
+	constexpr float kJumpDown = 1.0f;
+
+	// ショットのスピード
+	constexpr float kShotSpeed = 15.0f;
+
+	// HPバーの長さ
+	constexpr int kHpBar = 1320;
+
+	// 最大HP 
+	constexpr int kHpMax = 1500;
 }
 
 BossEnemy2::BossEnemy2() :
 	m_Frame(80),
 	m_GraphFrame(0),
-	m_NowAttack(false)
+	m_NowAttack(false),
+	m_HpBar(kHpBar),
+	m_Jump(0.0f)
 {
-	m_Hp = 1000;
+	m_Hp = kHpMax;
 	m_GraphX = 0;
 	m_GraphY = 0;
 	m_Weight = 100.0f;
@@ -67,6 +82,18 @@ void BossEnemy2::update()
 
 	m_GraphFrame++;
 
+	auto rmIt = std::remove_if(// 条件に合致したものを消す
+		m_Shot.begin(), // 対象はm_Shotの最初から
+		m_Shot.end(),// 最後まで
+
+		// 消えてもらう条件を表すラムダ式
+		// trueだと消える。falseだと消えない。
+		[](const std::shared_ptr<ShotBase>& shot) {
+			return !shot->GetExist();
+		});
+
+	m_Shot.erase(rmIt, m_Shot.end());
+
 	if (m_DistancePos.x < 0 && !m_NowAttack)
 	{
 		m_LookEnemy = -1;
@@ -98,6 +125,14 @@ void BossEnemy2::update()
 	}
 	(this->*m_func)();
 
+	for (auto& Shot : m_Shot)
+	{
+		if (Shot != nullptr)
+		{
+			Shot->Update(m_PlayerPos);
+		}
+	}
+
 	m_NextPos += m_Vec;
 }
 
@@ -105,6 +140,7 @@ void BossEnemy2::draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
+		
 	}
 
 	if (m_LookEnemy == 1)
@@ -119,6 +155,25 @@ void BossEnemy2::draw(Vec2 offset)
 		DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
 			m_GraphX * kGraphSizeX, (m_GraphY * kGraphSizeY) + kRectGraphY, kGraphSizeX, kGraphSizeY,
 			m_handle, true, false);
+	}
+
+	for (auto& Shot : m_Shot)
+	{
+		if (Shot != nullptr)
+		{
+			Shot->Draw(offset);
+		}
+	}
+
+	float HpPercent = static_cast<float>(m_Hp) / static_cast<float>(kHpMax);
+
+	if (m_BossBattle)
+	{
+		DrawBox(300, 150, 300 + kHpBar, 200,
+			0x000000, true);
+
+		DrawBox(300, 150,  300 + m_HpBar * HpPercent, 200,
+			0xff0000, true);
 	}
 
 	m_offset = offset;
@@ -190,17 +245,17 @@ void BossEnemy2::UpdateDiscovery()
 
 	ChangeGraph(6);
 
-	/*if (m_DistancePos.x < 200 && m_DistancePos.x > -200 && m_Frame <= 0)
+	if (m_DistancePos.x < 180 && m_DistancePos.x > -180 && m_Frame <= 0)
 	{
 		m_Frame = 50 + GetRand(50);
-		int RandAttack = GetRand(3);
+		int RandAttack = GetRand(1);
 
 		if (RandAttack == 0)
 		{
 			m_func = &BossEnemy2::UpdateAttack1;
 			m_GraphFrame = 0;
 			m_GraphX = 0;
-			m_GraphY = 3;
+			m_GraphY = 5;
 			m_Vec.x = 0;
 			m_NowAttack = true;
 		}
@@ -209,52 +264,69 @@ void BossEnemy2::UpdateDiscovery()
 			m_func = &BossEnemy2::UpdateAttack2;
 			m_GraphFrame = 0;
 			m_GraphX = 0;
-			m_GraphY = 6;
+			m_GraphY = 3;
 			m_Vec.x = 0;
 			m_NowAttack = true;
 		}
-		if (RandAttack == 2)
-		{
-			m_func = &BossEnemy2::UpdateAttack3;
-			m_GraphFrame = 0;
-			m_GraphX = 0;
-			m_GraphY = 1;
-			m_Vec.x = 0;
-			m_NowAttack = true;
-		}
-	}*/
+	}
+
+	int RandAttack = GetRand(200);
+
+	if (RandAttack == 1 && m_Frame <= 0)
+	{
+		m_Frame = 50 + GetRand(50);
+		m_func = &BossEnemy2::UpdateAttack3;
+		m_GraphFrame = 0;
+		m_GraphX = 0;
+		m_Vec.x = 0;
+		m_Jump = kJump;
+		m_NowAttack = true;
+	}
+
+	if (RandAttack == 2 && m_Frame <= 0 && m_Hp <= 800)
+	{
+		m_Frame = 50 + GetRand(50);
+		m_func = &BossEnemy2::UpdateAttack4;
+		m_GraphFrame = 0;
+		m_GraphX = 0;
+		m_GraphY = 2;
+		m_Vec.x = 0;
+	}
 }
 
 void BossEnemy2::UpdateAttack1()
 {
 	if (m_GraphFrame >= 40 && m_GraphFrame % 5 == 0)
 	{
-		if (m_LookEnemy == -1 && m_GraphFrame <= 50)
+		if (m_GraphX <= 2 || m_GraphX >= 7)
 		{
-			m_GraphSize1 = { 180,250 };
-			m_GraphSize2 = { kGraphSizeX - 30,kGraphSizeY - 50 };
-		}
+			if (m_LookEnemy == -1 && m_GraphFrame <= 50)
+			{
+				m_GraphSize1 = { 400,150 };
+				m_GraphSize2 = { kGraphSizeX - 250,kGraphSizeY - 40 };
+			}
 
-		else if (m_LookEnemy == 1 && m_GraphFrame <= 50)
-		{
-			m_GraphSize1 = { 50,250 };
-			m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
-		}
+			else if (m_LookEnemy == 1 && m_GraphFrame <= 50)
+			{
+				m_GraphSize1 = { 250,150 };
+				m_GraphSize2 = { kGraphSizeX - 400,kGraphSizeY - 40 };
+			}
 
-		else
-		{
-			m_GraphSize1 = { 180,250 };
-			m_GraphSize2 = { kGraphSizeX - 180,kGraphSizeY - 50 };
+			else
+			{
+				m_GraphSize1 = { 400,150 };
+				m_GraphSize2 = { kGraphSizeX - 400,kGraphSizeY - 40 };
+			}
 		}
 
 		m_GraphX++;
-		if (m_GraphX >= 9)
+		if (m_GraphX >= 10)
 		{
 			m_GraphX = 0;
 		}
 	}
 
-	if (m_GraphFrame >= 60 && m_GraphX == 0)
+	if (m_GraphFrame >= 90)
 	{
 		m_func = &BossEnemy2::UpdateDiscovery;
 		m_NowAttack = false;
@@ -263,49 +335,32 @@ void BossEnemy2::UpdateAttack1()
 
 void BossEnemy2::UpdateAttack2()
 {
-	if (m_GraphFrame >= 40 && m_GraphFrame % 5 == 0)
-	{
-		m_GraphSize1 = { 50,400 };
-		m_GraphSize2 = { kGraphSizeX - 30,kGraphSizeY - 50 };
-
-		m_GraphX++;
-		if (m_GraphX >= 9)
-		{
-			m_GraphX = 0;
-		}
-	}
-
-	if (m_GraphFrame >= 60 && m_GraphX == 0)
-	{
-		m_func = &BossEnemy2::UpdateDiscovery;
-		m_NowAttack = false;
-	}
-}
-
-void BossEnemy2::UpdateAttack3()
-{
-	if (m_GraphFrame >= 60 && m_GraphFrame % 5 == 0)
+	if (m_GraphFrame >= 50 && m_GraphFrame % 5 == 0)
 	{
 		m_GraphX++;
 
-		if (m_GraphX >= 8)
+		if (m_GraphX >= 6)
 		{
 			m_GraphX = 0;
 		}
 
 		if (m_LookEnemy == -1)
 		{
-			m_Vec.x = kSpeed * 3.0f;
+			m_Vec.x = kSpeed * 4.0f;
+			m_GraphSize1 = { 400,220 };
+			m_GraphSize2 = { kGraphSizeX - 350,kGraphSizeY - 40 };
 		}
 
 		if (m_LookEnemy == 1)
 		{
-			m_Vec.x = -kSpeed * 3.0f;
+			m_Vec.x = -kSpeed * 4.0f;
+			m_GraphSize1 = { 350,220 };
+			m_GraphSize2 = { kGraphSizeX - 400,kGraphSizeY - 40 };
 		}
 	}
 
 
-	if (m_GraphFrame >= 180)
+	if (m_GraphFrame >= 150)
 	{
 		m_func = &BossEnemy2::UpdateDiscovery;
 		m_NowAttack = false;
@@ -318,8 +373,99 @@ void BossEnemy2::UpdateAttack3()
 	}
 }
 
+void BossEnemy2::UpdateAttack3()
+{
+	if (m_GraphFrame >= 60)
+	{
+		m_GraphY = 4;
+		if (m_Jump < 20)
+		{
+			m_GraphX = 3;
+		}
+
+		if (m_Jump < 10)
+		{
+			m_GraphX = 2;
+		}
+
+		if (m_Jump < 0)
+		{
+			m_GraphX = 1;
+		}
+
+		if (m_GraphX >= 8)
+		{
+			m_GraphX = 0;
+		}
+
+		if (m_LookEnemy == -1)
+		{
+			m_Vec.x = kSpeed * 3.5f;
+		}
+
+		if (m_LookEnemy == 1)
+		{
+			m_Vec.x = -kSpeed * 3.5f;
+		}
+
+		m_Vec.y = m_Jump;
+
+		m_Jump += kJumpDown;
+	}
+
+	if (m_CollBottom && m_GraphFrame >= 100)
+	{
+		m_func = &BossEnemy2::UpdateDiscovery;
+		m_NowAttack = false;
+		m_Jump = 0;
+	}
+}
+
 void BossEnemy2::UpdateAttack4()
 {
+	if (m_GraphFrame >= 50 && m_GraphFrame % 5 == 0)
+	{
+		m_GraphX++;
+
+		if (m_GraphX >= 6)
+		{
+			m_GraphX = 0;
+		}
+
+		if (m_GraphX == 3 && m_GraphFrame % 5 == 0)
+		{
+			Vec2 Pos = { 0,0 };
+			if (m_LookEnemy == 1)
+			{
+				Pos = { m_Pos.x + 400,m_Pos.y + 100 };
+			}
+
+			if (m_LookEnemy == -1)
+			{
+				Pos = { m_Pos.x + (kGraphSizeX - 400),m_Pos.y + 100};
+			}
+
+			Vec2 PlayerPos = { m_PlayerPos.x + (Player::kSideSize / 2) ,m_PlayerPos.y + Player::kColumnSize / 2 };
+			Vec2 vel = Pos - PlayerPos;
+
+			vel = vel.normalize();
+			vel *= -kShotSpeed;
+
+
+			m_Shot.push_back(std::make_shared<HomingShot>(Pos, vel));
+			m_Shot.back()->SetHandle(m_Shothandle);
+			m_Shot.back()->SetLookShot(m_LookEnemy);
+			m_Shot.back()->SetShotSize1({10,10});
+			m_Shot.back()->SetShotSize2({ 90,90 });
+			m_Shot.back()->SetExist(true);
+		}
+	}
+
+	if (m_GraphFrame >= 150)
+	{
+		m_func = &BossEnemy2::UpdateDiscovery;
+		m_NowAttack = false;
+	}
 }
 
 void BossEnemy2::UpdateDead()

@@ -9,6 +9,13 @@ public:
 	void SetPos(Vec2 Pos) { m_Pos = Pos; }
 	Vec2 GetPos() { return m_Pos; }
 
+	// ショットのサイズセット
+	void SetShotSize1(Vec2 ShotSize1) { m_ShotSize1 = ShotSize1; }
+	void SetShotSize2(Vec2 ShotSize2) { m_ShotSize2 = ShotSize2; }
+
+	Vec2 GetShotSize1() { return m_ShotSize1; }
+	Vec2 GetShotSize2() { return m_ShotSize2; }
+
 	// ショットのハンドル
 	void SetHandle(int handle) { m_handle = handle; }
 
@@ -26,6 +33,9 @@ protected:
 	Vec2 m_Pos;
 	// ショット移動量
 	Vec2 m_Vec;
+
+	Vec2 m_ShotSize1;
+	Vec2 m_ShotSize2;
 
 	// ショット存在
 	bool m_Exist;

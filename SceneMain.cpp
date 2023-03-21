@@ -281,6 +281,7 @@ SceneBase* SceneMain::update()
 	if (m_Option->GetGameEnd())
 	{
 		m_Option->SetActivgeOption(false);
+		m_Option->SetGameEnd(false);
 		return (new SceneTitle(m_Option));
 	}
 

@@ -13,6 +13,14 @@ namespace
 	constexpr int kCursorNumX = 700;
 	constexpr int kCursorNumY = 560;
 
+	// ゲームパッドのカーソルの位置
+	constexpr int kGamePadCursorNumX = 670;
+	constexpr int kGamePadCursorNumY = 680;
+
+	// ゲームエンドのカーソルの位置
+	constexpr int kGameEndCursorNumX = 450;
+	constexpr int kGameEndCursorNumY = 708;
+
 	// フェードイン、フェードアウトの速さ
 	constexpr int kFadeSpeed = 8;
 }
@@ -153,6 +161,8 @@ void Option::FirstUpdate()
 	{
 		m_drawfunc = &Option::GameEndDraw;
 		m_func = &Option::EndUpdate;
+		m_SceneNum = 0;
+		m_CursorMove = 0;
 		m_GameCount = 0;
 	}
 
@@ -204,36 +214,36 @@ void Option::GamePadUpdate()
 
 	if (m_SceneNum == 1)
 	{
-		if (m_CursorMove > 100)
+		if (m_CursorMove > 80)
 		{
 			m_CursorMove -= 10;
 
-			if (m_CursorMove <= 100)
+			if (m_CursorMove <= 80)
 			{
-				m_CursorMove = 100;
+				m_CursorMove = 80;
 			}
 		}
 
-		if (m_CursorMove < 100)
+		if (m_CursorMove < 80)
 		{
 			m_CursorMove += 10;
 
-			if (m_CursorMove >= 100)
+			if (m_CursorMove >= 80)
 			{
-				m_CursorMove = 100;
+				m_CursorMove = 80;
 			}
 		}
 	}
 
 	if (m_SceneNum == 2)
 	{
-		if (m_CursorMove < 200)
+		if (m_CursorMove < 160)
 		{
 			m_CursorMove += 10;
 
-			if (m_CursorMove >= 200)
+			if (m_CursorMove >= 160)
 			{
-				m_CursorMove = 200;
+				m_CursorMove = 160;
 			}
 		}
 	}
@@ -265,10 +275,46 @@ void Option::GamePadUpdate()
 
 void Option::EndUpdate()
 {
-	if (Pad::isTrigger(PAD_INPUT_1))
+	if (Pad::isTrigger(PAD_INPUT_RIGHT) || Pad::isTrigger(PAD_INPUT_LEFT))
+	{
+		if (m_SceneNum == 0)
+		{
+			m_SceneNum = 1;
+			return;
+		}
+
+		if (m_SceneNum == 1)
+		{
+			m_SceneNum = 0;
+			return;
+		}
+	}
+
+	if (m_SceneNum == 0)
+	{
+		m_CursorMove -= 25;
+
+		if (m_CursorMove <= 0)
+		{
+			m_CursorMove = 0;
+		}
+	}
+
+	if (m_SceneNum == 1)
+	{
+		m_CursorMove += 25;
+
+		if (m_CursorMove >= 500)
+		{
+			m_CursorMove = 500;
+		}
+	}
+	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount >= 30 && m_SceneNum == 1)
 	{
 		m_func = &Option::FirstUpdate;
 		m_drawfunc = &Option::OptionDraw;
+		m_SceneNum = 2;
+		m_CursorMove = 270;
 	}
 }
 
@@ -362,8 +408,8 @@ void Option::GamepadDraw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(0, 0, m_OptionHandle, true);
-
 	DrawGraph(0, 0, m_GamepadHandle, true);
+	DrawString(kGamePadCursorNumX, kGamePadCursorNumY + m_CursorMove, "→", 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
@@ -374,14 +420,15 @@ void Option::GameEndDraw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawGraph(0, 0, m_OptionHandle, true);
 	DrawGraph(0, 0, m_GameEndHandle, true);
+	DrawString(kGameEndCursorNumX + m_CursorMove, kGameEndCursorNumY, "→", 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30)
+	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30 && m_SceneNum == 0)
 	{
 		m_GameEnd = true;
 	}
 
-	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30 && m_TitleScene)
+	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30 && m_TitleScene && m_SceneNum == 0)
 	{
 		DxLib_End();
 	}

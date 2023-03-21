@@ -5,6 +5,8 @@
 ShotBase::ShotBase() : 
 	m_Pos(0,0),
 	m_Vec(0,0),
+	m_ShotSize1(0,0),
+	m_ShotSize2(50,50),
 	m_Exist(false),
 	m_handle(-1),
 	m_GraphX(0),

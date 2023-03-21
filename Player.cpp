@@ -1090,7 +1090,7 @@ bool Player::CollNeedle()
 		{
 			if (m_Map->GetMapData(i, j) == 10)
 			{
-				float MapTop = i * Map::kChipSize;
+				float MapTop = i * Map::kChipSize + 20;
 				float MapBottom = i * Map::kChipSize + Map::kChipSize;
 				float MapRight = j * Map::kChipSize + Map::kChipSize - 10;
 				float MapLeft = j * Map::kChipSize + 10;

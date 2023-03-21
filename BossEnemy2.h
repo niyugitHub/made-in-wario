@@ -19,6 +19,12 @@ private:
 
 	bool m_NowAttack;
 
+	// HPバー
+	int m_HpBar;
+
+	// ジャンプ力
+	float m_Jump;
+
 	// フレームごとにグラフを切り替える
 	int m_GraphFrame;
 
