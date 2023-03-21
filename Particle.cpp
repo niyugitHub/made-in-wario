@@ -261,7 +261,7 @@ void Particle::SetGameClearParticle()
 
 			data[i].m_ParticleSize = { RandParticleSize,RandParticleSize };
 
-			if (count >= 10)
+			if (count >= 5)
 			{
 				return;
 			}
@@ -313,7 +313,7 @@ bool Particle::OffScreen(int i, Vec2 offset)
 	{
 		return true;
 	}
-	if (data[i].m_Pos.y > Game::kScreenHeight - offset.y)
+	if (data[i].m_Pos.y > Game::kScreenHeight - offset.y + 100)
 	{
 		return true;
 	}

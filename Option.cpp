@@ -133,6 +133,7 @@ void Option::FirstUpdate()
 	{
 		m_SceneNum++;
 
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
 		if (m_SceneNum > 2)
 		{
 			m_SceneNum = 0;
@@ -143,6 +144,7 @@ void Option::FirstUpdate()
 	{
 		m_SceneNum--;
 
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
 		if (m_SceneNum < 0)
 		{
 			m_SceneNum = 2;
@@ -153,12 +155,14 @@ void Option::FirstUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_drawfunc = &Option::GamepadDraw;
 		m_func = &Option::GamePadUpdate;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 2)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_drawfunc = &Option::GameEndDraw;
 		m_func = &Option::EndUpdate;
 		m_SceneNum = 0;
@@ -168,11 +172,13 @@ void Option::FirstUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_8))
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_OptionScene = false;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_OptionScene = false;
 	}
 }
@@ -183,6 +189,8 @@ void Option::GamePadUpdate()
 	{
 		m_SceneNum++;
 
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
+
 		if (m_SceneNum > 2)
 		{
 			m_SceneNum = 0;
@@ -192,6 +200,8 @@ void Option::GamePadUpdate()
 	if (Pad::isTrigger(PAD_INPUT_UP))
 	{
 		m_SceneNum--;
+
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
 
 		if (m_SceneNum < 0)
 		{
@@ -250,16 +260,19 @@ void Option::GamePadUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_Guide = true;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_Guide = false;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 2)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_func = &Option::FirstUpdate;
 		m_drawfunc = &Option::OptionDraw;
 		m_SceneNum = 0;
@@ -268,6 +281,7 @@ void Option::GamePadUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_1))
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_func = &Option::FirstUpdate;
 		m_drawfunc = &Option::OptionDraw;
 	}
@@ -277,6 +291,7 @@ void Option::EndUpdate()
 {
 	if (Pad::isTrigger(PAD_INPUT_RIGHT) || Pad::isTrigger(PAD_INPUT_LEFT))
 	{
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
 		if (m_SceneNum == 0)
 		{
 			m_SceneNum = 1;
@@ -311,6 +326,7 @@ void Option::EndUpdate()
 	}
 	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount >= 30 && m_SceneNum == 1)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_func = &Option::FirstUpdate;
 		m_drawfunc = &Option::OptionDraw;
 		m_SceneNum = 2;
@@ -425,11 +441,13 @@ void Option::GameEndDraw()
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30 && m_SceneNum == 0)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_GameEnd = true;
 	}
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_GameCount > 30 && m_TitleScene && m_SceneNum == 0)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		DxLib_End();
 	}
 }

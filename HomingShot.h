@@ -20,5 +20,6 @@ public:
 	void Draw(Vec2 offset);
 
 private:
+	
 };
 

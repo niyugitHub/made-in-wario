@@ -338,7 +338,7 @@ void BossEnemy::UpdateDead()
 		}
 		if (m_GraphFrame >= 100)
 		{
-			m_BossBattle = false;
+			//m_BossBattle = false;
 			m_GameClear = true;
 		}
 	}

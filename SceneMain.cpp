@@ -37,6 +37,8 @@ namespace
 	// サウンドファイル名
 	const char* const kMainbgmFilename = "sound/MainBGM.mp3";
 	const char* const kBossBattleFilename = "sound/BossBattle.mp3";
+	const char* const kSoundSelectionFilename = "sound/selection.mp3";
+	const char* const kSoundDeterminationFilename = "sound/determination.mp3";
 
 	// プレイヤーの中心を少し左に寄せる
 	constexpr float kPlayerPosCenter = 150.0f;
@@ -164,6 +166,15 @@ void SceneMain::init()
 
 	m_OptionHandle = LoadGraph(kOptionFilename);
 	m_Option->SetHandle(m_OptionHandle);
+
+	int SelectionHandle = LoadSoundMem(kSoundSelectionFilename);
+	int DeterminationHandle = LoadSoundMem(kSoundDeterminationFilename);
+	m_Option->SetSoundSelection(SelectionHandle);
+	m_Option->SetSoundDetermination(DeterminationHandle);
+
+	m_GameClearScene->SetSoundSelection(SelectionHandle);
+	m_GameClearScene->SetSoundDetermination(DeterminationHandle);
+
 	m_TwoJumpTutorialHandle = LoadGraph(kTwoJumpTutorialFilename);
 	m_ShotTutorialHandle = LoadGraph(kShotTutorialFilename);
 	m_DamageTutorialHandle = LoadGraph(kDamageTutorialFilename);
@@ -681,6 +692,12 @@ void SceneMain::Sound()
 		StopSoundMem(m_NormalSoundHandle);
 		PlaySoundMem(m_BossSoundHandle, DX_PLAYTYPE_BACK);
 	}
+
+	if (m_EnemyFactory->GetGameClear())
+	{
+		StopSoundMem(m_BossSoundHandle);
+		StopSoundMem(m_NormalSoundHandle);
+	}
 }
 
 void SceneMain::FadeinUpdate()
@@ -876,13 +893,20 @@ void SceneMain::FadeoutUpdate()
 void SceneMain::OptionUpdate()
 {
 	m_Color = 230;
-	m_Option->Update();
 
 	if (!m_Option->GetActiveOption())
 	{
-		m_func = &SceneMain::NormalUpdate;
-		m_Color = 255;
+		m_SwitchFrame++;
+
+		if (m_SwitchFrame >= 20)
+		{
+			m_SwitchFrame = 0;
+			m_func = &SceneMain::NormalUpdate;
+			m_Color = 255;
+		}
 	}
+
+	m_Option->Update();
 }
 
 void SceneMain::TutorialUpdate()
@@ -891,6 +915,12 @@ void SceneMain::TutorialUpdate()
 
 	if (!SceneTutorial())
 	{
-		m_func = &SceneMain::NormalUpdate;
+		m_SwitchFrame++;
+		
+		if (m_SwitchFrame >= 20)
+		{
+			m_SwitchFrame = 0;
+			m_func = &SceneMain::NormalUpdate;
+		}
 	}
 }

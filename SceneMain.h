@@ -122,6 +122,8 @@ private:
 	// 背景の明るさ(フェードイン、フェードアウト時に暗くなる)
 	int m_Color;
 
+	int m_SwitchFrame = 0;
+
 	// 画像
 	int m_OptionHandle = -1;
 	int m_TwoJumpTutorialHandle = -1;

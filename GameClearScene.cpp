@@ -5,7 +5,7 @@
 
 namespace
 {
-	const char* const kGameOverSceneGraphicFilename = "data/GameOverScene.png";
+	const char* const kGameClearSceneGraphicFilename = "Sound/GameClear.mp3";
 
 	// カーソルの初期位置
 	constexpr int kCursorNumX = 500;
@@ -35,6 +35,8 @@ GameClearScene::GameClearScene(int handle) :
 	{
 		m_PlayerHandle[i] = -1;
 	}
+
+	m_SoundGameClear = LoadSoundMem(kGameClearSceneGraphicFilename);
 	m_func = &GameClearScene::FadeinUpdate;
 }
 
@@ -49,6 +51,11 @@ void GameClearScene::Init()
 void GameClearScene::Update()
 {
 	(this->*m_func)();
+
+	if (!CheckSoundMem(m_SoundGameClear))
+	{
+		PlaySoundMem(m_SoundGameClear, DX_PLAYTYPE_BACK);
+	}
 
 	m_Particle->Update();
 	m_Particle->SetGameClearParticle();
@@ -96,6 +103,7 @@ void GameClearScene::NormalUpdate()
 {
 	if (Pad::isTrigger(PAD_INPUT_UP) || Pad::isTrigger(PAD_INPUT_DOWN))
 	{
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
 		if (m_Cursor == 0)
 		{
 			m_Cursor++;
@@ -127,6 +135,7 @@ void GameClearScene::NormalUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_2))
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_func = &GameClearScene::FadeoutUpdate;
 	}
 }

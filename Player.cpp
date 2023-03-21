@@ -19,6 +19,8 @@ namespace
 	const char* const kPlayerHpFilename = "data/Hp1.png";
 	const char* const kPlayerGaugeFilename = "data/gauge.png";
 	const char* const kPlayerGauge1Filename = "data/gauge1.png";
+	const char* const kPlayerShotFilename = "data/PlayerShot.png";
+	
 
 	// サウンドファイル名
 	const char* const kPlayerSoundAttackFilename = "sound/Attack.mp3";
@@ -26,6 +28,9 @@ namespace
 	const char* const kPlayerSoundWalkFilename = "sound/walk.mp3";
 	const char* const kPlayerSoundDashFilename = "sound/dash.mp3";
 	const char* const kPlayerSoundDamageFilename = "sound/Damage.mp3";
+	const char* const kPlayerSoundHealFilename = "sound/Heal.mp3";
+	const char* const kPlayerSoundHealCompletedFilename = "sound/HealCompleted.mp3";
+	const char* const kPlayerSoundShotFilename = "sound/Shot.mp3";
 
 	// フレームタイム
 	constexpr int kFrameTime = 20;
@@ -107,12 +112,16 @@ m_Particle(std::make_shared<Particle>())
 	m_Hphandle = LoadGraph(kPlayerHpFilename);
 	m_Gaugehandle = LoadGraph(kPlayerGaugeFilename);
 	m_Gauge1handle = LoadGraph(kPlayerGauge1Filename);
+	m_Shothandle = LoadGraph(kPlayerShotFilename);
 
 	m_SoundAttack = LoadSoundMem(kPlayerSoundAttackFilename);
 	m_SoundJump = LoadSoundMem(kPlayerSoundJumpFilename);
 	m_SoundWalk = LoadSoundMem(kPlayerSoundWalkFilename);
 	m_SoundDash = LoadSoundMem(kPlayerSoundDashFilename);
 	m_SoundDamage = LoadSoundMem(kPlayerSoundDamageFilename);
+	m_SoundHeal = LoadSoundMem(kPlayerSoundHealFilename);
+	m_SoundHealCompleted = LoadSoundMem(kPlayerSoundHealCompletedFilename);
+	m_SoundShot = LoadSoundMem(kPlayerSoundShotFilename);
 }
 
 Player::~Player()
@@ -654,6 +663,14 @@ void Player::IsActiveGauge()
 		m_ShotIntervalFrame--;
 	}
 
+	if (m_PushFrame == 0 || m_Hp == m_MaxHp)
+	{
+		if (CheckSoundMem(m_SoundHeal))
+		{
+			StopSoundMem(m_SoundHeal);
+		}
+	}
+
 	if (Pad::isPress(PAD_INPUT_2) && m_Gauge >= 30)
 	{
 		if (m_PushFrame >= 30 && m_Hp == m_MaxHp)
@@ -671,6 +688,11 @@ void Player::IsActiveGauge()
 
 			m_CharaGraphY = 0;
 			m_CharaMotion = 2;
+
+			if (!CheckSoundMem(m_SoundHeal))
+			{
+				PlaySoundMem(m_SoundHeal, DX_PLAYTYPE_BACK);
+			}
 		}
 
 		/*if (m_HealFrame > 30)
@@ -682,6 +704,8 @@ void Player::IsActiveGauge()
 			if (m_Hp < m_MaxHp)
 			{
 				m_Hp++;
+
+				PlaySoundMem(m_SoundHealCompleted, DX_PLAYTYPE_BACK);
 			}
 			m_PushFrame = 30;
 			m_Gauge -= 30;
@@ -693,6 +717,7 @@ void Player::IsActiveGauge()
 	{
 		if (m_Shot == nullptr)
 		{
+			PlaySoundMem(m_SoundShot, DX_PLAYTYPE_BACK);
 			if (m_LookLeft)
 			{
 				m_Shot = new PlayerShot({ m_pos.x,m_pos.y + (kColumnSize / 4) }, -40.0f);
@@ -705,6 +730,8 @@ void Player::IsActiveGauge()
 				m_Shot->SetExist(true);
 				m_Particle->SetPos({ m_pos.x + kSideSize, m_pos.y + (kColumnSize / 2 + 10) });
 			}
+			m_Shot->SetHandle(m_Shothandle);
+			m_Shot->SetLookLeft(m_LookLeft);
 			m_InitAttack = false;
 			m_Gauge -= 30;
 			m_MinusGauge += 30;
@@ -972,15 +999,40 @@ bool Player::IsShotColl()
 	{
 		for (int j = 0; j < Map::kBgNumX[m_Map->GetStageNum()]; j++)
 		{
-			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= 50)
+			if (m_Map->GetMapData(i, j) > 0 && m_Map->GetMapData(i, j) <= Map::kSideMapChipNum * 2 && m_Map->GetMapData(i, j) != 10)
 			{
-				float MapPosX = j * Map::kChipSize;
-				float MapPosY = i * Map::kChipSize;
+				if (m_Map->GetMapData(i, j) != 11 && m_Map->GetMapData(i, j) != 12 &&
+					m_Map->GetMapData(i, j) != 27 && m_Map->GetMapData(i, j) != 28)
+				{
+					float MapPosX = j * Map::kChipSize;
+					float MapPosY = i * Map::kChipSize;
 
-				if (ShotPosTop > MapPosY + Map::kChipSize) continue;
-				if (ShotPosBottom < MapPosY) continue;
-				if (ShotPosLeft > MapPosX + +Map::kChipSize) continue;
-				if (ShotPosRight < MapPosX) continue;
+					if (ShotPosTop > MapPosY + Map::kChipSize) continue;
+					if (ShotPosBottom < MapPosY) continue;
+					if (ShotPosLeft > MapPosX + +Map::kChipSize) continue;
+					if (ShotPosRight < MapPosX) continue;
+
+				}
+
+				if (m_Map->GetMapData(i, j) == 11 || m_Map->GetMapData(i, j) == 12 ||
+					m_Map->GetMapData(i, j) == 27 || m_Map->GetMapData(i, j) == 28)
+				{
+					if (m_Map->GetBossBattle())
+					{
+						float MapPosX = j * Map::kChipSize;
+						float MapPosY = i * Map::kChipSize;
+
+						if (ShotPosTop > MapPosY + Map::kChipSize) continue;
+						if (ShotPosBottom < MapPosY) continue;
+						if (ShotPosLeft > MapPosX + +Map::kChipSize) continue;
+						if (ShotPosRight < MapPosX) continue;
+					}
+
+					else
+					{
+						continue;
+					}
+				}
 
 				return true;
 			}
@@ -1125,18 +1177,18 @@ void Player::IsSound()
 			}
 		}
 
-		else
+		/*else
 		{
 			StopSoundMem(m_SoundDash);
 			StopSoundMem(m_SoundWalk);
-		}
+		}*/
 	}
 
-	if(!m_CollBottom)
+	/*if(!m_CollBottom)
 	{
 		StopSoundMem(m_SoundDash);
 		StopSoundMem(m_SoundWalk);
-	}
+	}*/
 
 
 	if (m_Attack)

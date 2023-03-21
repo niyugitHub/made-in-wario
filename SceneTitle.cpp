@@ -20,6 +20,8 @@ namespace
 
 	// サウンドファイル名
 	const char* const kSoundTitleFilename = "sound/Title.mp3";
+	const char* const kSoundSelectionFilename = "sound/selection.mp3";
+	const char* const kSoundDeterminationFilename = "sound/determination.mp3";
 
 	// カーソルの初期位置
 	constexpr int kCorsolNumX = 720;
@@ -36,6 +38,11 @@ void SceneTitle::init()
 	m_Color = 0;
 	m_func = &SceneTitle::FadeinUpdate;
 	m_Drawfunc = &SceneTitle::FirstDraw;
+
+	m_SoundSelection = LoadSoundMem(kSoundSelectionFilename);
+	m_SoundDetermination = LoadSoundMem(kSoundDeterminationFilename);
+	m_Option->SetSoundSelection(m_SoundSelection);
+	m_Option->SetSoundDetermination(m_SoundDetermination);
 
 	LoadDivGraph(kPlayerGraphicFilename, Player::kCharaChipNum,
 		Player::kSideCharaChipNum, Player::kColumnCharaChipNum,
@@ -145,6 +152,8 @@ void SceneTitle::TitleSceneUpdate()
 	if (Pad::isTrigger(PAD_INPUT_DOWN))
 	{
 		m_SceneNum++;
+
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
 		if (m_SceneNum > 1)
 		{
 			m_SceneNum = 0;
@@ -154,6 +163,8 @@ void SceneTitle::TitleSceneUpdate()
 	if (Pad::isTrigger(PAD_INPUT_UP))
 	{
 		m_SceneNum--;
+
+		PlaySoundMem(m_SoundSelection, DX_PLAYTYPE_BACK);
 		if (m_SceneNum < 0)
 		{
 			m_SceneNum = 1;
@@ -162,6 +173,7 @@ void SceneTitle::TitleSceneUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 0)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_IsTitleEnd = true;
 		m_player->SetTitle(this);
 		m_EndScene = true;
@@ -171,6 +183,7 @@ void SceneTitle::TitleSceneUpdate()
 
 	if (Pad::isTrigger(PAD_INPUT_2) && m_SceneNum == 1)
 	{
+		PlaySoundMem(m_SoundDetermination, DX_PLAYTYPE_BACK);
 		m_Option->Init();
 		m_Option->SetTitleOption(true);
 		m_func = &SceneTitle::OptionUpdate;

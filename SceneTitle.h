@@ -105,6 +105,8 @@ private:
 
 	// サウンドのハンドル
 	int m_SoundHandle = -1;
+	int m_SoundSelection = -1;
+	int m_SoundDetermination = -1;
 
 	// オプションのハンドル
 	int m_OptionHandle = -1;

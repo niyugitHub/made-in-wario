@@ -231,9 +231,9 @@ bool EnemyBase::CollThrow()
 bool EnemyBase::CollShotPlayer()
 {
 	float ShotPosTop = m_Player->GetShotPos().y;
-	float ShotPosBottom = m_Player->GetShotPos().y + 50;
+	float ShotPosBottom = m_Player->GetShotPos().y + 64;
 	float ShotPosLeft = m_Player->GetShotPos().x;
-	float ShotPosRight = m_Player->GetShotPos().x + 50;
+	float ShotPosRight = m_Player->GetShotPos().x + 64;
 
 	float EnemyPosLeft = m_Pos.x + GetGraphSize1().x;
 	float EnemyPosRight = m_Pos.x + GetGraphSize2().x;

@@ -14,7 +14,9 @@ public:
 	// タイトル画面のオプションかどうか
 	void SetTitleOption(bool TitleScene) { m_TitleScene = TitleScene; }
 
-	// 
+	// サウンドをセット
+	void SetSoundSelection(int handle) { m_SoundSelection = handle; }
+	void SetSoundDetermination(int handle) { m_SoundDetermination = handle; }
 
 	// 画像をセット
 	void SetHandle(int handle) { m_OptionHandle = handle; }
@@ -46,6 +48,10 @@ private:
 	// ガイドのハンドル
 	int m_GuideHandle = -1;
 	int m_GuideStringHandle = -1;
+
+	// サウンドハンドル
+	int m_SoundSelection = -1;
+	int m_SoundDetermination = -1;
 
 	// 何番目のシーンを選んだか
 	int m_SceneNum;

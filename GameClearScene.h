@@ -13,6 +13,10 @@ public:
 
 	bool GetPlayAgain() { return m_PlayAgain; }
 
+	// サウンドをセット
+	void SetSoundSelection(int handle) { m_SoundSelection = handle; }
+	void SetSoundDetermination(int handle) { m_SoundDetermination = handle; }
+
 	bool GetAbort() { return m_Abort; }
 
 	void Init();
@@ -27,6 +31,11 @@ private:
 	int m_handle = -1;
 
 	int m_PlayerHandle[72];
+
+	// サウンドハンドル
+	int m_SoundGameClear = -1;
+	int m_SoundSelection = -1;
+	int m_SoundDetermination = -1;
 
 	// グラフの種類
 	int m_Graph;

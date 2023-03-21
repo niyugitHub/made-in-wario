@@ -7,6 +7,9 @@ public:
 	PlayerShot(Vec2 Pos, float VecX);
 	~PlayerShot();
 
+	void SetHandle(int handle) { m_handle = handle; }
+	void SetLookLeft(bool LookLeft) { m_LookLeft = LookLeft; }
+
 	/*void SetPos(Vec2 Pos) { m_Pos = Pos; }
 	Vec2 GetPos() { return m_Pos; }
 
@@ -17,6 +20,11 @@ public:
 
 	void Update();
 	void Draw(Vec2 offset);
+
+private:
+	int m_handle;
+
+	bool m_LookLeft;
 };
 
 

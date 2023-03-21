@@ -1,7 +1,9 @@
 #include "PlayerShot.h"
 #include <DxLib.h>
 
-PlayerShot::PlayerShot(Vec2 Pos, float VecX)
+PlayerShot::PlayerShot(Vec2 Pos, float VecX) : 
+	m_handle(-1),
+	m_LookLeft(false)
 {
 	m_Pos = Pos;
 	m_Vec = { VecX,0 };
@@ -23,7 +25,18 @@ void PlayerShot::Draw(Vec2 offset)
 {
 	if (m_Exist)
 	{
-		DrawBox(m_Pos.x + offset.x, m_Pos.y + offset.y,
-			m_Pos.x + 50 + offset.x, m_Pos.y + 50 + offset.y, GetColor(255, 255, 255), true);
+		if (!m_LookLeft)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
+				0,0,64,64,
+				m_handle, true,true);
+		}
+
+		if (m_LookLeft)
+		{
+			DrawRectGraph(m_Pos.x + offset.x, m_Pos.y + offset.y,
+				0, 0, 64, 64,
+				m_handle, true, false);
+		}
 	}
 }
