@@ -72,6 +72,7 @@ void BossEnemy2::update()
 		m_GraphY = 6;
 		m_GraphX = 0;
 		m_Vec.x = 0;
+		m_Vec.y = 0;
 		m_GraphFrame = 0;
 		m_func = &BossEnemy2::UpdateDead;
 	}
@@ -94,7 +95,7 @@ void BossEnemy2::update()
 		m_Shot.end(),// 最後まで
 
 		// 消えてもらう条件を表すラムダ式
-		// trueだと消える。falseだと消えない。
+		// falseだと消える。trueだと消えない。
 		[](const std::shared_ptr<ShotBase>& shot) {
 			return !shot->GetExist();
 		});
