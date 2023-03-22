@@ -14,6 +14,9 @@ public:
 	void ChangeGraph(int i);
 
 private:
+	// ‰æ‘œ
+	int m_HpBarHandle1 = -1;
+	int m_HpBarHandle2 = -1;
 	// Ÿ‚ÌUŒ‚‚ÉˆÚ‚é‚Ü‚Å‚ÌŠÔ(UŒ‚•p“x)
 	int m_Frame;
 

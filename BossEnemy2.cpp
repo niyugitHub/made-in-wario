@@ -35,6 +35,10 @@ namespace
 
 	// ç≈ëÂHP 
 	constexpr int kHpMax = 1500;
+
+	// âÊëú
+	const char* const kHpBar1GraphicFilename = "data/HpBar1.png";
+	const char* const kHpBar2GraphicFilename = "data/HpBar2.png";
 }
 
 BossEnemy2::BossEnemy2() :
@@ -51,6 +55,9 @@ BossEnemy2::BossEnemy2() :
 	m_GraphSize1 = { 400,100 };
 	m_GraphSize2 = { kGraphSizeX - 400,kGraphSizeY - 40 };
 	m_func = &BossEnemy2::UpdateNotBattle;
+
+	m_HpBarHandle1 = LoadGraph(kHpBar1GraphicFilename);
+	m_HpBarHandle2 = LoadGraph(kHpBar2GraphicFilename);
 }
 
 BossEnemy2::~BossEnemy2()
@@ -169,11 +176,17 @@ void BossEnemy2::draw(Vec2 offset)
 
 	if (m_BossBattle)
 	{
-		DrawBox(300, 150, 300 + kHpBar, 200,
-			0x000000, true);
+		DrawRectGraph(300, 150,
+			0, 0, kHpBar, 50,
+			m_HpBarHandle2, true, false);
+		/*DrawBox(300, 150, 300 + kHpBar, 200,
+			0x000000, true);*/
 
-		DrawBox(300, 150,  300 + m_HpBar * HpPercent, 200,
-			0xff0000, true);
+		DrawRectGraph(300, 150,
+			0, 0, m_HpBar * HpPercent, 50,
+			m_HpBarHandle1, true, false);
+		/*DrawBox(300, 150, 300 + m_HpBar * HpPercent, 200,
+			0xff0000, true);*/
 	}
 
 	m_offset = offset;
