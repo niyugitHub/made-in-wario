@@ -91,11 +91,11 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(true),
+m_PossibleTwoJump(false),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
-m_PossibleShot(true),
+m_PossibleShot(false),
 m_ShotIntervalFrame(0),
 m_StageClear(false),
 m_Exist(true),
@@ -653,6 +653,11 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 	if (!m_CollLeft && Vel.x < 0)
 	{
 		m_pos.x = m_NextPos.x;
+	}
+
+	if (!m_CollTop)
+	{
+		m_pos.y = m_NextPos.y;
 	}
 }
 

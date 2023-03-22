@@ -37,7 +37,7 @@ Map::Map() :
 	m_PlayerPos(0,0),
 	m_BackGroundPos(0,0),
 	m_handle(-1),
-	m_StageNum(4),
+	m_StageNum(0),
 	m_graphWidth(0),
 	m_graphHeight(0),
 	m_LeftNum(0),
