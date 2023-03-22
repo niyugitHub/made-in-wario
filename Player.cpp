@@ -163,11 +163,6 @@ void Player::update()
 
 		CollGimmick();
 
-		if (m_KnockBack > 0)
-		{
-			IsKnockBack(m_EnemyPos);
-		}
-
 		if (IsShotColl())
 		{
 			m_Shot->SetExist(false);
@@ -190,10 +185,16 @@ void Player::update()
 
 		IsSound();
 
+		if (m_KnockBack > 0)
+		{
+			IsKnockBack(m_EnemyPos);
+		}
+
 		InitColl();
 
 		LimitMove();
 	}
+
 
 	m_Particle->Update();
 	IsColl();
@@ -558,7 +559,7 @@ void Player::NotExist()
 {
 	m_Jump = 0;
 	m_Hp = m_MaxHp;
-	m_Gauge = 0;
+	m_Gauge = m_MaxGauge;
 	m_CharaGraphX = 0;
 	m_CharaGraphY = 0;
 	m_KnockBack = 0;
@@ -623,12 +624,26 @@ void Player::Ondamage()
 
 void Player::IsKnockBack(Vec2 EnemyPos)
 {
-	Vec2 Vel = m_NextPos - EnemyPos;
+	Vec2 CentorPos = { m_NextPos.x + 32,m_NextPos.y + 64 };
+	Vec2 Vel = CentorPos - EnemyPos;
 
 	Vel = Vel.normalize();
 	Vel *= m_KnockBack;
 	m_KnockBack -= kKnockBackSpeedDown;
 
+	/*float VecX = m_NextPos.x - EnemyPos.x;
+
+	if (VecX > )
+	{
+		VecX = m_KnockBack;
+	}
+
+	if (VecX <= 0)
+	{
+		VecX = -m_KnockBack;
+	}*/
+	m_KnockBack -= kKnockBackSpeedDown;
+	
 	/*if (m_NoDamageFrame <= 0)
 	{
 		Vel.x = 0;
@@ -639,26 +654,24 @@ void Player::IsKnockBack(Vec2 EnemyPos)
 	if (m_KnockBack <= 0)
 	{
 		Vel.x = 0;
-		Vel.y = 0;
+		/*Vel.y = 0;*/
 		return;
 	}
 
-	m_NextPos.x += Vel.x;
-
-	if (!m_CollRight && Vel.x > 0)
+	if (!m_CollRight && !m_CollLeft)
 	{
-		m_pos.x = m_NextPos.x;
+		m_NextPos.x += Vel.x;
 	}
 
-	if (!m_CollLeft && Vel.x < 0)
+	/*else if ( && Vel.x < 0)
 	{
-		m_pos.x = m_NextPos.x;
-	}
-
+		m_NextPos.x += Vel.x;
+	}*/
+	/*
 	if (!m_CollTop)
 	{
 		m_pos.y = m_NextPos.y;
-	}
+	}*/
 }
 
 void Player::IsActiveGauge()

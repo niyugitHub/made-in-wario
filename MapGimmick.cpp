@@ -51,7 +51,7 @@ void MapGimmick::Update(Vec2 PlayerPos)
 	return false;*/
 
 	if (DistancePos.x < 96 && DistancePos.x > -32 && 
-		DistancePos.y < 0 && DistancePos.y > -Game::kScreenHeight - m_offset.y)
+		DistancePos.y < 0 && DistancePos.y > -Game::kScreenHeight - m_offset.y - 100)
 	{
 		m_GimmickMove = true;
 	}

@@ -196,8 +196,8 @@ void EnemyFactory::Update()
 			m_DamageFlag = true;
 			m_Player->Ondamage();
 			m_Player->SetNoDamageFrame(100);
-			m_Player->SetEnemyPos(enemy->GetCentorPos());
 			m_Player->SetKnockBackSpeed(Player::kKnockBackSpeed);
+			m_Player->SetEnemyPos(enemy->GetCentorPos());
 			PlaySoundMem(m_SoundDamage, DX_PLAYTYPE_BACK);
 			//	m_Player->IsKnockBack(m_Pos);
 		}

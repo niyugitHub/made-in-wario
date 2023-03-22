@@ -133,6 +133,7 @@ private:
 	int m_NormalSoundHandle;
 	int m_BossSoundHandle;
 	int m_GameOverSoundHandle;
+	int m_GetItemSoundHandle;
 
 	// フォントデータ
 	int m_FontHandle = -1;

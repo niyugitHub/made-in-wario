@@ -40,7 +40,7 @@ Enemy5::Enemy5() :
 	m_Frame(35),
 	m_GraphFrame(0),
 	m_ShotFrame(0),
-	m_NextShotFrame(kNextShotFrame),
+	m_NextShotFrame(kNextShotFrame / 2),
 	m_FlySpeed(-kMoveFly),
 	m_FieldSpeed(0.0f)
 {
@@ -70,6 +70,10 @@ void Enemy5::update()
 	if (!m_CollTop)
 	{
 		m_Pos.y = m_NextPos.y;
+	}
+	if (m_CollTop)
+	{
+		m_Pos.y += 1;
 	}
 
 	m_NextPos = m_Pos;

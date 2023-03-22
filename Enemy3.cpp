@@ -204,7 +204,7 @@ void Enemy3::UpdatePatrol()
 
 void Enemy3::UpdateDiscovery()
 {
-	if (m_DistancePos.x < -800 || m_DistancePos.x > 800 ||
+	if (m_DistancePos.x < -600 || m_DistancePos.x > 600 ||
 		m_DistancePos.y < -150 || m_DistancePos.y > 400)
 	{
 		m_func = &Enemy3::UpdatePatrol;

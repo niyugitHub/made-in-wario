@@ -66,13 +66,13 @@ void Option::Draw()
 //	DrawFormatString(500, 500, 0xffffff, "%d", m_CursorMove);
 //	DrawFormatString(500, 600, 0xffffff, "%d", m_SceneNum);
 
-	if (m_Guide)
+	/*if (m_Guide)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
 		DrawGraph(0, 0, m_GuideHandle, true);
 		DrawGraph(0, 0, m_GuideStringHandle, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	}
+	}*/
 }
 
 void Option::CursorMove()

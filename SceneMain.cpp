@@ -39,6 +39,7 @@ namespace
 	const char* const kBossBattleFilename = "sound/BossBattle.mp3";
 	const char* const kSoundSelectionFilename = "sound/selection.mp3";
 	const char* const kSoundDeterminationFilename = "sound/determination.mp3";
+	const char* const kSoundGetItemFilename = "sound/Item.mp3";
 
 	// プレイヤーの中心を少し左に寄せる
 	constexpr float kPlayerPosCenter = 150.0f;
@@ -179,6 +180,7 @@ void SceneMain::init()
 	m_ShotTutorialHandle = LoadGraph(kShotTutorialFilename);
 	m_DamageTutorialHandle = LoadGraph(kDamageTutorialFilename);
 
+	m_GetItemSoundHandle = LoadSoundMem(kSoundGetItemFilename);
 	m_NormalSoundHandle = LoadSoundMem(kMainbgmFilename);
 	m_BossSoundHandle = LoadSoundMem(kBossBattleFilename);
 
@@ -793,6 +795,7 @@ void SceneMain::NormalUpdate()
 				//ジャンプアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kTwoJump)
 				{
+					PlaySoundMem(m_GetItemSoundHandle, DX_PLAYTYPE_BACK);
 					m_player->SetCollItemTwoJump(true);
 					m_ItemExist[i] = false;
 					m_Item[i]->SetExist(m_ItemExist[i]);
@@ -801,6 +804,7 @@ void SceneMain::NormalUpdate()
 				//攻撃力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kAttackUp)
 				{
+					PlaySoundMem(m_GetItemSoundHandle, DX_PLAYTYPE_BACK);
 					m_AttackPower += 10;
 					m_player->SetAttackPower(m_AttackPower);
 					m_ItemExist[i] = false;
@@ -811,6 +815,7 @@ void SceneMain::NormalUpdate()
 				//体力アップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kHpUp)
 				{
+					PlaySoundMem(m_GetItemSoundHandle, DX_PLAYTYPE_BACK);
 					m_Item[i]->SetExist(false);
 					m_player->MaxHpUp();
 					m_Tutorial->SetFlag(true, Tutorial::kHpUpFlag);
@@ -819,6 +824,7 @@ void SceneMain::NormalUpdate()
 				//ゲージアップアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kGaugeUp)
 				{
+					PlaySoundMem(m_GetItemSoundHandle, DX_PLAYTYPE_BACK);
 					m_Item[i]->SetExist(false);
 					m_player->MaxGaugeUp();
 					m_Tutorial->SetFlag(true, Tutorial::kGaugeUpFlag);
@@ -827,6 +833,7 @@ void SceneMain::NormalUpdate()
 				//ショットアイテムに当たったとき
 				if (m_Coll->IsCollItem() && m_Item[i]->GetItemType() == Item::ItemType::kShot)
 				{
+					PlaySoundMem(m_GetItemSoundHandle, DX_PLAYTYPE_BACK);
 					m_Item[i]->SetExist(false);
 					m_player->SetShot(true);
 					m_Tutorial->SetFlag(true, Tutorial::kShotFlag);

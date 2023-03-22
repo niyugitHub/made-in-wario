@@ -69,7 +69,7 @@ void BossEnemy2::update()
 	if (m_Hp <= 0 && m_func != &BossEnemy2::UpdateDead)
 	{
 		m_Exist = false;
-		m_GraphY = 9;
+		m_GraphY = 6;
 		m_GraphX = 0;
 		m_Vec.x = 0;
 		m_GraphFrame = 0;

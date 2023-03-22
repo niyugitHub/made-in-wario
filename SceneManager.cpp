@@ -97,7 +97,7 @@ void SceneManager::draw()
 
 	if (m_Option->GetGuide())
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
 		DrawGraph(0, 0, m_GuideHandle, true);
 		DrawGraph(0, 0, m_GuideStringHandle, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
