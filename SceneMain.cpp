@@ -512,25 +512,25 @@ void SceneMain::InitPlayerPos()
 	if (m_Map->GetStageNum() == 1)
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 56 };
-		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+		m_offset = { 0, Game::kScreenHeight - Map::kChipSize * 60 };
 	}
 
 	if (m_Map->GetStageNum() == 2)
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 6 };
-		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+		m_offset = { 0, Game::kScreenHeight - Map::kChipSize * 17 };
 	}
 
 	if (m_Map->GetStageNum() == 3)
 	{
-		m_PlayerPos = { 0,Map::kChipSize * 18 };
-		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+		m_PlayerPos = { 0,Map::kChipSize * 20 };
+		m_offset = { 0,  Game::kScreenHeight - Map::kChipSize * 28 };
 	}
 
 	if (m_Map->GetStageNum() == 4)
 	{
-		m_PlayerPos = { 0,Map::kChipSize * 95 };
-		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+		m_PlayerPos = { 0,Map::kChipSize * 96 };
+		m_offset = { 0, Game::kScreenHeight - Map::kChipSize * 100 };
 	}
 
 	m_player->SetPos(m_PlayerPos);

@@ -13,7 +13,7 @@ namespace
 	//// プレイヤーの初期位置
 	//constexpr float kFristPlayerPosX = 760.0f;
 	//constexpr float kFristPlayerPosY = 500.0f;
-
+	//a
 	// グラフィックファイル名
 	const char* const kPlayerGraphicFilename = "data/Player.png";
 	const char* const kPlayerHpFilename = "data/Hp1.png";
@@ -91,11 +91,11 @@ m_Hp(3),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(false),
+m_PossibleTwoJump(true),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
-m_PossibleShot(false),
+m_PossibleShot(true),
 m_ShotIntervalFrame(0),
 m_StageClear(false),
 m_Exist(true),

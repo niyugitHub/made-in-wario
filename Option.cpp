@@ -63,8 +63,8 @@ void Option::Draw()
 {
 	(this->*m_drawfunc)();
 
-	DrawFormatString(500, 500, 0xffffff, "%d", m_CursorMove);
-	DrawFormatString(500, 600, 0xffffff, "%d", m_SceneNum);
+//	DrawFormatString(500, 500, 0xffffff, "%d", m_CursorMove);
+//	DrawFormatString(500, 600, 0xffffff, "%d", m_SceneNum);
 
 	if (m_Guide)
 	{

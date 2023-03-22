@@ -144,7 +144,8 @@ void Enemy6::UpdatePatrol()
 		m_GraphX = 0;
 	}
 
-	if (m_DistancePos.x > -500 && m_DistancePos.x < 500)
+	if (m_DistancePos.x > -500 && m_DistancePos.x < 500 &&
+		m_DistancePos.y > -200 && m_DistancePos.y < 300)
 	{
 		m_func = &Enemy6::UpdateDiscovery;
 		m_GraphY = 1;
@@ -186,7 +187,7 @@ void Enemy6::UpdateDiscovery()
 	}
 	
 	if (m_DistancePos.x < -1000 || m_DistancePos.x > 1000 ||
-		m_DistancePos.y < -1000 || m_DistancePos.y > 1000)
+		m_DistancePos.y < -200 || m_DistancePos.y > 300)
 	{
 		m_func = &Enemy6::UpdatePatrol;
 		m_GraphY = 0;

@@ -473,6 +473,7 @@ void EnemyFactory::StageEnemy(int StageNum)
 			}
 			if (m_Map->GetMapData(i, j) == 224)
 			{
+				Pos.y -= 200;
 				Create(kKnight, { Pos });
 			}
 			if (m_Map->GetMapData(i, j) == 245)

@@ -55,7 +55,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		SetMouseDispFlag(1);
 
-		auto fps = GetFPS();// Frame Per Second
+	//	auto fps = GetFPS();// Frame Per Second
 
 		// フルスクリーンとウィンドウモードを切り替える
 		/*if (DxLib::CheckHitKey(KEY_INPUT_LALT))
@@ -78,10 +78,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		scene.update();
 		scene.draw();
 
-		auto drawcall = GetDrawCallCount();
+	//	auto drawcall = GetDrawCallCount();
 
-		DrawFormatString(10, 10, 0xffffff,"FPS=%2.2f", fps);
-		DrawFormatString(0, 50, 0xffffff, "DC = %d", drawcall);
+	//	DrawFormatString(10, 10, 0xffffff,"FPS=%2.2f", fps);
+	//	DrawFormatString(0, 50, 0xffffff, "DC = %d", drawcall);
 
 		// 裏画面と表画面を入れ替える
 		ScreenFlip();

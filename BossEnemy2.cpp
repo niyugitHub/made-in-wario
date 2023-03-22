@@ -284,7 +284,7 @@ void BossEnemy2::UpdateDiscovery()
 		}
 	}
 
-	int RandAttack = GetRand(200);
+	int RandAttack = GetRand(320);
 
 	if (RandAttack == 1)
 	{

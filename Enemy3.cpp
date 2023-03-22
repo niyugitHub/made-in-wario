@@ -195,7 +195,7 @@ void Enemy3::UpdatePatrol()
 	}
 
 	if (m_DistancePos.x > -500 && m_DistancePos.x < 500 && 
-		m_DistancePos.y > -500 && m_DistancePos.y < 500)
+		m_DistancePos.y > -150 && m_DistancePos.y < 400)
 	{
 		m_func = &Enemy3::UpdateDiscovery;
 		m_GraphX = 0;
@@ -205,7 +205,7 @@ void Enemy3::UpdatePatrol()
 void Enemy3::UpdateDiscovery()
 {
 	if (m_DistancePos.x < -800 || m_DistancePos.x > 800 ||
-		m_DistancePos.y < -800 || m_DistancePos.y > 800)
+		m_DistancePos.y < -150 || m_DistancePos.y > 400)
 	{
 		m_func = &Enemy3::UpdatePatrol;
 		m_GraphY = 0;
