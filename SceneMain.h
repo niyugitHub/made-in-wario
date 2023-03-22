@@ -165,7 +165,6 @@ private:
 
 	// ゲームクリアシーン
 	std::shared_ptr<GameClearScene> m_GameClearScene;
-
 	// オプション画面
 	std::shared_ptr< Option> m_Option;
 

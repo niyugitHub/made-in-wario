@@ -467,20 +467,31 @@ void SceneMain::Scroll()
 		m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 	}
 
-	if (m_EnemyFactory->GetBossBattle())
+	if (m_EnemyFactory->GetBossBattle() && m_Map->GetStageNum() == 2)
 	{
 		m_Map->SetBossBattle(true);
-		if (targetOffset.x > -4672)
+		/*if (targetOffset.x > -4672)
 		{
 			targetOffset.x = -4672;
 		}
 		if (targetOffset.x < -3136)
 		{
+		}*/
 			targetOffset.x = -3136;
-		}
 		
 			targetOffset.y = -1792;
 		
+		m_offset = targetOffset * 0.2f + m_offset * 0.8f;
+	}
+
+	if (m_EnemyFactory->GetBossBattle() && m_Map->GetStageNum() == 4)
+	{
+		m_Map->SetBossBattle(true);
+		
+		targetOffset.x = -4058;
+
+		targetOffset.y = -5250;
+
 		m_offset = targetOffset * 0.2f + m_offset * 0.8f;
 	}
 }
@@ -507,13 +518,19 @@ void SceneMain::InitPlayerPos()
 	if (m_Map->GetStageNum() == 2)
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 6 };
-		m_offset = { 0,0};
+		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
 	}
 
 	if (m_Map->GetStageNum() == 3)
 	{
 		m_PlayerPos = { 0,Map::kChipSize * 18 };
-		m_offset = { 0,0 };
+		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
+	}
+
+	if (m_Map->GetStageNum() == 4)
+	{
+		m_PlayerPos = { 0,Map::kChipSize * 95 };
+		m_offset = { 0,Game::kScreenHeight - Map::kChipSize * Map::kBgNumY[m_Map->GetStageNum()] };
 	}
 
 	m_player->SetPos(m_PlayerPos);

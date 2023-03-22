@@ -87,15 +87,15 @@ m_CollRight(false),
 m_Attack(false),
 m_InitAttack(true),
 m_AttackPower(10),
-m_Hp(3),
+m_Hp(100),
 m_MaxHp(3),
 m_NoDamageFrame(0),
 m_KnockBack(0),
-m_PossibleTwoJump(false),
+m_PossibleTwoJump(true),
 m_PushFrame(0),
 m_Gauge(kMaxHealGauge),
 m_MaxGauge(kMaxHealGauge),
-m_PossibleShot(false),
+m_PossibleShot(true),
 m_ShotIntervalFrame(0),
 m_StageClear(false),
 m_Exist(true),
@@ -924,7 +924,7 @@ void Player::IsColl()
 							PlayerTop < MapTop &&
 							PlayerRight > MapLeft + 10 &&
 							PlayerLeft < MapRight - 10 &&
-							m_Jump <= 0.0f)
+							m_Jump <= 0.0f && m_CollBottom)
 						{
 							m_NextPos.y = MapTop - Player::kColumnSize + 10;
 							PlayerBottom = m_NextPos.y + Player::kColumnSize;

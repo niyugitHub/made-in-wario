@@ -78,11 +78,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		scene.update();
 		scene.draw();
 
+		auto drawcall = GetDrawCallCount();
+
 		DrawFormatString(10, 10, 0xffffff,"FPS=%2.2f", fps);
+		DrawFormatString(0, 50, 0xffffff, "DC = %d", drawcall);
+
 		// — ‰æ–Ê‚Æ•\‰æ–Ê‚ð“ü‚ê‘Ö‚¦‚é
 		ScreenFlip();
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break;
+
 
 		// fps‚ð60‚ÉŒÅ’è
 		while (GetNowHiPerformanceCount() - time < 16667)

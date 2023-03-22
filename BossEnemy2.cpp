@@ -214,7 +214,8 @@ void BossEnemy2::UpdateNotBattle()
 	}
 	m_Vec.x = 0;
 
-	if (m_DistancePos.x < 500 && m_DistancePos.x > -500)
+	if (m_DistancePos.x < 800 && m_DistancePos.x > -800 &&
+		m_DistancePos.y < 500 && m_DistancePos.y > -500)
 	{
 		m_BossBattle = true;
 	}
@@ -272,7 +273,7 @@ void BossEnemy2::UpdateDiscovery()
 
 	int RandAttack = GetRand(200);
 
-	if (RandAttack == 1 && m_Frame <= 0)
+	if (RandAttack == 1)
 	{
 		m_Frame = 50 + GetRand(50);
 		m_func = &BossEnemy2::UpdateAttack3;
@@ -283,7 +284,7 @@ void BossEnemy2::UpdateDiscovery()
 		m_NowAttack = true;
 	}
 
-	if (RandAttack == 2 && m_Frame <= 0 && m_Hp <= 800)
+	if (RandAttack == 2 && m_Hp <= 800)
 	{
 		m_Frame = 50 + GetRand(50);
 		m_func = &BossEnemy2::UpdateAttack4;

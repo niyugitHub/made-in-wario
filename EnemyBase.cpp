@@ -147,8 +147,8 @@ bool EnemyBase::StartUpdate()
 	{
 		m_offset.y = -Game::kScreenHeight / 2;
 	}
-	if (m_DistancePos.x < Game::kScreenWidth + m_offset.x + 200 && m_DistancePos.x > -Game::kScreenWidth + m_offset.x - 200 &&
-		m_DistancePos.y < Game::kScreenHeight + m_offset.y + 200 && m_DistancePos.y > -Game::kScreenHeight + m_offset.y - 200)
+	if (m_DistancePos.x < Game::kScreenWidth + m_offset.x + 200 && m_DistancePos.x > -Game::kScreenWidth + m_offset.x - 100 &&
+		m_DistancePos.y < Game::kScreenHeight + m_offset.y && m_DistancePos.y > -Game::kScreenHeight + m_offset.y)
 	{
 		return true;
 	}
