@@ -35,7 +35,7 @@ Enemy4::Enemy4() :
 	m_GraphX = 0;
 	m_GraphY = 1;
 	m_Weight = 1.5f;
-	m_Hp = 80;
+	m_Hp = 60;
 	m_GraphSize2 = { 0,0 };
 	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy4::NotUpdate;

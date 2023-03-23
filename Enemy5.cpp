@@ -45,7 +45,7 @@ Enemy5::Enemy5() :
 	m_FieldSpeed(0.0f)
 {
 	m_Weight = 1.5f;
-	m_Hp = 120;
+	m_Hp = 100;
 	m_GraphSize2 = { 20,20 };
 	m_GraphSize2 = { kGraphSizeX - 20,kGraphSizeY - 20 };
 	m_func = &Enemy5::NotUpdate;

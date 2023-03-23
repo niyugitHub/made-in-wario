@@ -32,7 +32,7 @@ Enemy2::Enemy2() :
 {
 	m_GraphX = 0;
 	m_GraphY = 0;
-	m_Hp = 60;
+	m_Hp = 50;
 	m_GraphSize1 = { 0,0 };
 	m_GraphSize2 = { kGraphSizeX,kGraphSizeY };
 	m_func = &Enemy2::NotUpdate;
